@@ -10,7 +10,7 @@ export const timelineEntries = [{
     Question: "",
     answer_type: "mc",
     option1: "",
-    option2: "",
+    option2: "Blending and segmenting onset-rimes",
     option3: "",
     option4: "",
     closingText: "",
