@@ -1,18 +1,27 @@
 <template>
   <img alt="studying icon" src="./assets/study.png" height="150">
   <h2>Science of Reading Quizzes</h2>
-  <div class="w-7/12 quizzes-container">
-    <QuizItem class="border-2 border-slate-200  w-full md:w-1/2 lg:w-2/3 px-4 place-content-center  mx-auto" />
+  <div class="w-full lg:w-6/12 px-4 quizzes-container">
+    <QuizItem />
   </div>
 </template>
 
 <script>
-import QuizItem from './components/QuizItem.vue'
+import QuizItem from './components/QuizItem.vue';
+// import quizItems from '../data/quiz-items.js'
 
 export default {
   name: 'App',
   components: {
     QuizItem
+  },
+  data() {
+    console.log("Data item:");
+    // console.log(quizItems[0]);
+
+    return {
+      //  quizItems: quizItems
+    }
   }
 }
 </script>
