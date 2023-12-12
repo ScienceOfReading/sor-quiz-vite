@@ -2,7 +2,7 @@
   <img alt="studying icon" src="./assets/study.png" height="150">
   <h2>Science of Reading Quizzes</h2>
   <div class="w-7/12 quizzes-container">
-    <QuizItem class="w-7/12" />
+    <QuizItem class="border-2 border-slate-200  w-full md:w-1/2 lg:w-2/3 px-4 place-content-center  mx-auto" />
   </div>
 </template>
 
@@ -34,6 +34,8 @@ export default {
 
 .quizzes-container {
   display: flex;
+  margin-left: 120px;
+  margin-right: 120px;
   justify-content: space-evenly;
   flex-flow: column nowrap;
 }
