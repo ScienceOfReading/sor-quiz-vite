@@ -58,7 +58,9 @@
       <li class="w-full p-4">Fontas & Pinnell</li>
     </ul>
     <div class="explanation">
-      <P>Kilpatrick discovered a pattern of how some struggling children were succeeding, and hypothesized that </P>
+      <P class="p-explanation">Kilpatrick discovered a pattern of how some struggling children were succeeding, and
+        hypothesized that this these
+        additional forms of skill-building might help them.</P>
       <P><svg xmlns="http://www.w3.org/2000/svg" height="16" width="16"
           viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc. -->
           <path opacity="1" fill="#1E3050"
@@ -143,5 +145,10 @@ a {
   border-style: solid;
   border-color: #999999;
   border-width: 1px;
+}
+
+.p-explanation {
+  margin-left: 200px;
+  margin-right: 200px;
 }
 </style>
