@@ -2,13 +2,13 @@
   <img alt="studying icon" src="./assets/study.png" height="150">
   <h2>Science of Reading Quizzes</h2>
   <div class="w-full lg:w-6/12 px-4 quizzes-container">
-    <QuizItem />
+    <QuizItem :quizItems="quizItems" />
   </div>
 </template>
 
 <script>
 import QuizItem from './components/QuizItem.vue';
-// import quizItems from '../data/quiz-items.js'
+import { quizItems } from '../data/quiz-items.js'
 
 export default {
   name: 'App',
@@ -17,10 +17,10 @@ export default {
   },
   data() {
     console.log("Data item:");
-    // console.log(quizItems[0]);
+    console.log(quizItems[0]);
 
     return {
-      //  quizItems: quizItems
+      quizItems: quizItems
     }
   }
 }
