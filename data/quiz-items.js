@@ -40,4 +40,26 @@ export const quizItems = [{
     closingText: "",
     closingText2: "",
     modal: ""
+}, {
+    title: "Benchmark BAS",
+    subtitle: "",
+    id: 0,
+    nestlevel: "1",
+    has_subitems: false,
+    subitems: [],
+    has_XPs: false,
+    XPs: [],
+    Question: "The Fontas & Pinnell Benchmark assessment (BAS) is a reasonably good indicator of which children are having difficuties with reading. :",
+    answer_type: "tf",
+    option1: "",
+    option2: "",
+    option3: "",
+    option4: "",
+    correctAnswer: false,
+    explanation: "Three independen studies have verified that F&P Benchmark/BAS is about as reliable as flipping a coin./n And far more expensive in time and purchase/training cost.",
+    cautionLevel: f,
+    caution: "Studies indicate that this assessment should be set aside, and mre relaible measures used.",
+    closingText: "",
+    closingText2: "",
+    modal: ""
 }]
