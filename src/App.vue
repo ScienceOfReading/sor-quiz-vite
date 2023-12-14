@@ -1,7 +1,7 @@
 <template>
   <div class="w-full place-content-center">
 
-    <h1 class="text-large">Science of Reading Quizzes</h1>
+    <span class="app-title">Science of Reading Quizzes</span>
 
   </div>
 
@@ -48,7 +48,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   /*color: #2c3e50; */
-  margin-top: 60px;
+  margin-top: 20px;
 }
 
 .lead-image {
@@ -62,5 +62,9 @@ export default {
   margin-right: 120px;
   justify-content: space-evenly;
   flex-flow: column nowrap;
+}
+
+.app-title {
+  font-size: 2rem;
 }
 </style>

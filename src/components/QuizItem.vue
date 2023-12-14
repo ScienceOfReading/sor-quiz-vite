@@ -1,9 +1,9 @@
 <template>
-  <div class="w-full place-content-center  mx-auto">
-    <div class="quiz-item ">
+  <div class="w-full place-content-center mx-auto">
+    <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
       <h5 class="text-stone-400">{{ quizItem.title }}</h5>
-      <p class="question-text">{{ quizItem.Question }}</p>
-      <ul class="">
+      <p class="question-text">Q: {{ quizItem.Question }}</p>
+      <ul class="lg:w-96 place-self-center mb-8">
         <li class="flex flex-row p-4 bg-stone-400 answer">
           <div class="list-asking"><svg xmlns="http://www.w3.org/2000/svg" height="25" width="25"
               viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc. -->
@@ -39,10 +39,10 @@
           <div class="list-item-right">{{ quizItem.option4 }}</div>
         </li>
       </ul>
-      <div class="w-2/3 mx-auto">
-        <p>{{ quizItem.explanation }} <a href="https://youtu.be/Nh3r2WZs2P8?si=9wZ9XWrCTioUaVkG">Phoneme Addition</a>
+      <div class="divide-solid explanation mx-20">
+        <p mb-8>{{ quizItem.explanation }} <a href="https://youtu.be/Nh3r2WZs2P8?si=9wZ9XWrCTioUaVkG">Phoneme Addition</a>
         </p>
-        <div class="flex flex-row"><svg xmlns="http://www.w3.org/2000/svg" height="20" width="20"
+        <div class="flex flex-row mt-8"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="16"
             viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc. -->
             <path opacity="1" fill="#FFBF00"
               d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
