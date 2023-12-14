@@ -1,7 +1,12 @@
 <template>
-  <img alt="studying icon" src="./assets/study.png" height="150">
-  <h2>Science of Reading Quizzes</h2>
-  <div class="w-full md:w-4/12 lg:w-6/12 px-4 quizzes-container text-center">
+  <div class="container  text-center">
+    <div class="w-1/12 text-center">
+      <img alt="studying icon" src="./assets/study.png">
+      <h2>Science of Reading Quizzes</h2>
+    </div>
+  </div>
+
+  <div class="w-full md:w-9/12 lg:w-5/6 px-4 quizzes-container text-center border-2 border-solid">
     <QuizItem :quizItems="quizItems" />
   </div>
 </template>
