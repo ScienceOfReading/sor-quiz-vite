@@ -1,8 +1,8 @@
 <template>
   <div class="w-full place-content-center  mx-auto">
     <div class="quiz-item ">
-      <h5 class="text-stone-400">{{ quizItems[item].title }}</h5>
-      <p class="question-text">{{ quizItems[0].Question }}</p>
+      <h5 class="text-stone-400">{{ quizItem.title }}</h5>
+      <p class="question-text">{{ quizItems.Question }}</p>
       <ul class="">
         <li class="flex flex-row p-4 bg-stone-400 answer">
           <div class="list-asking"><svg xmlns="http://www.w3.org/2000/svg" height="25" width="25"
@@ -107,8 +107,7 @@
 export default {
   name: 'QuizItem',
   props: {
-    quizItems: Array,
-    item: Number
+    quizItem: Object
   },
   computed: {
     optionStatus() {
