@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full border-2  place-content-center  mx-auto">
-    <div class="border-stone-300  quiz-item ">
-      <h5 class="text-stone-400">{{ quizItems[0].title }}</h5>
+  <div class="w-full place-content-center  mx-auto">
+    <div class="quiz-item ">
+      <h5 class="text-stone-400">{{ quizItems[item].title }}</h5>
       <p class="question-text">{{ quizItems[0].Question }}</p>
       <ul class="">
         <li class="flex flex-row p-4 bg-stone-400 answer">
@@ -52,7 +52,7 @@
   </div>
 
 
-  <div class="border-2 border-slate-200  w-full md:w-1/2 lg:w-2/3 px-4 place-content-center  mx-auto">
+  <div class="border-slate-200  w-full md:w-1/2 lg:w-2/3 px-4 place-content-center  mx-auto">
     <div class="border-stone-300 w-72 quiz-item ">
       <h5 class="text-stone-400">{{ quizItems[1].title }}</h5>
       <p class="question-text">{{ quizItems[1].Question }}</p>
@@ -107,7 +107,8 @@
 export default {
   name: 'QuizItem',
   props: {
-    quizItems: Array
+    quizItems: Array,
+    item: Number
   },
   computed: {
     optionStatus() {

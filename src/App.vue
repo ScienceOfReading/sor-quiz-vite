@@ -1,13 +1,16 @@
 <template>
-  <div class="container  text-center">
-    <div class="w-1/12 text-center">
-      <img alt="studying icon" src="./assets/study.png">
-      <h2>Science of Reading Quizzes</h2>
-    </div>
+  <div class="w-full place-content-center">
+
+    <h1 class="text-large">Science of Reading Quizzes</h1>
+
   </div>
 
-  <div class="w-full md:w-9/12 lg:w-5/6 px-4 quizzes-container text-center border-2 border-solid">
-    <QuizItem :quizItems="quizItems" />
+  <div class="w-full md:w-9/12 lg:w-5/6 px-4 quizzes-container text-center border-solid bodrder-stone-400">
+    <QuizItem :quizItems="quizItems" :item="currentItem" />
+  </div>
+  <div>
+
+    <button class="bg-stone-400 w-32 h-10 text-amber-400" @click="nextItem">Next</button>
   </div>
 </template>
 
@@ -23,9 +26,16 @@ export default {
   data() {
     console.log("Data item:");
     console.log(quizItems[0]);
-
+    const currentItem = 0;
     return {
-      quizItems: quizItems
+      quizItems: quizItems,
+      currentItem: currentItem
+    }
+  },
+  methods: {
+    nextItem() {
+      this.currentItem = this.currentItem + 1;
+      console.log("Next. CurrentItem is now: ", this.currentItem);
     }
   }
 }
