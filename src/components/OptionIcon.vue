@@ -1,8 +1,14 @@
 <template>
-    <span v-if="true">
-        <font-awesome-icon icon="fa-regular fa-circle-question" size="xl" />
+    <span v-if="status == 1">
+        <font-awesome-icon icon="fa-regular fa-circle-question" size="xl" style="color: black" />
     </span>
-    <span v-else>
+    <span v-else-if="status == 2">
+        <font-awesome-icon icon="fa-solid fa-circle-minus" size="xl" style="color: #444444;" />
+    </span>
+    <span v-else-if="status == 3">
+        <font-awesome-icon icon="fa-regular faCircleCheck" size="xl" style="color: green" />
+    </span>
+    <span v-else-if="status == 4">
         <font-awesome-icon icon="fa-regular fa-circle-xmark" size="xl" style="color: #e32400;" />
     </span>
 </template>
@@ -19,6 +25,7 @@ export default {
     },
     data() {
         console.log("OptionIcon data");
+        console.log("status: ", this.status);
     }
 }
 
