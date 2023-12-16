@@ -15,6 +15,8 @@ library.add(faCircleMinus)
 library.add(faCircleXmark)
 library.add(faCircleCheck)
 
-createApp(App)
-    .component('font-awesome-icon', FontAwesomeIcon)
+const app = createApp(App)
+app.config.globalProperties.$userAnswers = []
+app.component('font-awesome-icon', FontAwesomeIcon)
     .mount('#app')
+

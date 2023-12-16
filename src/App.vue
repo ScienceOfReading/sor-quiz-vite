@@ -26,9 +26,11 @@ export default {
     console.log("Data item:");
     console.log(quizItems[0]);
     const currentItem = 0;
+    const userAnswers = [];
     return {
       quizItems: quizItems,
-      currentItem: currentItem
+      currentItem: currentItem,
+      userAnswers: userAnswers
     }
   },
   methods: {
