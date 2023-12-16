@@ -33,7 +33,7 @@
           <div class="list-item-right">{{ quizItem.option4 }}</div>
         </li>
       </ul>
-      <div class="divide-solid explanation mx-20">
+      <div class="divide-solid explanation lg:mx-20">
         <p mb-8>{{ quizItem.explanation }} <a href="https://youtu.be/Nh3r2WZs2P8?si=9wZ9XWrCTioUaVkG">Phoneme Addition</a>
         </p>
         <div class="flex flex-row mt-8">
