@@ -1,7 +1,7 @@
 <template>
   <div class="w-full place-content-center mx-auto">
     <p>1/10</p>
-    <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
+    <div class="grid quiz-item w-full border-4 place-self-center place-content-center p-15 text-center">
       <h5 class="text-stone-400">{{ quizItem.title }}</h5>
       <p class="question-text">Q: {{ quizItem.Question }}</p>
       <ul class="lg:w-96 place-self-center mb-8">
@@ -123,7 +123,7 @@ a {
   border-style: solid;
   border-top-right-radius: 2dvw;
   border-radius: 2dvw;
-  margin: 12px;
+  padding: 15px;
 }
 
 .question-text {

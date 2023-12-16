@@ -58,7 +58,7 @@ export default {
 .quizzes-container {
   display: flex;
   margin-left: auto;
-  margin-right: 120px;
+  margin-right: auto;
   justify-content: space-evenly;
   flex-flow: column nowrap;
 }
