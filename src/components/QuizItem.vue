@@ -30,7 +30,7 @@
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4] }" class="flex flex-row p-4 answer"
           @click="select(4)">
 
-          <div class="list-asking">
+          <div uclass="list-asking">
             <OptionIcon status="4"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option4 }}</div>
@@ -82,7 +82,7 @@ export default {
       //option3Status = 3;
       this.highlighted = [false, false, false, false, false];
       this.highlighted[option] = true
-      this.$userAnswers.push(option);
+      this.$userAnswers[9] = option;
       console.log("In QuizItem, global.userAnswers is ", this.$userAnswers)
     },
     onHover() {
