@@ -56,7 +56,8 @@ import OptionIcon from "./OptionIcon.vue";
 export default {
   name: 'QuizItem',
   props: {
-    quizItem: Object
+    quizItem: Object,
+    itemNum: Number
   },
   components: {
     OptionIcon
@@ -82,7 +83,7 @@ export default {
       //option3Status = 3;
       this.highlighted = [false, false, false, false, false];
       this.highlighted[option] = true
-      this.$userAnswers[9] = option;
+      this.$userAnswers[this.itemNum] = option;
       console.log("In QuizItem, global.userAnswers is ", this.$userAnswers)
     },
     onHover() {
