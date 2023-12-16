@@ -78,6 +78,7 @@ export default {
     select(option) {
       console.log("Selected: ", option);
       //option3Status = 3;
+      this.highlighted = [false, false, false, false, false];
       this.highlighted[option] = true
     },
     onHover() {
