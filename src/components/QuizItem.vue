@@ -1,18 +1,18 @@
 <template>
   <div class="w-full place-content-center mx-auto">
     <p>1/10</p>
-    <div class="grid quiz-item w-full border-4 place-self-center place-content-center p-15 text-center">
-      <h5 class="text-stone-400">{{ quizItem.title }}</h5>
-      <p class="question-text">Q: {{ quizItem.Question }}</p>
+    <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
+      <h5 class="text-stone-400 pt-2">{{ quizItem.title }}</h5>
+      <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
       <ul class="lg:w-96 place-self-center mb-8">
-        <li class="flex flex-row p-4 answer" @click="optionSelected(1)">
+        <li class="flex flex-row p-4 answer" @click="select(1)">
           <div class="list-asking">
             <OptionIcon status="1"></OptionIcon>
           </div>
-          <div class="list-item-right">{{ quizItem.option1 }}
+          <div class="list-item-right">{{ quizItem.option1 }} >
           </div>
         </li>
-        <li @click="optionSelected(2)" class="flex flex-row p-4 border-solid rounded-lg answer ">
+        <li @click="select(2)" class="flex flex-row p-4 border-solid rounded-lg answer ">
           <div class="list-asking">
             <OptionIcon status="2"></OptionIcon>
           </div>
@@ -25,7 +25,7 @@
           </div>
           <div class="list-item-right">{{ quizItem.option3 }}</div>
         </li>
-        <li class="flex flex-row p-4 answer" @click="optionSelected(4)">
+        <li class="flex flex-row p-4 answer" @click="select(4)">
 
           <div :class="feedBack" class="list-asking">
             <OptionIcon status="4"></OptionIcon>
@@ -93,9 +93,9 @@ export default {
 
   methods: {
     select(option) {
-      console.log("Selected: ");
+      console.log("Selected: ", option);
       //option3Status = 3;
-      //highlighted1 = true
+      this.highlighted1 = true
     },
     onHover() {
       console.log("Hovered");
@@ -123,7 +123,7 @@ a {
   border-style: solid;
   border-top-right-radius: 2dvw;
   border-radius: 2dvw;
-  padding: 15px;
+
 }
 
 .question-text {

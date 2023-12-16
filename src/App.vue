@@ -4,7 +4,7 @@
     <span class="app-title">Science of Reading Quizzes</span>
   </div>
 
-  <div class="w-full md:w-9/12 lg:w-5/6 px-4 quizzes-container text-center border-solid bodrder-stone-400">
+  <div class="sm:w-full md:w-9/12 lg:w-5/6 px-4 quizzes-container text-center border-solid bodrder-stone-400">
     <QuizItem :quizItem="quizItems[currentItem]" />
   </div>
   <div>
