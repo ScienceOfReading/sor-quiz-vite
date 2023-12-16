@@ -5,27 +5,30 @@
       <h5 class="text-stone-400 pt-2">{{ quizItem.title }}</h5>
       <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
       <ul class="lg:w-96 place-self-center mb-8">
-        <li class="flex flex-row p-4 answer" @click="select(1)">
+        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1] }" class="flex flex-row p-4 answer"
+          @click="select(1)">
           <div class="list-asking">
             <OptionIcon status="1"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option1 }} >
           </div>
         </li>
-        <li @click="select(2)" class="flex flex-row p-4 border-solid rounded-lg answer ">
+        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[2] }" @click="select(2)"
+          class="flex flex-row p-4 border-solid rounded-lg answer ">
           <div class="list-asking">
             <OptionIcon status="2"></OptionIcon>
           </div>
           <div class=""> {{ quizItem.option2 }}</div>
         </li>
-        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted1 }" class="flex flex-row p-4 answer"
+        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[3] }" class="flex flex-row p-4 answer"
           @click="select(3)">
           <div class="list-asking">
             <OptionIcon :status="option3Status"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option3 }}</div>
         </li>
-        <li class="flex flex-row p-4 answer" @click="select(4)">
+        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4] }" class="flex flex-row p-4 answer"
+          @click="select(4)">
 
           <div :class="feedBack" class="list-asking">
             <OptionIcon status="4"></OptionIcon>
@@ -41,7 +44,7 @@
             <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc. -->
             <path opacity="1" fill="#FFBF00"
               d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
-          </svg> <span class="caution-message">{{ quizItem.caution }}</span>
+          </svg> <span class="lg:pl-5 caution-message">{{ quizItem.caution }}</span>
         </div>
       </div>
     </div>
@@ -59,34 +62,14 @@ export default {
     OptionIcon
   },
   computed: {
-    optionStatus() {
-      if (this.$store.state.completedXPs.includes(this.xpObj.xpId)) {
-        return "correct-choice";
-      } else {
-        return "incorrect-choice";
-      }
-    },
-    iconColor() {
-      if (true) {
-        return "#0000ff";
-      } else {
-        return "ff0000";
-      }
-    },
-    feedBack() {
-      if (true) {
-        return "correct-choice";
-      } else {
-        return "incorrect-choice";
-      }
-    }
+
   },
   data() {
     const option3Status = 1;
     console.log("QuizItem data");
-    const highlighted1 = false;
+    const highlighted = [false, false, false, false, false];
     return {
-      highlighted1: highlighted1,
+      highlighted: highlighted,
       option3Status: option3Status
     }
   },
@@ -95,7 +78,7 @@ export default {
     select(option) {
       console.log("Selected: ", option);
       //option3Status = 3;
-      this.highlighted1 = true
+      this.highlighted[option] = true
     },
     onHover() {
       console.log("Hovered");
@@ -140,7 +123,6 @@ a {
   text-align: left;
 }
 
-.highlighted {}
 
 .list-asking {
 
@@ -188,7 +170,7 @@ a {
 }
 
 .caution-message {
-  padding-left: 7px;
+  padding-left: 4;
 }
 
 .correct-choice {
