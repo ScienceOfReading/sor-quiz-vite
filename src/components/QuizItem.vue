@@ -5,23 +5,23 @@
       <h5 class="text-stone-400">{{ quizItem.title }}</h5>
       <p class="question-text">Q: {{ quizItem.Question }}</p>
       <ul class="lg:w-96 place-self-center mb-8">
-        <li class="flex flex-row p-4 bg-stone-400 answer" @click="optionSelected(1)">
+        <li class="flex flex-row p-4 answer" @click="optionSelected(1)">
           <div class="list-asking">
             <OptionIcon status="1"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option1 }}
           </div>
         </li>
-        <li @click="optionSelected(2)"
-          class="flex flex-row p-4 bg-stone-400 border-solid border-amber-500 rounded-lg answer ">
+        <li @click="optionSelected(2)" class="flex flex-row p-4 border-solid rounded-lg answer ">
           <div class="list-asking">
             <OptionIcon status="2"></OptionIcon>
           </div>
           <div class=""> {{ quizItem.option2 }}</div>
         </li>
-        <li class="flex flex-row p-4 answer" @click="optionSelected(3)">
+        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted1 }" class="flex flex-row p-4 answer"
+          @click="select(3)">
           <div class="list-asking">
-            <OptionIcon status="3"></OptionIcon>
+            <OptionIcon :status="option3Status"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option3 }}</div>
         </li>
@@ -81,12 +81,26 @@ export default {
       }
     }
   },
+  data() {
+    const option3Status = 1;
+    console.log("QuizItem data");
+    const highlighted1 = false;
+    return {
+      highlighted1: highlighted1,
+      option3Status: option3Status
+    }
+  },
+
   methods: {
-    optionSelected(option) {
-      console.log("Seclected: ", option);
+    select(option) {
+      console.log("Selected: ");
+      //option3Status = 3;
+      //highlighted1 = true
+    },
+    onHover() {
+      console.log("Hovered");
     }
   }
-
 }
 </script>
 
@@ -125,6 +139,8 @@ a {
   border-width: 2pt;
   text-align: left;
 }
+
+.highlighted {}
 
 .list-asking {
 

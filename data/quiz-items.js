@@ -35,7 +35,7 @@ export const quizItems = [{
     option3: "Heggerty",
     option4: "Fontas & Pinnell",
     correctAnswer: 2,
-    explanation: "Kilpatrick discovered a pattern of how some struggling children were succeeding, and hypothesized that this these additional forms of skill-building might help them.",
+    explanation: "Kilpatrick discovered a pattern of how some struggling children were succeeding, and hypothesized that this additional skill-building practice might help others.",
     caution: "The practice has not yet been studied, and Kilpatrick regrets the choice of name.",
     closingText: "",
     closingText2: "",
