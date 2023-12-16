@@ -36,7 +36,7 @@
           <div class="list-item-right">{{ quizItem.option4 }}</div>
         </li>
       </ul>
-      <div class="divide-solid explanation lg:mx-20">
+      <div :class="{ [`hidden`]: false }" class="divide-solid explanation lg:mx-20">
         <p mb-8>{{ quizItem.explanation }} <a href="https://youtu.be/Nh3r2WZs2P8?si=9wZ9XWrCTioUaVkG">Phoneme Addition</a>
         </p>
         <div class="flex flex-row mt-8">
@@ -66,11 +66,13 @@ export default {
   },
   data() {
     const option3Status = 1;
+    const reviewMode = false;
     console.log("QuizItem data");
     const highlighted = [false, false, false, false, false];
     return {
       highlighted: highlighted,
-      option3Status: option3Status
+      option3Status: option3Status,
+      reviewMode: reviewMode
     }
   },
 
@@ -153,6 +155,10 @@ a {
 .p-explanation {
   margin-left: 200px;
   margin-right: 200px;
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 .test-border {
