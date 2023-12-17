@@ -65,6 +65,12 @@ export default {
   computed: {
 
   },
+  watch: {
+    // whenever question changes, this function will run
+    itemNum(newItemNum, oldItemNum) {
+      this.highlighted = [false, false, false, false, false];
+    }
+  },
   data() {
     const option3Status = 1;
     const reviewMode = false;
