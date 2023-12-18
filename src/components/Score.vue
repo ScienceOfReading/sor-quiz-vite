@@ -3,8 +3,8 @@
     <p>1/10</p>
     <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
       <h5 class="text-stone-400 pt-2">{{ quizItem.title }}</h5>
-      <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
-      <ul class="lg:w-96 place-self-center mb-8">
+      <p class="question-text mb-2">Your Score</p>
+      <!--ul class="lg:w-96 place-self-center mb-8">
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1] }" class="flex flex-row p-4 answer"
           @click="select(1)">
           <div class="list-asking">
@@ -35,7 +35,7 @@
           </div>
           <div class="list-item-right">{{ quizItem.option4 }}</div>
         </li>
-      </ul>
+      </ul-->
       <div :class="{ [`hidden`]: !reviewMode }" class="divide-solid explanation lg:mx-20">
         <p mb-8>{{ quizItem.explanation }} <a href="https://youtu.be/Nh3r2WZs2P8?si=9wZ9XWrCTioUaVkG">Phoneme Addition</a>
         </p>

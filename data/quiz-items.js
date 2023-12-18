@@ -56,9 +56,9 @@ export const quizItems = [{
     option3: "",
     option4: "",
     correctAnswer: false,
-    explanation: "Three independen studies have verified that F&P Benchmark/BAS is about as reliable as flipping a coin./n And far more expensive in time and purchase/training cost.",
+    explanation: "Three independent studies show that F&P Benchmark/BAS is about as reliable as flipping a coin./n And far more expensive in time and purchase/training cost.",
     cautionLevel: "f",
-    caution: "Studies indicate that this assessment should be set aside, and mre relaible measures used.",
+    caution: "Studies indicate that this assessment should be set aside. Use more reliable measures.",
     closingText: "",
     closingText2: "",
     modal: ""
