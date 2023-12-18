@@ -16,7 +16,7 @@
     </div>
   </div>
   <div v-else
-    class="border-solid border-2 border-red-500 sm:w-full md:w-9/12 lg:w-5/6 px-4 quizzes-container text-center">
+    class="border-solid border-2 border-red-500 sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
     <QuizItem :quizItem="quizItems[currentItem]" :itemNum="currentItem" :reviewMode="reviewMode"
       @selected="answerSelected" />
   </div>
