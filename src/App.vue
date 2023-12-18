@@ -1,7 +1,7 @@
 <template>
   <div class="w-full place-content-center">
 
-    <span class="lg:text-3xl sm:text-xl">Science of Reading Quizzes</span>
+    <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
   </div>
 
   <div v-if="showResults"
