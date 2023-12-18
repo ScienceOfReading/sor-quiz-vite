@@ -1,6 +1,8 @@
 <template>
   <div class="w-full place-content-center mx-auto">
     <p>1/10</p>
+
+
     <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
       <h5 class="text-stone-400 pt-2">{{ quizItem.title }}</h5>
       <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
@@ -56,8 +58,18 @@ import OptionIcon from "./OptionIcon.vue";
 export default {
   name: 'QuizItem',
   props: {
-    quizItem: Object,
-    itemNum: Number
+    quizItem: {
+      type: Object,
+      required: true
+    },
+    itemNum: {
+      type: Number,
+      required: true
+    },
+    reviewMode: {
+      type: Boolean,
+      required: true
+    }
   },
   components: {
     OptionIcon
@@ -73,13 +85,11 @@ export default {
   },
   data() {
     const option3Status = 1;
-    const reviewMode = false;
     console.log("QuizItem data");
     const highlighted = [false, false, false, false, false];
     return {
       highlighted: highlighted,
-      option3Status: option3Status,
-      reviewMode: reviewMode
+      option3Status: option3Status
     }
   },
 
