@@ -1,11 +1,11 @@
 <template>
   <div class="w-full place-content-center">
 
-    <span class="app-title">Science of Reading Quizzes</span>
+    <span class="lg:text-3xl sm:text-lg">Science of Reading Quizzes</span>
   </div>
 
   <div v-if="showResults"
-    class="sm:w-full md:w-9/12 lg:w-5/6 px-4 quizzes-container text-center border-solid bodrder-stone-400">
+    class="sm:w-full md:w-9/12 lg:w-5/6 px-2 quizzes-container text-center border-solid bodrder-stone-400">
     <h5 class="text-stone-400 pt-2"></h5>
     <p class="question-text mb-2">Results</p>
 
@@ -121,7 +121,5 @@ export default {
 
 }
 
-.app-title {
-  font-size: 2rem;
-}
+.app-title {}
 </style>
