@@ -11,7 +11,7 @@
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1] }" class="flex flex-row p-4 answer"
           @click="select(1)">
           <div class="list-asking">
-            <OptionIcon status="optionsStatus[0]"></OptionIcon>
+            <OptionIcon :status="optionsStatus[0]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option1 }}
           </div>
@@ -19,7 +19,7 @@
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[2] }" @click="select(2)"
           class="flex flex-row p-4 border-solid rounded-lg answer ">
           <div class="list-asking">
-            <OptionIcon status="optionsStatus[1]"></OptionIcon>
+            <OptionIcon :status="optionsStatus[1]"></OptionIcon>
           </div>
           <div class="list-item-right"> {{ quizItem.option2 }}</div>
         </li>
@@ -32,9 +32,8 @@
         </li>
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4] }" class="flex flex-row p-4 answer"
           @click="select(4)">
-
-          <div uclass="list-asking">
-            <OptionIcon status="optionsStatus[3]"></OptionIcon>
+          <div class="list-asking">
+            <OptionIcon :status="optionsStatus[3]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option4 }}</div>
         </li>
@@ -86,10 +85,10 @@ export default {
     }
   },
   data() {
-    const option3Status = 1;
     console.log("QuizItem data");
     const highlighted = [false, false, false, false, false];
     const optionsStatus = [1, 1, 1, 1, 1];
+    console.log("optionsStatus[2]: ", optionsStatus[2])
     return {
       highlighted: highlighted,
       optionsStatus: optionsStatus

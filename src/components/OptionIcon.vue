@@ -22,7 +22,7 @@ export default {
     },
     props: {
         status: {
-            type: String,
+            type: Number,
             required: true
         },
     },
