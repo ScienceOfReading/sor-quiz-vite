@@ -54,4 +54,23 @@ export const quizItems = [{
     closingText: "",
     closingText2: "",
     modal: ""
+}, {
+    title: "Structured Linguistic Literacy",
+    subtitle: "",
+    id: 2,
+    Question: "Structured Linguistic Literacy is:",
+    answer_type: "mc",
+    option1: "an alternative approach to more traditional phonics instruction, which initially emphasizes activities like: segment sounds first, write sounds next, and blend sounds back into a word",
+    option2: "an approach to teaching language development (word meaning, phrases, sentence structure, etc.) at the k-5 level.",
+    option3: "an innovative, but not-yet-significantly-used commercial program for developing word recognition in children.",
+    option4: "a made-up term designed to poke fun at the many buzzwords which have come to surround the teaching of reading.",
+    option5: "",
+    correctAnswer: 1,
+    explanation: "Structured Linguistic Literacy is a new name for a speech-to-print approach to phonics.",
+    explanation2: "",
+    cautionLevel: "a",
+    caution: "",
+    closingText: "",
+    closingText2: "",
+    modal: ""
 }]
