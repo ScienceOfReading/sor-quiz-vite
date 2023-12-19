@@ -2,15 +2,16 @@
   <div class="w-full place-content-center mx-auto">
     <p>1/10</p>
 
-
-    <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
+    <div v-if="quizItem.answer_type == 'tf'">
+      Handle a true/false question here.</div>
+    <div v-else class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
       <h5 class="text-stone-400 lg:pt-2">{{ quizItem.title }}</h5>
       <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
       <ul class="lg:w-96 place-self-center mb-8">
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1] }" class="flex flex-row p-4 answer"
           @click="select(1)">
           <div class="list-asking">
-            <OptionIcon status="1"></OptionIcon>
+            <OptionIcon status="optionsStatus[0]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option1 }}
           </div>
@@ -18,14 +19,14 @@
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[2] }" @click="select(2)"
           class="flex flex-row p-4 border-solid rounded-lg answer ">
           <div class="list-asking">
-            <OptionIcon status="2"></OptionIcon>
+            <OptionIcon status="optionsStatus[1]"></OptionIcon>
           </div>
-          <div class=""> {{ quizItem.option2 }}</div>
+          <div class="list-item-right"> {{ quizItem.option2 }}</div>
         </li>
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[3] }" class="flex flex-row p-4 answer"
           @click="select(3)">
           <div class="list-asking">
-            <OptionIcon :status="option3Status"></OptionIcon>
+            <OptionIcon :status="optionsStatus[2]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option3 }}</div>
         </li>
@@ -33,7 +34,7 @@
           @click="select(4)">
 
           <div uclass="list-asking">
-            <OptionIcon status="4"></OptionIcon>
+            <OptionIcon status="optionsStatus[3]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option4 }}</div>
         </li>
@@ -88,16 +89,16 @@ export default {
     const option3Status = 1;
     console.log("QuizItem data");
     const highlighted = [false, false, false, false, false];
+    const optionsStatus = [1, 1, 1, 1, 1];
     return {
       highlighted: highlighted,
-      option3Status: option3Status
+      optionsStatus: optionsStatus
     }
   },
 
   methods: {
     select(option) {
       console.log("Selected: ", option);
-      //option3Status = 3;
       this.highlighted = [false, false, false, false, false];
       this.highlighted[option] = true
       this.$userAnswers[this.itemNum] = option;
