@@ -83,9 +83,9 @@ export default {
 
     },
     startReview() {
-      this.currentItem = 0;
       this.showResults = false;
       this.reviewMode = true;
+      this.currentItem = 0;
     }
   }
 }

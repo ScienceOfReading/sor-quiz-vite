@@ -79,16 +79,12 @@ export default {
 
   },
   watch: {
-    // whenever question changes, this function will run
     itemNum(newItemNum, oldItemNum) {
-      console.log("item changed");
-      console.log("reveiwmode is: ", this.reviewMode)
+      console.log("item changed from", oldItemNum, " to ", newItemNum);
+      console.log("reviewmode is: ", this.reviewMode)
       this.highlighted = [false, false, false, false, false];
       if (this.reviewMode) {
-        console.log("reviewMode is true and");
-        console.log("newItemNum is ", newItemNum);
-        console.log("this.userAnswers is :", this.$userAnswers);
-        console.log("userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
+        console.log("newItemNum, this.$userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
         this.highlighted[this.$userAnswers[newItemNum]] = true;
       }
       else { console.log("In selection mode"); }
@@ -99,6 +95,12 @@ export default {
     const highlighted = [false, false, false, false, false];
     const optionsStatus = [1, 1, 1, 1, 1];
     console.log("optionsStatus[2]: ", optionsStatus[2])
+    if (this.reviewMode) {
+      console.log("display for reviewMode")
+      highlighted[this.$userAnswers[0]] = true;
+    }
+    else { console.log("In selection mode"); }
+
     return {
       highlighted: highlighted,
       optionsStatus: optionsStatus
