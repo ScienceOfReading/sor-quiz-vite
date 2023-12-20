@@ -81,7 +81,17 @@ export default {
   watch: {
     // whenever question changes, this function will run
     itemNum(newItemNum, oldItemNum) {
+      console.log("item changed");
+      console.log("reveiwmode is: ", this.reviewMode)
       this.highlighted = [false, false, false, false, false];
+      if (this.reviewMode) {
+        console.log("reviewMode is true and");
+        console.log("newItemNum is ", newItemNum);
+        console.log("this.userAnswers is :", this.$userAnswers);
+        console.log("userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
+        this.highlighted[this.$userAnswers[newItemNum]] = true;
+      }
+      else { console.log("In selection mode"); }
     }
   },
   data() {
