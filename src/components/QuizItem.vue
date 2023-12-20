@@ -86,6 +86,9 @@ export default {
       if (this.reviewMode) {
         console.log("newItemNum, this.$userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
         this.highlighted[this.$userAnswers[newItemNum]] = true;
+        this.optionsStatus = [3, 3, 3, 3, 3];
+        this.optionsStatus[this.$userAnswers[newItemNum] - 1] = 5;
+        this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
       }
       else { console.log("In selection mode"); }
     }
@@ -93,11 +96,15 @@ export default {
   data() {
     console.log("QuizItem data");
     const highlighted = [false, false, false, false, false];
-    const optionsStatus = [1, 1, 1, 1, 1];
+    let optionsStatus = [1, 1, 1, 1, 1];
     console.log("optionsStatus[2]: ", optionsStatus[2])
     if (this.reviewMode) {
       console.log("display for reviewMode")
       highlighted[this.$userAnswers[0]] = true;
+      optionsStatus = [3, 3, 3, 3, 3];
+      console.log("$userStatus", this.$userAnswers);
+      optionsStatus[this.$userAnswers[0] - 1] = 5;
+      optionsStatus[this.quizItem.correctAnswer - 1] = 4;
     }
     else { console.log("In selection mode"); }
 

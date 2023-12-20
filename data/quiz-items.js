@@ -57,7 +57,7 @@ export const quizItems = [{
 }, {
     title: "Structured Linguistic Literacy",
     subtitle: "",
-    id: 2,
+    id: 3,
     Question: "Structured Linguistic Literacy is:",
     answer_type: "mc",
     option1: "an alternative approach to more traditional phonics instruction, which initially emphasizes activities like: segment sounds first, write sounds next, and blend sounds back into a word",
