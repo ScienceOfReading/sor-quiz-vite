@@ -37,6 +37,13 @@
           </div>
           <div class="list-item-right">{{ quizItem.option4 }}</div>
         </li>
+        <li v-if="quizItem.option5" :class="{ [`bg-stone-400 border-amber-500`]: highlighted[5] }"
+          class="flex flex-row p-4 answer" @click="select(5)">
+          <div class="list-asking">
+            <OptionIcon :status="optionsStatus[4]"></OptionIcon>
+          </div>
+          <div class="list-item-right">{{ quizItem.option5 }}</div>
+        </li>
       </ul>
     </div>
     <div :class="{ [`hidden`]: !reviewMode }"
@@ -86,7 +93,7 @@ export default {
       if (this.reviewMode) {
         console.log("newItemNum, this.$userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
         this.highlighted[this.$userAnswers[newItemNum]] = true;
-        this.optionsStatus = [3, 3, 3, 3, 3];
+        this.optionsStatus = [3, 3, 3, 3, 3, 3];
         this.optionsStatus[this.$userAnswers[newItemNum] - 1] = 5;
         this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
       }
@@ -95,13 +102,13 @@ export default {
   },
   data() {
     console.log("QuizItem data");
-    const highlighted = [false, false, false, false, false];
-    let optionsStatus = [1, 1, 1, 1, 1];
+    const highlighted = [false, false, false, false, false, false];
+    let optionsStatus = [1, 1, 1, 1, 1, 1];
     console.log("optionsStatus[2]: ", optionsStatus[2])
     if (this.reviewMode) {
       console.log("display for reviewMode")
       highlighted[this.$userAnswers[0]] = true;
-      optionsStatus = [3, 3, 3, 3, 3];
+      optionsStatus = [3, 3, 3, 3, 3, 3];
       console.log("$userStatus", this.$userAnswers);
       optionsStatus[this.$userAnswers[0] - 1] = 5;
       optionsStatus[this.quizItem.correctAnswer - 1] = 4;

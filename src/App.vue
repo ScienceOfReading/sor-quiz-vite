@@ -21,7 +21,8 @@
   </div>
 
 
-  <div v-if="showResults">
+  <div v-if="reviewMode && complete" class="mt-6">We're done!! Thank you!</div>
+  <div v-else-if="showResults">
 
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="startReview">Let's see what's happening.</button>
   </div>
@@ -80,6 +81,7 @@ export default {
     submit() {
       console.log("Complete. Let's see your score. ");
       this.showResults = true;
+      this.complete = false
 
     },
     startReview() {
