@@ -1,13 +1,12 @@
 <template>
   <div class="w-full place-content-center mx-auto">
-    <p>1/10</p>
 
     <div v-if="quizItem.answer_type == 'tf'">
       Handle a true/false question here.</div>
     <div v-else class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
       <h5 class="text-stone-400 lg:pt-2">{{ quizItem.title }}</h5>
       <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
-      <ul class="lg:w-96 place-self-center mb-8">
+      <ul class="lg:w-2/3 place-self-center mb-8">
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1] }" class="flex flex-row p-4 answer"
           @click="select(1)">
           <div class="list-asking">
@@ -48,7 +47,8 @@
     </div>
     <div :class="{ [`hidden`]: !reviewMode }"
       class="border-yellow-500 rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-20 lg:w-5/6">
-      <p mb-8>{{ quizItem.explanation }} <a href="https://youtu.be/Nh3r2WZs2P8?si=9wZ9XWrCTioUaVkG">Phoneme Addition</a>
+      <p class="text-amber-700 mb-8">{{ quizItem.explanation }}
+        <!--a href="https://youtu.be/Nh3r2WZs2P8?si=9wZ9XWrCTioUaVkG">Phoneme Addition</a-->
       </p>
       <div class="flex flex-row mt-8">
         <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512">

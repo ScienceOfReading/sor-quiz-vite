@@ -46,7 +46,7 @@ export const quizItems = [{
     option3: "Tier Three",
     option4: "Tiers two and three",
     option5: "None of the Above",
-    correctAnswer: 4,
+    correctAnswer: 5,
     explanation: "In an MTSS school, Tiers are not a class of student. Tiers represent a system for giving each student exactly the instruction and practice they need.",
     explanation2: "In fact, the most common use of a universal screener may be to change what's taught in Tier one.",
     cautionLevel: "a",
