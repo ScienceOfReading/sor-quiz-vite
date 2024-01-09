@@ -92,4 +92,23 @@ export const quizItems = [{
     closingText: "",
     closingText2: "",
     modal: ""
+}, {
+    title: "Components of Instruction",
+    subtitle: "",
+    id: 5,
+    Question: "According to the renowned literacy leader Timothy Shanahan, the general breakdown ",
+    answer_type: "mc",
+    option1: "~1/5 Phonemic Awareness, 1/5 Phonics, 1/5 Oral Fluency, 1/5 Vocabulary Development, and 1/5 Comprehension",
+    option2: "~1/4 words, 1/4 text fluency, 1/4 comprehension, and 1/4 writing",
+    option3: "~1/3 spelling & vocabulary, 1/3 sentence meaning, and 1/3 text comprehension",
+    option4: "~1/3 reading fluency and 2/3 comprehension strategies and meaningful writing",
+    option5: "",
+    correctAnswer: 2,
+    explanation: "This is a rule of thumb, and all such rules are meant to be only rough approximations.",
+    explanation2: "Yet the general idea is: begin the lesson by expanding either the decoding abilities of younger children, or the morphemic, vocabulary and spelling abilities of older children; then focus on a text each day, allowing students to analyse, discuss, and writie about it in various ways.",
+    cautionLevel: "a",
+    caution: "While no exact research base can validate this as science, it reflects both the needs science has identified, and the practical realities of the classroom.",
+    closingText: "",
+    closingText2: "",
+    modal: ""
 }]
