@@ -79,6 +79,15 @@ export default {
      } */
   },
   methods: {
+    buildQuizSet() {
+      // Set of 10-ish items
+      console.log("Building quiz set");
+
+      for (let i = 0; i < itemOrder.length; i++) {
+        quizSetItems[i] = quizItems[quizSets[0].items[i]];
+        console.log(quizSet[i]);
+      }
+    },
     numCorrect() {
       let correct = 0;
       console.log("Length ", quizItems.length);
@@ -93,6 +102,7 @@ export default {
     },
 
     nextItem() {
+      //this.buildQuizSet();
       this.currentItem = this.currentItem + 1;
       console.log("Next. CurrentItem is now: ", this.currentItem);
       console.log("length: ", quizItems.length)
