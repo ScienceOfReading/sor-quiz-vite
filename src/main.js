@@ -9,6 +9,10 @@ import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 
+import { inject } from '@vercel/analytics';
+
+inject();
+
 library.add(faUserSecret)
 library.add(faCircleQuestion)
 library.add(faCircleMinus)
