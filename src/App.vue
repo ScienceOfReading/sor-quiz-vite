@@ -2,7 +2,7 @@
   <div class="w-full place-content-center">
 
     <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
-    <p v-if="!showResults">{{ currentItem }} / {{ quizItems.length }}</p>
+    <p v-if="!showResults">{{ numCompleted }} / {{ quizItems.length }}</p>
   </div>
 
   <div v-if="showResults"
@@ -50,6 +50,7 @@ export default {
     console.log("Data item:");
     console.log(quizItems[0]);
     const currentItem = 0;
+    const numCompleted = 0;
     const complete = false;
     const userAnswers = [];
     const chosen = false;
@@ -59,6 +60,7 @@ export default {
     return {
       quizItems: quizItems,
       currentItem: currentItem,
+      numCompleted: numCompleted,
       userAnswers: userAnswers,
       complete: complete,
       chosen: chosen,
@@ -105,7 +107,9 @@ export default {
       //this.buildQuizSet();
       this.currentItem = this.currentItem + 1;
       console.log("Next. CurrentItem is now: ", this.currentItem);
-      console.log("length: ", quizItems.length)
+      console.log("length: ", quizItems.length);
+      this.numCompleted = this.numCompleted + 1;
+      console.log("numCompleted: ", this.numCompleted);
       if (this.currentItem == quizItems.length - 1) { this.complete = true }
       else { this.complete = false }
       console.log(this.complete)
