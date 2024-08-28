@@ -187,4 +187,23 @@ export const quizItems = [{
     closingText: "",
     closingText2: "",
     modal: ""
+}, {
+    title: "About Comprehension",
+    subtitle: "",
+    id: 10,
+    Question: "Comprehension is best described as:",
+    answer_type: "mc",
+    option1: "A 'Pillar' of literacy",
+    option2: "A skill, like decoding words",
+    option3: "A condition created when the reader has sufficient word recognition skills, language comprehension knowledge, and background knowledge about the topic of the text",
+    option4: "",
+    option5: "",
+    correctAnswer: 3,
+    explanation: "To comprehend text, the reader must have all three.",
+    explanation2: "",
+    cautionLevel: "",
+    caution: "",
+    closingText: "",
+    closingText2: "",
+    modal: ""
 }]
