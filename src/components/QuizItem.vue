@@ -50,6 +50,8 @@
       <p class="text-amber-700 mb-8">{{ quizItem.explanation }}
         <!--a href="https://youtu.be/Nh3r2WZs2P8?si=9wZ9XWrCTioUaVkG">Phoneme Addition</a-->
       </p>
+      <p class="text-amber-700 mb-8">{{ quizItem.explanation2 }}
+      </p>
       <div class="flex flex-row mt-8">
         <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512">
           <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc. -->
