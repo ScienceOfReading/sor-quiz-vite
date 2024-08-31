@@ -1,17 +1,23 @@
 <template>
-  <div class="w-full place-content-center">
+  <div v-if="showQuizzes">
 
-    <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
-  </div>
-  <div class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
-    <div class="mt-24 grid quiz-item w-full border-4 place-self-center place-content-center text-center">
-      <p class="h2 mt-8">We're just getting started, but for now...</p>
-      <p class="h2">Choose a difficulty:</p>
-      <div class="mt-8 mb-8 gap-16 columns-2">
-        <div><button class="lg:text-3xl sm:text-2xl">Expert</button></div>
-        <div><button class="lg:text-3xl sm:text-2xl">Basic</button></div>
+    <div class="w-full place-content-center">
+
+      <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
+    </div>
+    <div class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
+      <div class="mt-24 grid quiz-item w-full border-4 place-self-center place-content-center text-center">
+        <p class="h2 mt-8">We're just getting started, but for now...</p>
+        <p class="h2">Choose a difficulty:</p>
+        <div class="mt-8 mb-8 gap-16 columns-2">
+          <div><button class="lg:text-3xl sm:text-2xl">Expert</button></div>
+          <div><button class="lg:text-3xl sm:text-2xl">Basic</button></div>
+        </div>
       </div>
     </div>
+  </div>
+  <div v-else>
+    <Quiz></Quiz>
   </div>
 </template>
 
@@ -27,10 +33,11 @@ export default {
   },
   data() {
     console.log("Data item:");
-
+    const showQuizzes = true;
 
     return {
-      quizSets: quizSets
+      quizSets: quizSets,
+      showQuizzes: showQuizzes
     }
   },
   computed: {
