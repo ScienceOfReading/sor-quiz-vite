@@ -2,7 +2,7 @@
   <div class="w-full place-content-center">
 
     <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
-    <p v-if="!showResults">{{ numCompleted }} / {{ quizItems.length }}</p>
+    <p v-if="!showResults">{{ numCompleted }} / {{ this.quizItems.length }}</p>
   </div>
 
   <div v-if="showResults"
@@ -12,12 +12,12 @@
 
     <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
       <p class="mt-20">You got </p>
-      <p class="text-3xl"> {{ numCorrect() }} of {{ quizItems.length }}</p>
+      <p class="text-3xl"> {{ numCorrect() }} of {{ this.quizItems.length }}</p>
       <p class="mb-20">correct.</p>
     </div>
   </div>
   <div v-else class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
-    <QuizItem :quizItem="quizItems[currentItem]" :itemNum="currentItem" :reviewMode="reviewMode"
+    <QuizItem :quizItem="this.quizItems[currentItem]" :itemNum="currentItem" :reviewMode="reviewMode"
       @selected="answerSelected" />
   </div>
 
@@ -100,12 +100,12 @@ export default {
     },
     numCorrect() {
       let correct = 0;
-      console.log("Length ", quizItems.length);
-      for (let i = 0; i < quizItems.length; i++) {
-        console.log(quizItems[i].correctAnswer)
+      console.log("Length ", this.quizItems.length);
+      for (let i = 0; i < this.quizItems.length; i++) {
+        console.log(this.quizItems[i].correctAnswer)
         console.log("this.$userAnswers[i]this.$userAnswers[i]", this.$userAnswers[i]);
-        console.log("quizItems[i].correctAnswer: ", quizItems[i].correctAnswer);
-        if (this.$userAnswers[i] == quizItems[i].correctAnswer) { correct++ }
+        console.log("this.quizItems[i].correctAnswer: ", this.quizItems[i].correctAnswer);
+        if (this.$userAnswers[i] == this.quizItems[i].correctAnswer) { correct++ }
         console.log("got one right")
       }
       return correct
@@ -115,10 +115,10 @@ export default {
       //this.buildQuizSet();
       this.currentItem = this.currentItem + 1;
       console.log("Next. CurrentItem is now: ", this.currentItem);
-      console.log("length: ", quizItems.length);
+      console.log("length: ", this.quizItems.length);
       this.numCompleted = this.numCompleted + 1;
       console.log("numCompleted: ", this.numCompleted);
-      if (this.currentItem == quizItems.length - 1) { this.complete = true }
+      if (this.currentItem == this.quizItems.length - 1) { this.complete = true }
       else { this.complete = false }
       console.log(this.complete)
       this.chosen = false;
