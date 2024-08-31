@@ -47,6 +47,12 @@ export default {
   components: {
     QuizItem
   },
+  props: {
+    selectedQuiz: {
+      type: Number,
+      required: true
+    }
+  },
   data() {
     console.log("Data item:");
     //console.log(quizItems[0]);
@@ -87,12 +93,12 @@ export default {
     buildQuizSet() {
       // Set of 10-ish items
       console.log("Building quiz set");
-      console.log("quizSets: ", quizSets[1])
+      console.log("quizSets: ", quizSets[this.selectedQuiz])
       let quizSetItems = [];
-      for (let i = 0; i < quizSets[1].items.length; i++) {
+      for (let i = 0; i < quizSets[this.selectedQuiz].items.length; i++) {
         console.log("In for loop")
-        console.log("In for loop", quizSets[1].items[i])
-        quizSetItems[i] = quizEntries[quizSets[1].items[i]];
+        console.log("In for loop", quizSets[this.selectedQuiz].items[i])
+        quizSetItems[i] = quizEntries[quizSets[this.selectedQuiz].items[i]];
       }
       this.quizItems = quizSetItems;
       console.log("Returning quizItems: ", this.quizItems)

@@ -10,14 +10,14 @@
         <p class="h2 mt-8">We're just getting started, but for now...</p>
         <p class="h2">Choose a difficulty:</p>
         <div class="mt-8 mb-8 gap-16 columns-2">
-          <div><button class="lg:text-3xl sm:text-2xl">Expert</button></div>
-          <div><button class="lg:text-3xl sm:text-2xl">Basic</button></div>
+          <div><button @click="showQuiz(0)" class="lg:text-3xl sm:text-2xl">Expert</button></div>
+          <div><button @click="showQuiz(1)" class="lg:text-3xl sm:text-2xl">Basic</button></div>
         </div>
       </div>
     </div>
   </div>
   <div v-else>
-    <Quiz></Quiz>
+    <Quiz :selectedQuiz="selectedQuiz"></Quiz>
   </div>
 </template>
 
@@ -34,17 +34,23 @@ export default {
   data() {
     console.log("Data item:");
     const showQuizzes = true;
+    const selectedQuiz = 100000;
 
     return {
       quizSets: quizSets,
-      showQuizzes: showQuizzes
+      showQuizzes: showQuizzes,
+      selectedQuiz: selectedQuiz
     }
   },
   computed: {
 
   },
   methods: {
-
+    showQuiz(quizNum) {
+      console.info("Quiz selected: ", quizNum)
+      this.showQuizzes = false;
+      this.selectedQuiz = quizNum;
+    }
   },
   created() {
 
