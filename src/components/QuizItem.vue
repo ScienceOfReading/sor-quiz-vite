@@ -6,6 +6,7 @@
     <div v-else class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
       <h5 class="text-stone-400 lg:pt-2">{{ quizItem.title }}</h5>
       <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
+      <p class="question-text mb-2"> {{ quizItem.questionP2 }}</p>
       <ul class="lg:w-2/3 place-self-center mb-8">
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1] }" class="flex flex-row p-4 answer"
           @click="select(1)">
@@ -22,15 +23,15 @@
           </div>
           <div class="list-item-right"> {{ quizItem.option2 }}</div>
         </li>
-        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[3] }" class="flex flex-row p-4 answer"
-          @click="select(3)">
+        <li v-if="quizItem.option3" :class="{ [`bg-stone-400 border-amber-500`]: highlighted[3] }"
+          class="flex flex-row p-4 answer" @click="select(3)">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[2]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option3 }}</div>
         </li>
-        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4] }" class="flex flex-row p-4 answer"
-          @click="select(4)">
+        <li v-if="quizItem.option4" :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4] }"
+          class="flex flex-row p-4 answer" @click="select(4)">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[3]"></OptionIcon>
           </div>

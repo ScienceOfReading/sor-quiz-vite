@@ -2,7 +2,7 @@
   <div class="w-full place-content-center">
 
     <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
-    <p v-if="!showResults">{{ numCompleted }} / {{ this.quizItems.length }}</p>
+    <p v-if="!showResults">{{ currentItem + 1 }} / {{ this.quizItems.length }}</p>
   </div>
 
   <div v-if="showResults"
@@ -141,6 +141,7 @@ export default {
       this.showResults = false;
       this.reviewMode = true;
       this.currentItem = 0;
+      this.numCompleted = 1;
     }
   },
   created() {
