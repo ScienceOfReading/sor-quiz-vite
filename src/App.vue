@@ -39,7 +39,8 @@
 <script>
 import QuizItem from './components/QuizItem.vue';
 import Score from './components/Score.vue';
-import { quizItems } from '../data/quiz-items.js'
+import { quizEntries } from '../data/quiz-items.js'
+import { quizSets } from '../data/quizSets.js'
 
 export default {
   name: 'App',
@@ -48,7 +49,8 @@ export default {
   },
   data() {
     console.log("Data item:");
-    console.log(quizItems[0]);
+    //console.log(quizItems[0]);
+    const quizChoice = 1;
     const currentItem = 0;
     const numCompleted = 0;
     const complete = false;
@@ -56,6 +58,7 @@ export default {
     const chosen = false;
     const showResults = false;
     const reviewMode = false;
+    const quizItems = [];
 
     return {
       quizItems: quizItems,
@@ -84,11 +87,16 @@ export default {
     buildQuizSet() {
       // Set of 10-ish items
       console.log("Building quiz set");
-
-      for (let i = 0; i < itemOrder.length; i++) {
-        quizSetItems[i] = quizItems[quizSets[0].items[i]];
-        console.log(quizSet[i]);
+      console.log("quizSets: ", quizSets[1])
+      let quizSetItems = [];
+      for (let i = 0; i < quizSets[1].items.length; i++) {
+        console.log("In for loop")
+        console.log("In for loop", quizSets[1].items[i])
+        quizSetItems[i] = quizEntries[quizSets[1].items[i]];
       }
+      this.quizItems = quizSetItems;
+      console.log("Returning quizItems: ", this.quizItems)
+      // return quizItems;
     },
     numCorrect() {
       let correct = 0;
@@ -129,6 +137,10 @@ export default {
       this.reviewMode = true;
       this.currentItem = 0;
     }
+  },
+  created() {
+    this.buildQuizSet();
+    // console.log("In created, ", this.quizItems)
   }
 }
 </script>

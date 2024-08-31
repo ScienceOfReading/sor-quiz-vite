@@ -1,4 +1,4 @@
-export const quizItems = [{
+export const quizEntries = [{
     title: "What Does Reading Intervention Look & Sound Like?",
     subtitle: "",
     id: 0,
