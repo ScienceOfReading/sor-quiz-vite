@@ -3,7 +3,7 @@ export const quizSets = [{
     items: [2, 1, 5, 4, 6]
 },
 {
-    setName: "general",
-    items: [9, 11, 5, 4, 6]
+    setName: "Basic",
+    items: [0, 11, 9, 11, 5, 4, 6]
 }
 ];

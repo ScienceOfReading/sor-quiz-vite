@@ -96,7 +96,6 @@ export default {
       console.log("quizSets: ", quizSets[this.selectedQuiz])
       let quizSetItems = [];
       for (let i = 0; i < quizSets[this.selectedQuiz].items.length; i++) {
-        console.log("In for loop")
         console.log("In for loop", quizSets[this.selectedQuiz].items[i])
         quizSetItems[i] = quizEntries[quizSets[this.selectedQuiz].items[i]];
       }
