@@ -242,8 +242,9 @@ export const quizEntries = [{
     explanation2: "It's also called 'Structured Linguistic Literacy'",
     cautionLevel: "a",
     caution: "",
-    closingText: "",
-    closingText2: "",
+    ref1: "https://www.themeasuredmom.com/speech-to-print-vs-print-to-speech/",
+    ref2: "https://www.buzzsprout.com/287733/12226028-ep-147-hot-topic-series-what-is-speech-to-print",
+    ref3: "https://readingsimplified.com/speech-to-print-third-way/",
     modal: ""
 }, {
     title: "Orthographic Mapping",

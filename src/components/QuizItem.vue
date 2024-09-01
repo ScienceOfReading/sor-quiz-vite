@@ -48,10 +48,16 @@
     </div>
     <div :class="{ [`hidden`]: !reviewMode }"
       class="border-yellow-500 rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-20 lg:w-5/6">
-      <p class="text-amber-700 mb-8">{{ quizItem.explanation }}
+      <p class="text-amber-700 mb-4">{{ quizItem.explanation }}
         <!--a href="https://youtu.be/Nh3r2WZs2P8?si=9wZ9XWrCTioUaVkG">Phoneme Addition</a-->
       </p>
-      <p class="text-amber-700 mb-8">{{ quizItem.explanation2 }}
+      <p class="text-amber-700">{{ quizItem.explanation2 }}
+      </p>
+      <p class="text-amber-700 mt-2 text-sm">{{ quizItem.ref1 }}
+      </p>
+      <p class="text-amber-700 text-sm">{{ quizItem.ref2 }}
+      </p>
+      <p class="text-amber-700 mb-8 text-sm">{{ quizItem.ref3 }}
       </p>
       <div class="flex flex-row mt-8">
         <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512">
