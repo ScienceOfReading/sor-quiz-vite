@@ -126,8 +126,12 @@ export default {
       if (this.basicMode) {
         if (this.reviewing == true) {
           this.currentItem = this.currentItem + 1;
+          this.reviewing = false
         }
-        else { this.reviewing = true }
+        else {
+          //don't change correntItem; just enter reviewMode
+          this.reviewing = true
+        }
         this.reviewMode = !this.reviewMode;
       }
       else {
