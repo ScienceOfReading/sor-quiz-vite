@@ -64,8 +64,9 @@ export default {
     const chosen = false;
     const showResults = false;
     const reviewMode = false;
+    const basicMode = false;
     const quizItems = [];
-
+    const reviewing = false;
     return {
       quizItems: quizItems,
       currentItem: currentItem,
@@ -74,7 +75,8 @@ export default {
       complete: complete,
       chosen: chosen,
       showResults: showResults,
-      reviewMode: reviewMode
+      reviewMode: reviewMode,
+      reviewing: reviewing
     }
   },
   computed: {
@@ -100,6 +102,10 @@ export default {
         quizSetItems[i] = quizEntries[quizSets[this.selectedQuiz].items[i]];
       }
       this.quizItems = quizSetItems;
+      this.basicMode = quizSets[this.selectedQuiz].basicMode;
+
+      console.log("basic?")
+      console.log(this.basicMode)
       console.log("Returning quizItems: ", this.quizItems)
       // return quizItems;
     },
@@ -117,8 +123,16 @@ export default {
     },
 
     nextItem() {
-      //this.buildQuizSet();
-      this.currentItem = this.currentItem + 1;
+      if (this.basicMode) {
+        if (this.reviewing == true) {
+          this.currentItem = this.currentItem + 1;
+        }
+        else { this.reviewing = true }
+        this.reviewMode = !this.reviewMode;
+      }
+      else {
+        this.currentItem = this.currentItem + 1;
+      }
       console.log("Next. CurrentItem is now: ", this.currentItem);
       console.log("length: ", this.quizItems.length);
       this.numCompleted = this.numCompleted + 1;
@@ -127,6 +141,7 @@ export default {
       else { this.complete = false }
       console.log(this.complete)
       this.chosen = false;
+      console.log("Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
     },
     answerSelected() {
       this.chosen = true;
