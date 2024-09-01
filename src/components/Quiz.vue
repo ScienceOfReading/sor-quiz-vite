@@ -28,8 +28,8 @@
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="startReview">Let's see what's happening.</button>
   </div>
   <div v-else>
-    <p v-if="chosen && complete && !reviewMode">No more questions...</p>
-    <button v-if="chosen && complete && !reviewMode" class="bg-stone-400 w-32 h-10 mt-6 text-amber-400"
+    <p v-if="!basicMode && chosen && complete && !reviewMode">No more questions...</p>
+    <button v-if="!basicMode && chosen && complete && !reviewMode" class="bg-stone-400 w-32 h-10 mt-6 text-amber-400"
       @click="submit">Submit</button>
     <button v-else class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="nextItem">Next</button>
 
