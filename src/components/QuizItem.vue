@@ -100,11 +100,13 @@ export default {
       console.log("reviewmode is: ", this.reviewMode)
       this.highlighted = [false, false, false, false, false];
       if (this.reviewMode) {
-        console.log("newItemNum, this.$userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
+        //console.log("newItemNum, this.$userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
         this.highlighted[this.$userAnswers[newItemNum]] = true;
-        this.optionsStatus = [3, 3, 3, 3, 3, 3];
+        this.optionsStatus = [2, 2, 2, 2, 2, 2];
         this.optionsStatus[this.$userAnswers[newItemNum] - 1] = 5;
         this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
+        console.info("this.optionsStatus", this.optionsStatus)
+        console.log("highlighted: ", highlighted);
       }
       else { console.log("In selection mode"); }
     }
@@ -117,10 +119,11 @@ export default {
     if (this.reviewMode) {
       console.log("display for reviewMode")
       highlighted[this.$userAnswers[0]] = true;
-      optionsStatus = [3, 3, 3, 3, 3, 3];
+      optionsStatus = [2, 2, 2, 2, 2, 2];
       console.log("$userStatus", this.$userAnswers);
       optionsStatus[this.$userAnswers[0] - 1] = 5;
       optionsStatus[this.quizItem.correctAnswer - 1] = 4;
+      console.log("highlighted: ", highlighted);
     }
     else { console.log("In selection mode"); }
 
@@ -136,7 +139,8 @@ export default {
       this.highlighted = [false, false, false, false, false];
       this.highlighted[option] = true
       this.$userAnswers[this.itemNum] = option;
-      console.log("In QuizItem, global.userAnswers is ", this.$userAnswers)
+      this.optionsStatus[option - 1] = 3;
+      console.log("In QuizItem, global.userAnswers is now ", this.$userAnswers)
       this.$emit('selected')
     },
     onHover() {

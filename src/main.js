@@ -7,6 +7,7 @@ import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons'
 import { faCircleMinus } from '@fortawesome/free-solid-svg-icons'
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 
 import { inject } from '@vercel/analytics';
@@ -18,6 +19,7 @@ library.add(faCircleQuestion)
 library.add(faCircleMinus)
 library.add(faCircleXmark)
 library.add(faCircleCheck)
+library.add(faCheck)
 
 const app = createApp(App)
 app.config.globalProperties.$userAnswers = []
