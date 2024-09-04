@@ -137,6 +137,7 @@ export default {
       else {
         this.currentItem = this.currentItem + 1;
       }
+      console.log("In nextItem, userAnswers: ", this.userAnswers)
       console.log("Next. CurrentItem is now: ", this.currentItem);
       console.log("length: ", this.quizItems.length);
       this.numCompleted = this.numCompleted + 1;
