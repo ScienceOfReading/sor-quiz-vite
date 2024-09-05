@@ -95,37 +95,33 @@ export default {
 
   },
   watch: {
-    /*
     itemNum(newItemNum, oldItemNum) {
       console.log("item changed from", oldItemNum, " to ", newItemNum);
       console.log("reviewmode is: ", this.reviewMode)
       this.highlighted = [false, false, false, false, false, false];
-      
-            if (this.reviewMode) {
-              //console.log("newItemNum, this.$userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
-              this.highlighted[this.$userAnswers[newItemNum]] = true;
-              this.optionsStatus = [2, 2, 2, 2, 2, 2];
-              this.optionsStatus[this.$userAnswers[newItemNum]] = 5;
-              this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-              console.info("this.optionsStatus", this.optionsStatus)
-              console.log("in watcher, highlighted: ", highlighted);
-            }
-            else { console.log("In selection mode"); }
-          },
-          */
+
+      if (this.reviewMode) {
+        //console.log("newItemNum, this.$userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
+        highlighted[this.$userAnswers[newItemNum]] = true;
+        optionsStatus = [2, 2, 2, 2, 2, 2];
+        optionsStatus[this.$userAnswers[newItemNum] - 1] = 5;
+        optionsStatus[this.quizItem.correctAnswer - 1] = 4;
+        console.info("this.optionsStatus", this.optionsStatus)
+        console.log("highlighted: ", highlighted);
+      }
+      else { console.log("In selection mode"); }
+    },
+
     reviewMode(oldStatus, newStatus) {
       console.log("reviewMode changed from ", oldStatus, " to ", newStatus);
       this.highlighted = [false, false, false, false, false, false];
       if (this.reviewMode) {
-        this.highlighted[this.$userAnswers[this.itemNum]] = true;
+        this.highlighted[this.$userAnswers[0]] = true;
         this.optionsStatus = [2, 2, 2, 2, 2, 2];
-        console.log("in reviewMode watcher, this.$userAnswers", this.$userAnswers);
-        console.log("in reviewMode watcher, this.itemNum", this.itemNum);
-        console.log("in reviewMode watcher, this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
-        this.optionsStatus[this.$userAnswers[this.itemNum] - 1] = 5;
+        console.log("this.$userAnswers", this.$userAnswers);
+        this.optionsStatus[this.$userAnswers[0] - 1] = 5;
         this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-        console.log("in reviewMode, highlighted: ", this.highlighted);
-        console.log("in reviewMode, optionsStatus: ", this.optionsStatus);
+        console.log("highlighted: ", this.highlighted);
       }
       else { this.optionsStatus = [1, 1, 1, 1, 1, 1]; }
     }
