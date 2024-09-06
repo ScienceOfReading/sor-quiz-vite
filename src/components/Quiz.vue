@@ -27,11 +27,16 @@
 
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="startReview">Let's see what's happening.</button>
   </div>
-  <div v-else>
+  <div v-else-if="!basicMode && chosen && complete && !reviewMode">
     <p v-if="!basicMode && chosen && complete && !reviewMode">No more questions...</p>
     <button v-if="!basicMode && chosen && complete && !reviewMode" class="bg-stone-400 w-32 h-10 mt-6 text-amber-400"
       @click="submit">Submit</button>
-    <button v-else class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="nextItem">Next</button>
+  </div>
+  <div v-else-if="basicMode && chosen">
+    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">Check it</button>
+  </div>
+  <div v-else>
+    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="nextItem">Next</button>
 
   </div>
 </template>
@@ -104,8 +109,7 @@ export default {
       this.quizItems = quizSetItems;
       this.basicMode = quizSets[this.selectedQuiz].basicMode;
 
-      console.log("basic?")
-      console.log(this.basicMode)
+      console.log("in buildQuizSet, this.basicMode: ", this.basicMode)
       console.log("Returning quizItems: ", this.quizItems)
       // return quizItems;
     },
@@ -123,10 +127,28 @@ export default {
     },
 
     nextItem() {
+
+      this.reviewMode = false;
+      this.currentItem = this.currentItem + 1;
+
+      console.log("In nextItem, userAnswers: ", this.$userAnswers)
+      console.log("Next. CurrentItem is now: ", this.currentItem);
+      console.log("length: ", this.quizItems.length);
+      this.numCompleted = this.numCompleted + 1;
+      console.log("numCompleted: ", this.numCompleted);
+      if (this.currentItem == this.quizItems.length - 1) { this.complete = true }
+      else { this.complete = false }
+      console.log(this.complete)
+      this.chosen = false;
+      console.log("Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
+      this.reviewing = false;
+    },
+    checkIt() {
       if (this.basicMode) {
         if (this.reviewing == true) {
           this.currentItem = this.currentItem + 1;
-          this.reviewing = false
+          this.reviewing = false;
+          this.chosen = false;
         }
         else {
           //don't change correntItem; just enter reviewMode
@@ -137,16 +159,16 @@ export default {
       else {
         this.currentItem = this.currentItem + 1;
       }
-      console.log("In nextItem, userAnswers: ", this.userAnswers)
-      console.log("Next. CurrentItem is now: ", this.currentItem);
+      console.log("In checkIt, userAnswers: ", this.$userAnswers)
+      console.log("In checkIt, CurrentItem is now: ", this.currentItem);
       console.log("length: ", this.quizItems.length);
-      this.numCompleted = this.numCompleted + 1;
+      //this.numCompleted = this.numCompleted + 1;
       console.log("numCompleted: ", this.numCompleted);
       if (this.currentItem == this.quizItems.length - 1) { this.complete = true }
       else { this.complete = false }
-      console.log(this.complete)
+      console.log("In checkIt, complete: ", this.complete)
       this.chosen = false;
-      console.log("Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
+      console.log("In checkIt, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
     },
     answerSelected() {
       this.chosen = true;

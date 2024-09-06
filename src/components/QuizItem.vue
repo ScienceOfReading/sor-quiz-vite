@@ -95,24 +95,24 @@ export default {
 
   },
   watch: {
-    /*
+
     itemNum(newItemNum, oldItemNum) {
-      console.log("item changed from", oldItemNum, " to ", newItemNum);
-      console.log("reviewmode is: ", this.reviewMode)
+      console.log("In watcher itemNum, item changed from", oldItemNum, " to ", newItemNum);
+      console.log("In watcher itemNum, reviewmode is: ", this.reviewMode)
       this.highlighted = [false, false, false, false, false, false];
-      
-            if (this.reviewMode) {
-              //console.log("newItemNum, this.$userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
-              this.highlighted[this.$userAnswers[newItemNum]] = true;
-              this.optionsStatus = [2, 2, 2, 2, 2, 2];
-              this.optionsStatus[this.$userAnswers[newItemNum]] = 5;
-              this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-              console.info("this.optionsStatus", this.optionsStatus)
-              console.log("in watcher, highlighted: ", highlighted);
-            }
-            else { console.log("In selection mode"); }
-          },
-          */
+
+      if (this.reviewMode == false) {
+        //console.log("newItemNum, this.$userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
+        this.highlighted[this.$userAnswers[newItemNum]] = true;
+        this.optionsStatus = [1, 1, 1, 1, 1, 1];
+        //this.optionsStatus[this.$userAnswers[newItemNum]] = 5;
+        //this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
+        //console.info("this.optionsStatus", this.optionsStatus)
+        console.log("in watcher itemNum, highlighted: ", this.highlighted);
+      }
+      else { console.log("In selection mode"); }
+    },
+
     reviewMode(oldStatus, newStatus) {
       console.log("reviewMode changed from ", oldStatus, " to ", newStatus);
       this.highlighted = [false, false, false, false, false, false];
