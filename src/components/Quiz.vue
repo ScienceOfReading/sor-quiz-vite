@@ -2,7 +2,7 @@
   <div class="w-full place-content-center">
 
     <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
-    <p v-if="!showResults">{{ currentItem + 1 }} / {{ this.quizItems.length }}</p>
+    <p v-if="!showResults">{{ itemNum + 1 }} / {{ this.quizItems.length }}</p>
   </div>
 
   <div v-if="showResults"
@@ -17,7 +17,7 @@
     </div>
   </div>
   <div v-else class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
-    <QuizItem :quizItem="this.quizItems[currentItem]" :itemNum="currentItem" :reviewMode="reviewMode"
+    <QuizItem :quizItem="this.quizItems[itemNum]" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
       @selected="answerSelected" />
   </div>
 
@@ -72,6 +72,8 @@ export default {
     const basicMode = false;
     const quizItems = [];
     const reviewing = false;
+    const itemNum = 0
+
     return {
       quizItems: quizItems,
       currentItem: currentItem,
@@ -81,7 +83,9 @@ export default {
       chosen: chosen,
       showResults: showResults,
       reviewMode: reviewMode,
-      reviewing: reviewing
+      reviewing: reviewing,
+      itemNum: itemNum,
+      basicMode: basicMode
     }
   },
   computed: {
@@ -123,30 +127,31 @@ export default {
         if (this.$userAnswers[i] == this.quizItems[i].correctAnswer) { correct++ }
         console.log("got one right")
       }
+      console.log("--FInished numCorrect--");
       return correct
     },
 
     nextItem() {
 
-      this.reviewMode = false;
-      this.currentItem = this.currentItem + 1;
+      //this.reviewMode = false;
+      this.itemNum = this.itemNum + 1;
 
       console.log("In nextItem, userAnswers: ", this.$userAnswers)
-      console.log("Next. CurrentItem is now: ", this.currentItem);
+      console.log("Next. itemNum is now: ", this.itemNum);
       console.log("length: ", this.quizItems.length);
       this.numCompleted = this.numCompleted + 1;
       console.log("numCompleted: ", this.numCompleted);
-      if (this.currentItem == this.quizItems.length - 1) { this.complete = true }
+      if (this.itemNum == this.quizItems.length - 1) { this.complete = true }
       else { this.complete = false }
       console.log(this.complete)
       this.chosen = false;
       console.log("Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
-      this.reviewing = false;
+      //this.reviewing = false;
     },
     checkIt() {
       if (this.basicMode) {
         if (this.reviewing == true) {
-          this.currentItem = this.currentItem + 1;
+          this.itemNum = this.itemNum + 1;
           this.reviewing = false;
           this.chosen = false;
         }
@@ -157,14 +162,14 @@ export default {
         this.reviewMode = !this.reviewMode;
       }
       else {
-        this.currentItem = this.currentItem + 1;
+        this.itemNum = this.itemNum + 1;
       }
       console.log("In checkIt, userAnswers: ", this.$userAnswers)
-      console.log("In checkIt, CurrentItem is now: ", this.currentItem);
+      console.log("In checkIt, itemNum is now: ", this.itemNum);
       console.log("length: ", this.quizItems.length);
       //this.numCompleted = this.numCompleted + 1;
       console.log("numCompleted: ", this.numCompleted);
-      if (this.currentItem == this.quizItems.length - 1) { this.complete = true }
+      if (this.itemNum == this.quizItems.length - 1) { this.complete = true }
       else { this.complete = false }
       console.log("In checkIt, complete: ", this.complete)
       this.chosen = false;
@@ -180,10 +185,18 @@ export default {
 
     },
     startReview() {
+      console.log("----Start Review----")
+      console.log(" this.itemNum: ", this.itemNum)
+
       this.showResults = false;
+      this.reviewMode = false;
       this.reviewMode = true;
+      this.reviewing = true;
       this.currentItem = 0;
+      this.itemNum = 0;
       this.numCompleted = 1;
+      console.log("In startReview, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
+      console.log(" this.itemNum: ", this.itemNum)
     }
   },
   created() {
