@@ -107,7 +107,7 @@ export default {
 
       if (this.basicMode == false)
         if (this.reviewMode == false) {
-          console.log("In selection mode");
+          console.log("In itemNum watcher,selection mode");
           console.log("newItemNum, this.$userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
           //this.highlighted[this.$userAnswers[newItemNum]] = true;
           this.optionsStatus = [1, 1, 1, 1, 1, 1];
@@ -117,13 +117,16 @@ export default {
           console.log("in watcher itemNum, highlighted: ", this.highlighted);
         }
         else {
-          console.log("In review mode");
+          console.log("In itemNum watcher,review mode");
           this.highlighted[this.$userAnswers[this.itemNum]] = true;
           this.optionsStatus = [2, 2, 2, 2, 2, 2];
-          this.optionsStatus[this.$userAnswers[newItemNum]] = 5;
+          console.log("In itemNum watcher, this.optionsStatus[this.$userAnswers[this.itemNum]]: ", this.optionsStatus[this.$userAnswers[this.itemNum]])
+          console.log(newItemNum)
+          this.optionsStatus[this.$userAnswers[this.itemNum]] = 5;
           this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
           this.highlighted[this.$userAnswers[newItemNum]] = true;
         }
+      console.log("Exit itemNum watcher");
     },
 
     reviewMode(oldStatus, newStatus) {
@@ -137,8 +140,8 @@ export default {
         console.log("in reviewMode watcher, this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
         this.optionsStatus[this.$userAnswers[this.itemNum] - 1] = 5;
         this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-        console.log("in reviewMode, highlighted: ", this.highlighted);
-        console.log("in reviewMode, optionsStatus: ", this.optionsStatus);
+        console.log("in reviewMode watcher, highlighted: ", this.highlighted);
+        console.log("in reviewMode watcher, optionsStatus: ", this.optionsStatus);
       }
 
       else { this.optionsStatus = [1, 1, 1, 1, 1, 1]; }
@@ -170,13 +173,11 @@ export default {
     if (this.reviewMode) {
       this.highlighted[this.$userAnswers[this.itemNum]] = true;
       this.optionsStatus = [2, 2, 2, 2, 2, 2];
-      console.log("in reviewMode watcher, this.$userAnswers", this.$userAnswers);
-      console.log("in reviewMode watcher, this.itemNum", this.itemNum);
-      console.log("in reviewMode watcher, this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
+      console.log("in QuizItem mounted(), this.$userAnswers", this.$userAnswers, "this.itemNum", this.itemNum, "this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
       this.optionsStatus[this.$userAnswers[this.itemNum] - 1] = 5;
       this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-      console.log("in reviewMode, highlighted: ", this.highlighted);
-      console.log("in reviewMode, optionsStatus: ", this.optionsStatus);
+      console.log("in QuizItem mounted(), highlighted: ", this.highlighted);
+      console.log("in QuizItem mounted(), optionsStatus: ", this.optionsStatus);
     }
   },
 
