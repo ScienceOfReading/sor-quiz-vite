@@ -140,6 +140,7 @@ export default {
         console.log("in reviewMode, highlighted: ", this.highlighted);
         console.log("in reviewMode, optionsStatus: ", this.optionsStatus);
       }
+
       else { this.optionsStatus = [1, 1, 1, 1, 1, 1]; }
     }
 
@@ -149,20 +150,33 @@ export default {
     const highlighted = [false, false, false, false, false, false];
     const optionsStatus = [1, 1, 1, 1, 1, 1];
     /*
-    if (this.reviewMode) {
-      console.log("display for reviewMode")
-      highlighted[this.$userAnswers[0]] = true;
-      optionsStatus = [2, 2, 2, 2, 2, 2];
-      console.log("In QuizItem data, this.$userAnswers", this.$userAnswers);
-      optionsStatus[this.$userAnswers[0] - 1] = 5;
-      optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-      console.log("highlighted: ", highlighted);
-    }
-    else { console.log("In selection mode"); }
-*/
+        if (this.reviewMode && this.itemNum == 0) {
+          console.log("display for reviewMode")
+          highlighted[this.$userAnswers[0]] = true;
+          optionsStatus = [2, 2, 2, 2, 2, 2];
+          console.log("In QuizItem data, this.$userAnswers", this.$userAnswers);
+          optionsStatus[this.$userAnswers[0] - 1] = 5;
+          optionsStatus[this.quizItem.correctAnswer - 1] = 4;
+          console.log("highlighted: ", highlighted);
+        }
+        else { console.log("In selection mode"); }
+    */
     return {
       highlighted: highlighted,
       optionsStatus: optionsStatus
+    }
+  },
+  mounted() {
+    if (this.reviewMode) {
+      this.highlighted[this.$userAnswers[this.itemNum]] = true;
+      this.optionsStatus = [2, 2, 2, 2, 2, 2];
+      console.log("in reviewMode watcher, this.$userAnswers", this.$userAnswers);
+      console.log("in reviewMode watcher, this.itemNum", this.itemNum);
+      console.log("in reviewMode watcher, this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
+      this.optionsStatus[this.$userAnswers[this.itemNum] - 1] = 5;
+      this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
+      console.log("in reviewMode, highlighted: ", this.highlighted);
+      console.log("in reviewMode, optionsStatus: ", this.optionsStatus);
     }
   },
 

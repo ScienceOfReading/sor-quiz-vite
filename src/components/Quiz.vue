@@ -62,7 +62,6 @@ export default {
     console.log("Data item:");
     //console.log(quizItems[0]);
     const quizChoice = 1;
-    const currentItem = 0;
     const numCompleted = 0;
     const complete = false;
     const userAnswers = [];
@@ -72,11 +71,10 @@ export default {
     const basicMode = false;
     const quizItems = [];
     const reviewing = false;
-    const itemNum = 0
+    const itemNum = 0;
 
     return {
       quizItems: quizItems,
-      currentItem: currentItem,
       numCompleted: numCompleted,
       userAnswers: userAnswers,
       complete: complete,
@@ -136,6 +134,8 @@ export default {
       //this.reviewMode = false;
       this.itemNum = this.itemNum + 1;
 
+      if (this.basicMode && this.reviewing) { this.reviewing = false; this.reviewMode = false }
+      else if (this.basicMode == false && this.reviewing) { this.reviewing = true; this.reviewMode = true; }
       console.log("In nextItem, userAnswers: ", this.$userAnswers)
       console.log("Next. itemNum is now: ", this.itemNum);
       console.log("length: ", this.quizItems.length);
@@ -143,10 +143,10 @@ export default {
       console.log("numCompleted: ", this.numCompleted);
       if (this.itemNum == this.quizItems.length - 1) { this.complete = true }
       else { this.complete = false }
-      console.log(this.complete)
+      console.log("Complete? ", this.complete)
       this.chosen = false;
       console.log("Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
-      //this.reviewing = false;
+
     },
     checkIt() {
       if (this.basicMode) {
@@ -186,17 +186,18 @@ export default {
     },
     startReview() {
       console.log("----Start Review----")
-      console.log(" this.itemNum: ", this.itemNum)
-
+      console.log("In StartReview,  this.itemNum: ", this.itemNum)
+      console.log("In startReview, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
       this.showResults = false;
-      this.reviewMode = false;
-      this.reviewMode = true;
-      this.reviewing = true;
-      this.currentItem = 0;
+
       this.itemNum = 0;
       this.numCompleted = 1;
+      console.log("In StartReview, this.itemNum: ", this.itemNum)
+      setTimeout(console.log("In startReview, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode), 3000);
+      setTimeout(this.reviewMode = true, 3000);
+      this.reviewMode = true;
+      this.reviewing = true;
       console.log("In startReview, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
-      console.log(" this.itemNum: ", this.itemNum)
     }
   },
   created() {
