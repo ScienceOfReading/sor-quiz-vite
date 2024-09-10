@@ -108,7 +108,7 @@ export default {
       if (this.basicMode == false)
         if (this.reviewMode == false) {
           console.log("In itemNum watcher,selection mode");
-          console.log("newItemNum, this.$userAnswers[newItemNum]]: ", newItemNum, this.$userAnswers[newItemNum])
+          console.log("newItemNum, this.$userAnswers[newItemNum]]: ", this.itemNum, this.$userAnswers[this.itemNum])
           //this.highlighted[this.$userAnswers[newItemNum]] = true;
           this.optionsStatus = [1, 1, 1, 1, 1, 1];
           //this.optionsStatus[this.$userAnswers[newItemNum]] = 5;
@@ -121,10 +121,12 @@ export default {
           this.highlighted[this.$userAnswers[this.itemNum]] = true;
           this.optionsStatus = [2, 2, 2, 2, 2, 2];
           console.log("In itemNum watcher, this.optionsStatus[this.$userAnswers[this.itemNum]]: ", this.optionsStatus[this.$userAnswers[this.itemNum]])
-          console.log(newItemNum)
-          this.optionsStatus[this.$userAnswers[this.itemNum]] = 5;
+          console.log("item: ", this.itemNum);
+          this.optionsStatus[this.$userAnswers[this.itemNum] - 1] = 5;
           this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-          this.highlighted[this.$userAnswers[newItemNum]] = true;
+          this.highlighted[this.$userAnswers[this.itemNum]] = true;
+          console.log("in itemNum watcher, highlighted: ", this.highlighted);
+          console.log("in itemNum watcher, optionsStatus: ", this.optionsStatus);
         }
       console.log("Exit itemNum watcher");
     },
