@@ -9,7 +9,7 @@
       <p class="question-text mb-2"> {{ quizItem.questionP2 }}</p>
       <ul class="lg:w-2/3 place-self-center mb-8">
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1], ['border-green-400']: greenOutline[0] }"
-          class="flex flex-row p-4 answer" @click="select(1)">
+          class="flex flex-row p-3 answer" @click="select(1)">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[0]"></OptionIcon>
           </div>
@@ -230,7 +230,7 @@ a {
 }
 
 .question-text {
-  margin: 3;
+  margin: 2;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 400;
 }
@@ -262,9 +262,11 @@ a {
 }
 
 .list-item-right {
-  padding: 5px;
+  /*padding: 5px;
   margin-left: 20px;
-  padding-top: 10px;
+  padding-top: 5px;*/
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .explanation {
