@@ -9,7 +9,7 @@
         <font-awesome-icon :icon="['fas', 'check']" size="xl" style="color: #444444" />
     </span>
     <span v-else-if="status == 4"><!--A correct answer-->
-        <font-awesome-icon :icon="['far', 'circle-check']" size="xl" style="color: #00ff00" />
+        <font-awesome-icon :icon="['far', 'circle-check']" size="2xl" style="color: #00ff00" />
     </span>
     <span v-else-if="status == 5"><!--An incorrect answer-->
         <font-awesome-icon icon="fa-regular fa-circle-xmark" size="xl" style="color: #e32400;" />

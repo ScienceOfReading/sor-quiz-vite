@@ -9,7 +9,7 @@
       <p class="question-text mb-2"> {{ quizItem.questionP2 }}</p>
       <ul class="lg:w-2/3 place-self-center mb-8">
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1], ['border-green-400']: greenOutline[0] }"
-          class="flex flex-row p-3 answer" @click="select(1)">
+          class="flex flex-row min-h-14 answer" @click="select(1)">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[0]"></OptionIcon>
           </div>
@@ -17,15 +17,14 @@
           </div>
         </li>
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[2], ['border-green-400']: greenOutline[1] }"
-          @click="select(2)" class="flex flex-row p-4 border-solid rounded-lg answer ">
+          @click="select(2)" class="flex flex-row border-solid rounded-lg min-h-14 answer ">
           <div class="list-asking">
-            <OptionIcon :status="optionsStatus[1]"></OptionIcon>
           </div>
           <div class="list-item-right"> {{ quizItem.option2 }}</div>
         </li>
         <li v-if="quizItem.option3"
           :class="{ [`bg-stone-400 border-amber-500`]: highlighted[3], ['border-green-400']: greenOutline[2] }"
-          class="flex flex-row p-4 answer" @click="select(3)">
+          class="flex flex-row min-h-14 answer" @click="select(3)">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[2]"></OptionIcon>
           </div>
@@ -33,15 +32,16 @@
         </li>
         <li v-if="quizItem.option4"
           :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4], ['border-green-400']: greenOutline[3] }"
-          class="flex flex-row p-4 answer" @click="select(4)">
+          class="flex flex-row min-h-14 answer" @click="select(4)">
           <div class="list-asking">
-            <OptionIcon :status="optionsStatus[3]"></OptionIcon>
+            <OptionIcon :status="optionsStatus[3]" :class="{ ['h-8']: greenOutline[3] }"></OptionIcon>
           </div>
-          <div class="list-item-right">{{ quizItem.option4 }}</div>
+          <div class=" list-item-right">{{ quizItem.option4 }}
+          </div>
         </li>
         <li v-if="quizItem.option5"
           :class="{ [`bg-stone-400 border-amber-500`]: highlighted[5], ['border-green-400']: greenOutline[4] }"
-          class="flex flex-row p-4 answer" @click="select(5)">
+          class="flex flex-row min-h-14 answer" @click="select(5)">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[4]"></OptionIcon>
           </div>
@@ -248,7 +248,7 @@ a {
 
   margin-top: auto;
   margin-bottom: auto;
-  margin-right: 20px;
+  margin-right: 10px;
   margin-left: 10px;
   width: 30;
   color: red;
