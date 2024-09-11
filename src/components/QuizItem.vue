@@ -19,6 +19,7 @@
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[2], ['border-green-400']: greenOutline[1] }"
           @click="select(2)" class="flex flex-row border-solid rounded-lg min-h-14 answer ">
           <div class="list-asking">
+            <OptionIcon :status="optionsStatus[1]"></OptionIcon>
           </div>
           <div class="list-item-right"> {{ quizItem.option2 }}</div>
         </li>
@@ -34,7 +35,7 @@
           :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4], ['border-green-400']: greenOutline[3] }"
           class="flex flex-row min-h-14 answer" @click="select(4)">
           <div class="list-asking">
-            <OptionIcon :status="optionsStatus[3]" :class="{ ['h-8']: greenOutline[3] }"></OptionIcon>
+            <OptionIcon :status="optionsStatus[3]"></OptionIcon>
           </div>
           <div class=" list-item-right">{{ quizItem.option4 }}
           </div>
@@ -250,7 +251,7 @@ a {
   margin-bottom: auto;
   margin-right: 10px;
   margin-left: 10px;
-  width: 50;
+
   color: red;
 }
 
