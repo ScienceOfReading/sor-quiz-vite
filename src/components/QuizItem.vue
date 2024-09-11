@@ -8,36 +8,39 @@
       <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
       <p class="question-text mb-2"> {{ quizItem.questionP2 }}</p>
       <ul class="lg:w-2/3 place-self-center mb-8">
-        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1] }" class="flex flex-row p-4 answer"
-          @click="select(1)">
+        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1], ['border-green-400']: greenOutline[0] }"
+          class="flex flex-row p-4 answer" @click="select(1)">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[0]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option1 }}
           </div>
         </li>
-        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[2] }" @click="select(2)"
-          class="flex flex-row p-4 border-solid rounded-lg answer ">
+        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[2], ['border-green-400']: greenOutline[1] }"
+          @click="select(2)" class="flex flex-row p-4 border-solid rounded-lg answer ">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[1]"></OptionIcon>
           </div>
           <div class="list-item-right"> {{ quizItem.option2 }}</div>
         </li>
-        <li v-if="quizItem.option3" :class="{ [`bg-stone-400 border-amber-500`]: highlighted[3] }"
+        <li v-if="quizItem.option3"
+          :class="{ [`bg-stone-400 border-amber-500`]: highlighted[3], ['border-green-400']: greenOutline[2] }"
           class="flex flex-row p-4 answer" @click="select(3)">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[2]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option3 }}</div>
         </li>
-        <li v-if="quizItem.option4" :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4] }"
+        <li v-if="quizItem.option4"
+          :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4], ['border-green-400']: greenOutline[3] }"
           class="flex flex-row p-4 answer" @click="select(4)">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[3]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option4 }}</div>
         </li>
-        <li v-if="quizItem.option5" :class="{ [`bg-stone-400 border-amber-500`]: highlighted[5] }"
+        <li v-if="quizItem.option5"
+          :class="{ [`bg-stone-400 border-amber-500`]: highlighted[5], ['border-green-400']: greenOutline[4] }"
           class="flex flex-row p-4 answer" @click="select(5)">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[4]"></OptionIcon>
@@ -104,29 +107,27 @@ export default {
       console.log("In watcher itemNum, item changed from", oldItemNum, " to ", newItemNum);
       console.log("In watcher itemNum, reviewmode is: ", this.reviewMode)
       this.highlighted = [false, false, false, false, false, false];
+      this.greenOutline = [false, false, false, false, false, false];
 
       if (this.basicMode == false)
         if (this.reviewMode == false) {
           console.log("In itemNum watcher,selection mode");
           console.log("newItemNum, this.$userAnswers[newItemNum]]: ", this.itemNum, this.$userAnswers[this.itemNum])
-          //this.highlighted[this.$userAnswers[newItemNum]] = true;
           this.optionsStatus = [1, 1, 1, 1, 1, 1];
-          //this.optionsStatus[this.$userAnswers[newItemNum]] = 5;
-          //this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-          //console.info("this.optionsStatus", this.optionsStatus)
           console.log("in watcher itemNum, highlighted: ", this.highlighted);
         }
         else {
-          console.log("In itemNum watcher,review mode");
+          console.log("In itemNum watcher,review mode for item: ", this.itemNum);
           this.highlighted[this.$userAnswers[this.itemNum]] = true;
           this.optionsStatus = [2, 2, 2, 2, 2, 2];
-          console.log("In itemNum watcher, this.optionsStatus[this.$userAnswers[this.itemNum]]: ", this.optionsStatus[this.$userAnswers[this.itemNum]])
-          console.log("item: ", this.itemNum);
+          console.log("In itemNum watcher, this.optionsStatus[this.$userAnswers[this.itemNum]]: ", this.optionsStatus[this.$userAnswers[this.itemNum]]);
           this.optionsStatus[this.$userAnswers[this.itemNum] - 1] = 5;
           this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
           this.highlighted[this.$userAnswers[this.itemNum]] = true;
+          this.greenOutline[this.quizItem.correctAnswer - 1] = true;
           console.log("in itemNum watcher, highlighted: ", this.highlighted);
           console.log("in itemNum watcher, optionsStatus: ", this.optionsStatus);
+          console.log("in itemNum watcher,this.greenOutline: ", this.greenOutline);
         }
       console.log("Exit itemNum watcher");
     },
@@ -142,8 +143,10 @@ export default {
         console.log("in reviewMode watcher, this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
         this.optionsStatus[this.$userAnswers[this.itemNum] - 1] = 5;
         this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
+        this.greenOutline[this.quizItem.correctAnswer - 1] = true;
         console.log("in reviewMode watcher, highlighted: ", this.highlighted);
         console.log("in reviewMode watcher, optionsStatus: ", this.optionsStatus);
+        console.log("in itemNum watcher,this.greenOutline: ", this.greenOutline);
       }
 
       else { this.optionsStatus = [1, 1, 1, 1, 1, 1]; }
@@ -153,6 +156,7 @@ export default {
   data() {
     console.log("QuizItem data");
     const highlighted = [false, false, false, false, false, false];
+    const greenOutline = [false, false, false, false, false, false];
     const optionsStatus = [1, 1, 1, 1, 1, 1];
     /*
         if (this.reviewMode && this.itemNum == 0) {
@@ -168,6 +172,7 @@ export default {
     */
     return {
       highlighted: highlighted,
+      greenOutline: greenOutline,
       optionsStatus: optionsStatus
     }
   },
@@ -178,8 +183,10 @@ export default {
       console.log("in QuizItem mounted(), this.$userAnswers", this.$userAnswers, "this.itemNum", this.itemNum, "this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
       this.optionsStatus[this.$userAnswers[this.itemNum] - 1] = 5;
       this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
+      this.greenOutline[this.quizItem.correctAnswer - 1] = true;
       console.log("in QuizItem mounted(), highlighted: ", this.highlighted);
       console.log("in QuizItem mounted(), optionsStatus: ", this.optionsStatus);
+      console.log("in QuizItem mounted(),this.greenOutline: ", this.greenOutline);
     }
   },
 
