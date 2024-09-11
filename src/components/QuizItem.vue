@@ -250,7 +250,7 @@ a {
   margin-bottom: auto;
   margin-right: 10px;
   margin-left: 10px;
-  width: 30;
+  width: 50;
   color: red;
 }
 
