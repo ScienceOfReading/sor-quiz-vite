@@ -13,7 +13,12 @@ export const quizEntries = [{
     explanation: "A 2018 meta-analysis by Mathew Hall and Mathew Burns, of 26 experimental or quasi-experimental studies on reading interventions found: 'Interventions were more effective if they were targeted to a specific skill (g = 0.65), then as part of a comprehensive intervention program that addressed multiple skills (g = 0.35).'",
     explanation2: "Interventions that targeted student deficits were twice as effective!",
     cautionLevel: "",
-    caution: "[Citations needed]",
+    caution: "",
+    citation: {
+        title: "Meta-analysis of targeted small-group reading interventions",
+        url: "https://www.researchgate.net/profile/Matthew-Burns-10/publication/321116132_Meta-analysis_of_targeted_small-group_reading_interventions/links/5ab162340f7e9b4897c39acd/Meta-analysis-of-targeted-small-group-reading-interventions.pdf",
+        year: 2018,
+    },
     closingText: "",
     closingText2: "",
     modal: ""
