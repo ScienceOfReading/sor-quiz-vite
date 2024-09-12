@@ -291,4 +291,24 @@ export const quizEntries = [{
     closingText: "",
     closingText2: "",
     modal: ""
+}, {
+    title: "Scarborough's Rope",
+    subtitle: "",
+    id: 15,
+    Question: "Which of these is not a strand of Hollis Scarborough's Reading Rope?",
+    questionP2: "",
+    answer_type: "mc",
+    option1: "Background Knowledge",
+    option2: "Vocabulary",
+    option3: "Language Structures",
+    option4: "Verbal Reasoning",
+    option5: "None of the above",
+    correctAnswer: 5,
+    explanation: "The model had eight strands, all of these included.",
+    explanation2: "Scarborough, H. S. (2001). Connecting early language and literacy to later reading (dis)abilities: Evidence, theory, and practice. In S. Neuman & D. Dickinson (Eds.), Handbook for research in early literacy (pp. 97–110). New York, NY: Guilford Press",
+    cautionLevel: "",
+    caution: "",
+    closingText: "",
+    closingText2: "",
+    modal: ""
 }]
