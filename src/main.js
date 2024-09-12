@@ -12,6 +12,9 @@ import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 
 import { inject } from '@vercel/analytics';
 
+import * as LottiePlayer from "@lottiefiles/lottie-player";
+
+
 inject();
 
 library.add(faUserSecret)

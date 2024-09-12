@@ -1,6 +1,7 @@
 <template>
   <div class="w-full place-content-center">
-
+    <lottie-player autoplay controls loop mode="normal" src="https://assets3.lottiefiles.com/packages/lf20_UJNc2t.json"
+      style="width: 320px"></lottie-player>
     <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
     <p v-if="!showResults">{{ itemNum + 1 }} / {{ this.quizItems.length }}</p>
   </div>
