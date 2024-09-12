@@ -15,7 +15,7 @@
           </div>
           <div class="list-item-right">{{ quizItem.option1 }}
           </div>
-          <div v-if="greenOutline[0]"><lottie-player autoplay loop mode="normal"
+          <div v-if="greenOutline[0]" class="border"><lottie-player autoplay loop mode="normal"
               src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json"
               style="width: 100px"></lottie-player></div>
         </li>
@@ -26,8 +26,8 @@
           </div>
           <div class="list-item-right"> {{ quizItem.option2 }}</div>
           <div v-if="greenOutline[1]"><lottie-player autoplay loop mode="normal"
-              src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json"
-              style="width: 100px"></lottie-player></div>
+              src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
+              class="p-0"></lottie-player></div>
         </li>
         <li v-if="quizItem.option3"
           :class="{ [`bg-stone-400 border-amber-500`]: highlighted[3], ['border-green-400']: greenOutline[2] }"
@@ -36,9 +36,9 @@
             <OptionIcon :status="optionsStatus[2]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option3 }}</div>
-          <div v-if="greenOutline[2]"><lottie-player autoplay loop mode="normal"
-              src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json"
-              style="width: 100px"></lottie-player></div>
+          <div v-if="greenOutline[2]" class="p-0"><lottie-player autoplay loop mode="normal"
+              src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
+              class="m-0 p-0 border"></lottie-player></div>
         </li>
         <li v-if="quizItem.option4"
           :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4], ['border-green-400']: greenOutline[3] }"
@@ -48,9 +48,9 @@
           </div>
           <div class=" list-item-right">{{ quizItem.option4 }}
           </div>
-          <div v-if="greenOutline[3]"><lottie-player autoplay loop mode="normal"
+          <div v-if="greenOutline[3]" class="border"><lottie-player autoplay loop mode="normal"
               src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json"
-              style="width: 100px"></lottie-player></div>
+              style="width: 70px"></lottie-player></div>
         </li>
         <li v-if="quizItem.option5"
           :class="{ [`bg-stone-400 border-amber-500`]: highlighted[5], ['border-green-400']: greenOutline[4] }"
