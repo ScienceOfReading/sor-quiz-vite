@@ -25,7 +25,7 @@
             <OptionIcon :status="optionsStatus[1]"></OptionIcon>
           </div>
           <div class="list-item-right"> {{ quizItem.option2 }}</div>
-          <div v-if="greenOutline[1]" class="p-0"><lottie-player autoplay loop mode="normal"
+          <div v-if="greenOutline[1] && highlighted[2]" class="p-0"><lottie-player autoplay loop mode="normal"
               src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
               class="m-0 p-0"></lottie-player></div>
         </li>
@@ -36,7 +36,7 @@
             <OptionIcon :status="optionsStatus[2]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option3 }}</div>
-          <div v-if="greenOutline[2]" class="p-0"><lottie-player autoplay loop mode="normal"
+          <div v-if="greenOutline[2] && highlighted[3]" class="p-0"><lottie-player autoplay loop mode="normal"
               src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
               class="m-0 p-0"></lottie-player></div>
         </li>
@@ -48,7 +48,7 @@
           </div>
           <div class=" list-item-right">{{ quizItem.option4 }}
           </div>
-          <div v-if="greenOutline[3]" class="p-0"><lottie-player autoplay loop mode="normal"
+          <div v-if="greenOutline[3] && highlighted[4]" class="p-0"><lottie-player autoplay loop mode="normal"
               src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
               class="m-0 p-0"></lottie-player></div>
         </li>
@@ -59,7 +59,7 @@
             <OptionIcon :status="optionsStatus[4]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option5 }}</div>
-          <div v-if="greenOutline[4]" class="p-0"><lottie-player autoplay loop mode="normal"
+          <div v-if="greenOutline[4] && highlighted[5]" class="p-0"><lottie-player autoplay loop mode="normal"
               src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
               class="m-0 p-0"></lottie-player></div>
         </li>
