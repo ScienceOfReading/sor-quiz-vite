@@ -63,6 +63,17 @@
               src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
               class="m-0 p-0"></lottie-player></div>
         </li>
+        <li v-if="quizItem.option6"
+          :class="{ [`bg-stone-400 border-amber-500`]: highlighted[5], ['border-green-400']: greenOutline[5] }"
+          class="flex flex-row min-h-14 answer" @click="select(6)">
+          <div class="list-asking">
+            <OptionIcon :status="optionsStatus[5]"></OptionIcon>
+          </div>
+          <div class="list-item-right">{{ quizItem.option6 }}</div>
+          <div v-if="greenOutline[5] && highlighted[6]" class="p-0"><lottie-player autoplay loop mode="normal"
+              src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
+              class="m-0 p-0"></lottie-player></div>
+        </li>
       </ul>
     </div>
     <div :class="{ [`hidden`]: !reviewMode }"
@@ -78,9 +89,11 @@
       </p>
       <p class="text-amber-700 mb-8 text-sm">{{ quizItem.ref3 }}
       </p>
+      <!----
       <p><a
           href="https://www.researchgate.net/profile/Matthew-Burns-10/publication/321116132_Meta-analysis_of_targeted_small-group_reading_interventions/links/5ab162340f7e9b4897c39acd/Meta-analysis-of-targeted-small-group-reading-interventions.pdf">{{
             quizItem.citation.title }}</a></p>
+      -->
       <div class="flex flex-row mt-8">
         <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512">
           <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc. -->
