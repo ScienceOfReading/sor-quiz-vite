@@ -64,7 +64,7 @@
               class="m-0 p-0"></lottie-player></div>
         </li>
         <li v-if="quizItem.option6"
-          :class="{ [`bg-stone-400 border-amber-500`]: highlighted[5], ['border-green-400']: greenOutline[5] }"
+          :class="{ [`bg-stone-400 border-amber-500`]: highlighted[6], ['border-green-400']: greenOutline[5] }"
           class="flex flex-row min-h-14 answer" @click="select(6)">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[5]"></OptionIcon>

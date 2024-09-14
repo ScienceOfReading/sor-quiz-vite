@@ -1,7 +1,7 @@
 export const quizSets = [{
     setName: "expert",
     basicMode: false,
-    items: [2, 1, 5, 4, 6, 15, 16]
+    items: [2, 1, 5, 4, 6, 15, 16, 17, 18, 19]
 },
 {
     setName: "general",
