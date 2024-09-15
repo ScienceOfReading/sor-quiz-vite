@@ -378,8 +378,8 @@ export const quizEntries = [{
     title: "Models of Reading",
     subtitle: "",
     id: 19,
-    Question: "In 2021, the creators of the Simple View of Reading (SVR) wrote the following: 'In early May 2021, Reading Research Quarterly (RRQ) published an article by Drs. Nell Duke and Kelly Cartwright that alarmed both me and Bill Tunmer. We were shocked by how dismissive (and plainly hostile) the authors were toward the Simple View of Reading...",
-    questionP2: "The Duke/Cartwright model identified important advances since the SVR was created. NOT among the advances cites is:",
+    Question: "In 2021, the creators of the Simple View of Reading (SVR) wrote: 'In early May 2021, Reading Research Quarterly (RRQ) published an article by Drs. Nell Duke and Kelly Cartwright that alarmed both me and Bill Tunmer. We were shocked by how dismissive (and plainly hostile) the authors were toward the Simple View of Reading...'",
+    questionP2: "The Duke/Cartwright model identified important advances since the SVR was created. NOT among the advances cited is:",
     answer_type: "mc",
     option1: "New understandings of reading brain processes from fMRI studies. ",
     option2: "Identified causes of reading difficulty beyond word recognition and language comprehension.",
@@ -394,6 +394,8 @@ export const quizEntries = [{
     caution: "",
     closingText: "",
     closingText2: "",
+    ref1: "A commentary on some recent claims made against the Simple View of Reading, Wesley A.Hoover and William E.Tunmer, https://www.researchgate.net/profile/Wesley-Hoover/publication/359246057_A_commentary_on_some_recent_claims_made_against_the_Simple_View_of_Reading/links/62310b714ce552783cbf7d4b/A-commentary-on-some-recent-claims-made-against-the-Simple-View-of-Reading.pdf",
+    ref2: "The Science of Reading Progresses: Communicating Advances Beyond the Simple View of Reading, Nell K Duke & Kelly B. Cartwright, https://ila.onlinelibrary.wiley.com/doi/epdf/10.1002/rrq.411",
     modal: ""
 }, {
     title: "Assessment",
@@ -413,14 +415,14 @@ export const quizEntries = [{
     explanation2: "However, these tests often provide insufficient information of student's spelling or vocabulary.",
     cautionLevel: "",
     caution: "This question has no researched answer that we know of, wich puts it in the category of Structured Literacy. Your feedback will halp us improve or document this answer.",
-    closingText: "",
+    closingText: "A nice look at the Words Their Way assessments: https://wordstheirway842.weebly.com/assessments.html",
     closingText2: "",
     modal: ""
 }, {
     title: "Reading in the Brain",
     subtitle: "",
     id: 20,
-    Question: "True or False?",
+    Question: "The pivotal experiment in reading science showed:",
     questionP2: "The pivotal experiment in reading science showed:",
     answer_type: "mc",
     option1: "The root cause of dyslexia in the brain.",
@@ -430,11 +432,11 @@ export const quizEntries = [{
     option5: "None of the above",
     option6: "",
     correctAnswer: 2,
-    explanation: "The 1987 Van Orden experiments showed students words like 'Rows' and 'rose'.",
-    explanation2: "Through different experimental approaches, Van Orden demonstrated that we process written words as sounds.",
+    explanation: "The 1987 van Orden experiments showed students words like 'Rows' and 'rose'.",
+    explanation2: "Through different experimental approaches, van Orden demonstrated that we process written words as sounds.",
     cautionLevel: "",
     caution: "",
-    closingText: "van Orden, G.C. A ROWS is a ROSE: Spelling, sound, and reading. Memory & Cognition 15, 181–198 (1987).",
-    closingText2: "https://link.springer.com/article/10.3758/BF03197716",
+    ref1: "van Orden, G.C. A ROWS is a ROSE: Spelling, sound, and reading. Memory & Cognition 15, 181–198 (1987).",
+    ref2: "https://link.springer.com/article/10.3758/BF03197716",
     modal: ""
 }]
