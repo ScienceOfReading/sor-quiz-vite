@@ -6,6 +6,6 @@ export const quizSets = [{
 {
     setName: "general",
     basicMode: true,
-    items: [10, 0, 11, 14, 6, 12, 13, 4]
+    items: [10, 0, 11, 14, 6, 12, 13, 4, 20, 3, 21]
 }
 ];

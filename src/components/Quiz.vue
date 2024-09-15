@@ -1,7 +1,7 @@
 <template>
   <div class="w-full place-content-center">
     <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
-    <p v-if="!showResults">{{ itemNum + 1 }} / {{ this.quizItems.length }}</p>
+    <p v-if="!showResults">{{ numCompleted + 1 }} / {{ this.quizItems.length }}</p>
   </div>
 
   <div v-if="showResults"
