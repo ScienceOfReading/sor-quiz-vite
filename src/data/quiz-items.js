@@ -19,6 +19,8 @@ export const quizEntries = [{
         url: "https://www.researchgate.net/profile/Matthew-Burns-10/publication/321116132_Meta-analysis_of_targeted_small-group_reading_interventions/links/5ab162340f7e9b4897c39acd/Meta-analysis-of-targeted-small-group-reading-interventions.pdf",
         year: 2018,
     }],
+    ref1: "Meta-analysis of targeted small-group reading interventions",
+    ref2: "https://www.researchgate.net/profile/Matthew-Burns-10/publication/321116132_Meta-analysis_of_targeted_small-group_reading_interventions/links/5ab162340f7e9b4897c39acd/Meta-analysis-of-targeted-small-group-reading-interventions.pdf",
     closingText: "",
     closingText2: "",
     modal: ""
