@@ -7,6 +7,7 @@
       <h5 class="text-stone-400 lg:pt-2">{{ quizItem.title }}</h5>
       <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
       <p class="question-text mb-2"> {{ quizItem.questionP2 }}</p>
+
       <ul class="lg:w-2/3 place-self-center mb-8">
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1], ['border-green-400']: greenOutline[0] }"
           class="flex flex-row min-h-14 answer" @click="select(1)">
@@ -15,20 +16,24 @@
           </div>
           <div class="list-item-right">{{ quizItem.option1 }}
           </div>
-          <div v-if="greenOutline[0]" class="p-0"><lottie-player autoplay loop mode="normal"
-              src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
-              class="m-0 p-0"></lottie-player></div>
+          <div v-if="greenOutline[0]" class="p-0">
+            <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px" class="m-0 p-0">
+            </Vue3Lottie>
+          </div>
         </li>
+
         <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[2], ['border-green-400']: greenOutline[1] }"
           @click="select(2)" class="flex flex-row border-solid rounded-lg min-h-14 answer ">
           <div class="list-asking">
             <OptionIcon :status="optionsStatus[1]"></OptionIcon>
           </div>
           <div class="list-item-right"> {{ quizItem.option2 }}</div>
-          <div v-if="greenOutline[1] && highlighted[2]" class="p-0"><lottie-player autoplay loop mode="normal"
-              src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
-              class="m-0 p-0"></lottie-player></div>
+          <div v-if="greenOutline[1] && highlighted[2]" class="p-0">
+            <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px" class="m-0 p-0">
+            </Vue3Lottie>
+          </div>
         </li>
+
         <li v-if="quizItem.option3"
           :class="{ [`bg-stone-400 border-amber-500`]: highlighted[3], ['border-green-400']: greenOutline[2] }"
           class="flex flex-row min-h-14 answer" @click="select(3)">
@@ -36,10 +41,15 @@
             <OptionIcon :status="optionsStatus[2]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option3 }}</div>
-          <div v-if="greenOutline[2] && highlighted[3]" class="p-0"><lottie-player autoplay loop mode="normal"
-              src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
-              class="m-0 p-0"></lottie-player></div>
+          <div v-if="greenOutline[2] && highlighted[3]" class="">
+            <div class="bg-stone-400/25 ">
+              <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px"
+                class="m-0 p-0 bg-white">
+              </Vue3Lottie>
+            </div>
+          </div>
         </li>
+
         <li v-if="quizItem.option4"
           :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4], ['border-green-400']: greenOutline[3] }"
           class="flex flex-row min-h-14 answer" @click="select(4)">
@@ -48,9 +58,10 @@
           </div>
           <div class=" list-item-right">{{ quizItem.option4 }}
           </div>
-          <div v-if="greenOutline[3] && highlighted[4]" class="p-0"><lottie-player autoplay loop mode="normal"
-              src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
-              class="m-0 p-0"></lottie-player></div>
+          <div v-if="greenOutline[3] && highlighted[4]" class="p-0">
+            <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px" class="m-0 p-0">
+            </Vue3Lottie>
+          </div>
         </li>
         <li v-if="quizItem.option5"
           :class="{ [`bg-stone-400 border-amber-500`]: highlighted[5], ['border-green-400']: greenOutline[4] }"
@@ -59,9 +70,10 @@
             <OptionIcon :status="optionsStatus[4]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option5 }}</div>
-          <div v-if="greenOutline[4] && highlighted[5]" class="p-0"><lottie-player autoplay loop mode="normal"
-              src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
-              class="m-0 p-0"></lottie-player></div>
+          <div v-if="greenOutline[4] && highlighted[5]" class="p-0">
+            <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px" class="m-0 p-0">
+            </Vue3Lottie>
+          </div>
         </li>
         <li v-if="quizItem.option6"
           :class="{ [`bg-stone-400 border-amber-500`]: highlighted[6], ['border-green-400']: greenOutline[5] }"
@@ -70,9 +82,10 @@
             <OptionIcon :status="optionsStatus[5]"></OptionIcon>
           </div>
           <div class="list-item-right">{{ quizItem.option6 }}</div>
-          <div v-if="greenOutline[5] && highlighted[6]" class="p-0"><lottie-player autoplay loop mode="normal"
-              src="https://lottie.host/04d9a56b-e383-4605-9749-915cae256759/SRskGhnVY5.json" style="width: 70px"
-              class="m-0 p-0"></lottie-player></div>
+          <div v-if="greenOutline[5] && highlighted[6]" class="p-0">
+            <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px" class="m-0 p-0">
+            </Vue3Lottie>
+          </div>
         </li>
       </ul>
     </div>
@@ -83,11 +96,13 @@
       </p>
       <p class="text-amber-700">{{ quizItem.explanation2 }}
       </p>
-      <p class="text-amber-700 mt-2 text-sm">{{ quizItem.ref1 }}
+      <p class="text-amber-700">{{ quizItem.explanation3 }}
       </p>
-      <p class="text-amber-700 text-sm">{{ quizItem.ref2 }}
+      <p v-if="quizItem.ref1 != ''" class="text-amber-700 mt-2 text-sm">{{ quizItem.ref1 }}
       </p>
-      <p class="text-amber-700 mb-8 text-sm">{{ quizItem.ref3 }}
+      <p v-if="quizItem.ref2 != ''" class="text-amber-700 text-sm">{{ quizItem.ref2 }}
+      </p>
+      <p v-if="quizItem.ref3 != ''" class="text-amber-700 mb- text-sm">{{ quizItem.ref3 }}
       </p>
       <!----
       <p><a
@@ -107,6 +122,7 @@
 
 <script>
 import OptionIcon from "./OptionIcon.vue";
+import fireworksJSON from '../lottie/fireworks.json'
 export default {
   name: 'QuizItem',
   props: {
@@ -205,7 +221,8 @@ export default {
     return {
       highlighted: highlighted,
       greenOutline: greenOutline,
-      optionsStatus: optionsStatus
+      optionsStatus: optionsStatus,
+      fireworksJSON: fireworksJSON
     }
   },
   mounted() {
