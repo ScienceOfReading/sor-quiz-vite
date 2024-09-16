@@ -10,8 +10,9 @@ export const quizEntries = [{
     option4: "",
     option5: "",
     correctAnswer: 2,
-    explanation: "A 2018 meta-analysis by Mathew Hall and Mathew Burns, of 26 experimental or quasi-experimental studies on reading interventions found: 'Interventions were more effective if they were targeted to a specific skill (g = 0.65), then as part of a comprehensive intervention program that addressed multiple skills (g = 0.35).'",
-    explanation2: "Interventions that targeted student deficits were twice as effective!",
+    explanation: "Too often, intervention is given as a program, independent of the student's specific deficits.",
+    explanation2: "A 2018 meta-analysis by Mathew Hall and Mathew Burns, of 26 experimental or quasi-experimental studies on reading interventions found: 'Interventions were more effective if they were targeted to a specific skill (g = 0.65), then as part of a comprehensive intervention program that addressed multiple skills (g = 0.35).'",
+    explanation3: "Interventions that targeted student deficits were twice as effective!",
     cautionLevel: "",
     caution: "",
     citation: [{
