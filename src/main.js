@@ -12,8 +12,8 @@ import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 
 import { inject } from '@vercel/analytics';
 
-import * as LottiePlayer from "@lottiefiles/lottie-player";
-
+//import * as LottiePlayer from "@lottiefiles/lottie-player";
+import Vue3Lottie from 'vue3-lottie'
 
 inject();
 
@@ -26,6 +26,7 @@ library.add(faCheck)
 
 const app = createApp(App)
 app.config.globalProperties.$userAnswers = []
+app.use(Vue3Lottie)
 app.component('font-awesome-icon', FontAwesomeIcon)
     .mount('#app')
 
