@@ -15,6 +15,9 @@ import { inject } from '@vercel/analytics';
 //import * as LottiePlayer from "@lottiefiles/lottie-player";
 import Vue3Lottie from 'vue3-lottie'
 
+import LiteYouTubeEmbed from 'vue-lite-youtube-embed';
+import 'vue-lite-youtube-embed/style.css'
+
 inject();
 
 library.add(faUserSecret)
@@ -27,6 +30,7 @@ library.add(faCheck)
 const app = createApp(App)
 app.config.globalProperties.$userAnswers = []
 app.use(Vue3Lottie)
+app.component(LiteYouTubeEmbed)
 app.component('font-awesome-icon', FontAwesomeIcon)
     .mount('#app')
 

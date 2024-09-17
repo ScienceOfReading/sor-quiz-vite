@@ -104,6 +104,7 @@
       </p>
       <p v-if="quizItem.ref3 != ''" class="text-amber-700 mb- text-sm">{{ quizItem.ref3 }}
       </p>
+      <LiteYouTubeEmbed id="dQw4w9WgXcQ" title="Rick Astley - Never Gonna Give You Up (Official Music Video)" />
       <!----
       <p><a
           href="https://www.researchgate.net/profile/Matthew-Burns-10/publication/321116132_Meta-analysis_of_targeted_small-group_reading_interventions/links/5ab162340f7e9b4897c39acd/Meta-analysis-of-targeted-small-group-reading-interventions.pdf">{{
@@ -123,6 +124,7 @@
 <script>
 import OptionIcon from "./OptionIcon.vue";
 import fireworksJSON from '../lottie/fireworks.json'
+import LiteYouTubeEmbed from 'vue-lite-youtube-embed';
 export default {
   name: 'QuizItem',
   props: {
