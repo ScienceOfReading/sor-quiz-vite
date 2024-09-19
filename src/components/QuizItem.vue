@@ -16,7 +16,7 @@
           </div>
           <div class="list-item-right">{{ quizItem.option1 }}
           </div>
-          <div v-if="greenOutline[0]" class="p-0">
+          <div v-if="greenOutline[0]" class="p-0 m-0">
             <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px" class="m-0 p-0">
             </Vue3Lottie>
           </div>
