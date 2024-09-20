@@ -15,11 +15,13 @@
                 </div>
                 <ResponsiveVideo v-if="quizItem.videoId" :videoId="quizItem.videoId" />
             </div>
+            <Citation v-if="quizItem.citation" :citation="quizItem.citation" />
             <!----
       <p><a
           href="https://www.researchgate.net/profile/Matthew-Burns-10/publication/321116132_Meta-analysis_of_targeted_small-group_reading_interventions/links/5ab162340f7e9b4897c39acd/Meta-analysis-of-targeted-small-group-reading-interventions.pdf">{{
             quizItem.citation.title }}</a></p>
       -->
+
             <div v-if="quizItem.caution != ''" class="flex flex-row mt-8">
                 <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512">
                     <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc. -->
@@ -33,11 +35,13 @@
 
 <script>
 import ResponsiveVideo from './ResponsiveVideo.vue'
+import Citation from './Citation.vue'
 
 export default {
     name: 'Explanation',
     components: {
-        ResponsiveVideo
+        ResponsiveVideo,
+        Citation
     },
     props: {
         quizItem: {
