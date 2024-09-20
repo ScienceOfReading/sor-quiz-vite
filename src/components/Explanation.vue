@@ -13,7 +13,7 @@
                     <p v-if="quizItem.ref2 != ''" class="text-amber-700 text-sm">{{ quizItem.ref2 }}</p>
                     <p v-if="quizItem.ref3 != ''" class="text-amber-700 mb- text-sm">{{ quizItem.ref3 }}</p>
                 </div>
-                <ResponsiveVideo v-if="quizItem.videoUrl" :videoUrl="quizItem.videoUrl" />
+                <ResponsiveVideo v-if="quizItem.videoId" :videoId="quizItem.videoId" />
             </div>
             <!----
       <p><a

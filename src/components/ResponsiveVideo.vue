@@ -1,8 +1,7 @@
 <template>
   <div class="video-wrapper">
     <div class="video-container">
-      <iframe :src="videoUrl"
-        title="YouTube video player" frameborder="0"
+      <iframe :src="youtubeEmbedUrl" title="YouTube video player" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
@@ -13,9 +12,14 @@
 export default {
   name: 'ResponsiveVideo',
   props: {
-    videoUrl: {
+    videoId: {
       type: String,
       required: true
+    }
+  },
+  computed: {
+    youtubeEmbedUrl() {
+      return `https://www.youtube.com/embed/${this.videoId}`
     }
   }
 }
@@ -30,7 +34,8 @@ export default {
 .video-container {
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  padding-top: 56.25%;
+  /* 16:9 Aspect Ratio */
 }
 
 .video-container iframe {

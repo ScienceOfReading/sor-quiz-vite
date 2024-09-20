@@ -14,6 +14,7 @@ export const quizEntries = [{
     explanation2: "A 2018 meta-analysis by Mathew Hall and Mathew Burns, of 26 experimental or quasi-experimental studies on reading interventions found: 'Interventions were more effective if they were targeted to a specific skill (g = 0.65), then as part of a comprehensive intervention program that addressed multiple skills (g = 0.35).'",
     explanation3: "Interventions that targeted student deficits were twice as effective!",
     videoUrl: "https://www.youtube.com/embed/FyTUoVj-Zhc?si=qsAdGk9Kfwt5FFBm",
+    videoId: "FyTUoVj-Zhc",
     cautionLevel: "",
     caution: "",
     citation: [{
@@ -213,7 +214,7 @@ export const quizEntries = [{
     explanation: "To comprehend text, the reader must have all three.",
     explanation2: "",
     cautionLevel: "",
-    videoUrl: "https://www.youtube.com/embed/FyTUoVj-Zhc?si=qsAdGk9Kfwt5FFBm",
+    videoId: "FyTUoVj-Zhc",
     caution: "",
     closingText: "",
     closingText2: "",
