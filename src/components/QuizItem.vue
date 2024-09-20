@@ -181,27 +181,11 @@ export default {
 
   },
   data() {
-    console.log("QuizItem data");
-    const highlighted = [false, false, false, false, false, false];
-    const greenOutline = [false, false, false, false, false, false];
-    const optionsStatus = [1, 1, 1, 1, 1, 1];
-    /*
-        if (this.reviewMode && this.itemNum == 0) {
-          console.log("display for reviewMode")
-          highlighted[this.$userAnswers[0]] = true;
-          optionsStatus = [2, 2, 2, 2, 2, 2];
-          console.log("In QuizItem data, this.$userAnswers", this.$userAnswers);
-          optionsStatus[this.$userAnswers[0] - 1] = 5;
-          optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-          console.log("highlighted: ", highlighted);
-        }
-        else { console.log("In selection mode"); }
-    */
     return {
-      highlighted: highlighted,
-      greenOutline: greenOutline,
-      optionsStatus: optionsStatus,
-      fireworksJSON: fireworksJSON
+      highlighted: Array(6).fill(false),
+      greenOutline: Array(6).fill(false),
+      optionsStatus: Array(6).fill(1),
+      fireworksJSON
     }
   },
   mounted() {
