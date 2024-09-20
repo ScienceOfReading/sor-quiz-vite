@@ -13,13 +13,7 @@
                     <p v-if="quizItem.ref2 != ''" class="text-amber-700 text-sm">{{ quizItem.ref2 }}</p>
                     <p v-if="quizItem.ref3 != ''" class="text-amber-700 mb- text-sm">{{ quizItem.ref3 }}</p>
                 </div>
-                <div v-if="quizItem.videoUrl" class="video-wrapper">
-                    <div class="video-container">
-                        <iframe :src="quizItem.videoUrl" title="YouTube video player" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                </div>
+                <ResponsiveVideo v-if="quizItem.videoUrl" :videoUrl="quizItem.videoUrl" />
             </div>
             <!----
       <p><a
@@ -38,8 +32,13 @@
 </template>
 
 <script>
+import ResponsiveVideo from './ResponsiveVideo.vue'
+
 export default {
     name: 'Explanation',
+    components: {
+        ResponsiveVideo
+    },
     props: {
         quizItem: {
             type: Object,
