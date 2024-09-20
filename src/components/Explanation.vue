@@ -16,7 +16,7 @@
             </p>
             <p v-if="quizItem.ref3 != ''" class="text-amber-700 mb- text-sm">{{ quizItem.ref3 }}
             </p>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/FyTUoVj-Zhc?si=0vH1TShXwD_1yeub"
+            <iframe v-if="quizItem.videoUrl" width="560" height="315" :src="quizItem.videoUrl"
                 title="YouTube video player" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
