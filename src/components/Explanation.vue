@@ -2,7 +2,7 @@
     <div class="explanation">
         <!-- Display explanation content here -->
         <div :class="{ [`hidden`]: !reviewMode }"
-            class="border-yellow-500 rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-20 lg:w-5/6">
+            class="rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-10 lg:w-5/6">
             <div class="content-wrapper">
                 <div class="text-content">
                     <!-- Move all the text content here -->
@@ -18,6 +18,7 @@
             <div v-if="quizItem.citations && quizItem.citations.length > 0" class="citations-wrapper">
                 <Citation v-for="(citation, index) in quizItem.citations" :key="index" :citation="citation" />
             </div>
+            <PodcastReference :episode="quizItem.podcastEpisode" />
             <Caution :message="quizItem.caution" />
         </div>
     </div>
@@ -27,13 +28,15 @@
 import ResponsiveVideo from './ResponsiveVideo.vue'
 import Citation from './Citation.vue'
 import Caution from './Caution.vue'
+import PodcastReference from './PodcastRef.vue'
 
 export default {
     name: 'Explanation',
     components: {
         ResponsiveVideo,
         Citation,
-        Caution
+        Caution,
+        PodcastReference
     },
     props: {
         quizItem: {
@@ -51,9 +54,9 @@ export default {
 <style scoped>
 .explanation {
     /* Add your styles here */
-    margin-top: 1rem;
+    margin-top: .3 rem;
     padding: 1rem;
-    border: 1px solid #ccc;
+    border: 1px none #ccc;
     border-radius: 4px;
 }
 
