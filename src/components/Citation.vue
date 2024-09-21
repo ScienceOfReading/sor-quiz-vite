@@ -1,9 +1,8 @@
 <template>
   <div class="citation">
-    <p class="citation-title">{{ citation.title }}</p>
-    <p class="citation-author">{{ citation.author }}</p>
-    <p class="citation-year">{{ citation.year }}</p>
-    <a :href="citation.url" target="_blank" class="citation-link">Read more</a>
+    <p class="citation-title">{{ citation.title }}, {{ citation.author }}, {{ citation.year }},
+      <a :href="citation.url" target="_blank" class="citation-link">{{ citation.url }}</a>
+    </p>
   </div>
 </template>
 
@@ -27,15 +26,16 @@ export default {
 
 <style scoped>
 .citation {
-  border: 1px solid #ccc;
+  border: 1px none #ccc;
   padding: 1rem;
   border-radius: 4px;
   margin: 1rem 0;
 }
 
 .citation-title {
-  font-weight: bold;
-  font-size: 1.2rem;
+  font-weight: normal;
+  color: #555;
+  font-size: 1 rem;
 }
 
 .citation-author,
@@ -45,8 +45,9 @@ export default {
 }
 
 .citation-link {
-  color: #42b983;
+  color: #3c3e52;
   text-decoration: none;
+  font-size: .8rem;
 }
 
 .citation-link:hover {

@@ -11,7 +11,7 @@ export const quizEntries = [{
     option5: "",
     correctAnswer: 2,
     explanation: "Too often, intervention is given as a program, independent of the student's specific deficits.",
-    explanation2: "A 2018 meta-analysis by Mathew Hall and Mathew Burns, of 26 experimental or quasi-experimental studies on reading interventions found: 'Interventions were more effective if they were targeted to a specific skill (g = 0.65), then as part of a comprehensive intervention program that addressed multiple skills (g = 0.35).'",
+    explanation2: "A 2018 meta-analysis by Mathew Hall and Mathew Burns, of 26 experimental or quasi-experimental studies on reading interventions found: 'Interventions were more effective if they were targeted to a specific skill (g = 0.65), than as part of a comprehensive intervention program that addressed multiple skills (g = 0.35).'",
     explanation3: "Interventions that targeted student deficits were twice as effective!",
     videoUrl: "https://www.youtube.com/embed/FyTUoVj-Zhc?si=qsAdGk9Kfwt5FFBm",
     videoId: "FyTUoVj-Zhc",
@@ -19,11 +19,12 @@ export const quizEntries = [{
     caution: "",
     citations: [{
         title: "Meta-analysis of targeted small-group reading interventions",
+        author: "Matthew Burns and Mathew Hall",
         url: "https://www.researchgate.net/profile/Matthew-Burns-10/publication/321116132_Meta-analysis_of_targeted_small-group_reading_interventions/links/5ab162340f7e9b4897c39acd/Meta-analysis-of-targeted-small-group-reading-interventions.pdf",
         year: 2018,
     }],
-    ref1: "Meta-analysis of targeted small-group reading interventions",
-    ref2: "https://www.researchgate.net/profile/Matthew-Burns-10/publication/321116132_Meta-analysis_of_targeted_small-group_reading_interventions/links/5ab162340f7e9b4897c39acd/Meta-analysis-of-targeted-small-group-reading-interventions.pdf",
+    ref1: "",
+    ref2: "",
     closingText: "",
     closingText2: "",
     modal: ""
