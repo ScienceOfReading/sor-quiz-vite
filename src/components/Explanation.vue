@@ -14,6 +14,10 @@
                     <p v-if="quizItem.ref3 != ''" class="text-amber-700 mb- text-sm">{{ quizItem.ref3 }}</p>
                 </div>
                 <ResponsiveVideo v-if="quizItem.videoId" :videoId="quizItem.videoId" />
+                <ExplainerImage v-else-if="quizItem.imageUrl" :imageUrl="quizItem.imageUrl"
+                    :altText="quizItem.imageAltText" />
+                <ExplainerImage v-else-if="quizItem.image" :imageUrl="quizItem.image"
+                    :altText="quizItem.imageAltText" />
             </div>
             <div v-if="quizItem.citations && quizItem.citations.length > 0" class="citations-wrapper">
                 <Citation v-for="(citation, index) in quizItem.citations" :key="index" :citation="citation" />
@@ -28,7 +32,8 @@
 import ResponsiveVideo from './ResponsiveVideo.vue'
 import Citation from './Citation.vue'
 import Caution from './Caution.vue'
-import PodcastReference from './PodcastRef.vue'
+import PodcastReference from './PodcastReference.vue'
+import ExplainerImage from './ExplainerImage.vue'
 
 export default {
     name: 'Explanation',
@@ -36,7 +41,8 @@ export default {
         ResponsiveVideo,
         Citation,
         Caution,
-        PodcastReference
+        PodcastReference,
+        ExplainerImage
     },
     props: {
         quizItem: {
