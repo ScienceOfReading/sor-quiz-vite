@@ -1,17 +1,17 @@
 <template>
   <div class="explainer-video-wrapper">
-    <ResponsiveVideo :videoId="videoId" />
+    <YouTubeEmbed :videoId="videoId" />
     <p v-if="caption" class="video-caption">{{ caption }}</p>
   </div>
 </template>
 
 <script>
-import ResponsiveVideo from './ResponsiveVideo.vue'
+import YouTubeEmbed from './YouTubeEmbed.vue'
 
 export default {
   name: 'ExplainerVideo',
   components: {
-    ResponsiveVideo
+    YouTubeEmbed
   },
   props: {
     videoId: {
