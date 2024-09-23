@@ -1,11 +1,10 @@
 <template>
   <div class="youtube-embed">
-    <iframe
-      :src="embedUrl"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-    ></iframe>
+    <div class="video-container">
+      <iframe :src="embedUrl" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
   </div>
 </template>
 
@@ -28,13 +27,19 @@ export default {
 
 <style scoped>
 .youtube-embed {
+  width: 100%;
+  max-width: 100%;
+}
+
+.video-container {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  padding-bottom: 56.25%;
+  /* 16:9 Aspect Ratio */
   height: 0;
   overflow: hidden;
 }
 
-.youtube-embed iframe {
+.video-container iframe {
   position: absolute;
   top: 0;
   left: 0;
