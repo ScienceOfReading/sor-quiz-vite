@@ -1,6 +1,7 @@
 <template>
   <div class="video-container">
-    <iframe :src="youtubeEmbedUrl" frameborder="0" allowfullscreen></iframe>
+    <iframe :src="youtubeEmbedUrl" frameborder="0" allowfullscreen
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
   </div>
 </template>
 
@@ -28,6 +29,7 @@ export default {
   padding-bottom: 56.25%;
   /* 16:9 Aspect Ratio */
   height: 0;
+  overflow: hidden;
 }
 
 .video-container iframe {
