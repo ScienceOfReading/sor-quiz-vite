@@ -1,5 +1,5 @@
 <template>
-    <div class="explanation1">
+    <div class="explanation-wrapper">
         <!-- Display explanation content here -->
         <div :class="{ [`hidden`]: !reviewMode }"
             class="rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-10 lg:w-5/6">
@@ -58,7 +58,7 @@ export default {
 </script>
 
 <style scoped>
-.explanation1 {
+-wrapper {
     /* Add your styles here */
     margin-top: .3 rem;
     padding: 1rem;
@@ -74,28 +74,16 @@ export default {
 }
 
 .text-content {
-    flex: 1;
+    flex: 0 0 66.666%;
+    max-width: 66.666%;
 }
 
-.video-wrapper {
+.explainer-video-wrapper,
+.explainer-image-wrapper {
     flex: 0 0 33.333%;
-    /* Takes up 1/3 of the container width */
     max-width: 33.333%;
-}
-
-.video-container {
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%;
-    /* 16:9 Aspect Ratio */
-}
-
-.video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    min-width: 300px;
+    /* Ensure the video/image doesn't get too small */
 }
 
 @media (max-width: 768px) {
@@ -103,8 +91,13 @@ export default {
         flex-direction: column;
     }
 
-    .video-container {
+    .text-content,
+    .explainer-video-wrapper,
+    .explainer-image-wrapper {
+        flex: 0 0 100%;
         max-width: 100%;
+        min-width: 0;
+        /* Reset min-width for smaller screens */
     }
 }
 

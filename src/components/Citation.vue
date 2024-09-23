@@ -26,9 +26,9 @@ export default {
 
 <style scoped>
 .citation {
-  border: 1px none #ccc;
+  border: 1px solid #ccc;
   padding: 1rem;
-  border-radius: 4px;
+  border-radius: 8px;
   margin: 1rem 0;
 }
 

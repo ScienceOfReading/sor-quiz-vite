@@ -1,10 +1,6 @@
 <template>
-  <div class="video-wrapper">
-    <div class="video-container">
-      <iframe :src="youtubeEmbedUrl" title="YouTube video player" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
+  <div class="video-container">
+    <iframe :src="youtubeEmbedUrl" frameborder="0" allowfullscreen></iframe>
   </div>
 </template>
 
@@ -26,16 +22,12 @@ export default {
 </script>
 
 <style scoped>
-.video-wrapper {
-  flex: 0 0 33.333%;
-  max-width: 33.333%;
-}
-
 .video-container {
   position: relative;
   width: 100%;
-  padding-top: 56.25%;
+  padding-bottom: 56.25%;
   /* 16:9 Aspect Ratio */
+  height: 0;
 }
 
 .video-container iframe {
@@ -44,12 +36,5 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-}
-
-@media (max-width: 768px) {
-  .video-wrapper {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
 }
 </style>
