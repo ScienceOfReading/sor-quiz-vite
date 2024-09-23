@@ -1,19 +1,19 @@
 <template>
-    <div class="explanation">
+    <div class="explanation1">
         <!-- Display explanation content here -->
         <div :class="{ [`hidden`]: !reviewMode }"
             class="rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-10 lg:w-5/6">
             <div class="content-wrapper">
                 <div class="text-content">
                     <!-- Move all the text content here -->
-                    <p class="text-amber-700 mb-4">{{ quizItem.explanation }}</p>
-                    <p class="text-amber-700">{{ quizItem.explanation2 }}</p>
-                    <p class="text-amber-700">{{ quizItem.explanation3 }}</p>
-                    <p v-if="quizItem.ref1 != ''" class="text-amber-700 mt-2 text-sm">{{ quizItem.ref1 }}</p>
-                    <p v-if="quizItem.ref2 != ''" class="text-amber-700 text-sm">{{ quizItem.ref2 }}</p>
-                    <p v-if="quizItem.ref3 != ''" class="text-amber-700 mb- text-sm">{{ quizItem.ref3 }}</p>
+                    <p class=" mb-4">{{ quizItem.explanation }}</p>
+                    <p class="">{{ quizItem.explanation2 }}</p>
+                    <p class="0">{{ quizItem.explanation3 }}</p>
+                    <p v-if="quizItem.ref1 != ''" class="mt-2 text-sm">{{ quizItem.ref1 }}</p>
+                    <p v-if="quizItem.ref2 != ''" class="text-sm">{{ quizItem.ref2 }}</p>
+                    <p v-if="quizItem.ref3 != ''" class="mb- text-sm">{{ quizItem.ref3 }}</p>
                 </div>
-                <ResponsiveVideo v-if="quizItem.videoId" :videoId="quizItem.videoId" />
+                <ExplainerVideo v-if="quizItem.videoId" :videoId="quizItem.videoId" :caption="quizItem.videoCaption" />
                 <ExplainerImage v-else-if="quizItem.imageUrl" :imageUrl="quizItem.imageUrl"
                     :altText="quizItem.imageAltText" />
                 <ExplainerImage v-else-if="quizItem.image" :imageUrl="quizItem.image"
@@ -29,20 +29,20 @@
 </template>
 
 <script>
-import ResponsiveVideo from './ResponsiveVideo.vue'
+import ExplainerVideo from './ExplainerVideo.vue'
+import ExplainerImage from './ExplainerImage.vue'
 import Citation from './Citation.vue'
 import Caution from './Caution.vue'
 import PodcastReference from './PodcastReference.vue'
-import ExplainerImage from './ExplainerImage.vue'
 
 export default {
     name: 'Explanation',
     components: {
-        ResponsiveVideo,
+        ExplainerVideo,
+        ExplainerImage,
         Citation,
         Caution,
-        PodcastReference,
-        ExplainerImage
+        PodcastReference
     },
     props: {
         quizItem: {
@@ -58,7 +58,7 @@ export default {
 </script>
 
 <style scoped>
-.explanation {
+.explanation1 {
     /* Add your styles here */
     margin-top: .3 rem;
     padding: 1rem;
