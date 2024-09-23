@@ -92,10 +92,12 @@ export default {
 
     .text-content,
     .explainer-video-wrapper,
-    .explainer-image-wrapper {
+    .explainer-image-wrapper,
+    .citations-wrapper {
         flex: 0 0 100%;
         max-width: 100%;
-        /* Reset min-width for smaller screens */
+        width: 100%;
+        /* Add this line */
     }
 }
 
