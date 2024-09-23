@@ -24,11 +24,17 @@ export default {
   },
   methods: {
     onIframeLoad(event) {
-      console.log('Iframe dimensions:', {
+      console.log('Iframe loaded, dimensions:', {
         width: event.target.offsetWidth,
         height: event.target.offsetHeight
       });
     }
+  },
+  mounted() {
+    console.log('YouTube component mounted, videoId:', this.videoId);
+  },
+  updated() {
+    console.log('YouTube component updated, videoId:', this.videoId);
   }
 }
 </script>
