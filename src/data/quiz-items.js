@@ -452,7 +452,7 @@ export const quizEntries = [{
     option5: "None of the above",
     option6: "",
     correctAnswer: 2,
-    explanation: "The 1987 van Orden experiments presented to students words like 'Rows' and 'rose'.",
+    explanation: "The 1987 van Orden experiments presented student subjects with words like 'Rows' and 'rose'.",
     explanation2: "Through different experimental approaches, van Orden demonstrated that we process written words as sounds.",
     videoId: "bjqsI-JH4Os",
     videoCaption: "The van Orden Experiments",
