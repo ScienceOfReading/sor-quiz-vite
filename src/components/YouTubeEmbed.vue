@@ -1,7 +1,7 @@
 <template>
   <div class="youtube-embed">
     <div class="video-container">
-      <iframe :src="embedUrl" frameborder="0"
+      <iframe :src="embedUrl" @load="onIframeLoad" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe>
     </div>
@@ -20,6 +20,14 @@ export default {
   computed: {
     embedUrl() {
       return `https://www.youtube.com/embed/${this.videoId}?rel=0&showinfo=0&autoplay=0`;
+    }
+  },
+  methods: {
+    onIframeLoad(event) {
+      console.log('Iframe dimensions:', {
+        width: event.target.offsetWidth,
+        height: event.target.offsetHeight
+      });
     }
   }
 }
