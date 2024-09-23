@@ -82,7 +82,6 @@ export default {
 .explainer-image-wrapper {
     flex: 0 0 33.333%;
     max-width: 33.333%;
-    min-width: 300px;
     /* Ensure the video/image doesn't get too small */
 }
 
@@ -96,12 +95,17 @@ export default {
     .explainer-image-wrapper {
         flex: 0 0 100%;
         max-width: 100%;
-        min-width: 0;
         /* Reset min-width for smaller screens */
     }
 }
 
 .citations-wrapper {
+    flex: 0 0 66.666%;
+    max-width: 66.666%;
+    margin-left: auto;
+    /* Align to the right */
     margin-top: 1rem;
+    margin-right: -1rem;
+    padding-right: 0%;
 }
 </style>
