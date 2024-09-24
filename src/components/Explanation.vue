@@ -19,7 +19,6 @@
                     :altText="quizItem.imageAltText" />
                 <ExplainerImage v-else-if="quizItem.image" :imageUrl="quizItem.image"
                     :altText="quizItem.imageAltText" />
-                <PodcastReference v-if="quizItem.podcastEpisode" :podcastEpisode="quizItem.podcastEpisode" />
             </div>
             <PodcastReference v-if="quizItem.podcastEpisode" :podcastEpisode="quizItem.podcastEpisode" />
             <div v-if="quizItem.citations && quizItem.citations.length > 0" class="citations-wrapper">
