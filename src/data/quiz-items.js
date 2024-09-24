@@ -15,7 +15,7 @@ export const quizEntries = [{
     explanation3: "Interventions that targeted student deficits were twice as effective!",
     videoUrl: "",
     videoId: "",
-    image: "./src/images/HallBurns.png",
+    image: "~/src/images/HallBurns.png",
     imageUrl: "",
     imageAltText: "Contents lists available at ScienceDirectJournal of School Psychologyjournal homepage: www.elsevier.com/locate/jschpsycMeta-analysis of targeted small-group reading interventions",
     cautionLevel: "",
