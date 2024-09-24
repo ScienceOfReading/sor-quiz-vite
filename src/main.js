@@ -9,6 +9,7 @@ import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { faFlaskVial } from '@fortawesome/free-solid-svg-icons'
 
 import { inject } from '@vercel/analytics';
 
@@ -26,7 +27,7 @@ library.add(faCircleMinus)
 library.add(faCircleXmark)
 library.add(faCircleCheck)
 library.add(faCheck)
-
+library.add(faFlaskVial)
 const app = createApp(App)
 app.config.globalProperties.$userAnswers = []
 app.use(Vue3Lottie)
