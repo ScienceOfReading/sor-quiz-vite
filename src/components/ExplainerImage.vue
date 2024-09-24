@@ -39,6 +39,7 @@ export default {
   .explainer-image-wrapper {
     flex: 0 0 100%;
     max-width: 100%;
+    max-height: 100%;
     margin-top: 1rem;
   }
 }

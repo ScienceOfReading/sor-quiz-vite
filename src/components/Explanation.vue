@@ -76,6 +76,8 @@ export default {
 .text-content {
     flex: 0 0 66.666%;
     max-width: 66.666%;
+    line-height: 1.4;
+    /* Adjust this value to tighten the line height */
 }
 
 .justified {
