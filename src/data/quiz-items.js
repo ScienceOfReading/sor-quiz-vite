@@ -518,6 +518,7 @@ export const quizEntries = [{
         author: "Matthew Burns and Mathew Hall",
         url: "https://www.researchgate.net/profile/Matthew-Burns-10/publication/321116132_Meta-analysis_of_targeted_small-group_reading_interventions/links/5ab162340f7e9b4897c39acd/Meta-analysis-of-targeted-small-group-reading-interventions.pdf",
         year: 2018,
+        imageUrl: "images/HallBurns.png",
     }],
     ref1: "",
     ref2: "",
