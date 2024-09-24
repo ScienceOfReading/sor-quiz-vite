@@ -4,7 +4,7 @@
         <div :class="{ [`hidden`]: !reviewMode }"
             class="rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-10 lg:w-5/6">
             <div class="content-wrapper">
-                <div class="text-content">
+                <div class="text-content justified">
                     <!-- Move all the text content here -->
                     <p class=" mb-4">{{ quizItem.explanation }}</p>
                     <p class="">{{ quizItem.explanation2 }}</p>
@@ -76,6 +76,10 @@ export default {
 .text-content {
     flex: 0 0 66.666%;
     max-width: 66.666%;
+}
+
+.justified {
+    text-align: justify;
 }
 
 .explainer-video-wrapper,

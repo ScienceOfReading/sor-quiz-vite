@@ -27,20 +27,21 @@ export default {
 <style scoped>
 .citation {
   border: 1px solid #ccc;
-  padding: 1rem;
+  padding: .75rem;
   border-radius: 8px;
   margin: 1rem 0;
+  justify-content: center;
 }
 
 .citation-title {
   font-weight: normal;
   color: #555;
-  font-size: 1 rem;
+  font-size: .8 rem;
 }
 
 .citation-author,
 .citation-year {
-  font-size: 1rem;
+  font-size: .8rem;
   color: #555;
 }
 
