@@ -1,7 +1,7 @@
 <template>
   <div class="youtube-embed">
     <div class="video-container">
-      <iframe :src="embedUrl" @load="onIframeLoad" frameborder="0"
+      <iframe :src="embedUrl" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe>
     </div>
@@ -15,11 +15,15 @@ export default {
     videoId: {
       type: String,
       required: true
+    },
+    startTime: {
+      type: Number,
+      default: 0
     }
   },
   computed: {
     embedUrl() {
-      return `https://www.youtube.com/embed/${this.videoId}?rel=0&showinfo=0&autoplay=0`;
+      return `https://www.youtube.com/embed/${this.videoId}?rel=0&showinfo=0&autoplay=0&start=${this.startTime}`;
     }
   },
   methods: {

@@ -1,6 +1,6 @@
 <template>
   <div class="explainer-video-wrapper">
-    <YouTubeEmbed :videoId="videoId" />
+    <YouTubeEmbed :videoId="videoId" :startTime="startTime" />
     <p v-if="caption" class="video-caption">{{ caption }}</p>
   </div>
 </template>
@@ -21,6 +21,10 @@ export default {
     caption: {
       type: String,
       default: ''
+    },
+    startTime: {
+      type: Number,
+      default: 0
     }
   }
 }
