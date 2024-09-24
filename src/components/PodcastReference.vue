@@ -42,27 +42,31 @@ export default {
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    background-color: #f8fafc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
 }
 
 .podcast-header {
     display: flex;
     align-items: center;
-    padding: 1rem;
-    background-color: #4a5568;
-    color: white;
+    padding: 0.75rem 1rem;
+    background-color: #f0f4f8;
+    /* Lighter background color */
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .podcast-icon {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     margin-right: 0.75rem;
+    color: #4a5568;
 }
 
 .podcast-title {
     margin: 0;
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 500;
+    /* Less weight */
+    color: #2d3748;
 }
 
 .podcast-content {
@@ -99,5 +103,11 @@ export default {
 .podcast-link .fa-external-link-alt {
     margin-right: 0.5rem;
     font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .podcast-reference {
+        max-width: 100%;
+    }
 }
 </style>
