@@ -508,7 +508,7 @@ export const quizEntries = [{
     explanation3: "Interventions that targeted student deficits were twice as effective!",
     videoUrl: "",
     videoId: "",
-    image: "./src/assets/HallBurns.png",
+    image: "images/HallBurns.png",
     imageUrl: "",
     imageAltText: "",
     cautionLevel: "",
