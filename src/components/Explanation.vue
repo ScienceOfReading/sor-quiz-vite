@@ -19,11 +19,12 @@
                     :altText="quizItem.imageAltText" />
                 <ExplainerImage v-else-if="quizItem.image" :imageUrl="quizItem.image"
                     :altText="quizItem.imageAltText" />
+                <PodcastReference v-if="quizItem.podcastEpisode" :podcastEpisode="quizItem.podcastEpisode" />
             </div>
+            <PodcastReference v-if="quizItem.podcastEpisode" :podcastEpisode="quizItem.podcastEpisode" />
             <div v-if="quizItem.citations && quizItem.citations.length > 0" class="citations-wrapper">
                 <Citation v-for="(citation, index) in quizItem.citations" :key="index" :citation="citation" />
             </div>
-            <PodcastReference :episode="quizItem.podcastEpisode" />
             <Caution :message="quizItem.caution" />
         </div>
     </div>

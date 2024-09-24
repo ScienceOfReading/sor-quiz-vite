@@ -259,7 +259,8 @@ export const quizEntries = [{
     videoCaption: "Dr. Stephanie Stollar explains how ORF can be used to identify struggling readers.",
     podcastEpisode: {
         title: "The Right Assessment and the Right Data",
-        url: "https://www.buzzsprout.com/612361/episodes/10290214-s5-e3-the-right-assessment-and-the-right-data-with-dr-jan-hasbrouck",
+        EpisodeUrl: "https://www.buzzsprout.com/612361/episodes/10290214-s5-e3-the-right-assessment-and-the-right-data-with-dr-jan-hasbrouck",
+        audioUrl: "https://www.buzzsprout.com/612361/episodes/10290214-s5-e3-the-right-assessment-and-the-right-data-with-dr-jan-hasbrouck.mp3",
         description: "",
         podcastStartTime: 840,
     },
