@@ -89,7 +89,6 @@ export default {
 .citation-image {
   max-width: 100%;
   max-height: 150px;
-  /* Increased max-height */
   width: auto;
   height: auto;
   object-fit: contain;
@@ -99,17 +98,40 @@ export default {
 @media (max-width: 768px) {
   .citation {
     flex-direction: column;
+    align-items: stretch;
+    padding: 1.5rem;
+  }
+
+  .citation-content {
+    flex-direction: column;
     align-items: flex-start;
+  }
+
+  .citation-icon {
+    margin-bottom: 0.75rem;
+    font-size: 2rem;
+  }
+
+  .citation-title {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .citation-link {
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-top: 0.5rem;
   }
 
   .citation-image-wrapper {
     max-width: 100%;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
 
   .citation-image {
-    max-height: 200px;
-    /* Even larger on mobile */
+    max-height: 250px;
+    width: 100%;
+    object-fit: cover;
   }
 }
 </style>
