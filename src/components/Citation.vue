@@ -46,7 +46,7 @@ export default {
 }
 
 .citation-content {
-  flex: 1;
+  flex: 2;
   min-width: 0;
   display: flex;
   align-items: flex-start;
@@ -83,7 +83,7 @@ export default {
   max-width: 20%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: right;
 }
 
 .citation-image {
@@ -125,11 +125,11 @@ export default {
 
   .citation-image-wrapper {
     max-width: 20%;
-    margin-top: 1.5rem;
+    /* margin-top: 1.5rem; */
   }
 
   .citation-image {
-    max-height: 250px;
+    /* max-height: 250px; */
     /*width: 100%;*/
     object-fit: cover;
   }
