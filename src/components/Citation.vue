@@ -2,7 +2,7 @@
   <div class="citation">
     <div class="citation-content">
       <font-awesome-icon :icon="['fas', 'flask-vial']" class="citation-icon" />
-      <p class="citation-title">
+      <p class="citation-text">
         {{ citation.title }}, {{ citation.author }}, {{ citation.year }},
         <a :href="citation.url" target="_blank" class="citation-link">{{ citation.url }}</a>
       </p>
@@ -19,15 +19,7 @@ export default {
   props: {
     citation: {
       type: Object,
-      required: true,
-      default: () => ({
-        title: '',
-        author: '',
-        year: '',
-        url: '',
-        imageUrl: '',
-        imageAltText: ''
-      })
+      required: true
     }
   }
 }
@@ -35,19 +27,20 @@ export default {
 
 <style scoped>
 .citation {
-  border: 1px solid #ccc;
-  padding: 1rem;
-  border-radius: 8px;
-  margin: 1rem 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #f8fafc;
 }
 
 .citation-content {
-  flex: 2;
+  flex: 1;
   min-width: 0;
+  /* Allows content to shrink below its minimum content size */
   display: flex;
   align-items: flex-start;
 }
@@ -55,22 +48,22 @@ export default {
 .citation-icon {
   flex-shrink: 0;
   margin-right: 0.75rem;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+  color: #4a5568;
 }
 
-.citation-title {
-  font-weight: normal;
-  color: #555;
-  font-size: .8rem;
+.citation-text {
+  font-size: 0.875rem;
+  line-height: 1.5;
   margin: 0;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  color: #4a5568;
 }
 
 .citation-link {
-  color: #3c3e52;
+  color: #3182ce;
   text-decoration: none;
-  font-size: .8rem;
   word-break: break-all;
 }
 
@@ -79,59 +72,37 @@ export default {
 }
 
 .citation-image-wrapper {
-  flex: 0 0 auto;
-  max-width: 20%;
-  display: flex;
-  align-items: center;
-  justify-content: right;
+  flex-shrink: 0;
+  width: 100px;
+  /* Fixed width for consistency */
 }
 
 .citation-image {
-  max-width: 100%;
-  max-height: 150px;
-  width: auto;
+  width: 100%;
   height: auto;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 4px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 640px) {
   .citation {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 1.5rem;
-  }
-
-  .citation-content {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    /* Ensure horizontal layout on small screens */
+    align-items: center;
+    padding: 0.75rem;
   }
 
   .citation-icon {
-    margin-bottom: 0.75rem;
-    font-size: 2rem;
-  }
-
-  .citation-title {
     font-size: 1rem;
-    line-height: 1.5;
   }
 
-  .citation-link {
-    font-size: 0.9rem;
-    display: inline-block;
-    margin-top: 0.5rem;
+  .citation-text {
+    font-size: 0.75rem;
   }
 
   .citation-image-wrapper {
-    max-width: 20%;
-    /* margin-top: 1.5rem; */
-  }
-
-  .citation-image {
-    /* max-height: 250px; */
-    /*width: 100%;*/
-    object-fit: cover;
+    width: 80px;
+    /* Slightly smaller on very small screens */
   }
 }
 </style>
