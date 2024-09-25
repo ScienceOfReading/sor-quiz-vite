@@ -80,7 +80,7 @@ export default {
 
 .citation-image-wrapper {
   flex: 0 0 auto;
-  max-width: 33.333%;
+  max-width: 20%;
   display: flex;
   align-items: center;
   justify-content: center;

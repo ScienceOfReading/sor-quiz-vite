@@ -109,8 +109,8 @@ export default {
 }
 
 .citations-wrapper {
-    flex: 0 0 66.666%;
-    max-width: 66.666%;
+    flex: 0 0 80%;
+    max-width: 80%;
     margin-left: auto;
     /* Align to the right */
     margin-top: 1rem;
