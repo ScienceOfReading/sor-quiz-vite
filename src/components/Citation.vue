@@ -95,7 +95,7 @@ export default {
   border-radius: 4px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .citation {
     flex-direction: column;
     align-items: stretch;
