@@ -4,7 +4,9 @@
       <font-awesome-icon :icon="['fas', 'flask-vial']" class="citation-icon" />
       <p class="citation-text">
         {{ citation.title }}, {{ citation.author }}, {{ citation.year }},
-        <a :href="citation.url" target="_blank" class="citation-link">{{ citation.url }}</a>
+        <a :href="citation.url" target="_blank" class="citation-link" :title="citation.url">
+          {{ truncatedUrl }}
+        </a>
       </p>
     </div>
     <div v-if="citation.imageUrl" class="citation-image-wrapper">
@@ -20,6 +22,14 @@ export default {
     citation: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    truncatedUrl() {
+      if (this.citation.url.length <= 55) {
+        return this.citation.url;
+      }
+      return this.citation.url.substring(0, 52) + '...';
     }
   }
 }
