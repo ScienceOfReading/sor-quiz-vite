@@ -124,13 +124,13 @@ export default {
   }
 
   .citation-image-wrapper {
-    max-width: 100%;
+    max-width: 20%;
     margin-top: 1.5rem;
   }
 
   .citation-image {
     max-height: 250px;
-    width: 100%;
+    /*width: 100%;*/
     object-fit: cover;
   }
 }
