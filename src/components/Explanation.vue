@@ -1,5 +1,6 @@
 <template>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <div v-if="showExplanation" class="explanation">
         <div class="content-wrapper">
             <div class="text-content justified">
@@ -38,11 +39,37 @@
                 <ExplainerImage v-else-if="quizItem.image" :imageUrl="quizItem.image"
                     :altText="quizItem.imageAltText" />
             </div>
+=======
+    <div class="explanation-wrapper">
+        <!-- Display explanation content here -->
+        <div :class="{ [`hidden`]: !reviewMode }"
+            class="rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-10 lg:w-5/6">
+            <div class="content-wrapper">
+                <div class="text-content justified">
+                    <!-- Move all the text content here -->
+                    <p class=" mb-4">{{ quizItem.explanation }}</p>
+                    <p class="">{{ quizItem.explanation2 }}</p>
+                    <p class="0">{{ quizItem.explanation3 }}</p>
+                    <p v-if="quizItem.ref1 != ''" class="mt-2 text-sm">{{ quizItem.ref1 }}</p>
+                    <p v-if="quizItem.ref2 != ''" class="text-sm">{{ quizItem.ref2 }}</p>
+                    <p v-if="quizItem.ref3 != ''" class="mb- text-sm">{{ quizItem.ref3 }}</p>
+                </div>
+                <ExplainerVideo v-if="quizItem.videoId" :videoId="quizItem.videoId" :caption="quizItem.videoCaption"
+                    :startTime="quizItem.videoStartTime" />
+                <ExplainerImage v-else-if="quizItem.imageUrl" :imageUrl="quizItem.imageUrl"
+                    :altText="quizItem.imageAltText" />
+                <ExplainerImage v-else-if="quizItem.image" :imageUrl="quizItem.image"
+                    :altText="quizItem.imageAltText" />
+            </div>
+>>>>>>> parent of 461e8fa (Make citation wider if an image is there on phone)
             <PodcastReference v-if="quizItem.podcastEpisode" :podcastEpisode="quizItem.podcastEpisode" />
             <div v-if="quizItem.citations && quizItem.citations.length > 0" class="citations-wrapper">
                 <Citation v-for="(citation, index) in quizItem.citations" :key="index" :citation="citation" />
             </div>
             <Caution :message="quizItem.caution" />
+<<<<<<< HEAD
+>>>>>>> parent of 461e8fa (Make citation wider if an image is there on phone)
+=======
 >>>>>>> parent of 461e8fa (Make citation wider if an image is there on phone)
         </div>
     </div>
@@ -70,11 +97,15 @@ export default {
             required: true
         },
 <<<<<<< HEAD
+<<<<<<< HEAD
         userAnswer: {
             type: [String, Number],
             required: true
         },
         showExplanation: {
+=======
+        reviewMode: {
+>>>>>>> parent of 461e8fa (Make citation wider if an image is there on phone)
 =======
         reviewMode: {
 >>>>>>> parent of 461e8fa (Make citation wider if an image is there on phone)
@@ -87,15 +118,21 @@ export default {
 
 <style scoped>
 <<<<<<< HEAD
+<<<<<<< HEAD
 .explanation {
     margin-bottom: 2rem;
 =======
+=======
+>>>>>>> parent of 461e8fa (Make citation wider if an image is there on phone)
 -wrapper {
     /* Add your styles here */
     margin-top: .3 rem;
     padding: 1rem;
     border: 1px none #ccc;
     border-radius: 4px;
+<<<<<<< HEAD
+>>>>>>> parent of 461e8fa (Make citation wider if an image is there on phone)
+=======
 >>>>>>> parent of 461e8fa (Make citation wider if an image is there on phone)
 }
 
@@ -108,6 +145,7 @@ export default {
 }
 
 .text-content {
+<<<<<<< HEAD
 <<<<<<< HEAD
     flex: 1 1 100%;
     font-size: 1rem;
@@ -127,6 +165,10 @@ export default {
 =======
     flex: 0 0 66.666%;
     max-width: 66.666%;
+=======
+    flex: 0 0 66.666%;
+    max-width: 66.666%;
+>>>>>>> parent of 461e8fa (Make citation wider if an image is there on phone)
     line-height: 1.4;
     /* Adjust this value to tighten the line height */
 }
@@ -140,6 +182,9 @@ export default {
     flex: 0 0 33.333%;
     max-width: 33.333%;
     /* Ensure the video/image doesn't get too small */
+<<<<<<< HEAD
+>>>>>>> parent of 461e8fa (Make citation wider if an image is there on phone)
+=======
 >>>>>>> parent of 461e8fa (Make citation wider if an image is there on phone)
 }
 
@@ -156,11 +201,14 @@ export default {
         max-width: 100%;
         width: 100%;
         /* Add this line */
+<<<<<<< HEAD
     }
 
     .text-content {
         font-size: 0.9rem;
         line-height: 1.5;
+=======
+>>>>>>> parent of 461e8fa (Make citation wider if an image is there on phone)
     }
 }
 
