@@ -44,6 +44,7 @@
 </template>
 
 <script>
+//a small change to commit
 import QuizItem from './QuizItem.vue';
 import Score from './Score.vue';
 import { quizEntries } from '../data/quiz-items.js'
