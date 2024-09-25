@@ -1,22 +1,30 @@
 <template>
-    <div class="explanation">
-        <div class="content-wrapper">
-            <div class="text-content justified">
-                <!-- Your existing text content here -->
-                <p class=" mb-4">{{ quizItem.explanation }}</p>
-                <p class="">{{ quizItem.explanation2 }}</p>
-                <p class="0">{{ quizItem.explanation3 }}</p>
-                <p v-if="quizItem.ref1 != ''" class="mt-2 text-sm">{{ quizItem.ref1 }}</p>
-                <p v-if="quizItem.ref2 != ''" class="text-sm">{{ quizItem.ref2 }}</p>
-                <p v-if="quizItem.ref3 != ''" class="mb- text-sm">{{ quizItem.ref3 }}</p>
+    <div class="explanation-wrapper">
+        <!-- Display explanation content here -->
+        <div :class="{ [`hidden`]: !reviewMode }"
+            class="rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-10 lg:w-5/6">
+            <div class="content-wrapper">
+                <div class="text-content justified">
+                    <!-- Move all the text content here -->
+                    <p class=" mb-4">{{ quizItem.explanation }}</p>
+                    <p class="">{{ quizItem.explanation2 }}</p>
+                    <p class="0">{{ quizItem.explanation3 }}</p>
+                    <p v-if="quizItem.ref1 != ''" class="mt-2 text-sm">{{ quizItem.ref1 }}</p>
+                    <p v-if="quizItem.ref2 != ''" class="text-sm">{{ quizItem.ref2 }}</p>
+                    <p v-if="quizItem.ref3 != ''" class="mb- text-sm">{{ quizItem.ref3 }}</p>
+                </div>
+                <ExplainerVideo v-if="quizItem.videoId" :videoId="quizItem.videoId" :caption="quizItem.videoCaption"
+                    :startTime="quizItem.videoStartTime" />
+                <ExplainerImage v-else-if="quizItem.imageUrl" :imageUrl="quizItem.imageUrl"
+                    :altText="quizItem.imageAltText" />
+                <ExplainerImage v-else-if="quizItem.image" :imageUrl="quizItem.image"
+                    :altText="quizItem.imageAltText" />
             </div>
-            <ExplainerVideo v-if="quizItem.videoId" :videoId="quizItem.videoId" :caption="quizItem.videoCaption"
-                :startTime="quizItem.videoStartTime" />
-            <ExplainerImage v-else-if="quizItem.imageUrl" :imageUrl="quizItem.imageUrl"
-                :altText="quizItem.imageAltText" />
-        </div>
-        <div class="citations-wrapper">
-            <Citation v-for="(citation, index) in quizItem.citations" :key="index" :citation="citation" />
+            <PodcastReference v-if="quizItem.podcastEpisode" :podcastEpisode="quizItem.podcastEpisode" />
+            <div v-if="quizItem.citations && quizItem.citations.length > 0" class="citations-wrapper">
+                <Citation v-for="(citation, index) in quizItem.citations" :key="index" :citation="citation" />
+            </div>
+            <Caution :message="quizItem.caution" />
         </div>
     </div>
 </template>
@@ -25,17 +33,25 @@
 import ExplainerVideo from './ExplainerVideo.vue'
 import ExplainerImage from './ExplainerImage.vue'
 import Citation from './Citation.vue'
+import Caution from './Caution.vue'
+import PodcastReference from './PodcastReference.vue'
 
 export default {
     name: 'Explanation',
     components: {
         ExplainerVideo,
         ExplainerImage,
-        Citation
+        Citation,
+        Caution,
+        PodcastReference
     },
     props: {
         quizItem: {
             type: Object,
+            required: true
+        },
+        reviewMode: {
+            type: Boolean,
             required: true
         }
     }
@@ -43,26 +59,37 @@ export default {
 </script>
 
 <style scoped>
-.explanation {
-    /* Add any necessary styles */
+-wrapper {
+    /* Add your styles here */
+    margin-top: .3 rem;
+    padding: 1rem;
+    border: 1px none #ccc;
+    border-radius: 4px;
 }
 
 .content-wrapper {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
     gap: 1rem;
 }
 
 .text-content {
-    flex: 1 1 100%;
-}
-
-.citations-wrapper {
     flex: 0 0 66.666%;
     max-width: 66.666%;
-    margin-left: auto;
-    /* Align to the right */
-    margin-top: 1rem;
+    line-height: 1.4;
+    /* Adjust this value to tighten the line height */
+}
+
+.justified {
+    text-align: justify;
+}
+
+.explainer-video-wrapper,
+.explainer-image-wrapper {
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+    /* Ensure the video/image doesn't get too small */
 }
 
 @media (max-width: 768px) {
@@ -71,10 +98,23 @@ export default {
     }
 
     .text-content,
+    .explainer-video-wrapper,
+    .explainer-image-wrapper,
     .citations-wrapper {
         flex: 0 0 100%;
         max-width: 100%;
-        margin-left: 0;
+        width: 100%;
+        /* Add this line */
     }
+}
+
+.citations-wrapper {
+    flex: 0 0 66.666%;
+    max-width: 66.666%;
+    margin-left: auto;
+    /* Align to the right */
+    margin-top: 1rem;
+    margin-right: -1rem;
+    padding-right: 0%;
 }
 </style>
