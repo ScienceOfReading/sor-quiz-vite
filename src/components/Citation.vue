@@ -29,6 +29,7 @@ export default {
 .citation {
   display: flex;
   align-items: flex-start;
+  /* Align items to the top */
   gap: 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
@@ -88,7 +89,6 @@ export default {
   .citation {
     flex-direction: row;
     /* Ensure horizontal layout on small screens */
-    align-items: center;
     padding: 0.75rem;
   }
 
