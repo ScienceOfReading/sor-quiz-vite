@@ -7,15 +7,15 @@
                 <div class="text-content justified">
                     <!-- Move all the text content here -->
                     <p class=" mb-4">{{ quizItem.explanation }}</p>
-                    <p class="">{{ quizItem.explanation2 }}</p>
-                    <p class="0">{{ quizItem.explanation3 }}</p>
-                    <p v-if="quizItem.ref1 != ''" class="mt-2 text-sm">{{ quizItem.ref1 }}</p>
-                    <p v-if="quizItem.ref2 != ''" class="text-sm">{{ quizItem.ref2 }}</p>
-                    <p v-if="quizItem.ref3 != ''" class="mb- text-sm">{{ quizItem.ref3 }}</p>
+                    <p v-if="quizItem.explanation2" class="0">{{ quizItem.explanation2 }}</p>
+                    <p v-if="quizItem.explanation3" class="0">{{ quizItem.explanation3 }}</p>
+                    <p v-if="quizItem.ref1" class="mt-2 text-sm">{{ quizItem.ref1 }}</p>
+                    <p v-if="quizItem.ref2" class="text-sm">{{ quizItem.ref2 }}</p>
+                    <p v-if="quizItem.ref3" class="mb- text-sm">{{ quizItem.ref3 }}</p>
                 </div>
                 <ExplainerVideo v-if="quizItem.videoId" :videoId="quizItem.videoId" :caption="quizItem.videoCaption"
                     :startTime="quizItem.videoStartTime" />
-                <ExplainerImage v-else-if="quizItem.imageUrl" :imageUrl="quizItem.imageUrl"
+                <ExplainerImage v-if="quizItem.imageUrl" :imageUrl="quizItem.imageUrl"
                     :altText="quizItem.imageAltText" />
                 <ExplainerImage v-else-if="quizItem.image" :imageUrl="quizItem.image"
                     :altText="quizItem.imageAltText" />

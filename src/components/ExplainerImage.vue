@@ -19,6 +19,9 @@ export default {
       type: String,
       default: 'Explanation image'
     }
+  },
+  mounted() {
+    console.log("In ExplainerImage, imageUrl is: ", this.imageUrl)
   }
 }
 </script>
