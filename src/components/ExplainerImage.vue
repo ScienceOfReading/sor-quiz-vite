@@ -33,7 +33,7 @@ export default {
 }
 
 .explainer-image {
-  width: 100%;
+  width: 90%;
   height: auto;
   object-fit: cover;
 }
