@@ -12,7 +12,11 @@
                     <p v-if="quizItem.ref1" class="mt-2 text-sm">{{ quizItem.ref1 }}</p>
                     <p v-if="quizItem.ref2" class="text-sm">{{ quizItem.ref2 }}</p>
                     <p v-if="quizItem.ref3" class="mb- text-sm">{{ quizItem.ref3 }}</p>
+                    <div v-if="quizItem.resources && quizItem.resources.length > 0" class="resources-wrapper">
+                        <Resource v-for="(resource, index) in quizItem.resources" :key="index" :resource="resource" />
+                    </div>
                 </div>
+
                 <ExplainerVideo v-if="quizItem.videoId" :videoId="quizItem.videoId" :caption="quizItem.videoCaption"
                     :startTime="quizItem.videoStartTime" />
                 <ExplainerImage v-if="quizItem.imageUrl" :imageUrl="quizItem.imageUrl"
@@ -35,7 +39,7 @@ import ExplainerImage from './ExplainerImage.vue'
 import Citation from './Citation.vue'
 import Caution from './Caution.vue'
 import PodcastReference from './PodcastReference.vue'
-
+import Resource from './Resource.vue'
 export default {
     name: 'Explanation',
     components: {
@@ -43,7 +47,8 @@ export default {
         ExplainerImage,
         Citation,
         Caution,
-        PodcastReference
+        PodcastReference,
+        Resource
     },
     props: {
         quizItem: {

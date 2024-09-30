@@ -9,9 +9,13 @@
       <div class="mt-24 grid quiz-item w-full border-4 place-self-center place-content-center text-center">
         <p class="h2 mt-8">We're just getting started, but for now...</p>
         <p class="h2">Choose a difficulty:</p>
-        <div class="mt-8 mb-8 gap-16 columns-2">
+        <div class="mt-8 mb-2 gap-16 columns-2">
           <div><button @click="showQuiz(0)" class="lg:text-3xl sm:text-2xl">Expert</button></div>
           <div><button @click="showQuiz(1)" class="lg:text-3xl sm:text-2xl">Basic</button></div>
+        </div>
+        <div class="mt-2 mb-8 gap-16 columns-1">
+          <div><button @click="showQuiz(2)"
+              class="place-self-center place-content-centerlg:text-3xl sm:text-2xl">Kinder-First</button></div>
         </div>
       </div>
     </div>
