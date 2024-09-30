@@ -11,6 +11,6 @@ export const quizSets = [{
 {
     setName: "kinder-first",
     basicMode: true,
-    items: [23, 24, 11]
+    items: [23, 24, 25, 11]
 }
 ];
