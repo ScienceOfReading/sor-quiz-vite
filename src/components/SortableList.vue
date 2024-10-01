@@ -2,8 +2,16 @@
     <div class="sortable-list">
         <h3 class="text-lg font-semibold mb-2">{{ title }}</h3>
         <p class="mb-4">{{ instructions }}</p>
-        <p v-if="localItems.length === 0">No items to sort.</p> <!-- Add this line -->
-        <draggable v-model="localItems" item-key="id" :disabled="disabled" class="list-group" ghost-class="ghost"
+        <p>Debug: Items count: {{ localItems.length }}</p>
+
+        <!-- Add this section to display items without draggable -->
+        <div v-if="!useDraggable">
+            <div v-for="item in localItems" :key="item.id" class="list-group-item">
+                {{ item.text }}
+            </div>
+        </div>
+
+        <draggable v-else v-model="localItems" item-key="id" :disabled="disabled" class="list-group" ghost-class="ghost"
             @end="onDragEnd">
             <template #item="{ element }">
                 <div class="list-group-item">
@@ -11,6 +19,7 @@
                 </div>
             </template>
         </draggable>
+
         <div v-if="showFeedback" class="mt-4">
             <p v-if="isCorrect" class="text-green-600">Correct! Well done!</p>
             <p v-else class="text-red-600">Not quite right. Try again!</p>
@@ -51,8 +60,11 @@ export default {
     },
     setup(props, { emit }) {
         const localItems = ref([...props.items]);
-        console.log('SortableList setup - items:', props.items); // Add this line
         const showFeedback = ref(false);
+        const useDraggable = ref(false); // Add this line
+
+        console.log('SortableList setup - items:', props.items);
+        console.log('SortableList setup - localItems:', localItems.value);
 
         const isCorrect = computed(() => {
             return localItems.value.every((item, index) => item.id === props.correctOrder[index]);
@@ -68,6 +80,7 @@ export default {
             showFeedback,
             isCorrect,
             onDragEnd,
+            useDraggable, // Add this line
         };
     },
 }
