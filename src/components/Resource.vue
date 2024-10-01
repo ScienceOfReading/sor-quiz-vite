@@ -40,11 +40,12 @@ export default {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    border: 1px solid #abb2ba;
+    border: 1px solid #b4b9be;
     border-radius: 4px;
     padding: 1rem;
     margin-bottom: 1rem;
-    background-color: #abb2ba;
+    background-color: #b4b9be;
+    margin-top: 1rem;
 }
 
 .resource-content {

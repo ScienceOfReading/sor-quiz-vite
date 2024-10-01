@@ -8,7 +8,7 @@
             <audio ref="audio" :src="podcastEpisode.audioUrl" controls class="podcast-player"></audio>
             <p v-if="podcastEpisode.description" class="podcast-description">{{ podcastEpisode.description }}</p>
             <a :href="podcastEpisode.EpisodeUrl" target="_blank" rel="noopener noreferrer" class="podcast-link">
-                <font-awesome-icon icon="external-link-alt" /> Listen to Full Episode
+                <font-awesome-icon icon="external-link-alt" /> &nbsp; Episode Page
             </a>
         </div>
     </div>
@@ -64,7 +64,7 @@ export default {
 .podcast-title {
     margin: 0;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 400;
     /* Less weight */
     color: #2d3748;
 }
@@ -79,19 +79,20 @@ export default {
 }
 
 .podcast-description {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #4a5568;
     margin-bottom: 1rem;
     line-height: 1.5;
+    text-align: left;
 }
 
 .podcast-link {
     display: inline-flex;
     align-items: center;
-    color: #3182ce;
+    color: #7f8386;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     transition: color 0.2s ease;
 }
 
