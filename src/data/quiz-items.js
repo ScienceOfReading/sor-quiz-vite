@@ -696,7 +696,7 @@ export const quizEntries = [{
         { id: 4, text: 'September 11 attacks' },
         { id: 1, text: 'World War II ends' },
     ],
-    correctOrder: [1, 2, 3, 4],
+    correctOrder: [1, 3, 2, 4],
     option1: "Yes",
     option2: "No",
     option3: "",
