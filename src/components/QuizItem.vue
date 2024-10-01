@@ -4,6 +4,7 @@
     <div v-if="quizItem.answer_type == 'tf'">
       Handle a true/false question here.</div>
     <div v-else-if="quizItem.answer_type == 'sortable'">
+      {{ console.log("in sortable display, quizitem: ", quizItem) }} <!-- Add this line -->
       <SortableList :title="quizItem.title" :instructions="quizItem.instructions" :items="quizItem.items"
         :correctOrder="quizItem.correctOrder" :disabled="reviewMode" @order-changed="handleOrderChanged" />
     </div>

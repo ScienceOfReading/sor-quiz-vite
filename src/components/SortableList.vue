@@ -2,6 +2,7 @@
     <div class="sortable-list">
         <h3 class="text-lg font-semibold mb-2">{{ title }}</h3>
         <p class="mb-4">{{ instructions }}</p>
+        <p v-if="localItems.length === 0">No items to sort.</p> <!-- Add this line -->
         <draggable v-model="localItems" item-key="id" :disabled="disabled" class="list-group" ghost-class="ghost"
             @end="onDragEnd">
             <template #item="{ element }">
@@ -50,6 +51,7 @@ export default {
     },
     setup(props, { emit }) {
         const localItems = ref([...props.items]);
+        console.log('SortableList setup - items:', props.items); // Add this line
         const showFeedback = ref(false);
 
         const isCorrect = computed(() => {
