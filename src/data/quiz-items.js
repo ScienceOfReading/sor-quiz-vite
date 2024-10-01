@@ -581,6 +581,12 @@ export const quizEntries = [{
     image: "",
     imageUrl: "https://static.wixstatic.com/media/237d54_46f644e7bf8c42979fd13842c4e4ae29~mv2.png/v1/fill/w_909,h_497,al_c,q_90,enc_auto/Erbelia%202024.png",
     imageAltText: "Image https://www.teachingbyscience.com/pa-debate",
+    resources: [{
+        title: "Is It Time To Retire Oral Only Phonemic Awareness Instruction?",
+        author: "Nathaniel Hansford",
+        url: "https://www.teachingbyscience.com/pa-debate",
+        description: "Discussion of the pros and cons of PA-only instruction, in the context of the below meta-analysis.",
+    }],
     cautionLevel: "",
     caution: "",
     citations: [{
@@ -590,7 +596,7 @@ export const quizEntries = [{
         year: 2024,
         imageUrl: "",
     }],
-    ref1: "https://www.teachingbyscience.com/pa-debate",
+    ref1: "",
     ref2: "",
     closingText: "",
     closingText2: "",
