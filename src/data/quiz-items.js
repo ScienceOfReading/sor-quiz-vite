@@ -691,10 +691,10 @@ export const quizEntries = [{
     title: 'Sort the following events in chronological order',
     instructions: 'Drag and drop the items to put them in the correct order.',
     items: [
-        { id: 1, text: 'World War II ends' },
-        { id: 2, text: 'Moon landing' },
-        { id: 3, text: 'Fall of the Berlin Wall' },
+        { id: 3, text: 'Moon landing' },
+        { id: 2, text: 'Fall of the Berlin Wall' },
         { id: 4, text: 'September 11 attacks' },
+        { id: 1, text: 'World War II ends' },
     ],
     correctOrder: [1, 2, 3, 4],
     option1: "Yes",

@@ -4,14 +4,14 @@
         <p class="mb-4">{{ instructions }}</p>
         <p>Debug: Items count: {{ localItems.length }}</p>
 
-        <!-- Add this section to display items without draggable -->
+        <!-- Add this section to display items without draggable 
         <div v-if="!useDraggable">
             <div v-for="item in localItems" :key="item.id" class="list-group-item">
                 {{ item.text }}
             </div>
         </div>
-
-        <draggable v-else v-model="localItems" item-key="id" :disabled="disabled" class="list-group" ghost-class="ghost"
+    -->
+        <draggable v-model="localItems" item-key="id" :disabled="disabled" class="list-group" ghost-class="ghost"
             @end="onDragEnd">
             <template #item="{ element }">
                 <div class="list-group-item">
@@ -29,12 +29,12 @@
 
 <script>
 import { ref, computed } from 'vue';
-import { VueDraggableNext } from 'vue-draggable-next';
+import draggable from 'vuedraggable';
 
 export default {
     name: 'SortableList',
     components: {
-        draggable: VueDraggableNext,
+        draggable,
     },
     props: {
         title: {
@@ -61,7 +61,6 @@ export default {
     setup(props, { emit }) {
         const localItems = ref([...props.items]);
         const showFeedback = ref(false);
-        const useDraggable = ref(false); // Add this line
 
         console.log('SortableList setup - items:', props.items);
         console.log('SortableList setup - localItems:', localItems.value);
@@ -80,7 +79,6 @@ export default {
             showFeedback,
             isCorrect,
             onDragEnd,
-            useDraggable, // Add this line
         };
     },
 }
