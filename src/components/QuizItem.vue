@@ -3,6 +3,10 @@
 
     <div v-if="quizItem.answer_type == 'tf'">
       Handle a true/false question here.</div>
+    <div v-else-if="quizItem.answer_type == 'sortable'">
+      <SortableList :title="quizItem.title" :instructions="quizItem.instructions" :items="quizItem.items"
+        :correctOrder="quizItem.correctOrder" :disabled="reviewMode" @order-changed="handleOrderChanged" />
+    </div>
     <div v-else class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
       <h5 class="text-stone-400 lg:pt-2">{{ quizItem.title }}</h5>
       <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
@@ -99,6 +103,7 @@ import OptionIcon from "./OptionIcon.vue";
 import fireworksJSON from '../lottie/fireworks.json'
 import LiteYouTubeEmbed from 'vue-lite-youtube-embed';
 import Explanation from './Explanation.vue'; // Add this import
+import SortableList from './SortableList.vue';
 
 export default {
   name: 'QuizItem',
@@ -124,6 +129,7 @@ export default {
     OptionIcon,
     Explanation, // Add this component
     LiteYouTubeEmbed, // Add this component if you're using it
+    SortableList,
   },
   computed: {
 
@@ -214,7 +220,12 @@ export default {
     },
     onHover() {
       console.log("Hovered");
-    }
+    },
+    handleOrderChanged(newOrder) {
+      // Handle the new order, e.g., update the user's answer
+      this.$userAnswers[this.itemNum] = newOrder;
+      this.$emit('selected');
+    },
   }
 }
 </script>
