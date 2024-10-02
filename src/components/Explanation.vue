@@ -5,6 +5,10 @@
             class="rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-10 lg:w-5/6">
             <div class="content-wrapper">
                 <div class="text-content justified">
+                    <div v-if="quizItem.answer_type === 'sortable' && showFeedback" class="mt-4">
+                        <p v-if="isCorrect" class="text-green-600">Correct! Well done!</p>
+                        <p v-else class="text-red-600">Not quite right. Try again!</p>
+                    </div>
                     <!-- Move all the text content here -->
                     <p class=" mb-4">{{ quizItem.explanation }}</p>
                     <p v-if="quizItem.explanation2" class="0">{{ quizItem.explanation2 }}</p>
@@ -30,11 +34,16 @@
                 <Citation v-for="(citation, index) in quizItem.citations" :key="index" :citation="citation" />
             </div>
             <Caution :message="quizItem.caution" />
+            <div v-if="quizItem.answer_type === 'sortable' && showFeedback" class="mt-4">
+                <p v-if="isCorrect" class="text-green-600">Correct! Well done!</p>
+                <p v-else class="text-red-600">Not quite right. Try again!</p>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import { ref, computed } from 'vue';
 import ExplainerVideo from './ExplainerVideo.vue'
 import ExplainerImage from './ExplainerImage.vue'
 import Citation from './Citation.vue'
@@ -58,8 +67,33 @@ export default {
         },
         reviewMode: {
             type: Boolean,
-            required: true
+            default: false
+        },
+        userAnswer: {
+            type: [String, Array, Number],
+            default: null
         }
+    },
+    setup(props) {
+        const showFeedback = ref(false);
+
+        const isCorrect = computed(() => {
+            if (props.quizItem.answer_type === 'sortable') {
+                return props.userAnswer.every((id, index) => id === props.quizItem.correctOrder[index]);
+            }
+            // ... handle other question types ...
+        });
+
+        // Function to be called when an answer is submitted
+        const checkAnswer = () => {
+            showFeedback.value = true;
+        };
+
+        return {
+            showFeedback,
+            isCorrect,
+            checkAnswer
+        };
     }
 }
 </script>

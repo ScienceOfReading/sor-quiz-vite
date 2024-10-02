@@ -4,7 +4,6 @@
     <div v-if="quizItem.answer_type == 'tf'">
       Handle a true/false question here.</div>
     <div v-else-if="quizItem.answer_type == 'sortable'">
-      {{ console.log("in sortable display, quizitem: ", quizItem) }} <!-- Add this line -->
       <SortableList :title="quizItem.title" :instructions="quizItem.instructions" :items="quizItem.items"
         :correctOrder="quizItem.correctOrder" :disabled="reviewMode" @order-changed="handleOrderChanged" />
     </div>
@@ -94,7 +93,7 @@
         </li>
       </ul>
     </div>
-    <Explanation :quizItem="quizItem" :reviewMode="reviewMode" />
+    <Explanation :quizItem="quizItem" :reviewMode="reviewMode" :userAnswer="userAnswer" ref="explanationComponent" />
 
   </div>
 </template>
@@ -105,6 +104,7 @@ import fireworksJSON from '../lottie/fireworks.json'
 import LiteYouTubeEmbed from 'vue-lite-youtube-embed';
 import Explanation from './Explanation.vue'; // Add this import
 import SortableList from './SortableList.vue';
+import { ref } from 'vue';
 
 export default {
   name: 'QuizItem',
@@ -223,11 +223,27 @@ export default {
       console.log("Hovered");
     },
     handleOrderChanged(newOrder) {
-      // Handle the new order, e.g., update the user's answer
-      this.$userAnswers[this.itemNum] = newOrder;
+      this.userAnswer = newOrder;
       this.$emit('selected');
+      this.explanationComponent.checkAnswer();
     },
-  }
+  },
+  setup(props, { emit }) {
+    const userAnswer = ref(null);
+    const explanationComponent = ref(null);
+
+    const handleOrderChanged = (newOrder) => {
+      userAnswer.value = newOrder;
+      emit('selected');
+      explanationComponent.value.checkAnswer();
+    };
+
+    return {
+      userAnswer,
+      handleOrderChanged,
+      explanationComponent
+    };
+  },
 }
 </script>
 
