@@ -7,7 +7,7 @@
                 <div class="text-content justified">
                     <div v-if="quizItem.answer_type === 'sortable' && showFeedback" class="mt-4">
                         <p v-if="isCorrect" class="text-green-600">Correct! Well done!</p>
-                        <p v-else class="text-red-600">Not quite right. Try again!</p>
+                        <p v-else class="text-red-600">Not quite right.</p>
                     </div>
                     <!-- Move all the text content here -->
                     <p class=" mb-4">{{ quizItem.explanation }}</p>
@@ -34,10 +34,6 @@
                 <Citation v-for="(citation, index) in quizItem.citations" :key="index" :citation="citation" />
             </div>
             <Caution :message="quizItem.caution" />
-            <div v-if="quizItem.answer_type === 'sortable' && showFeedback" class="mt-4">
-                <p v-if="isCorrect" class="text-green-600">Correct! Well done!</p>
-                <p v-else class="text-red-600">Not quite right. Try again!</p>
-            </div>
         </div>
     </div>
 </template>
