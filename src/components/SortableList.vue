@@ -3,14 +3,18 @@
         <h3 class="text-lg font-semibold mb-2">{{ title }}</h3>
         <p class="mb-4">{{ instructions }}</p>
 
-        <draggable v-model="localItems" item-key="id" :disabled="disabled" @end="onDragEnd" :animation="300"
-            class="list-group">
+        <div class="label top-label">{{ topLabel }}</div>
+
+        <draggable v-model="localItems" item-key="id" :disabled="disabled" @start="onDragStart" @end="onDragEnd"
+            :animation="300" class="list-group">
             <template #item="{ element }">
                 <div class="list-group-item">
                     {{ element.text }}
                 </div>
             </template>
         </draggable>
+
+        <div class="label bottom-label">{{ bottomLabel }}</div>
     </div>
 </template>
 
@@ -44,16 +48,30 @@ export default {
             type: Boolean,
             default: false,
         },
+        topLabel: {
+            type: String,
+            required: true,
+        },
+        bottomLabel: {
+            type: String,
+            required: true,
+        },
     },
     setup(props, { emit }) {
         const localItems = ref([...props.items]);
 
-        const onDragEnd = () => {
+        const onDragStart = (evt) => {
+            evt.item.classList.add('dragging');
+        };
+
+        const onDragEnd = (evt) => {
+            evt.item.classList.remove('dragging');
             emit('order-changed', localItems.value.map(item => item.id));
         };
 
         return {
             localItems,
+            onDragStart,
             onDragEnd,
         };
     },
@@ -78,7 +96,7 @@ export default {
     border: 1px solid #e2e8f0;
     border-radius: 0.375rem;
     cursor: move;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     color: #333;
     font-size: 1rem;
     line-height: 1.5;
@@ -99,19 +117,35 @@ export default {
     border-color: #cbd5e0;
 }
 
-.sortable-drag {
-    opacity: 0.5;
-    background-color: #e2e8f0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.list-group-item.dragging {
+    opacity: 0.8;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    z-index: 10;
 }
 
 .sortable-ghost {
-    opacity: 0.5;
+    opacity: 0.4;
     background-color: #f7fafc;
+    border: 2px dashed #cbd5e0;
 }
 
 .sortable-chosen {
     background-color: #edf2f7;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.label {
+    text-align: center;
+    font-weight: bold;
+    color: #4a5568;
+    padding: 0.5rem;
+}
+
+.top-label {
+    margin-bottom: 0.5rem;
+}
+
+.bottom-label {
+    margin-top: 0.5rem;
 }
 </style>

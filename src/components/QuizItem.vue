@@ -5,7 +5,8 @@
       Handle a true/false question here.</div>
     <div v-else-if="quizItem.answer_type == 'sortable'">
       <SortableList :title="quizItem.title" :instructions="quizItem.instructions" :items="quizItem.items"
-        :correctOrder="quizItem.correctOrder" :disabled="reviewMode" @order-changed="handleOrderChanged" />
+        :correctOrder="quizItem.correctOrder" :disabled="reviewMode" :topLabel="quizItem.topLabel"
+        :bottomLabel="quizItem.bottomLabel" @order-changed="handleOrderChanged" />
     </div>
     <div v-else class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
       <h5 class="text-stone-400 lg:pt-2">{{ quizItem.title }}</h5>

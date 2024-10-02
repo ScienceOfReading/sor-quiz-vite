@@ -690,6 +690,8 @@ export const quizEntries = [{
     answer_type: 'sortable',
     title: 'Sort these learning difficulties in order of how common they are.',
     instructions: 'Drag and drop the items to put them in the correct order.',
+    topLabel: 'Most common',
+    bottomLabel: 'Least common',
     items: [
         { id: 1, text: 'Developmental dyslexia' },
         { id: 2, text: 'Developmental Language Disorder (DLD)' },
