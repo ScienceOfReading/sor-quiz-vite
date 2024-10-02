@@ -688,7 +688,6 @@ export const quizEntries = [{
     id: 26,
     Question: "Which learning difficulties are children most likely to have?.",
     answer_type: 'sortable',
-    title: 'Sort these learning difficulties in order of how common they are.',
     instructions: 'Sort these learning difficulties in order of how common they are.',
     topLabel: 'Most common',
     bottomLabel: 'Least common',

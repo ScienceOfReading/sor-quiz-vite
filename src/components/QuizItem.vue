@@ -1,99 +1,120 @@
 <template>
   <div class="w-full place-content-center mx-auto">
+    <!-- Display the question for all question types -->
+    <h2 class="text-xl font-bold mb-4">{{ quizItem.Question }}</h2>
 
-    <div v-if="quizItem.answer_type == 'tf'">
-      Handle a true/false question here.</div>
+    <!-- Existing question types -->
+    <div v-if="quizItem.answer_type == 'multiple_choice'">
+      <div v-if="quizItem.answer_type == 'tf'">
+        Handle a true/false question here.</div>
+      <div v-else class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
+        <h5 class="text-stone-400 lg:pt-2">{{ quizItem.title }}</h5>
+        <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
+        <p class="question-text mb-2"> {{ quizItem.questionP2 }}</p>
+
+        <ul class="lg:w-2/3 place-self-center mb-8">
+          <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1], ['border-green-400']: greenOutline[0] }"
+            class="flex flex-row min-h-14 answer" @click="select(1)">
+            <div class="list-asking">
+              <OptionIcon :status="optionsStatus[0]"></OptionIcon>
+            </div>
+            <div class="list-item-right">{{ quizItem.option1 }}
+            </div>
+            <div v-if="greenOutline[0]" class="p-0 m-0">
+              <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px"
+                class="m-0 p-0">
+              </Vue3Lottie>
+            </div>
+          </li>
+
+          <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[2], ['border-green-400']: greenOutline[1] }"
+            @click="select(2)" class="flex flex-row border-solid rounded-lg min-h-14 answer ">
+            <div class="list-asking">
+              <OptionIcon :status="optionsStatus[1]"></OptionIcon>
+            </div>
+            <div class="list-item-right"> {{ quizItem.option2 }}</div>
+            <div v-if="greenOutline[1] && highlighted[2]" class="p-0">
+              <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px"
+                class="m-0 p-0">
+              </Vue3Lottie>
+            </div>
+          </li>
+
+          <li v-if="quizItem.option3"
+            :class="{ [`bg-stone-400 border-amber-500`]: highlighted[3], ['border-green-400']: greenOutline[2] }"
+            class="flex flex-row min-h-14 answer" @click="select(3)">
+            <div class="list-asking">
+              <OptionIcon :status="optionsStatus[2]"></OptionIcon>
+            </div>
+            <div class="list-item-right">{{ quizItem.option3 }}</div>
+            <div v-if="greenOutline[2] && highlighted[3]" class="">
+              <div class="bg-stone-400/25 ">
+                <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px"
+                  class="m-0 p-0 bg-white">
+                </Vue3Lottie>
+              </div>
+            </div>
+          </li>
+
+          <li v-if="quizItem.option4"
+            :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4], ['border-green-400']: greenOutline[3] }"
+            class="flex flex-row min-h-14 answer" @click="select(4)">
+            <div class="list-asking">
+              <OptionIcon :status="optionsStatus[3]"></OptionIcon>
+            </div>
+            <div class=" list-item-right">{{ quizItem.option4 }}
+            </div>
+            <div v-if="greenOutline[3] && highlighted[4]" class="p-0">
+              <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px"
+                class="m-0 p-0">
+              </Vue3Lottie>
+            </div>
+          </li>
+          <li v-if="quizItem.option5"
+            :class="{ [`bg-stone-400 border-amber-500`]: highlighted[5], ['border-green-400']: greenOutline[4] }"
+            class="flex flex-row min-h-14 answer" @click="select(5)">
+            <div class="list-asking">
+              <OptionIcon :status="optionsStatus[4]"></OptionIcon>
+            </div>
+            <div class="list-item-right">{{ quizItem.option5 }}</div>
+            <div v-if="greenOutline[4] && highlighted[5]" class="p-0">
+              <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px"
+                class="m-0 p-0">
+              </Vue3Lottie>
+            </div>
+          </li>
+          <li v-if="quizItem.option6"
+            :class="{ [`bg-stone-400 border-amber-500`]: highlighted[6], ['border-green-400']: greenOutline[5] }"
+            class="flex flex-row min-h-14 answer" @click="select(6)">
+            <div class="list-asking">
+              <OptionIcon :status="optionsStatus[5]"></OptionIcon>
+            </div>
+            <div class="list-item-right">{{ quizItem.option6 }}</div>
+            <div v-if="greenOutline[5] && highlighted[6]" class="p-0">
+              <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px"
+                class="m-0 p-0">
+              </Vue3Lottie>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div v-else-if="quizItem.answer_type == 'true_false'">
+      <!-- ... true/false content ... -->
+    </div>
+
+    <div v-else-if="quizItem.answer_type == 'short_answer'">
+      <!-- ... short answer content ... -->
+    </div>
+
+    <!-- Sortable list -->
     <div v-else-if="quizItem.answer_type == 'sortable'">
       <SortableList :title="quizItem.title" :instructions="quizItem.instructions" :items="quizItem.items"
         :correctOrder="quizItem.correctOrder" :disabled="reviewMode" :topLabel="quizItem.topLabel"
         :bottomLabel="quizItem.bottomLabel" @order-changed="handleOrderChanged" />
     </div>
-    <div v-else class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
-      <h5 class="text-stone-400 lg:pt-2">{{ quizItem.title }}</h5>
-      <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
-      <p class="question-text mb-2"> {{ quizItem.questionP2 }}</p>
 
-      <ul class="lg:w-2/3 place-self-center mb-8">
-        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1], ['border-green-400']: greenOutline[0] }"
-          class="flex flex-row min-h-14 answer" @click="select(1)">
-          <div class="list-asking">
-            <OptionIcon :status="optionsStatus[0]"></OptionIcon>
-          </div>
-          <div class="list-item-right">{{ quizItem.option1 }}
-          </div>
-          <div v-if="greenOutline[0]" class="p-0 m-0">
-            <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px" class="m-0 p-0">
-            </Vue3Lottie>
-          </div>
-        </li>
-
-        <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[2], ['border-green-400']: greenOutline[1] }"
-          @click="select(2)" class="flex flex-row border-solid rounded-lg min-h-14 answer ">
-          <div class="list-asking">
-            <OptionIcon :status="optionsStatus[1]"></OptionIcon>
-          </div>
-          <div class="list-item-right"> {{ quizItem.option2 }}</div>
-          <div v-if="greenOutline[1] && highlighted[2]" class="p-0">
-            <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px" class="m-0 p-0">
-            </Vue3Lottie>
-          </div>
-        </li>
-
-        <li v-if="quizItem.option3"
-          :class="{ [`bg-stone-400 border-amber-500`]: highlighted[3], ['border-green-400']: greenOutline[2] }"
-          class="flex flex-row min-h-14 answer" @click="select(3)">
-          <div class="list-asking">
-            <OptionIcon :status="optionsStatus[2]"></OptionIcon>
-          </div>
-          <div class="list-item-right">{{ quizItem.option3 }}</div>
-          <div v-if="greenOutline[2] && highlighted[3]" class="">
-            <div class="bg-stone-400/25 ">
-              <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px"
-                class="m-0 p-0 bg-white">
-              </Vue3Lottie>
-            </div>
-          </div>
-        </li>
-
-        <li v-if="quizItem.option4"
-          :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4], ['border-green-400']: greenOutline[3] }"
-          class="flex flex-row min-h-14 answer" @click="select(4)">
-          <div class="list-asking">
-            <OptionIcon :status="optionsStatus[3]"></OptionIcon>
-          </div>
-          <div class=" list-item-right">{{ quizItem.option4 }}
-          </div>
-          <div v-if="greenOutline[3] && highlighted[4]" class="p-0">
-            <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px" class="m-0 p-0">
-            </Vue3Lottie>
-          </div>
-        </li>
-        <li v-if="quizItem.option5"
-          :class="{ [`bg-stone-400 border-amber-500`]: highlighted[5], ['border-green-400']: greenOutline[4] }"
-          class="flex flex-row min-h-14 answer" @click="select(5)">
-          <div class="list-asking">
-            <OptionIcon :status="optionsStatus[4]"></OptionIcon>
-          </div>
-          <div class="list-item-right">{{ quizItem.option5 }}</div>
-          <div v-if="greenOutline[4] && highlighted[5]" class="p-0">
-            <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px" class="m-0 p-0">
-            </Vue3Lottie>
-          </div>
-        </li>
-        <li v-if="quizItem.option6"
-          :class="{ [`bg-stone-400 border-amber-500`]: highlighted[6], ['border-green-400']: greenOutline[5] }"
-          class="flex flex-row min-h-14 answer" @click="select(6)">
-          <div class="list-asking">
-            <OptionIcon :status="optionsStatus[5]"></OptionIcon>
-          </div>
-          <div class="list-item-right">{{ quizItem.option6 }}</div>
-          <div v-if="greenOutline[5] && highlighted[6]" class="p-0">
-            <Vue3Lottie autoplay loop mode="normal" :animationData="fireworksJSON" style="width: 70px" class="m-0 p-0">
-            </Vue3Lottie>
-          </div>
-        </li>
-      </ul>
-    </div>
     <Explanation :quizItem="quizItem" :reviewMode="reviewMode" :userAnswer="userAnswer" ref="explanationComponent" />
 
   </div>
@@ -242,7 +263,8 @@ export default {
     return {
       userAnswer,
       handleOrderChanged,
-      explanationComponent
+      explanationComponent,
+      quizItem: props.quizItem,
     };
   },
 }
