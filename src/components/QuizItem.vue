@@ -162,7 +162,7 @@ export default {
       console.log("In watcher itemNum, reviewmode is: ", this.reviewMode)
       this.highlighted = [false, false, false, false, false, false];
       this.greenOutline = [false, false, false, false, false, false];
-
+      console.log("In Watcher, basicMode is: ", this.basicMode, "and reviewMode is: ", this.reviewMode)
       if (this.basicMode == false)
         if (this.reviewMode == false) {
           console.log("In itemNum watcher,selection mode");
