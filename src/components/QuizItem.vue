@@ -4,15 +4,13 @@
     <h2 class="text-xl font-bold mb-4">{{ quizItem.Question }}</h2>
 
     <!-- Existing question types -->
-    <div v-if="quizItem.answer_type == 'multiple_choice'">
-      <div v-if="quizItem.answer_type == 'tf'">
-        Handle a true/false question here.</div>
-      <div v-else class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
+    <div v-if="quizItem.answer_type == 'mc'">
+      <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
         <h5 class="text-stone-400 lg:pt-2">{{ quizItem.title }}</h5>
         <p class="question-text mb-2">Q: {{ quizItem.Question }}</p>
         <p class="question-text mb-2"> {{ quizItem.questionP2 }}</p>
 
-        <ul class="lg:w-2/3 place-self-center mb-8">
+        <ul class="lg:w-2/3 place-self-center mb-4">
           <li :class="{ [`bg-stone-400 border-amber-500`]: highlighted[1], ['border-green-400']: greenOutline[0] }"
             class="flex flex-row min-h-14 answer" @click="select(1)">
             <div class="list-asking">
