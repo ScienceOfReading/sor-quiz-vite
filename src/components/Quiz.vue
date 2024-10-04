@@ -134,9 +134,14 @@ export default {
     nextItem() {
 
       //this.reviewMode = false;
+      console.log("In NextItem, itemNum was: ", this.itemNum)
       this.itemNum = this.itemNum + 1;
+      console.log("In NextItem, itemNum is now: ", this.itemNum)
 
+      // If basic mode, go to a new question
       if (this.basicMode && this.reviewing) { this.reviewing = false; this.reviewMode = false }
+
+      //Handle answers in expert mode
       else if (this.basicMode == false && this.reviewing) { this.reviewing = true; this.reviewMode = true; }
       console.log("In nextItem, userAnswers: ", this.$userAnswers)
       console.log("Next. itemNum is now: ", this.itemNum);
