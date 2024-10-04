@@ -13,9 +13,11 @@
           <div><button @click="showQuiz(0)" class="lg:text-3xl sm:text-2xl">Expert</button></div>
           <div><button @click="showQuiz(1)" class="lg:text-3xl sm:text-2xl">Basic</button></div>
         </div>
-        <div class="mt-2 mb-8 gap-16 columns-1">
+        <div class="mt-2 mb-8 gap-16 columns-2">
           <div><button @click="showQuiz(2)"
               class="place-self-center place-content-centerlg:text-3xl sm:text-2xl">Kinder-First</button></div>
+          <div><button @click="showQuiz(3)" class="place-self-center place-content-centerlg:text-3xl sm:text-2xl">Admin,
+              Board Members</button></div>
         </div>
       </div>
     </div>

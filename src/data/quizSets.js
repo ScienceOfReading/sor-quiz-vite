@@ -11,6 +11,11 @@ export const quizSets = [{
 {
     setName: "kinder-first",
     basicMode: true,
-    items: [27, 26, 23, 24, 25, 11]
+    items: [26, 23, 24, 25, 11]
+},
+{
+    setName: "admin",
+    basicMode: true,
+    items: [27]
 }
 ];
