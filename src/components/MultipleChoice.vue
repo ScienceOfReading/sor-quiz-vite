@@ -117,10 +117,7 @@ export default {
         }
     },
     components: {
-        OptionIcon,
-        Explanation, // Add this component
-        LiteYouTubeEmbed, // Add this component if you're using it
-        SortableList,
+        OptionIcon,// Add this component
     },
     computed: {
 
@@ -181,8 +178,7 @@ export default {
         return {
             highlighted: Array(6).fill(false),
             greenOutline: Array(6).fill(false),
-            optionsStatus: Array(6).fill(1),
-            fireworksJSON
+            optionsStatus: Array(6).fill(1)
         }
     },
     mounted() {
@@ -274,16 +270,6 @@ a {
     margin-bottom: auto;
 }
 
-.explanation {
-    border-radius: 3pt;
-    border-style: solid;
-    border-width: 2pt;
-}
-
-.p-explanation {
-    margin-left: 200px;
-    margin-right: 200px;
-}
 
 .hidden {
     visibility: hidden;

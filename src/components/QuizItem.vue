@@ -5,10 +5,8 @@
 
     <!-- Existing question types -->
     <div v-if="quizItem.answer_type == 'mc'">
-      <MultipleChoice :title="quizItem.title" :question="quizItem.Question" :questionP2="quizItem.questionP2"
-        :options="[quizItem.option1, quizItem.option2, quizItem.option3, quizItem.option4, quizItem.option5, quizItem.option6]"
-        :optionsStatus="optionsStatus" :highlighted="highlighted" :greenOutline="greenOutline"
-        :fireworkJSON="fireworksJSON" @answer-selected="handleAnswerSelected" />
+      <MultipleChoice :quizItem="quizItem" :reviewMode="reviewMode" :itemNum="itemNum" :basicMode="basicMode"
+        :optionsStatus="optionsStatus" :highlighted="highlighted" @answer-selected="handleAnswerSelected" />
     </div>
 
     <div v-else-if="quizItem.answer_type == 'true_false'">
@@ -60,7 +58,6 @@ export default {
   },
   components: {
     MultipleChoice,
-    OptionIcon,
     Explanation, // Add this component
     LiteYouTubeEmbed, // Add this component if you're using it
     SortableList,
@@ -124,8 +121,7 @@ export default {
     return {
       highlighted: Array(6).fill(false),
       greenOutline: Array(6).fill(false),
-      optionsStatus: Array(6).fill(1),
-      fireworksJSON
+      optionsStatus: Array(6).fill(1)
     }
   },
   mounted() {
@@ -142,6 +138,11 @@ export default {
       this.$emit('selected');
       this.explanationComponent.checkAnswer();
     },
+    handleAnswerSelected(answerData) {
+      // Handle the selected answer and update state accordingly
+      console.log('Selected answer:', answerData);
+      // Update highlighted, greenOutline, and optionsStatus as needed
+    }
   },
   setup(props, { emit }) {
     const userAnswer = ref(null);
