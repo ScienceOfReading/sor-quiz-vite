@@ -198,11 +198,16 @@ export default {
         select(option) {
             console.log("Selected: ", option);
             this.highlighted = [false, false, false, false, false, false];
-            this.highlighted[option] = true
+            this.highlighted[option] = true;
             this.$userAnswers[this.itemNum] = option;
             this.optionsStatus[option - 1] = 3;
-            console.log("In MultipleChoice, this.$userAnswers is now ", this.$userAnswers)
-            this.$emit('selected')
+            console.log("In MultipleChoice, this.$userAnswers is now ", this.$userAnswers);
+            // Emit the selected option to the parent component
+            this.$emit('answer-selected', option); // Emit the event
+        },
+        handleAnswerSelected(selectedOption) {
+            console.log("Answer selected:", selectedOption);
+            this.$emit('selected'); // Notify Quiz.vue that an answer was selected
         }
     }
 }

@@ -5,8 +5,8 @@
 
     <!-- Existing question types -->
     <div v-if="quizItem.answer_type == 'mc'">
-      <MultipleChoice :quizItem="quizItem" :reviewMode="reviewMode" :itemNum="itemNum" :basicMode="basicMode"
-        @answer-selected="handleAnswerSelected" />
+      <MultipleChoice @answer-selected="handleAnswerSelected" :quizItem="quizItem" :reviewMode="reviewMode"
+        :itemNum="itemNum" :basicMode="basicMode" />
     </div>
 
     <div v-else-if="quizItem.answer_type == 'true_false'">
@@ -105,10 +105,9 @@ export default {
       this.$emit('selected');
       this.explanationComponent.checkAnswer();
     },
-    handleAnswerSelected(answerData) {
-      // Handle the selected answer and update state accordingly
-      console.log('Selected answer:', answerData);
-      // Update highlighted, greenOutline, and optionsStatus as needed
+    handleAnswerSelected(selectedOption) {
+      console.log("Answer selected:", selectedOption);
+      this.$emit('selected'); // Emit to parent (Quiz.vue)
     }
   },
   setup(props, { emit }) {

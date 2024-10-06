@@ -17,7 +17,7 @@
   </div>
   <div v-else class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
     <QuizItem :quizItem="this.quizItems[itemNum]" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
-      @selected="answerSelected" />
+      @selected="chosen = true" @answer-selected="chosen = true" />
   </div>
 
 
@@ -77,6 +77,7 @@ export default {
     const quizItems = [];
     const reviewing = false;
     const itemNum = 0;
+
 
     return {
       quizItems: quizItems,
@@ -186,7 +187,8 @@ export default {
       console.log("In checkIt, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
     },
     answerSelected() {
-      this.chosen = true;
+      console.log("In answerSelected");
+      // No need to set chosen here, it's handled in the event listener
     },
     submit() {
       console.log("Complete. Let's see your score. ");
