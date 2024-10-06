@@ -97,7 +97,7 @@ import OptionIcon from "./OptionIcon.vue";
 import fireworksJSON from '../lottie/fireworks.json'
 
 export default {
-    name: 'QuizItem',
+    name: 'MultipleChoice',
     props: {
         quizItem: {
             type: Object,
@@ -185,13 +185,13 @@ export default {
         if (this.reviewMode) {
             this.highlighted[this.$userAnswers[this.itemNum]] = true;
             this.optionsStatus = [2, 2, 2, 2, 2, 2];
-            console.log("in QuizItem mounted(), this.$userAnswers", this.$userAnswers, "this.itemNum", this.itemNum, "this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
+            console.log("in MultipleChoice mounted(), this.$userAnswers", this.$userAnswers, "this.itemNum", this.itemNum, "this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
             this.optionsStatus[this.$userAnswers[this.itemNum] - 1] = 5;
             this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
             this.greenOutline[this.quizItem.correctAnswer - 1] = true;
-            console.log("in QuizItem mounted(), highlighted: ", this.highlighted);
-            console.log("in QuizItem mounted(), optionsStatus: ", this.optionsStatus);
-            console.log("in QuizItem mounted(),this.greenOutline: ", this.greenOutline);
+            console.log("in MultipleChoice mounted(), highlighted: ", this.highlighted);
+            console.log("in MultipleChoicemounted(), optionsStatus: ", this.optionsStatus);
+            console.log("in MultipleChoice mounted(),this.greenOutline: ", this.greenOutline);
         }
     },
     methods: {
@@ -201,7 +201,7 @@ export default {
             this.highlighted[option] = true
             this.$userAnswers[this.itemNum] = option;
             this.optionsStatus[option - 1] = 3;
-            console.log("In QuizItem, this.$userAnswers is now ", this.$userAnswers)
+            console.log("In MultipleChoice, this.$userAnswers is now ", this.$userAnswers)
             this.$emit('selected')
         }
     }

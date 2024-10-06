@@ -6,7 +6,7 @@
     <!-- Existing question types -->
     <div v-if="quizItem.answer_type == 'mc'">
       <MultipleChoice :quizItem="quizItem" :reviewMode="reviewMode" :itemNum="itemNum" :basicMode="basicMode"
-        :optionsStatus="optionsStatus" :highlighted="highlighted" @answer-selected="handleAnswerSelected" />
+        @answer-selected="handleAnswerSelected" />
     </div>
 
     <div v-else-if="quizItem.answer_type == 'true_false'">
@@ -70,58 +70,25 @@ export default {
     itemNum(newItemNum, oldItemNum) {
       console.log("In watcher itemNum, item changed from", oldItemNum, " to ", newItemNum);
       console.log("In watcher itemNum, reviewmode is: ", this.reviewMode)
-      this.highlighted = [false, false, false, false, false, false];
-      this.greenOutline = [false, false, false, false, false, false];
       console.log("In Watcher, basicMode is: ", this.basicMode, "and reviewMode is: ", this.reviewMode)
       if (this.basicMode == false)
-        if (this.reviewMode == false) {
-          console.log("In itemNum watcher,selection mode");
-          console.log("newItemNum, this.$userAnswers[newItemNum]]: ", this.itemNum, this.$userAnswers[this.itemNum])
-          this.optionsStatus = [1, 1, 1, 1, 1, 1];
-          console.log("in watcher itemNum, highlighted: ", this.highlighted);
-        }
-        else {
-          console.log("In itemNum watcher,review mode for item: ", this.itemNum);
-          this.highlighted[this.$userAnswers[this.itemNum]] = true;
-          this.optionsStatus = [2, 2, 2, 2, 2, 2];
-          console.log("In itemNum watcher, this.optionsStatus[this.$userAnswers[this.itemNum]]: ", this.optionsStatus[this.$userAnswers[this.itemNum]]);
-          this.optionsStatus[this.$userAnswers[this.itemNum] - 1] = 5;
-          this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-          this.highlighted[this.$userAnswers[this.itemNum]] = true;
-          this.greenOutline[this.quizItem.correctAnswer - 1] = true;
-          console.log("in itemNum watcher, highlighted: ", this.highlighted);
-          console.log("in itemNum watcher, optionsStatus: ", this.optionsStatus);
-          console.log("in itemNum watcher,this.greenOutline: ", this.greenOutline);
-        }
-      console.log("Exit itemNum watcher");
+
+        console.log("Exit QuizItem itemNum watcher");
     },
 
     reviewMode(oldStatus, newStatus) {
       console.log("reviewMode changed from ", oldStatus, " to ", newStatus);
-      this.highlighted = [false, false, false, false, false, false];
       if (this.reviewMode) {
-        this.highlighted[this.$userAnswers[this.itemNum]] = true;
-        this.optionsStatus = [2, 2, 2, 2, 2, 2];
         console.log("in reviewMode watcher, this.$userAnswers", this.$userAnswers);
         console.log("in reviewMode watcher, this.itemNum", this.itemNum);
         console.log("in reviewMode watcher, this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
-        this.optionsStatus[this.$userAnswers[this.itemNum] - 1] = 5;
-        this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-        this.greenOutline[this.quizItem.correctAnswer - 1] = true;
-        console.log("in reviewMode watcher, highlighted: ", this.highlighted);
-        console.log("in reviewMode watcher, optionsStatus: ", this.optionsStatus);
-        console.log("in itemNum watcher,this.greenOutline: ", this.greenOutline);
+
+
       }
-
-      else { this.optionsStatus = [1, 1, 1, 1, 1, 1]; }
     }
-
   },
   data() {
     return {
-      highlighted: Array(6).fill(false),
-      greenOutline: Array(6).fill(false),
-      optionsStatus: Array(6).fill(1)
     }
   },
   mounted() {
