@@ -35,6 +35,9 @@
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">Check it</button>
   </div>
   <div v-else-if="basicMode && !reviewMode && !chosen">
+    <p>basicMode is {{ basicMode }}</p>
+    <p>!reviewMode is {{ !reviewMode }}</p>
+    <p>!chosen is {{ !chosen }}</p>
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">&nbsp;</button>
   </div>
   <div v-else>
