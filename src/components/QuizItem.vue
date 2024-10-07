@@ -2,8 +2,6 @@
   <div class="w-full place-content-center mx-auto">
     <!-- Display the question for all question types -->
     <h2 class="text-xl font-bold mb-4">{{ quizItem.Question }}</h2>
-    <p>In QuizItem, itemNum is: {{ itemNum }}</p>
-    <p>In QuizItem, currentQuizItem is: {{ currentQuizItem }}</p>
     <!-- Existing question types -->
     <div v-if="quizItem.answer_type == 'mc'">
       <MultipleChoice @answer-selected="handleAnswerSelected" :quizItem="quizItem" :reviewMode="reviewMode"
