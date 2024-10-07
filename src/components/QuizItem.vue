@@ -2,10 +2,11 @@
   <div class="w-full place-content-center mx-auto">
     <!-- Display the question for all question types -->
     <h2 class="text-xl font-bold mb-4">{{ quizItem.Question }}</h2>
-    <p>In QuizItem, itemNum is: {{ itemNum }}: {{ currentQuizItem }}</p>
+    <p>In QuizItem, itemNum is: {{ itemNum }}</p>
+    <p>In QuizItem, currentQuizItem is: {{ currentQuizItem }}</p>
     <!-- Existing question types -->
     <div v-if="quizItem.answer_type == 'mc'">
-      <MultipleChoice @answer-selected="handleAnswerSelected" :quizItem="currentQuizItem" :reviewMode="reviewMode"
+      <MultipleChoice @answer-selected="handleAnswerSelected" :quizItem="quizItem" :reviewMode="reviewMode"
         :itemNum="itemNum" :basicMode="basicMode" />
     </div>
 
@@ -39,7 +40,7 @@ import { ref } from 'vue';
 export default {
   name: 'QuizItem',
   props: {
-    quizItem: {
+    currentQuizItem: {
       type: Object,
       required: true
     },
@@ -64,8 +65,8 @@ export default {
   },
   computed: {
     // You can remove this if you're not using it
-    currentQuizItem() {
-      return this.quizItem; // Automatically updates when quizItem changes
+    quizItem() {
+      return this.currentQuizItem; // Automatically updates when quizItem changes
     }
   },
   watch: {
@@ -136,7 +137,7 @@ export default {
       userAnswer,
       handleOrderChanged,
       explanationComponent,
-      quizItem: props.quizItem,
+      // quizItem: props.quizItem,
     };
   },
 }

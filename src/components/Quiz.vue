@@ -18,7 +18,7 @@
   <div v-else class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
     <p>In Quiz, itemNum is: {{ itemNum }}.</p>
     <p>In Quiz, currentQuizItem is: {{ currentQuizItem }}</p>
-    <QuizItem :quizItem="currentQuizItem" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
+    <QuizItem :currentQuizItem="currentQuizItem" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
       @selected="chosen = true" @answer-selected="chosen = true" />
   </div>
 
