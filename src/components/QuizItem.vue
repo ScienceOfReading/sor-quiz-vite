@@ -2,10 +2,10 @@
   <div class="w-full place-content-center mx-auto">
     <!-- Display the question for all question types -->
     <h2 class="text-xl font-bold mb-4">{{ quizItem.Question }}</h2>
-
+    <p>In QuizItem, itemNum is: {{ itemNum }}: {{ currentQuizItem }}</p>
     <!-- Existing question types -->
     <div v-if="quizItem.answer_type == 'mc'">
-      <MultipleChoice @answer-selected="handleAnswerSelected" :quizItem="quizItem" :reviewMode="reviewMode"
+      <MultipleChoice @answer-selected="handleAnswerSelected" :quizItem="currentQuizItem" :reviewMode="reviewMode"
         :itemNum="itemNum" :basicMode="basicMode" />
     </div>
 
@@ -63,32 +63,44 @@ export default {
     SortableList,
   },
   computed: {
-
+    // You can remove this if you're not using it
+    currentQuizItem() {
+      return this.quizItem; // Automatically updates when quizItem changes
+    }
   },
   watch: {
 
     itemNum(newItemNum, oldItemNum) {
-      console.log("In watcher itemNum, item changed from", oldItemNum, " to ", newItemNum);
-      console.log("In watcher itemNum, reviewmode is: ", this.reviewMode)
-      console.log("In Watcher, basicMode is: ", this.basicMode, "and reviewMode is: ", this.reviewMode)
+      console.log("In quizItem watcher itemNum, item changed from", oldItemNum, " to ", newItemNum);
+      console.log("In quizItem  watcher itemNum, reviewmode is: ", this.reviewMode)
+      console.log("In quizItem  Watcher, basicMode is: ", this.basicMode, "and reviewMode is: ", this.reviewMode)
       if (this.basicMode == false)
-
-        console.log("Exit QuizItem itemNum watcher");
+        console.log("In quizItem watcher, quizItem is: ", this.quizItem);
+      console.log("Exit QuizItem itemNum watcher");
     },
-
+    quizItem: {
+      handler(newVal) {
+        console.log("Updated quizItem:", newVal); // Should log the new quizItem
+      },
+      immediate: true // Trigger on component mount
+    },
     reviewMode(oldStatus, newStatus) {
       console.log("reviewMode changed from ", oldStatus, " to ", newStatus);
       if (this.reviewMode) {
-        console.log("in reviewMode watcher, this.$userAnswers", this.$userAnswers);
-        console.log("in reviewMode watcher, this.itemNum", this.itemNum);
-        console.log("in reviewMode watcher, this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
+        console.log("in quizItem  watcher, this.$userAnswers", this.$userAnswers);
+        console.log("in quizItem  watcher, this.itemNum", this.itemNum);
+        console.log("in quizItem  watcher, this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
 
 
       }
     }
   },
   data() {
+    console.log("In QuizItem data, itemNum is: ", this.itemNum);
+    console.log("In QuizItem data, quizItem is: ", this.quizItem);
+    //console.log("In QuizItem data, quizItems is: ", quizItems);
     return {
+      //currentQuizItem: this.quizItems[this.itemNum]
     }
   },
   mounted() {

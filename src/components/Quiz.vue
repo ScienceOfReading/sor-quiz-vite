@@ -16,7 +16,9 @@
     </div>
   </div>
   <div v-else class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
-    <QuizItem :quizItem="this.quizItems[itemNum]" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
+    <p>In Quiz, itemNum is: {{ itemNum }}.</p>
+    <p>In Quiz, currentQuizItem is: {{ currentQuizItem }}</p>
+    <QuizItem :quizItem="currentQuizItem" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
       @selected="chosen = true" @answer-selected="chosen = true" />
   </div>
 
@@ -93,6 +95,12 @@ export default {
     }
   },
   computed: {
+    currentQuizItem() {
+      console.log("In currentQuizItem, itemNum is: ", this.itemNum);
+      console.log("In currentQuizItem, quizItems is: ", this.quizItems);
+      console.log("In currentQuizItem, quizItems[itemNum] is: ", this.quizItems[this.itemNum]);
+      return this.quizItems[this.itemNum];
+    }
     /* numCorrect() {
        let correct = 0;
        console.log("Length ", quizItems.length);
@@ -136,7 +144,7 @@ export default {
     },
 
     nextItem() {
-
+      console.log("-----In nextItem-----")
       //this.reviewMode = false;
       console.log("In NextItem, itemNum was: ", this.itemNum)
       this.itemNum = this.itemNum + 1;
