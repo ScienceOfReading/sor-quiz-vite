@@ -1,7 +1,7 @@
 <template>
   <div class="w-full place-content-center mx-auto">
     <!-- Display the question for all question types -->
-    <h2 class="text-xl font-bold mb-4">{{ quizItem.Question }}</h2>
+    <h2 class="text-xl font-bold mb-4">{{ quizItem.subtitle }}</h2>
     <!-- Existing question types -->
     <div v-if="quizItem.answer_type == 'mc'">
       <MultipleChoice @answer-selected="handleAnswerSelected" :quizItem="quizItem" :reviewMode="reviewMode"
