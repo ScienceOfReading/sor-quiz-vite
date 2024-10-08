@@ -16,6 +16,6 @@ export const quizSets = [{
 {
     setName: "admin",
     basicMode: true,
-    items: [28, 18, 16, 27]
+    items: [28, 18, 29, 16, 27]
 }
 ];

@@ -2,7 +2,7 @@
     <div class="explanation-wrapper">
         <!-- Display explanation content here -->
         <div :class="{ [`hidden`]: !reviewMode }"
-            class="rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-10 lg:w-5/6">
+            class="rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-10 lg:w-full lg:mr-20">
             <div class="content-wrapper">
                 <div class="text-content justified">
                     <div v-if="quizItem.answer_type === 'sortable' && showFeedback" class="mt-4">
@@ -16,7 +16,8 @@
                     <p v-if="quizItem.ref1" class="mt-2 text-sm">{{ quizItem.ref1 }}</p>
                     <p v-if="quizItem.ref2" class="text-sm">{{ quizItem.ref2 }}</p>
                     <p v-if="quizItem.ref3" class="mb- text-sm">{{ quizItem.ref3 }}</p>
-                    <div v-if="quizItem.resources && quizItem.resources.length > 0" class="resources-wrapper">
+                    <div v-if="quizItem.resources && quizItem.resources.length > 0 && quizItem.resources[0].title != ''"
+                        class="resources-wrapper">
                         <Resource v-for="(resource, index) in quizItem.resources" :key="index" :resource="resource" />
                     </div>
                 </div>
@@ -100,6 +101,13 @@ export default {
 -wrapper {
     /* Add your styles here */
     margin-top: .3 rem;
+    padding: 1rem;
+    border: 1px none #ccc;
+    border-radius: 4px;
+}
+
+.explanation-wrapper {
+    margin-top: 1rem;
     padding: 1rem;
     border: 1px none #ccc;
     border-radius: 4px;
