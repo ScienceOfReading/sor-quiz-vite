@@ -29,6 +29,8 @@
                     :altText="quizItem.imageAltText" />
             </div>
             <PodcastReference v-if="quizItem.podcastEpisode" :podcastEpisode="quizItem.podcastEpisode" />
+            <PodcastReference v-if="quizItem.podcastEpisode2" :podcastEpisode="quizItem.podcastEpisode2" />
+            <!-- New line for second podcast reference -->
             <div v-if="quizItem.citations && quizItem.citations.length > 0 && quizItem.citations[0].title != ''"
                 class="citations-wrapper">
                 <Citation v-for="(citation, index) in quizItem.citations" :key="index" :citation="citation" />

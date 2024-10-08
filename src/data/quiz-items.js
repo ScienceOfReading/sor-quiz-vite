@@ -804,6 +804,13 @@ export const quizEntries = [{
         description: "In this important podcast, Pati Montgomery decribes what must happen across the building to improve literacy outcomes.",
         podcastStartTime: 492,
     },
+    podcastEpisode2: {
+        title: "Implementing Multi-Tiered Systems of Supports with Dr. Brittney Bills",
+        EpisodeUrl: "https://amplify.com/episode/science-of-reading-the-podcast/season-5/episode-5-implementing-multi-tiered-systems-of-supports-with-dr-brittney-bills/",
+        audioUrl: "https://www.buzzsprout.com/612361/episodes/10465498-s5-e5-implementing-multi-tiered-systems-of-support-with-dr-brittney-bills.mp3",
+        description: "In a wonderful retelling,Brittney Bills explains how, for each classroom, T's 'beef up that universal tier' to get the right balance for the kids as they are today.",
+        podcastStartTime: 492,
+    },
     cautionLevel: "",
     caution: "",
     citations: [{
