@@ -21,7 +21,10 @@
   </div>
 
 
-  <div v-if="reviewMode && complete" class="mt-6">We're done!! Thank you!</div>
+  <div v-if="reviewMode && complete" class="mt-6">
+    We're done!! Thank you!
+    <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
+  </div>
   <div v-else-if="showResults">
 
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="startReview">Let's see what's happening.</button>
@@ -213,6 +216,9 @@ export default {
       this.reviewMode = true;
       this.reviewing = true;
       console.log("In startReview, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
+    },
+    showOriginalView() {
+      this.$emit('change-view', { showQuizzes: true }); // Emit an event with the new state
     }
   },
   created() {

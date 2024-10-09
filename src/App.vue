@@ -23,7 +23,7 @@
     </div>
   </div>
   <div v-else>
-    <Quiz :selectedQuiz="selectedQuiz"></Quiz>
+    <Quiz @change-view="handleChangeView" :selectedQuiz="selectedQuiz"></Quiz>
   </div>
 </template>
 
@@ -56,6 +56,9 @@ export default {
       console.info("Quiz selected: ", quizNum)
       this.showQuizzes = false;
       this.selectedQuiz = quizNum;
+    },
+    handleChangeView(payload) {
+      this.showQuizzes = payload.showQuizzes; // Update the showQuizzes property based on the emitted event
     }
   },
   created() {
