@@ -1,17 +1,15 @@
 <template>
-  <div v-if="citation.title != ''" class="citation">
+  <div class="citation">
+    <font-awesome-icon :icon="['fas', 'flask-vial']" class="citation-icon" />
     <div class="citation-content">
-      <font-awesome-icon :icon="['fas', 'flask-vial']" class="citation-icon" />
       <p class="citation-text">
-        {{ citation.title }}, {{ citation.author }}, {{ citation.year }},
+        <span class="citation-title">{{ citation.title }}</span>, {{ citation.author }}, {{ citation.year }},
         <a :href="citation.url" target="_blank" class="citation-link" :title="citation.url">
           {{ truncatedUrl }}
         </a>
       </p>
-
-      <p v-if="citation.fullText" class="citation-text">
-        <a :href="citation.fullText" target="_blank" class="citation-text-link" :title="citation.fullText">Full
-          Text</a>
+      <p v-if="citation.fullText" class="citation-text full-text">
+        <a :href="citation.fullText" target="_blank" class="citation-text-link" :title="citation.fullText">Full Text</a>
       </p>
     </div>
     <div v-if="citation.imageUrl" class="citation-image-wrapper">
@@ -43,64 +41,84 @@ export default {
 <style scoped>
 .citation {
   display: flex;
+  /* Use flexbox for layout */
   align-items: flex-start;
   /* Align items to the top */
   gap: 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  /* Space between icon and text */
+  border: 1px solid #ccc;
+  /* Example border */
+  background-color: #f9f9f9;
+  /* Example background color */
   padding: 1rem;
-  margin-bottom: 1rem;
-  background-color: #f8fafc;
-}
-
-.citation-content {
-  display: flex;
-  flex-direction: column;
-  /* Stack children vertically */
+  /* Padding around the citation */
+  border-radius: 4px;
+  /* Rounded corners */
 }
 
 .citation-icon {
   flex-shrink: 0;
-  margin-right: 0.75rem;
-  font-size: 1.25rem;
-  color: #4a5568;
+  /* Prevent the icon from shrinking */
+  margin-right: 0.5rem;
+  /* Space between icon and text */
+  font-size: 1.5rem;
+  /* Adjust icon size as needed */
+}
+
+.citation-content {
+  flex: 1;
+  /* Allow content to take available space */
 }
 
 .citation-text {
-  font-size: 0.875rem;
-  line-height: 1.5;
   margin: 0;
-  /* Reset margin if needed */
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  color: #4a5568;
-  display: block;
-  /* Ensure each paragraph is a block element */
+  /* Reset margin */
+  line-height: 1.5;
+  /* Adjust line height for readability */
+  text-align: left;
+}
+
+.citation-title {
+  font-weight: bold;
+  font-size: .95rem;
+  color: #614f4f;
 }
 
 .citation-link {
   color: #3182ce;
+  /* Link color */
   text-decoration: none;
-  word-break: break-all;
-  display: inline;
-  /* Keep links inline */
+  /* No underline */
 }
 
 .citation-link:hover {
   text-decoration: underline;
+  /* Underline on hover */
+}
+
+.full-text {
+  margin-top: 0.5rem;
+  /* Add some space above the fullText link */
+  display: block;
+  /* Ensure it behaves as a block element */
 }
 
 .citation-image-wrapper {
   flex-shrink: 0;
+  /* Prevent the image wrapper from shrinking */
   width: 100px;
   /* Fixed width for consistency */
 }
 
 .citation-image {
   width: 100%;
+  /* Make the image responsive */
   height: auto;
+  /* Maintain aspect ratio */
   object-fit: cover;
+  /* Cover the area without distortion */
   border-radius: 4px;
+  /* Rounded corners for the image */
 }
 
 @media (max-width: 640px) {
