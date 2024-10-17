@@ -41,7 +41,7 @@
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">&nbsp;</button>
   </div>
   <div v-else>
-    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="nextItem">Next</button>
+    <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="nextItem">Next</button>
 
   </div>
 </template>

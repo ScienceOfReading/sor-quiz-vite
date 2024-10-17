@@ -49,7 +49,7 @@ export default {
 .podcast-header {
     display: flex;
     align-items: center;
-    padding: 0.75rem 1rem;
+    padding: 0.7rem .5rem;
     background-color: #f0f4f8;
     /* Lighter background color */
     border-bottom: 1px solid #e2e8f0;

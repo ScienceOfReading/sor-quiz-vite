@@ -2,7 +2,7 @@
     <div class="explanation-wrapper">
         <!-- Display explanation content here -->
         <div :class="{ [`hidden`]: !reviewMode }"
-            class="rounded-md explanation p-4 lg:mt-4 sm:mt-2 place-self-center lg:ml-10 lg:w-full lg:mr-20">
+            class="rounded-md explanation p-4 lg:mt-0 sm:mt-2 place-self-center lg:ml-10 lg:w-full lg:mr-20">
             <div class="content-wrapper">
                 <div class="text-content justified">
                     <div v-if="quizItem.answer_type === 'sortable' && showFeedback" class="mt-4">
@@ -108,7 +108,7 @@ export default {
 }
 
 .explanation-wrapper {
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
     padding: 1rem;
     border: 1px none #ccc;
     border-radius: 4px;
@@ -137,6 +137,7 @@ export default {
     flex: 0 0 33.333%;
     max-width: 33.333%;
     /* Ensure the video/image doesn't get too small */
+    margin-top: .7rem;
 }
 
 @media (max-width: 768px) {
