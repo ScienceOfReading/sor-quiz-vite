@@ -29,7 +29,8 @@
                 <ExplainerImage v-else-if="quizItem.image" :imageUrl="quizItem.image"
                     :altText="quizItem.imageAltText" />
             </div>
-            <PodcastReference v-if="quizItem.podcastEpisode" :podcastEpisode="quizItem.podcastEpisode" />
+            <PodcastReference v-if="quizItem.podcastEpisode && quizItem.podcastEpisode.title != ''"
+                :podcastEpisode="quizItem.podcastEpisode" />
             <PodcastReference v-if="quizItem.podcastEpisode2 && quizItem.podcastEpisode2.title != ''"
                 :podcastEpisode="quizItem.podcastEpisode2" />
             <!-- New line for second podcast reference -->

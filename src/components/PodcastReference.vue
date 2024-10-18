@@ -71,6 +71,7 @@ export default {
 
 .podcast-content {
     padding: 1rem;
+    padding-bottom: 0rem;
 }
 
 .podcast-player {
@@ -81,7 +82,7 @@ export default {
 .podcast-description {
     font-size: 0.8rem;
     color: #4a5568;
-    margin-bottom: 1rem;
+    margin-bottom: .5rem;
     line-height: 1.5;
     text-align: left;
 }
