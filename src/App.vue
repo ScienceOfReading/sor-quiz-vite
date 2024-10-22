@@ -35,6 +35,8 @@
 import Quiz from './components/Quiz.vue';
 
 import { quizSets } from '../data/quizSets.js'
+import { db } from './firebase'; // Adjust the path as necessary
+import { collection, addDoc } from "firebase/firestore";
 
 export default {
   name: 'App',
@@ -56,10 +58,26 @@ export default {
 
   },
   methods: {
+    async recordQuizAttempt(quizStarted) {
+      try {
+        const docRef = await addDoc(collection(db, "quizAttempts"), {
+          quizStarted: quizStarted, // Time in seconds
+          timestamp: new Date() // Optional: add a timestamp for when the attempt was recorded
+        });
+        console.log("Quiz attempt recorded with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error recording quiz attempt: ", e);
+      }
+    },
+
     showQuiz(quizNum) {
-      console.info("Quiz selected: ", quizNum)
+      console.info("Quiz selected: ", quizNum);
       this.showQuizzes = false;
       this.selectedQuiz = quizNum;
+
+      // Record the quiz attempt when the quiz is shown
+      const startTime = Math.floor(Date.now() / 1000); // Get current time in seconds
+      this.recordQuizAttempt(startTime); // Record the quiz attempt
     },
     handleChangeView(payload) {
       this.showQuizzes = payload.showQuizzes; // Update the showQuizzes property based on the emitted event
