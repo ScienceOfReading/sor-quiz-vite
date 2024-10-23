@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import './style.css'
 import App from './App.vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -35,9 +36,12 @@ library.add(faPodcast)
 library.add(faExternalLinkAlt)
 library.add(faBook)
 const app = createApp(App)
+const pinia = createPinia(); // Create a Pinia store instance
+
 app.config.globalProperties.$userAnswers = []
 app.use(Vue3Lottie)
 app.component(LiteYouTubeEmbed)
 app.component('font-awesome-icon', FontAwesomeIcon)
-    .mount('#app')
 
+app.use(pinia);
+app.mount('#app')

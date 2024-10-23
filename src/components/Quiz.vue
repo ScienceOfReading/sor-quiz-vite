@@ -54,6 +54,7 @@ import { quizSets } from '../data/quizSets.js'
 
 export default {
   name: 'Quiz',
+  emits: ['change-view'],
   components: {
     QuizItem
   },
