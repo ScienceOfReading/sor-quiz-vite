@@ -6,11 +6,13 @@ import { collection, addDoc } from 'firebase/firestore';
 export const quizStore = defineStore('quiz', {
     state: () => ({
         quizAttempts: [],
+        userAnswers: [], // Store user answers here
     }),
     actions: {
         async recordQuizAttempt(quizStarted) {
             const attempt = {
                 quizStarted,
+                userAnswers: this.$userAnswers, // Include user answers
                 timestamp: new Date(),
             };
             this.quizAttempts.push(attempt);
@@ -23,6 +25,23 @@ export const quizStore = defineStore('quiz', {
             } catch (e) {
                 console.error("Error adding document: ", e);
             }
+        },
+        async saveUserAnswers() {
+            const attempt = {
+                userAnswers: this.$userAnswers,
+                timestamp: new Date(),
+            };
+
+            // Firestore logic to save user answers
+            try {
+                const docRef = await addDoc(collection(db, 'userAnswers'), attempt);
+                console.log("User answers saved with ID: ", docRef.id);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+        },
+        setUserAnswers(answers) {
+            this.userAnswers = answers; // Update user answers
         },
     },
 });

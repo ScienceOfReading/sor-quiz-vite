@@ -51,6 +51,7 @@ import QuizItem from './QuizItem.vue';
 import Score from './Score.vue';
 import { quizEntries } from '../data/quiz-items.js'
 import { quizSets } from '../data/quizSets.js'
+import { quizStore } from '../stores/quizStore'; // Import the store
 
 export default {
   name: 'Quiz',
@@ -166,7 +167,8 @@ export default {
       console.log("Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
 
     },
-    checkIt() {
+    async checkIt() {
+      await this.quizStore.saveUserAnswers();
       if (this.basicMode) {
         if (this.reviewing == true) {
           this.itemNum = this.itemNum + 1;
@@ -181,6 +183,7 @@ export default {
       }
       else {
         this.itemNum = this.itemNum + 1;
+
       }
       console.log("In checkIt, userAnswers: ", this.$userAnswers)
       console.log("In checkIt, itemNum is now: ", this.itemNum);
