@@ -12,7 +12,7 @@ export const quizStore = defineStore('quiz', {
         async recordQuizAttempt(quizStarted) {
             const attempt = {
                 quizStarted,
-                userAnswers: this.$userAnswers, // Include user answers
+                userAnswers: this.userAnswers, // Include user answers
                 timestamp: new Date(),
             };
             this.quizAttempts.push(attempt);
@@ -26,8 +26,13 @@ export const quizStore = defineStore('quiz', {
                 console.error("Error adding document: ", e);
             }
         },
-        async saveUserAnswers(userAnswers) {
-            console.log("In saveUserAnswers, userAnswers: ", userAnswers)
+        async saveUserAnswers() {
+            // Check if userAnswers is defined and not empty
+            if (!this.userAnswers || this.userAnswers.length === 0) {
+                console.error("No user answers to save.");
+                return; // Exit if there are no answers to save
+            }
+
             const attempt = {
                 userAnswers: userAnswers,
                 timestamp: new Date(),
