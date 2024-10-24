@@ -168,7 +168,8 @@ export default {
 
     },
     async checkIt() {
-      await this.quizStore.saveUserAnswers();
+      console.log("In checkIt, this.$userAnswers: ", this.$userAnswers)
+      await this.quizStore.saveUserAnswers(this.$userAnswers);
       if (this.basicMode) {
         if (this.reviewing == true) {
           this.itemNum = this.itemNum + 1;

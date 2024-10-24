@@ -26,9 +26,10 @@ export const quizStore = defineStore('quiz', {
                 console.error("Error adding document: ", e);
             }
         },
-        async saveUserAnswers() {
+        async saveUserAnswers(userAnswers) {
+            console.log("In saveUserAnswers, userAnswers: ", userAnswers)
             const attempt = {
-                userAnswers: this.$userAnswers,
+                userAnswers: userAnswers,
                 timestamp: new Date(),
             };
 
