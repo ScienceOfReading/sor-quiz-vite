@@ -43,5 +43,22 @@ app.use(Vue3Lottie)
 app.component(LiteYouTubeEmbed)
 app.component('font-awesome-icon', FontAwesomeIcon)
 
+import { createRouter, createWebHistory } from 'vue-router'; // Import the router
+//import App from './App.vue'; // Import the main App component
+import NewItem from './components/NewItem.vue'; // Import the new component
+
+// Define your routes
+const routes = [
+    { path: '/', component: App }, // Main application route
+    { path: '/new-item', component: NewItem }, // New item route
+];
+
+// Create the router instance
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+});
+
+app.use(router); // Use the router
 app.use(pinia);
 app.mount('#app')

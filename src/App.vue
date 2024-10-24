@@ -29,6 +29,7 @@
   <div v-else>
     <Quiz @change-view="handleChangeView" :selectedQuiz="selectedQuiz"></Quiz>
   </div>
+  <router-link to="/new-item">Suggest a New Quiz Entry</router-link>
 </template>
 
 <script>
