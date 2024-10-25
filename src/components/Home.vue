@@ -38,6 +38,7 @@
 <script>
 import Quiz from './Quiz.vue';
 import { quizStore } from '../stores/quizStore';
+import { quizSets } from '../data/quizSets'; // Import quizSets
 
 export default {
     name: 'Home',
@@ -48,7 +49,8 @@ export default {
         return {
             showQuizzes: true,
             selectedQuiz: 100000,
-            quiz: quizStore()
+            quiz: quizStore(),
+            quizSets: quizSets // Add quizSets to data if needed
         }
     },
     methods: {
@@ -67,5 +69,24 @@ export default {
 </script>
 
 <style>
-/* Move your styles here */
+.quizzes-container {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: space-evenly;
+    flex-flow: column nowrap;
+}
+
+.quiz-item {
+    border-style: solid;
+    border-top-right-radius: 2dvw;
+    border-radius: 2dvw;
+}
+
+.lead-image {
+    width: 50;
+    height: 50;
+}
+
+/* Add any other styles that were previously in App.vue and are needed for the Home component */
 </style>
