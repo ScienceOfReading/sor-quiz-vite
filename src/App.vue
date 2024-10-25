@@ -1,35 +1,41 @@
 <template>
-  <div v-if="showQuizzes">
+  <div>
+    <div v-if="showQuizzes">
 
-    <div class="w-full place-content-center">
+      <div class="w-full place-content-center">
 
-      <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
-    </div>
-    <div class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
-      <div class="mt-24 grid quiz-item w-full border-4 place-self-center place-content-center text-center">
-        <p class="h2 mt-8">We're just getting started, but for now...</p>
-        <p class="font-bold text-sky-900 h2">Choose a role / level of difficulty:</p>
-        <div class="mt-8 mb-2 gap-16 columns-2">
-          <div><button @click="showQuiz(0)" class="lg:text-3xl sm:text-2xl">Expert</button></div>
-          <div><button @click="showQuiz(1)" class="lg:text-3xl sm:text-2xl">Basic</button></div>
-        </div>
-        <div class="mt-2 mb-8 gap-16 columns-2">
-          <div><button @click="showQuiz(2)"
-              class="place-self-center place-content-centerlg:text-3xl sm:text-2xl">Kinder-First</button></div>
-          <div><button @click="showQuiz(3)" class="place-self-center place-content-centerlg:text-3xl sm:text-2xl">Admin,
-              Board Members</button></div>
+        <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
+      </div>
+      <div class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
+        <div class="mt-24 grid quiz-item w-full border-4 place-self-center place-content-center text-center">
+          <p class="h2 mt-8">We're just getting started, but for now...</p>
+          <p class="font-bold text-sky-900 h2">Choose a role / level of difficulty:</p>
+          <div class="mt-8 mb-2 gap-16 columns-2">
+            <div><button @click="showQuiz(0)" class="lg:text-3xl sm:text-2xl">Expert</button></div>
+            <div><button @click="showQuiz(1)" class="lg:text-3xl sm:text-2xl">Basic</button></div>
+          </div>
+          <div class="mt-2 mb-8 gap-16 columns-2">
+            <div><button @click="showQuiz(2)"
+                class="place-self-center place-content-centerlg:text-3xl sm:text-2xl">Kinder-First</button></div>
+            <div><button @click="showQuiz(3)"
+                class="place-self-center place-content-centerlg:text-3xl sm:text-2xl">Admin,
+                Board Members</button></div>
+          </div>
         </div>
       </div>
+      <div class="mt-44 w-full place-content-center">
+        <p class="h3">SOR Quizzes is a <a href="https://github.com/ScienceOfReading/sor-quiz-vite">community driven
+            effort</a>, created by <a href=" https://skunkworks-edu.com">Skunkworks\edu</a>.</p>
+      </div>
     </div>
-    <div class="mt-44 w-full place-content-center">
-      <p class="h3">SOR Quizzes is a <a href="https://github.com/ScienceOfReading/sor-quiz-vite">community driven
-          effort</a>, created by <a href=" https://skunkworks-edu.com">Skunkworks\edu</a>.</p>
+    <div v-else>
+      <Quiz @change-view="handleChangeView" :selectedQuiz="selectedQuiz"></Quiz>
     </div>
+    <router-link to="/new-item">Suggest a New Quiz Entry</router-link>
+
+    <!-- Add this line -->
+    <router-view></router-view>
   </div>
-  <div v-else>
-    <Quiz @change-view="handleChangeView" :selectedQuiz="selectedQuiz"></Quiz>
-  </div>
-  <router-link to="/new-item">Suggest a New Quiz Entry</router-link>
 </template>
 
 <script>
