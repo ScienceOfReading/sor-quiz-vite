@@ -1,85 +1,16 @@
 <template>
-  <div>
-    <div v-if="showQuizzes">
-
-      <div class="w-full place-content-center">
-
-        <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
-      </div>
-      <div class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
-        <div class="mt-24 grid quiz-item w-full border-4 place-self-center place-content-center text-center">
-          <p class="h2 mt-8">We're just getting started, but for now...</p>
-          <p class="font-bold text-sky-900 h2">Choose a role / level of difficulty:</p>
-          <div class="mt-8 mb-2 gap-16 columns-2">
-            <div><button @click="showQuiz(0)" class="lg:text-3xl sm:text-2xl">Expert</button></div>
-            <div><button @click="showQuiz(1)" class="lg:text-3xl sm:text-2xl">Basic</button></div>
-          </div>
-          <div class="mt-2 mb-8 gap-16 columns-2">
-            <div><button @click="showQuiz(2)"
-                class="place-self-center place-content-centerlg:text-3xl sm:text-2xl">Kinder-First</button></div>
-            <div><button @click="showQuiz(3)"
-                class="place-self-center place-content-centerlg:text-3xl sm:text-2xl">Admin,
-                Board Members</button></div>
-          </div>
-        </div>
-      </div>
-      <div class="mt-44 w-full place-content-center">
-        <p class="h3">SOR Quizzes is a <a href="https://github.com/ScienceOfReading/sor-quiz-vite">community driven
-            effort</a>, created by <a href=" https://skunkworks-edu.com">Skunkworks\edu</a>.</p>
-      </div>
-    </div>
-    <div v-else>
-      <Quiz @change-view="handleChangeView" :selectedQuiz="selectedQuiz"></Quiz>
-    </div>
-    <router-link to="/new-item">Suggest a New Quiz Entry</router-link>
-
-    <!-- Add this line -->
+  <div id="app">
+    <nav>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/new-item">Suggest a New Quiz Entry</router-link>
+    </nav>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Quiz from './components/Quiz.vue';
-import { quizSets } from './data/quizSets';
-import { quizStore } from './stores/quizStore'; // Adjust the path as necessary
-
 export default {
-  name: 'App',
-  components: {
-    Quiz
-  },
-  data() {
-    console.log("Data item:");
-    const showQuizzes = true;
-    const selectedQuiz = 100000;
-    const quiz = quizStore();
-
-    return {
-      quizSets: quizSets,
-      showQuizzes: showQuizzes,
-      selectedQuiz: selectedQuiz,
-      quiz: quiz
-    }
-  },
-  computed: {
-
-  },
-  methods: {
-
-    showQuiz(quizNum) {
-      console.info("Quiz selected: ", quizNum);
-      this.showQuizzes = false;
-      this.selectedQuiz = quizNum;
-
-      // Record the quiz attempt when the quiz is shown
-      const startTime = Math.floor(Date.now() / 1000); // Get current time in seconds
-      this.quiz.recordQuizAttempt(startTime); // Call the action from the store
-    },
-    handleChangeView() {
-      this.showQuizzes = true;
-      this.showQuizzes = payload.showQuizzes; // Update the showQuizzes property based on the emitted event
-    }
-  },
+  name: 'App'
 }
 </script>
 
@@ -89,29 +20,19 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  /*color: #2c3e50; */
   margin-top: 20px;
 }
 
-.lead-image {
-  width: 50;
-  height: 50;
+nav {
+  padding: 30px;
 }
 
-.quizzes-container {
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: space-evenly;
-  flex-flow: column nowrap;
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
 }
 
-.quiz-item {
-  border-style: solid;
-  border-top-right-radius: 2dvw;
-  border-radius: 2dvw;
-
+nav a.router-link-exact-active {
+  color: #42b983;
 }
-
-.app-title {}
 </style>
