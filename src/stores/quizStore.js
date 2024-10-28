@@ -34,7 +34,7 @@ export const quizStore = defineStore('quiz', {
             }
 
             const attempt = {
-                userAnswers: userAnswers,
+                userAnswers: this.userAnswers,  // Changed from userAnswers to this.userAnswers
                 timestamp: new Date(),
             };
 

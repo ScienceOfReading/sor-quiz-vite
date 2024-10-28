@@ -17,7 +17,7 @@
   </div>
   <div v-else class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
     <QuizItem :currentQuizItem="currentQuizItem" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
-      @selected="chosen = true" @answer-selected="chosen = true" />
+      v-model:userAnswer="userAnswers[itemNum]" @selected="chosen = true" />
   </div>
 
 
@@ -52,6 +52,7 @@ import Score from './Score.vue';
 import { quizEntries } from '../data/quiz-items.js'
 import { quizSets } from '../data/quizSets.js'
 import { quizStore } from '../stores/quizStore'; // Import the store
+import { ref } from 'vue'
 
 export default {
   name: 'Quiz',
@@ -63,6 +64,15 @@ export default {
     selectedQuiz: {
       type: Number,
       required: true
+    }
+  },
+  setup() {
+    const store = quizStore()
+    const userAnswers = ref([])
+
+    return {
+      store,
+      userAnswers
     }
   },
   data() {
@@ -168,34 +178,36 @@ export default {
 
     },
     async checkIt() {
-      console.log("In checkIt, this.$userAnswers: ", this.$userAnswers)
-      await this.quizStore.saveUserAnswers(this.$userAnswers);
-      if (this.basicMode) {
-        if (this.reviewing == true) {
-          this.itemNum = this.itemNum + 1;
-          this.reviewing = false;
-          this.chosen = false;
-        }
-        else {
-          //don't change correntItem; just enter reviewMode
-          this.reviewing = true
-        }
-        this.reviewMode = !this.reviewMode;
-      }
-      else {
-        this.itemNum = this.itemNum + 1;
+      try {
+        console.log("In checkIt, this.$userAnswers: ", this.$userAnswers);
+        // Use this.$userAnswers instead of this.userAnswers
+        this.store.setUserAnswers(this.$userAnswers);
+        await this.store.saveUserAnswers();
 
+        if (this.basicMode) {
+          if (this.reviewing) {
+            this.itemNum = this.itemNum + 1;
+            this.reviewing = false;
+            this.chosen = false;
+          } else {
+            this.reviewing = true;
+          }
+          this.reviewMode = !this.reviewMode;
+        } else {
+          this.itemNum = this.itemNum + 1;
+        }
+
+        if (this.itemNum == this.quizItems.length - 1) {
+          this.complete = true;
+        } else {
+          this.complete = false;
+        }
+
+        this.chosen = false;
+        console.log("In checkIt, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
+      } catch (error) {
+        console.error("Error in checkIt method:", error);
       }
-      console.log("In checkIt, userAnswers: ", this.$userAnswers)
-      console.log("In checkIt, itemNum is now: ", this.itemNum);
-      console.log("length: ", this.quizItems.length);
-      //this.numCompleted = this.numCompleted + 1;
-      console.log("numCompleted: ", this.numCompleted);
-      if (this.itemNum == this.quizItems.length - 1) { this.complete = true }
-      else { this.complete = false }
-      console.log("In checkIt, complete: ", this.complete)
-      this.chosen = false;
-      console.log("In checkIt, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
     },
     answerSelected() {
       console.log("In answerSelected");
