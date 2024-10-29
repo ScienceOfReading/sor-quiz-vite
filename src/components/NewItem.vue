@@ -1,5 +1,9 @@
 <template>
   <div class="new-item-form">
+    <div v-if="store.saveStatus.show" :class="['save-status', store.saveStatus.type]" @click="store.clearSaveStatus()">
+      {{ store.saveStatus.message }}
+    </div>
+
     <h1>Suggest a New Quiz Entry</h1>
     <form @submit.prevent="submitForm">
       <!-- Basic Information -->
@@ -206,6 +210,10 @@ import { db } from '../firebase';
 import { quizStore } from '../stores/quizStore';
 
 export default {
+  setup() {
+    const store = quizStore();
+    return { store };
+  },
   computed: {
     newEntry: {
       get() {
@@ -216,10 +224,13 @@ export default {
       }
     }
   },
-  data() {
-    return {
-      store: quizStore()
-    };
+  watch: {
+    'store.saveStatus': {
+      handler(newStatus) {
+        console.log('Save status changed:', newStatus);
+      },
+      deep: true
+    }
   },
   methods: {
     addCitation() {
@@ -324,5 +335,38 @@ h2 {
 h3 {
   margin-bottom: 10px;
   color: #666;
+}
+
+.save-status {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  animation: slideIn 0.3s ease-out;
+  z-index: 1000;
+}
+
+.success {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.error {
+  background-color: #f44336;
+  color: white;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 </style>

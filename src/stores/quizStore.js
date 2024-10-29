@@ -49,6 +49,11 @@ export const quizStore = defineStore('quiz', {
             closingText: '',
             closingText2: '',
             modal: ''
+        },
+        saveStatus: {
+            message: '',
+            type: '', // 'success' or 'error'
+            show: false
         }
     }),
     actions: {
@@ -107,12 +112,29 @@ export const quizStore = defineStore('quiz', {
             try {
                 const docRef = await addDoc(collection(db, 'quizEntries'), this.draftQuizEntry);
                 console.log('Document written with ID: ', docRef.id);
+                this.saveStatus = {
+                    message: 'Quiz entry saved successfully!',
+                    type: 'success',
+                    show: true
+                };
                 this.resetDraftQuizEntry();
                 return docRef.id;
             } catch (e) {
                 console.error('Error adding document: ', e);
+                this.saveStatus = {
+                    message: 'Error saving quiz entry: ' + e.message,
+                    type: 'error',
+                    show: true
+                };
                 throw e;
             }
+        },
+        clearSaveStatus() {
+            this.saveStatus = {
+                message: '',
+                type: '',
+                show: false
+            };
         }
     },
 });
