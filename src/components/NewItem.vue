@@ -145,6 +145,100 @@
         </div>
       </details>
 
+      <!-- Cautions -->
+      <details>
+        <summary class="section-summary">Cautions ▼</summary>
+        <div class="form-section">
+          <div class="form-group">
+            <label for="cautionLevel">Caution Level:</label>
+            <input type="text" id="cautionLevel" v-model="newEntry.cautionLevel" />
+          </div>
+          <div class="form-group">
+            <label for="caution">Caution Text:</label>
+            <textarea id="caution" v-model="newEntry.caution"></textarea>
+          </div>
+        </div>
+      </details>
+
+      <!-- Citations -->
+      <details>
+        <summary class="section-summary">Citations ▼</summary>
+        <div class="form-section">
+          <button type="button" @click="addCitation" class="add-button">Add Citation</button>
+          <div v-for="(citation, index) in newEntry.citations" :key="index" class="citation-group">
+            <h3>Citation {{ index + 1 }}</h3>
+            <div class="form-group">
+              <label :for="`citation-${index}-title`">Title:</label>
+              <input type="text" :id="`citation-${index}-title`" v-model="citation.title" />
+            </div>
+            <div class="form-group">
+              <label :for="`citation-${index}-author`">Author:</label>
+              <input type="text" :id="`citation-${index}-author`" v-model="citation.author" />
+            </div>
+            <div class="form-group">
+              <label :for="`citation-${index}-url`">URL:</label>
+              <input type="text" :id="`citation-${index}-url`" v-model="citation.url" />
+            </div>
+            <div class="form-group">
+              <label :for="`citation-${index}-year`">Year:</label>
+              <input type="text" :id="`citation-${index}-year`" v-model="citation.year" />
+            </div>
+            <div class="form-group">
+              <label :for="`citation-${index}-image`">Image URL:</label>
+              <input type="text" :id="`citation-${index}-image`" v-model="citation.imageUrl" />
+            </div>
+            <button type="button" @click="removeCitation(index)" class="remove-button">Remove Citation</button>
+          </div>
+        </div>
+      </details>
+
+      <!-- Resources -->
+      <details>
+        <summary class="section-summary">Resources ▼</summary>
+        <div class="form-section">
+          <button type="button" @click="addResource" class="add-button">Add Resource</button>
+          <div v-for="(resource, index) in newEntry.resources" :key="index" class="resource-group">
+            <h3>Resource {{ index + 1 }}</h3>
+            <div class="form-group">
+              <label :for="`resource-${index}-title`">Title:</label>
+              <input type="text" :id="`resource-${index}-title`" v-model="resource.title" />
+            </div>
+            <div class="form-group">
+              <label :for="`resource-${index}-author`">Author:</label>
+              <input type="text" :id="`resource-${index}-author`" v-model="resource.author" />
+            </div>
+            <div class="form-group">
+              <label :for="`resource-${index}-url`">URL:</label>
+              <input type="text" :id="`resource-${index}-url`" v-model="resource.url" />
+            </div>
+            <div class="form-group">
+              <label :for="`resource-${index}-description`">Description:</label>
+              <textarea :id="`resource-${index}-description`" v-model="resource.description"></textarea>
+            </div>
+            <button type="button" @click="removeResource(index)" class="remove-button">Remove Resource</button>
+          </div>
+        </div>
+      </details>
+
+      <!-- Closing -->
+      <details>
+        <summary class="section-summary">Closing ▼</summary>
+        <div class="form-section">
+          <div class="form-group">
+            <label for="closingText">Closing Text:</label>
+            <textarea id="closingText" v-model="newEntry.closingText"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="closingText2">Additional Closing Text:</label>
+            <textarea id="closingText2" v-model="newEntry.closingText2"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="modal">Modal Content:</label>
+            <textarea id="modal" v-model="newEntry.modal"></textarea>
+          </div>
+        </div>
+      </details>
+
       <button type="submit">Submit</button>
     </form>
   </div>
@@ -284,8 +378,9 @@ button:hover {
 .resource-group {
   margin-top: 15px;
   padding: 15px;
-  border: 1px solid #eee;
+  border: 1px solid #444;
   border-radius: 4px;
+  background-color: #222;
 }
 
 h2 {
@@ -294,8 +389,8 @@ h2 {
 }
 
 h3 {
-  margin-bottom: 10px;
-  color: #666;
+  margin-bottom: 15px;
+  color: #fff;
 }
 
 .save-status {
@@ -344,5 +439,21 @@ details[open] .section-summary {
 details[open] .form-section {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.section-divider {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #444;
+}
+
+.add-button {
+  margin-bottom: 20px;
+  background-color: #4CAF50;
+}
+
+.remove-button {
+  margin-top: 10px;
+  background-color: #f44336;
 }
 </style>
