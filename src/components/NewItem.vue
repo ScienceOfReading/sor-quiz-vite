@@ -1,33 +1,40 @@
 <template>
   <div class="new-item-form">
-    <div v-if="store.saveStatus.show" :class="['save-status', store.saveStatus.type]" @click="store.clearSaveStatus()">
-      {{ store.saveStatus.message }}
+    <div class="preview-controls">
+      <button type="button" @click="previewMode = !previewMode" :class="['preview-toggle', { active: previewMode }]">
+        {{ previewMode ? 'Edit Mode' : 'Preview Mode' }}
+      </button>
     </div>
 
-    <h1>Suggest a New Quiz Entry</h1>
-    <form @submit.prevent="submitForm">
-      <!-- Basic Information -->
-      <details open>
-        <summary class="section-summary">Basic Information ▼</summary>
-        <div class="form-section">
-          <div class="form-group">
-            <label for="title">Title:</label>
-            <input type="text" id="title" v-model="newEntry.title" required />
-          </div>
-          <div class="form-group">
-            <label for="subtitle">Subtitle:</label>
-            <input type="text" id="subtitle" v-model="newEntry.subtitle" />
-          </div>
-          <div class="form-group">
-            <label for="question">Question:</label>
-            <textarea id="question" v-model="newEntry.Question" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="questionP2">Follow-up Question (optional):</label>
-            <textarea id="questionP2" v-model="newEntry.questionP2"></textarea>
-          </div>
+    <div v-if="previewMode" class="preview-section">
+      <QuizItem :currentQuizItem="newEntry" :itemNum="0" :reviewing="false" :chosen="false" />
+    </div>
+
+    <form v-else @submit.prevent="submitForm">
+      <div v-if="store.saveStatus.show" :class="['save-status', store.saveStatus.type]"
+        @click="store.clearSaveStatus()">
+        {{ store.saveStatus.message }}
+      </div>
+
+      <h1>Suggest a New Quiz Entry</h1>
+      <div class="form-section">
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input type="text" id="title" v-model="newEntry.title" required />
         </div>
-      </details>
+        <div class="form-group">
+          <label for="subtitle">Subtitle:</label>
+          <input type="text" id="subtitle" v-model="newEntry.subtitle" />
+        </div>
+        <div class="form-group">
+          <label for="question">Question:</label>
+          <textarea id="question" v-model="newEntry.Question" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="questionP2">Follow-up Question (optional):</label>
+          <textarea id="questionP2" v-model="newEntry.questionP2"></textarea>
+        </div>
+      </div>
 
       <!-- Multiple Choice Options -->
       <details>
@@ -247,8 +254,12 @@
 <script>
 import { db } from '../firebase';
 import { quizStore } from '../stores/quizStore';
+import QuizItem from './QuizItem.vue';
 
 export default {
+  components: {
+    QuizItem
+  },
   setup() {
     const store = quizStore();
     return { store };
@@ -269,6 +280,11 @@ export default {
         console.log('Save status changed:', newStatus);
       },
       deep: true
+    }
+  },
+  data() {
+    return {
+      previewMode: false
     }
   },
   methods: {
@@ -455,5 +471,31 @@ details[open] .form-section {
 .remove-button {
   margin-top: 10px;
   background-color: #f44336;
+}
+
+.preview-controls {
+  margin: 1rem 0;
+  text-align: right;
+}
+
+.preview-toggle {
+  background-color: #666;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.preview-toggle.active {
+  background-color: #4CAF50;
+}
+
+.preview-section {
+  margin: 2rem 0;
+  padding: 2rem;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #2a2a2a;
 }
 </style>
