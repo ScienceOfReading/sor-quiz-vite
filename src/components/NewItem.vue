@@ -4,11 +4,21 @@
       <button type="button" @click="previewMode = !previewMode" :class="['preview-toggle', { active: previewMode }]">
         {{ previewMode ? 'Edit Mode' : 'Preview Mode' }}
       </button>
+      <div v-if="previewMode" class="preview-options">
+        <label>
+          <input type="checkbox" v-model="previewAsAnswered">
+          Show as Answered
+        </label>
+        <label>
+          <input type="checkbox" v-model="previewWithExplanations">
+          Show Explanations
+        </label>
+      </div>
     </div>
 
     <div v-if="previewMode" class="preview-section">
       <QuizItem :currentQuizItem="newEntry" :itemNum="0" :reviewing="true" :chosen="true" :basicMode="false"
-        :userAnswer="newEntry.correctAnswer" />
+        :userAnswer="newEntry.correctAnswer" :showAllContent="true" />
     </div>
 
     <form v-else @submit.prevent="submitForm">
@@ -224,7 +234,7 @@
 
           <!-- Cautions -->
           <details>
-            <summary class="section-summary">Cautions ▼</summary>
+            <summary class="section-summary">Cautions ��</summary>
             <div class="form-section">
               <div class="form-group">
                 <label for="cautionLevel">Caution Level:</label>
@@ -486,8 +496,10 @@ details[open] .form-section {
 }
 
 .preview-controls {
-  margin: 1rem 0;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .preview-toggle {
@@ -509,6 +521,8 @@ details[open] .form-section {
   border: 1px solid #444;
   border-radius: 4px;
   background-color: #2a2a2a;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .form-group-section {
@@ -561,5 +575,11 @@ details[open] .form-section {
 .explanation-content-wrapper .form-section {
   background-color: #222;
   /* Slightly darker than the wrapper */
+}
+
+.preview-options {
+  display: flex;
+  gap: 1rem;
+  color: #fff;
 }
 </style>
