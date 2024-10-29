@@ -7,7 +7,8 @@
     </div>
 
     <div v-if="previewMode" class="preview-section">
-      <QuizItem :currentQuizItem="newEntry" :itemNum="0" :reviewing="false" :chosen="false" />
+      <QuizItem :currentQuizItem="newEntry" :itemNum="0" :reviewing="true" :chosen="true" :basicMode="false"
+        :userAnswer="newEntry.correctAnswer" />
     </div>
 
     <form v-else @submit.prevent="submitForm">
