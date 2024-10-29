@@ -7,6 +7,49 @@ export const quizStore = defineStore('quiz', {
     state: () => ({
         quizAttempts: [],
         userAnswers: [], // Store user answers here
+        draftQuizEntry: {
+            title: '',
+            subtitle: '',
+            Question: '',
+            questionP2: '',
+            answer_type: 'mc',
+            option1: '',
+            option2: '',
+            option3: '',
+            option4: '',
+            option5: '',
+            correctAnswer: null,
+            explanation: '',
+            explanation2: '',
+            videoUrl: '',
+            videoId: '',
+            image: '',
+            imageUrl: '',
+            imageAltText: '',
+            podcastEpisode: {
+                title: '',
+                EpisodeUrl: '',
+                audioUrl: '',
+                description: '',
+                podcastStartTime: 0,
+            },
+            podcastEpisode2: {
+                title: '',
+                EpisodeUrl: '',
+                audioUrl: '',
+                description: '',
+                podcastStartTime: 0,
+            },
+            cautionLevel: '',
+            caution: '',
+            citations: [],
+            ref1: '',
+            ref2: '',
+            resources: [],
+            closingText: '',
+            closingText2: '',
+            modal: ''
+        }
     }),
     actions: {
         async recordQuizAttempt(quizStarted) {
@@ -49,5 +92,27 @@ export const quizStore = defineStore('quiz', {
         setUserAnswers(answers) {
             this.userAnswers = answers; // Update user answers
         },
+        updateDraftQuizEntry(entry) {
+            this.draftQuizEntry = { ...this.draftQuizEntry, ...entry };
+        },
+        resetDraftQuizEntry() {
+            this.draftQuizEntry = {
+                // Reset to initial state
+                title: '',
+                subtitle: '',
+                // ... (all other fields reset)
+            };
+        },
+        async saveDraftQuizEntry() {
+            try {
+                const docRef = await addDoc(collection(db, 'quizEntries'), this.draftQuizEntry);
+                console.log('Document written with ID: ', docRef.id);
+                this.resetDraftQuizEntry();
+                return docRef.id;
+            } catch (e) {
+                console.error('Error adding document: ', e);
+                throw e;
+            }
+        }
     },
 });

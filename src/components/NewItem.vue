@@ -203,59 +203,27 @@
 
 <script>
 import { db } from '../firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { quizStore } from '../stores/quizStore';
 
 export default {
+  computed: {
+    newEntry: {
+      get() {
+        return this.store.draftQuizEntry;
+      },
+      set(value) {
+        this.store.updateDraftQuizEntry(value);
+      }
+    }
+  },
   data() {
     return {
-      newEntry: {
-        title: '',
-        subtitle: '',
-        Question: '',
-        questionP2: '',
-        answer_type: 'mc',
-        option1: '',
-        option2: '',
-        option3: '',
-        option4: '',
-        option5: '',
-        correctAnswer: null,
-        explanation: '',
-        explanation2: '',
-        videoUrl: '',
-        videoId: '',
-        image: '',
-        imageUrl: '',
-        imageAltText: '',
-        podcastEpisode: {
-          title: '',
-          EpisodeUrl: '',
-          audioUrl: '',
-          description: '',
-          podcastStartTime: 0,
-        },
-        podcastEpisode2: {
-          title: '',
-          EpisodeUrl: '',
-          audioUrl: '',
-          description: '',
-          podcastStartTime: 0,
-        },
-        cautionLevel: '',
-        caution: '',
-        citations: [],
-        ref1: '',
-        ref2: '',
-        resources: [],
-        closingText: '',
-        closingText2: '',
-        modal: ''
-      }
+      store: quizStore()
     };
   },
   methods: {
     addCitation() {
-      this.newEntry.citations.push({
+      this.store.draftQuizEntry.citations.push({
         title: '',
         author: '',
         url: '',
@@ -264,10 +232,10 @@ export default {
       });
     },
     removeCitation(index) {
-      this.newEntry.citations.splice(index, 1);
+      this.store.draftQuizEntry.citations.splice(index, 1);
     },
     addResource() {
-      this.newEntry.resources.push({
+      this.store.draftQuizEntry.resources.push({
         title: '',
         author: '',
         url: '',
@@ -275,63 +243,16 @@ export default {
       });
     },
     removeResource(index) {
-      this.newEntry.resources.splice(index, 1);
+      this.store.draftQuizEntry.resources.splice(index, 1);
     },
     async submitForm() {
       try {
-        const docRef = await addDoc(collection(db, 'quizEntries'), this.newEntry);
-        console.log('Document written with ID: ', docRef.id);
-        // Reset form or redirect
-        this.resetForm();
+        await this.store.saveDraftQuizEntry();
+        // Handle success (maybe redirect or show success message)
       } catch (e) {
-        console.error('Error adding document: ', e);
+        // Handle error
+        console.error('Error submitting form:', e);
       }
-    },
-    resetForm() {
-      // Reset all fields to their initial state
-      this.newEntry = {
-        title: '',
-        subtitle: '',
-        Question: '',
-        questionP2: '',
-        answer_type: 'mc',
-        option1: '',
-        option2: '',
-        option3: '',
-        option4: '',
-        option5: '',
-        correctAnswer: null,
-        explanation: '',
-        explanation2: '',
-        videoUrl: '',
-        videoId: '',
-        image: '',
-        imageUrl: '',
-        imageAltText: '',
-        podcastEpisode: {
-          title: '',
-          EpisodeUrl: '',
-          audioUrl: '',
-          description: '',
-          podcastStartTime: 0,
-        },
-        podcastEpisode2: {
-          title: '',
-          EpisodeUrl: '',
-          audioUrl: '',
-          description: '',
-          podcastStartTime: 0,
-        },
-        cautionLevel: '',
-        caution: '',
-        citations: [],
-        ref1: '',
-        ref2: '',
-        resources: [],
-        closingText: '',
-        closingText2: '',
-        modal: ''
-      };
     }
   }
 };
