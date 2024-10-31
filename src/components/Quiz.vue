@@ -31,11 +31,12 @@
   </div>
   <div v-else-if="!basicMode && chosen && complete && !reviewMode">
     <p v-if="!basicMode && chosen && complete && !reviewMode">No more questions...</p>
-    <button v-if="!basicMode && chosen && complete && !reviewMode" class="bg-stone-400 w-32 h-10 mt-6 text-amber-400"
-      @click="submit">Submit</button>
+    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="submit">Submit</button>
   </div>
   <div v-else-if="basicMode && chosen">
-    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">Check it</button>
+    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
+      {{ reviewMode ? 'Next' : 'Check it' }}
+    </button>
   </div>
   <div v-else-if="basicMode && !reviewMode && !chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">&nbsp;</button>
