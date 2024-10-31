@@ -51,7 +51,7 @@
 
           <!-- Multiple Choice Options -->
           <details open>
-            <summary class="section-summary">Answer Options ▼</summary>
+            <summary class="section-summary">Edit Answer Options ▼</summary>
             <div class="form-section">
               <div class="form-group">
                 <label for="option1">Option 1:</label>
@@ -82,8 +82,13 @@
         </div>
       </div>
 
-      <!-- Explanation Group -->
-      <div class="form-group-section explanation-section">
+      <!-- Add toggle button -->
+      <button type="button" @click="showExplanationSection = !showExplanationSection" class="section-toggle">
+        {{ showExplanationSection ? 'Hide' : 'Edit' }} Explanation Section
+      </button>
+
+      <!-- Wrap explanation section in v-show -->
+      <div v-show="showExplanationSection" class="form-group-section explanation-section">
         <h2>Answer Explanation & Supporting Content</h2>
         <div class="explanation-content-wrapper">
           <!-- Explanations -->
@@ -234,7 +239,7 @@
 
           <!-- Cautions -->
           <details>
-            <summary class="section-summary">Cautions ��</summary>
+            <summary class="section-summary">Cautions ▼</summary>
             <div class="form-section">
               <div class="form-group">
                 <label for="cautionLevel">Caution Level:</label>
@@ -306,7 +311,8 @@ export default {
   },
   data() {
     return {
-      previewMode: false
+      previewMode: false,
+      showExplanationSection: true
     }
   },
   methods: {
@@ -581,5 +587,21 @@ details[open] .form-section {
   display: flex;
   gap: 1rem;
   color: #fff;
+}
+
+.section-toggle {
+  width: 100%;
+  padding: 1rem;
+  margin: 1rem 0;
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.section-toggle:hover {
+  background-color: #333;
 }
 </style>
