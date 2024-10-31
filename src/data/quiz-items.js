@@ -252,7 +252,7 @@ export const quizEntries = [{
     podcastEpisode2: {
         title: "Ep. 158: Science of Reading Beyond Phonics: The Ultimate Goal of Reading with Doug Fisher",
         EpisodeUrl: "https://podcasts.apple.com/us/podcast/melissa-lori-love-literacy/id1463219123?i=1000673547696",
-        audioUrl: "",
+        audioUrl: "https://www.buzzsprout.com/287733/episodes/15743148-listen-again-ep-158-science-of-reading-beyond-phonics-the-ultimate-goal-of-reading-with-doug-fisher.mp3",
         description: "This episode goes more to the teaching of each of the elements that lead to comprehension.",
         podcastStartTime: 0,
     },

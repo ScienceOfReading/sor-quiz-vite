@@ -53,6 +53,10 @@ export default {
     basicMode: {
       type: Boolean,
       required: true
+    },
+    userAnswer: {
+      type: [String, Number, Array],
+      default: null
     }
   },
   components: {
@@ -138,6 +142,7 @@ export default {
       // quizItem: props.quizItem,
     };
   },
+  emits: ['update:userAnswer', 'selected'],
 }
 </script>
 
