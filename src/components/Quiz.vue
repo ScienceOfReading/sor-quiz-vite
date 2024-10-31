@@ -87,7 +87,6 @@ export default {
     const reviewMode = false;
     const basicMode = false;
     const quizItems = [];
-    const reviewing = false;
     const itemNum = 0;
 
 
@@ -99,7 +98,6 @@ export default {
       chosen: chosen,
       showResults: showResults,
       reviewMode: reviewMode,
-      reviewing: reviewing,
       itemNum: itemNum,
       basicMode: basicMode
     }
@@ -155,56 +153,41 @@ export default {
 
     nextItem() {
       console.log("-----In nextItem-----")
-      //this.reviewMode = false;
-      console.log("In NextItem, itemNum was: ", this.itemNum)
-      this.itemNum = this.itemNum + 1;
-      console.log("In NextItem, itemNum is now: ", this.itemNum)
-
-      // If basic mode, go to a new question
-      if (this.basicMode && this.reviewing) { this.reviewing = false; this.reviewMode = false }
-
-      //Handle answers in expert mode
-      else if (this.basicMode == false && this.reviewing) { this.reviewing = true; this.reviewMode = true; }
-      console.log("In nextItem, userAnswers: ", this.$userAnswers)
-      console.log("Next. itemNum is now: ", this.itemNum);
-      console.log("length: ", this.quizItems.length);
-      this.numCompleted = this.numCompleted + 1;
-      console.log("numCompleted: ", this.numCompleted);
-      if (this.itemNum == this.quizItems.length - 1) { this.complete = true }
-      else { this.complete = false }
-      console.log("Complete? ", this.complete)
+      this.itemNum++;
+      this.numCompleted++;
       this.chosen = false;
-      console.log("Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
 
+      // Update complete status
+      this.complete = this.itemNum === this.quizItems.length - 1;
+
+      // In basic mode, exit review mode after showing answer
+      if (this.basicMode && this.reviewMode) {
+        this.reviewMode = false;
+      }
+
+      console.log("Next. itemNum:", this.itemNum,
+        "complete:", this.complete,
+        "reviewMode:", this.reviewMode);
     },
     async checkIt() {
       try {
-        console.log("In checkIt, this.$userAnswers: ", this.$userAnswers);
-        // Use this.$userAnswers instead of this.userAnswers
-        this.store.setUserAnswers(this.$userAnswers);
+        console.log("In checkIt, userAnswers:", this.$userAnswers);
         await this.store.saveUserAnswers();
 
         if (this.basicMode) {
-          if (this.reviewing) {
-            this.itemNum = this.itemNum + 1;
-            this.reviewing = false;
-            this.chosen = false;
-          } else {
-            this.reviewing = true;
-          }
+          // Toggle review mode
           this.reviewMode = !this.reviewMode;
-        } else {
-          this.itemNum = this.itemNum + 1;
+
+          // If exiting review mode, move to next question
+          if (!this.reviewMode) {
+            this.itemNum++;
+            this.chosen = false;
+          }
         }
 
-        if (this.itemNum == this.quizItems.length - 1) {
-          this.complete = true;
-        } else {
-          this.complete = false;
-        }
+        // Update complete status
+        this.complete = this.itemNum === this.quizItems.length - 1;
 
-        this.chosen = false;
-        console.log("In checkIt, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
       } catch (error) {
         console.error("Error in checkIt method:", error);
       }
@@ -221,18 +204,12 @@ export default {
     },
     startReview() {
       console.log("----Start Review----")
-      console.log("In StartReview,  this.itemNum: ", this.itemNum)
-      console.log("In startReview, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
       this.showResults = false;
-
       this.itemNum = 0;
       this.numCompleted = 1;
-      console.log("In StartReview, this.itemNum: ", this.itemNum)
-      setTimeout(console.log("In startReview, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode), 3000);
-      setTimeout(this.reviewMode = true, 3000);
       this.reviewMode = true;
-      this.reviewing = true;
-      console.log("In startReview, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
+      console.log("Review started. itemNum:", this.itemNum,
+        "reviewMode:", this.reviewMode);
     },
     showOriginalView() {
       this.$emit('change-view', { showQuizzes: true }); // Emit an event with the new state
