@@ -100,16 +100,6 @@ export default {
       console.log("In currentQuizItem, quizItems[itemNum] is: ", this.quizItems[this.itemNum]);
       return this.quizItems[this.itemNum];
     }
-    /* numCorrect() {
-       let correct = 0;
-       console.log("Length ", quizItems.length);
-       for (let i = 0; i < 4; i++) {
-         console.log(quizItems[i].correctAnswer)
-         if (this.userAnswers[i] == quizItems[i].correctAnswer) { correct++ }
-         console.log("got one right")
-         return correct
-       }
-     } */
   },
   methods: {
     buildQuizSet() {
@@ -242,6 +232,4 @@ export default {
   border-radius: 2dvw;
 
 }
-
-.app-title {}
 </style>
