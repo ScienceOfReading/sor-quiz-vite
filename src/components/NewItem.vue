@@ -365,17 +365,17 @@ export default {
 .new-item-form {
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
 }
 
 .section-summary {
-  padding: 1rem;
+  padding: 0.5rem;
   background-color: #797777;
   border: 1px solid #444;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   color: #fff;
 }
 
@@ -384,15 +384,15 @@ export default {
 }
 
 .form-section {
-  margin-bottom: 30px;
-  padding: 20px;
+  margin-bottom: 15px;
+  padding: 10px;
   border: 1px solid #444;
   border-radius: 4px;
   background-color: #2a2a2a;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 3px;
 }
 
 label {
@@ -405,17 +405,17 @@ input[type="text"],
 input[type="number"],
 textarea {
   width: 100%;
-  padding: 8px;
+  padding: 6px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
 textarea {
-  min-height: 100px;
+  min-height: 80px;
 }
 
 button {
-  padding: 10px 20px;
+  padding: 5px 15px;
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -480,7 +480,7 @@ h3 {
 }
 
 details {
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 details[open] .section-summary {
@@ -495,7 +495,7 @@ details[open] .form-section {
 }
 
 .section-divider {
-  margin: 20px 0;
+  margin: 16px 0;
   border: none;
   border-top: 1px solid #444;
 }
@@ -512,8 +512,8 @@ details[open] .form-section {
 
 .preview-controls {
   display: flex;
-  align-items: left;
-  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1rem;
 }
 
@@ -524,14 +524,13 @@ details[open] .form-section {
 
 .button-group {
   display: flex;
-  align-items: right;
   gap: 1rem;
 }
 
 .preview-toggle {
   background-color: #666;
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.2rem .7rem;
   border-radius: 4px;
   border: none;
   cursor: pointer;
@@ -552,8 +551,8 @@ details[open] .form-section {
 }
 
 .form-group-section {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
   border: 2px solid #444;
   border-radius: 8px;
   background-color: #1a1a1a;
@@ -561,8 +560,8 @@ details[open] .form-section {
 
 .form-group-section h2 {
   color: #fff;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.25rem;
   border-bottom: 1px solid #444;
 }
 
@@ -593,7 +592,7 @@ details[open] .form-section {
 .question-content-wrapper,
 .explanation-content-wrapper {
   background-color: #2a2a2a;
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 4px;
 }
 
