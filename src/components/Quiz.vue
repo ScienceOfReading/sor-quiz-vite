@@ -80,27 +80,17 @@ export default {
     console.log("Data item:");
     //console.log(quizItems[0]);
     const quizChoice = 1;
-    const numCompleted = 0;
-    const complete = false;
-    const userAnswers = [];
-    const chosen = false;
-    const showResults = false;
-    const reviewMode = false;
-    const basicMode = false;
-    const quizItems = [];
-    const itemNum = 0;
-
 
     return {
-      quizItems: quizItems,
-      numCompleted: numCompleted,
-      userAnswers: userAnswers,
-      complete: complete,
-      chosen: chosen,
-      showResults: showResults,
-      reviewMode: reviewMode,
-      itemNum: itemNum,
-      basicMode: basicMode
+      quizItems: [],
+      numCompleted: 0,
+      userAnswers: [],
+      complete: false,
+      chosen: false,
+      showResults: false,
+      reviewMode: false,
+      itemNum: 0,
+      basicMode: false
     }
   },
   computed: {
