@@ -4,16 +4,15 @@
       <button type="button" @click="previewMode = !previewMode" :class="['preview-toggle', { active: previewMode }]">
         {{ previewMode ? 'Edit Mode' : 'Preview Mode' }}
       </button>
-      <div v-if="previewMode" class="preview-options">
-        <label>
-          <input type="checkbox" v-model="previewAsAnswered">
-          Show as Answered
-        </label>
-        <label>
-          <input type="checkbox" v-model="previewWithExplanations">
-          Show Explanations
-        </label>
-      </div>
+      <button type="button" @click="jsonPreviewMode = !jsonPreviewMode"
+        :class="['preview-toggle', { active: jsonPreviewMode }]">
+        {{ jsonPreviewMode ? 'Hide JSON' : 'Show JSON' }}
+      </button>
+    </div>
+
+    <div v-if="jsonPreviewMode" class="json-preview">
+      <vue-json-pretty :data="newEntry" :deep="2" :showLength="true" :showLine="true" :showDoubleQuotes="true"
+        :highlightMouseoverNode="true" />
     </div>
 
     <div v-if="previewMode" class="preview-section">
@@ -282,10 +281,13 @@
 import { db } from '../firebase';
 import { quizStore } from '../stores/quizStore';
 import QuizItem from './QuizItem.vue';
+import VueJsonPretty from 'vue-json-pretty'
+import 'vue-json-pretty/lib/styles.css'
 
 export default {
   components: {
-    QuizItem
+    QuizItem,
+    VueJsonPretty
   },
   setup() {
     const store = quizStore();
@@ -299,6 +301,9 @@ export default {
       set(value) {
         this.store.updateDraftQuizEntry(value);
       }
+    },
+    formattedJson() {
+      return JSON.stringify(this.newEntry, null, 2);
     }
   },
   watch: {
@@ -312,6 +317,7 @@ export default {
   data() {
     return {
       previewMode: false,
+      jsonPreviewMode: false,
       showExplanationSection: true
     }
   },
@@ -603,5 +609,32 @@ details[open] .form-section {
 
 .section-toggle:hover {
   background-color: #333;
+}
+
+.json-preview {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+/* Override vue-json-pretty theme for dark mode */
+:deep(.vjs-tree) {
+  color: #fff;
+  background-color: #1a1a1a;
+}
+
+:deep(.vjs-key) {
+  color: #9cdcfe;
+}
+
+:deep(.vjs-value) {
+  color: #ce9178;
+}
+
+:deep(.vjs-primitive) {
+  color: #b5cea8;
 }
 </style>
