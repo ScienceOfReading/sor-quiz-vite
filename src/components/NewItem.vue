@@ -1,13 +1,16 @@
 <template>
   <div class="new-item-form">
     <div class="preview-controls">
-      <button type="button" @click="previewMode = !previewMode" :class="['preview-toggle', { active: previewMode }]">
-        {{ previewMode ? 'Edit Mode' : 'Preview Mode' }}
-      </button>
-      <button type="button" @click="jsonPreviewMode = !jsonPreviewMode"
-        :class="['preview-toggle', { active: jsonPreviewMode }]">
-        {{ jsonPreviewMode ? 'Hide JSON' : 'Show JSON' }}
-      </button>
+      <span class="preview-controls-text">Help build these quizzes. </span>
+      <div class="button-group">
+        <button type="button" @click="previewMode = !previewMode" :class="['preview-toggle', { active: previewMode }]">
+          {{ previewMode ? 'Edit Mode' : 'Preview Mode' }}
+        </button>
+        <button type="button" @click="jsonPreviewMode = !jsonPreviewMode"
+          :class="['preview-toggle', { active: jsonPreviewMode }]">
+          {{ jsonPreviewMode ? 'Hide JSON' : 'Show JSON' }}
+        </button>
+      </div>
     </div>
 
     <div v-if="jsonPreviewMode" class="json-preview">
@@ -367,7 +370,7 @@ export default {
 
 .section-summary {
   padding: 1rem;
-  background-color: #2a2a2a;
+  background-color: #797777;
   border: 1px solid #444;
   border-radius: 4px;
   cursor: pointer;
@@ -509,9 +512,20 @@ details[open] .form-section {
 
 .preview-controls {
   display: flex;
-  align-items: center;
+  align-items: left;
   gap: 1rem;
   margin-bottom: 1rem;
+}
+
+.preview-controls-text {
+  margin-right: 1rem;
+  font-size: x-large;
+}
+
+.button-group {
+  display: flex;
+  align-items: right;
+  gap: 1rem;
 }
 
 .preview-toggle {
