@@ -49,7 +49,6 @@
 
 <script>
 import QuizItem from './QuizItem.vue';
-import Score from './Score.vue';
 import { quizEntries } from '../data/quiz-items.js'
 import { quizSets } from '../data/quizSets.js'
 import { quizStore } from '../stores/quizStore'; // Import the store
