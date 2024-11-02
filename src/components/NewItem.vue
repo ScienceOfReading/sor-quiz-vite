@@ -3,6 +3,10 @@
     <div class="preview-controls">
       <span class="preview-controls-text">Help build these quizzes. </span>
       <div class="button-group">
+        <button type="button" @click="returnToQuizzes"
+          :class="['return-button smaller-button', { active: returnButton.active }]">
+          Return to Quizzes
+        </button>
         <button type="button" @click="previewMode = !previewMode" :class="['preview-toggle', { active: previewMode }]">
           {{ previewMode ? 'Edit Mode' : 'Preview Mode' }}
         </button>
@@ -321,7 +325,10 @@ export default {
     return {
       previewMode: false,
       jsonPreviewMode: false,
-      showExplanationSection: true
+      showExplanationSection: true,
+      returnButton: {
+        active: false
+      }
     }
   },
   methods: {
@@ -356,6 +363,9 @@ export default {
         // Handle error
         console.error('Error submitting form:', e);
       }
+    },
+    returnToQuizzes() {
+      this.$router.push('/');
     }
   }
 };
@@ -534,6 +544,24 @@ details[open] .form-section {
   border-radius: 4px;
   border: none;
   cursor: pointer;
+}
+
+.return-button {
+  background-color: #666;
+  color: white;
+  padding: 0.2rem .7rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.smaller-button {
+  max-height: 25px;
+  font-size: 12px;
+}
+
+.return-button.active {
+  background-color: #4CAF50;
 }
 
 .preview-toggle.active {
