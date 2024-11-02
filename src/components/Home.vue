@@ -26,12 +26,15 @@
                 <p class="h3">SOR Quizzes is a <a href="https://github.com/ScienceOfReading/sor-quiz-vite">community
                         driven
                         effort</a>, created by <a href="https://skunkworks-edu.com">Skunkworks\edu</a>.</p>
+                <div class="router-link-container">
+                    <router-link to="/new-item" class="button-75">Suggest a New Quiz Entry</router-link>
+                </div>
             </div>
         </div>
         <div v-else>
             <Quiz @change-view="handleChangeView" :selectedQuiz="selectedQuiz"></Quiz>
         </div>
-        <router-link to="/new-item">Suggest a New Quiz Entry</router-link>
+
     </div>
 </template>
 
@@ -88,5 +91,71 @@ export default {
     height: 50;
 }
 
+
+
+/* CSS */
+.button-75 {
+    align-items: center;
+    background-image: linear-gradient(90deg, #4a7ff3 40%, #702afa);
+    border: 0;
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font-family: "Codec cold", sans-serif;
+    font-size: 12px;
+    font-weight: 100;
+    height: 24px;
+    justify-content: center;
+    letter-spacing: .4px;
+    line-height: 1;
+    max-width: fit-content;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    margin-top: 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.button-75:active {
+    outline: 0;
+}
+
+.button-75:hover {
+    outline: 0;
+}
+
+.button-75 span {
+    transition: all 200ms;
+}
+
+.button-75:hover span {
+    transform: scale(.9);
+    opacity: .75;
+}
+
+@media screen and (max-width: 991px) {
+    .button-75 {
+        font-size: 15px;
+        height: 50px;
+    }
+
+    .button-75 span {
+        line-height: 50px;
+    }
+}
+
 /* Add any other styles that were previously in App.vue and are needed for the Home component */
+
+.router-link-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
 </style>
