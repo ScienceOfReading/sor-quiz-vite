@@ -34,7 +34,7 @@
         <div class="question-content-wrapper">
           <!-- Basic Information -->
           <details open>
-            <summary class="section-summary">Basic Information ▼</summary>
+            <summary class="section-summary">Question ▼</summary>
             <div class="form-section">
               <div class="form-group">
                 <label for="title">Title:</label>
@@ -49,7 +49,7 @@
                 <textarea id="question" v-model="newEntry.Question" required></textarea>
               </div>
               <div class="form-group">
-                <label for="questionP2">Follow-up Question (optional):</label>
+                <label for="questionP2">Question Line 2 (optional):</label>
                 <textarea id="questionP2" v-model="newEntry.questionP2"></textarea>
               </div>
             </div>
@@ -677,5 +677,12 @@ details[open] .form-section {
 
 :deep(.vjs-primitive) {
   color: #b5cea8;
+}
+
+@media screen and (max-width: 991px) {
+  .smaller-button {
+    max-height: fit-content;
+    font-size: 12px;
+  }
 }
 </style>

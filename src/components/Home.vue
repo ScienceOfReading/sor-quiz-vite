@@ -143,11 +143,11 @@ export default {
 @media screen and (max-width: 991px) {
     .button-75 {
         font-size: 15px;
-        height: 50px;
+        height: 24px;
     }
 
     .button-75 span {
-        line-height: 50px;
+        line-height: 24px;
     }
 }
 
