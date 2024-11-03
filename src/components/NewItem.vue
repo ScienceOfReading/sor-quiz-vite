@@ -57,7 +57,7 @@
 
           <!-- Multiple Choice Options -->
           <details open>
-            <summary class="section-summary">Edit Answer Options ▼</summary>
+            <summary class="section-summary">Add/Edit Answer Options ▼</summary>
             <div class="form-section">
               <div class="form-group">
                 <label for="option1">Option 1:</label>
@@ -90,12 +90,11 @@
 
       <!-- Add toggle button -->
       <button type="button" @click="showExplanationSection = !showExplanationSection" class="section-toggle">
-        {{ showExplanationSection ? 'Hide' : 'Edit' }} Explanation Section
+        {{ showExplanationSection ? 'Hide' : 'Add/Edit' }} Explanation Section
       </button>
 
       <!-- Wrap explanation section in v-show -->
       <div v-show="showExplanationSection" class="form-group-section explanation-section">
-        <h2>Answer Explanation & Supporting Content</h2>
         <div class="explanation-content-wrapper">
           <!-- Explanations -->
           <details>
@@ -325,7 +324,7 @@ export default {
     return {
       previewMode: false,
       jsonPreviewMode: false,
-      showExplanationSection: true,
+      showExplanationSection: false,
       returnButton: {
         active: false
       }
