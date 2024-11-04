@@ -431,7 +431,11 @@ export default {
 
 .section-summary {
   padding: 0.75rem;
-  background-color: #4a90e2;
+  background: rgba(74, 144, 226, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.25);
   color: white;
   border-radius: 8px;
   cursor: pointer;
@@ -445,11 +449,14 @@ export default {
 }
 
 .form-section {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   margin-bottom: 15px;
-  padding: 15px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background-color: #f8f9fa;
 }
 
 .form-group {
@@ -457,15 +464,18 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  position: relative;
+  z-index: 1;
 }
 
 label {
   display: block;
   text-align: left;
-  font-weight: 600;
-  color: #ffffff;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
   font-size: 0.95rem;
   padding-left: 2px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 input[type="text"],
@@ -473,9 +483,20 @@ input[type="number"],
 textarea {
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  background-color: white;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  color: white;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+input:focus,
+textarea:focus {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 textarea {
@@ -637,11 +658,13 @@ details[open] .form-section {
 }
 
 .form-group-section {
+  background: rgba(63, 63, 136, 0.2);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   margin-bottom: 1rem;
   padding: 1rem;
-  border: 2px solid #444;
-  border-radius: 8px;
-  background-color: #3f3f88;
 }
 
 .form-group-section h2 {
@@ -677,7 +700,13 @@ details[open] .form-section {
 
 .question-content-wrapper,
 .explanation-content-wrapper {
-  background-color: #3f3f88;
+  background: linear-gradient(135deg,
+      rgba(63, 63, 136, 0.2) 0%,
+      rgba(63, 63, 136, 0.1) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   padding: 0.5rem;
   border-radius: 4px;
 }
