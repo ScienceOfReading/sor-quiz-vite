@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import './style.css'
 import App from './App.vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -35,9 +36,29 @@ library.add(faPodcast)
 library.add(faExternalLinkAlt)
 library.add(faBook)
 const app = createApp(App)
+const pinia = createPinia(); // Create a Pinia store instance
+
 app.config.globalProperties.$userAnswers = []
 app.use(Vue3Lottie)
 app.component(LiteYouTubeEmbed)
 app.component('font-awesome-icon', FontAwesomeIcon)
-    .mount('#app')
 
+import { createRouter, createWebHistory } from 'vue-router'; // Import the router
+//import App from './App.vue'; // Import the main App component
+import NewItem from './components/NewItem.vue'; // Import the new component
+
+// Define your routes
+const routes = [
+    { path: '/', component: App }, // Main application route
+    { path: '/new-item', component: NewItem }, // New item route
+];
+
+// Create the router instance
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+});
+
+app.use(router); // Use the router
+app.use(pinia);
+app.mount('#app')

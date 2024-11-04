@@ -29,7 +29,7 @@
                 <ExplainerImage v-else-if="quizItem.image" :imageUrl="quizItem.image"
                     :altText="quizItem.imageAltText" />
             </div>
-            <PodcastReference v-if="quizItem.podcastEpisode && quizItem.podcastEpisode.title != ''"
+            <PodcastReference v-if="quizItem.podcastEpisode && quizItem.podcastEpisode.title !== ''"
                 :podcastEpisode="quizItem.podcastEpisode" />
             <PodcastReference v-if="quizItem.podcastEpisode2 && quizItem.podcastEpisode2.title != ''"
                 :podcastEpisode="quizItem.podcastEpisode2" />
@@ -76,6 +76,7 @@ export default {
         }
     },
     setup(props) {
+        console.log('Explanation setup, quizItem:', props.quizItem);
         const showFeedback = ref(false);
 
         const isCorrect = computed(() => {

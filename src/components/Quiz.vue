@@ -17,7 +17,7 @@
   </div>
   <div v-else class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
     <QuizItem :currentQuizItem="currentQuizItem" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
-      @selected="chosen = true" @answer-selected="chosen = true" />
+      v-model:userAnswer="userAnswers[itemNum]" @selected="chosen = true" />
   </div>
 
 
@@ -31,11 +31,12 @@
   </div>
   <div v-else-if="!basicMode && chosen && complete && !reviewMode">
     <p v-if="!basicMode && chosen && complete && !reviewMode">No more questions...</p>
-    <button v-if="!basicMode && chosen && complete && !reviewMode" class="bg-stone-400 w-32 h-10 mt-6 text-amber-400"
-      @click="submit">Submit</button>
+    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="submit">Submit</button>
   </div>
   <div v-else-if="basicMode && chosen">
-    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">Check it</button>
+    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
+      {{ reviewMode ? 'Next' : 'Check it' }}
+    </button>
   </div>
   <div v-else-if="basicMode && !reviewMode && !chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">&nbsp;</button>
@@ -48,12 +49,14 @@
 
 <script>
 import QuizItem from './QuizItem.vue';
-import Score from './Score.vue';
 import { quizEntries } from '../data/quiz-items.js'
 import { quizSets } from '../data/quizSets.js'
+import { quizStore } from '../stores/quizStore'; // Import the store
+import { ref } from 'vue'
 
 export default {
   name: 'Quiz',
+  emits: ['change-view'],
   components: {
     QuizItem
   },
@@ -63,33 +66,30 @@ export default {
       required: true
     }
   },
+  setup() {
+    const store = quizStore()
+    const userAnswers = ref([])
+
+    return {
+      store,
+      userAnswers
+    }
+  },
   data() {
     console.log("Data item:");
     //console.log(quizItems[0]);
     const quizChoice = 1;
-    const numCompleted = 0;
-    const complete = false;
-    const userAnswers = [];
-    const chosen = false;
-    const showResults = false;
-    const reviewMode = false;
-    const basicMode = false;
-    const quizItems = [];
-    const reviewing = false;
-    const itemNum = 0;
-
 
     return {
-      quizItems: quizItems,
-      numCompleted: numCompleted,
-      userAnswers: userAnswers,
-      complete: complete,
-      chosen: chosen,
-      showResults: showResults,
-      reviewMode: reviewMode,
-      reviewing: reviewing,
-      itemNum: itemNum,
-      basicMode: basicMode
+      quizItems: [],
+      numCompleted: 0,
+      userAnswers: [],
+      complete: false,
+      chosen: false,
+      showResults: false,
+      reviewMode: false,
+      itemNum: 0,
+      basicMode: false
     }
   },
   computed: {
@@ -99,16 +99,6 @@ export default {
       console.log("In currentQuizItem, quizItems[itemNum] is: ", this.quizItems[this.itemNum]);
       return this.quizItems[this.itemNum];
     }
-    /* numCorrect() {
-       let correct = 0;
-       console.log("Length ", quizItems.length);
-       for (let i = 0; i < 4; i++) {
-         console.log(quizItems[i].correctAnswer)
-         if (this.userAnswers[i] == quizItems[i].correctAnswer) { correct++ }
-         console.log("got one right")
-         return correct
-       }
-     } */
   },
   methods: {
     buildQuizSet() {
@@ -143,54 +133,44 @@ export default {
 
     nextItem() {
       console.log("-----In nextItem-----")
-      //this.reviewMode = false;
-      console.log("In NextItem, itemNum was: ", this.itemNum)
-      this.itemNum = this.itemNum + 1;
-      console.log("In NextItem, itemNum is now: ", this.itemNum)
-
-      // If basic mode, go to a new question
-      if (this.basicMode && this.reviewing) { this.reviewing = false; this.reviewMode = false }
-
-      //Handle answers in expert mode
-      else if (this.basicMode == false && this.reviewing) { this.reviewing = true; this.reviewMode = true; }
-      console.log("In nextItem, userAnswers: ", this.$userAnswers)
-      console.log("Next. itemNum is now: ", this.itemNum);
-      console.log("length: ", this.quizItems.length);
-      this.numCompleted = this.numCompleted + 1;
-      console.log("numCompleted: ", this.numCompleted);
-      if (this.itemNum == this.quizItems.length - 1) { this.complete = true }
-      else { this.complete = false }
-      console.log("Complete? ", this.complete)
+      this.itemNum++;
+      this.numCompleted++;
       this.chosen = false;
-      console.log("Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
 
+      // Update complete status
+      this.complete = this.itemNum === this.quizItems.length - 1;
+
+      // In basic mode, exit review mode after showing answer
+      if (this.basicMode && this.reviewMode) {
+        this.reviewMode = false;
+      }
+
+      console.log("Next. itemNum:", this.itemNum,
+        "complete:", this.complete,
+        "reviewMode:", this.reviewMode);
     },
-    checkIt() {
-      if (this.basicMode) {
-        if (this.reviewing == true) {
-          this.itemNum = this.itemNum + 1;
-          this.reviewing = false;
-          this.chosen = false;
+    async checkIt() {
+      try {
+        console.log("In checkIt, userAnswers:", this.$userAnswers);
+        await this.store.saveUserAnswers();
+
+        if (this.basicMode) {
+          // Toggle review mode
+          this.reviewMode = !this.reviewMode;
+
+          // If exiting review mode, move to next question
+          if (!this.reviewMode) {
+            this.itemNum++;
+            this.chosen = false;
+          }
         }
-        else {
-          //don't change correntItem; just enter reviewMode
-          this.reviewing = true
-        }
-        this.reviewMode = !this.reviewMode;
+
+        // Update complete status
+        this.complete = this.itemNum === this.quizItems.length - 1;
+
+      } catch (error) {
+        console.error("Error in checkIt method:", error);
       }
-      else {
-        this.itemNum = this.itemNum + 1;
-      }
-      console.log("In checkIt, userAnswers: ", this.$userAnswers)
-      console.log("In checkIt, itemNum is now: ", this.itemNum);
-      console.log("length: ", this.quizItems.length);
-      //this.numCompleted = this.numCompleted + 1;
-      console.log("numCompleted: ", this.numCompleted);
-      if (this.itemNum == this.quizItems.length - 1) { this.complete = true }
-      else { this.complete = false }
-      console.log("In checkIt, complete: ", this.complete)
-      this.chosen = false;
-      console.log("In checkIt, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
     },
     answerSelected() {
       console.log("In answerSelected");
@@ -204,18 +184,12 @@ export default {
     },
     startReview() {
       console.log("----Start Review----")
-      console.log("In StartReview,  this.itemNum: ", this.itemNum)
-      console.log("In startReview, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
       this.showResults = false;
-
       this.itemNum = 0;
       this.numCompleted = 1;
-      console.log("In StartReview, this.itemNum: ", this.itemNum)
-      setTimeout(console.log("In startReview, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode), 3000);
-      setTimeout(this.reviewMode = true, 3000);
       this.reviewMode = true;
-      this.reviewing = true;
-      console.log("In startReview, Reviewing: ", this.reviewing, "; reviewMode: ", this.reviewMode);
+      console.log("Review started. itemNum:", this.itemNum,
+        "reviewMode:", this.reviewMode);
     },
     showOriginalView() {
       this.$emit('change-view', { showQuizzes: true }); // Emit an event with the new state
@@ -257,6 +231,4 @@ export default {
   border-radius: 2dvw;
 
 }
-
-.app-title {}
 </style>

@@ -53,6 +53,10 @@ export default {
     basicMode: {
       type: Boolean,
       required: true
+    },
+    userAnswer: {
+      type: [String, Number, Array],
+      default: null
     }
   },
   components: {
@@ -103,7 +107,7 @@ export default {
     }
   },
   mounted() {
-    console.log("----QuizItem mounted------")
+    console.log('QuizItem mounted, currentQuizItem:', this.currentQuizItem);
   },
 
   methods: {
@@ -138,6 +142,7 @@ export default {
       // quizItem: props.quizItem,
     };
   },
+  emits: ['update:userAnswer', 'selected'],
 }
 </script>
 
