@@ -407,30 +407,26 @@ export default {
 .new-item-form {
   max-width: 800px;
   margin: 0 auto;
-  padding: 10px;
+  padding: 20px;
+  background-color: white;
 }
 
 .section-summary {
-  padding: 0.5rem;
-  background-color: #797777;
-  border: 1px solid #444;
-  border-radius: 4px;
+  padding: 0.75rem;
+  background-color: #4a90e2;
+  color: white;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  margin-bottom: 0.25rem;
-  color: #fff;
-}
-
-.section-summary:hover {
-  background-color: #3a3a3a;
+  margin-bottom: 0.5rem;
 }
 
 .form-section {
   margin-bottom: 15px;
-  padding: 10px;
-  border: 1px solid #444;
-  border-radius: 4px;
-  background-color: #2a2a2a;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f8f9fa;
 }
 
 .form-group {
@@ -447,9 +443,10 @@ input[type="text"],
 input[type="number"],
 textarea {
   width: 100%;
-  padding: 6px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  background-color: white;
 }
 
 textarea {
@@ -615,7 +612,7 @@ details[open] .form-section {
   padding: 1rem;
   border: 2px solid #444;
   border-radius: 8px;
-  background-color: #1a1a1a;
+  background-color: #3f3f88;
 }
 
 .form-group-section h2 {
@@ -651,14 +648,14 @@ details[open] .form-section {
 
 .question-content-wrapper,
 .explanation-content-wrapper {
-  background-color: #2a2a2a;
+  background-color: #3f3f88;
   padding: 0.5rem;
   border-radius: 4px;
 }
 
 .question-content-wrapper .form-section,
 .explanation-content-wrapper .form-section {
-  background-color: #222;
+  background-color: #3f3f88;
   /* Slightly darker than the wrapper */
 }
 
