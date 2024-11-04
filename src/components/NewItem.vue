@@ -431,8 +431,49 @@ export default {
 
 .section-summary {
   background: rgba(74, 144, 226, 0.8);
-  border: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.section-summary:hover {
+  background: rgba(74, 144, 226, 0.9);
+}
+
+/* Remove default details marker */
+details>summary {
+  list-style: none;
+}
+
+details>summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Handle the connected appearance when details is open */
+details[open] .section-summary {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+details[open] .form-section {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* Arrow indicator */
+.arrow-indicator {
+  transition: transform 0.2s;
+}
+
+details[open] .arrow-indicator {
+  transform: rotate(180deg);
 }
 
 .form-section {
