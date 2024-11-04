@@ -1,6 +1,15 @@
 <template>
   <div class="new-item-form">
     <div v-if="submitStatus.show" :class="['status-message', submitStatus.type]">
+      <div class="button-group mb-4">
+        <button @click="resetForm" class="preview-toggle">
+          Add Another Quiz Item
+        </button>
+        <button @click="returnToQuizzes" class="preview-toggle">
+          Return to Quizzes
+        </button>
+      </div>
+
       {{ submitStatus.message }}
 
       <div v-if="submitStatus.type === 'success' && submittedEntry" class="submitted-preview mt-4">
