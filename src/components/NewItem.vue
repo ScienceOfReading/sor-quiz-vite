@@ -52,8 +52,11 @@
         <h2></h2>
         <div class="question-content-wrapper">
           <!-- Basic Information -->
-          <details open>
-            <summary class="section-summary">Pose a Question ▼</summary>
+          <details>
+            <summary class="section-summary">
+              <span class="summary-text">Pose a Question</span>
+              <span class="arrow-indicator">▼</span>
+            </summary>
             <div class="form-section">
               <div class="form-group">
                 <label for="title">Title:</label>
@@ -75,8 +78,11 @@
           </details>
 
           <!-- Multiple Choice Options -->
-          <details open>
-            <summary class="section-summary">Add/Edit Answer Options ▼</summary>
+          <details>
+            <summary class="section-summary">
+              <span class="summary-text">Add/Edit Answer Options</span>
+              <span class="arrow-indicator">▼</span>
+            </summary>
             <div class="form-section">
               <div class="form-group">
                 <label for="option1">Option 1:</label>
@@ -104,13 +110,14 @@
               </div>
             </div>
           </details>
+
+          <!-- Explanation toggle -->
+          <div class="section-summary" @click="showExplanationSection = !showExplanationSection">
+            <span class="summary-text">Add/Edit Explanation Section</span>
+            <span class="arrow-indicator" :class="{ 'rotated': !showExplanationSection }">▼</span>
+          </div>
         </div>
       </div>
-
-      <!-- Add toggle button -->
-      <button type="button" @click="showExplanationSection = !showExplanationSection" class="section-toggle">
-        {{ showExplanationSection ? 'Hide' : 'Add/Edit' }} Explanation Section
-      </button>
 
       <!-- Wrap explanation section in v-show -->
       <div v-show="showExplanationSection" class="form-group-section explanation-section">
@@ -363,7 +370,7 @@ export default {
         message: ''
       },
       submittedEntry: null,
-      activeSection: 'explanations'
+      activeSection: ''
     }
   },
   methods: {
@@ -430,6 +437,11 @@ export default {
   cursor: pointer;
   font-weight: bold;
   margin-bottom: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.section-summary:hover {
+  background-color: #357abd;
 }
 
 .form-section {
