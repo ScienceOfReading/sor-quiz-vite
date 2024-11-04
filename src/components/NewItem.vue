@@ -430,33 +430,16 @@ export default {
 }
 
 .section-summary {
-  padding: 0.75rem;
-  background: rgba(74, 144, 226, 0.25);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.25);
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  transition: background-color 0.2s;
-}
-
-.section-summary:hover {
-  background-color: #357abd;
+  background: rgba(74, 144, 226, 0.8);
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .form-section {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  margin-bottom: 15px;
 }
 
 .form-group {
@@ -464,43 +447,28 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  position: relative;
-  z-index: 1;
 }
 
 label {
-  display: block;
-  text-align: left;
-  font-weight: 500;
   color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
   font-size: 0.95rem;
-  padding-left: 2px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 input[type="text"],
 input[type="number"],
 textarea {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 8px;
-  color: white;
-  transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
 input:focus,
 textarea:focus {
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-textarea {
-  min-height: 80px;
+  background: white;
+  border-color: #4a90e2;
+  outline: none;
 }
 
 button {
@@ -658,13 +626,8 @@ details[open] .form-section {
 }
 
 .form-group-section {
-  background: rgba(63, 63, 136, 0.2);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  margin-bottom: 1rem;
-  padding: 1rem;
+  background: rgba(63, 63, 136, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .form-group-section h2 {
