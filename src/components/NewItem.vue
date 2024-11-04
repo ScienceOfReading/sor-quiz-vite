@@ -453,13 +453,19 @@ export default {
 }
 
 .form-group {
-  margin-bottom: 3px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  text-align: left;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 0.95rem;
+  padding-left: 2px;
 }
 
 input[type="text"],
@@ -840,5 +846,13 @@ details[open] .form-section {
 .slide-leave-to {
   transform: translateX(-20px);
   opacity: 0;
+}
+
+.form-group:has(textarea) {
+  margin-bottom: 12px;
+}
+
+.form-group:has(textarea) label {
+  margin-top: 0;
 }
 </style>
