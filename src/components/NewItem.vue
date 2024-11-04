@@ -1,5 +1,15 @@
 <template>
   <div class="new-item-form">
+    <div v-if="submitStatus.show" :class="['status-message', submitStatus.type]">
+      {{ submitStatus.message }}
+
+      <div v-if="submitStatus.type === 'success' && submittedEntry" class="submitted-preview mt-4">
+        <h3>Your submitted quiz item:</h3>
+        <QuizItem :currentQuizItem="submittedEntry" :itemNum="0" :reviewMode="true" :basicMode="false"
+          :userAnswer="submittedEntry.correctAnswer" />
+      </div>
+    </div>
+
     <div class="preview-controls">
       <span class="preview-controls-text">Help build these quizzes. </span>
       <div class="button-group">
@@ -327,7 +337,13 @@ export default {
       showExplanationSection: false,
       returnButton: {
         active: false
-      }
+      },
+      submitStatus: {
+        show: false,
+        type: '',
+        message: ''
+      },
+      submittedEntry: null
     }
   },
   methods: {
@@ -357,9 +373,18 @@ export default {
     async submitForm() {
       try {
         await this.store.saveDraftQuizEntry();
-        console.log('Submitting entry:', this.newEntry);
+        this.submittedEntry = { ...this.newEntry };
+        this.submitStatus = {
+          show: true,
+          type: 'success',
+          message: 'Quiz entry submitted successfully!'
+        };
       } catch (e) {
-        console.error('Error submitting form:', e);
+        this.submitStatus = {
+          show: true,
+          type: 'error',
+          message: 'Error submitting quiz entry: ' + e.message
+        };
       }
     },
     returnToQuizzes() {
@@ -682,5 +707,52 @@ details[open] .form-section {
     max-height: fit-content;
     font-size: 12px;
   }
+}
+
+.submit-status {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.submit-status.success {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.submit-status.error {
+  background-color: #f44336;
+  color: white;
+}
+
+.status-message {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.status-message.success {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.status-message.error {
+  background-color: #f44336;
+  color: white;
+}
+
+.submitted-preview {
+  margin-top: 2rem;
+  padding: .2rem;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.submitted-preview h3 {
+  margin-bottom: 1rem;
+  color: #333;
 }
 </style>
