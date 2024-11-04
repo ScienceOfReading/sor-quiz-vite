@@ -49,11 +49,11 @@
     <form v-else @submit.prevent="submitForm">
       <!-- Question Group -->
       <div class="form-group-section question-section">
-        <h2>Question Information</h2>
+        <h2></h2>
         <div class="question-content-wrapper">
           <!-- Basic Information -->
           <details open>
-            <summary class="section-summary">Question ▼</summary>
+            <summary class="section-summary">Pose a Question ▼</summary>
             <div class="form-section">
               <div class="form-group">
                 <label for="title">Title:</label>
@@ -114,186 +114,196 @@
 
       <!-- Wrap explanation section in v-show -->
       <div v-show="showExplanationSection" class="form-group-section explanation-section">
+        <div class="explanation-toggles">
+          <button type="button" @click="activeSection = activeSection === 'explanations' ? '' : 'explanations'"
+            :class="['section-button', { active: activeSection === 'explanations' }]">
+            Explanations
+          </button>
+          <button type="button" @click="activeSection = activeSection === 'media' ? '' : 'media'"
+            :class="['section-button', { active: activeSection === 'media' }]">
+            Media
+          </button>
+          <button type="button" @click="activeSection = activeSection === 'podcasts' ? '' : 'podcasts'"
+            :class="['section-button', { active: activeSection === 'podcasts' }]">
+            Podcasts
+          </button>
+          <button type="button" @click="activeSection = activeSection === 'citations' ? '' : 'citations'"
+            :class="['section-button', { active: activeSection === 'citations' }]">
+            Citations
+          </button>
+          <button type="button" @click="activeSection = activeSection === 'resources' ? '' : 'resources'"
+            :class="['section-button', { active: activeSection === 'resources' }]">
+            Resources
+          </button>
+          <button type="button" @click="activeSection = activeSection === 'cautions' ? '' : 'cautions'"
+            :class="['section-button', { active: activeSection === 'cautions' }]">
+            Cautions
+          </button>
+          <button type="button" @click="activeSection = activeSection === 'closing' ? '' : 'closing'"
+            :class="['section-button', { active: activeSection === 'closing' }]">
+            Closing
+          </button>
+        </div>
+
         <div class="explanation-content-wrapper">
           <!-- Explanations -->
-          <details>
-            <summary class="section-summary">Explanations ▼</summary>
-            <div class="form-section">
-              <div class="form-group">
-                <label for="explanation">Primary Explanation:</label>
-                <textarea id="explanation" v-model="newEntry.explanation"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="explanation2">Secondary Explanation:</label>
-                <textarea id="explanation2" v-model="newEntry.explanation2"></textarea>
-              </div>
+          <div v-show="activeSection === 'explanations'" class="form-section">
+            <div class="form-group">
+              <label for="explanation">Primary Explanation:</label>
+              <textarea id="explanation" v-model="newEntry.explanation"></textarea>
             </div>
-          </details>
+            <div class="form-group">
+              <label for="explanation2">Secondary Explanation:</label>
+              <textarea id="explanation2" v-model="newEntry.explanation2"></textarea>
+            </div>
+          </div>
 
           <!-- Media -->
-          <details>
-            <summary class="section-summary">Media ▼</summary>
-            <div class="form-section">
-              <div class="form-group">
-                <label for="videoId">YouTube Video ID:</label>
-                <input type="text" id="videoId" v-model="newEntry.videoId" />
-              </div>
-              <div class="form-group">
-                <label for="imageUrl">Image URL:</label>
-                <input type="text" id="imageUrl" v-model="newEntry.imageUrl" />
-              </div>
-              <div class="form-group">
-                <label for="imageAltText">Image Alt Text:</label>
-                <input type="text" id="imageAltText" v-model="newEntry.imageAltText" />
-              </div>
+          <div v-show="activeSection === 'media'" class="form-section">
+            <div class="form-group">
+              <label for="videoId">YouTube Video ID:</label>
+              <input type="text" id="videoId" v-model="newEntry.videoId" />
             </div>
-          </details>
+            <div class="form-group">
+              <label for="imageUrl">Image URL:</label>
+              <input type="text" id="imageUrl" v-model="newEntry.imageUrl" />
+            </div>
+            <div class="form-group">
+              <label for="imageAltText">Image Alt Text:</label>
+              <input type="text" id="imageAltText" v-model="newEntry.imageAltText" />
+            </div>
+          </div>
 
           <!-- Podcast Episodes -->
-          <details>
-            <summary class="section-summary">Podcast Episodes ▼</summary>
-            <div class="form-section">
-              <div class="form-group">
-                <label for="podcastEpisode1-title">Episode 1 Title:</label>
-                <input type="text" id="podcastEpisode1-title" v-model="newEntry.podcastEpisode.title" />
-              </div>
-              <div class="form-group">
-                <label for="podcastEpisode1-url">Episode 1 URL:</label>
-                <input type="text" id="podcastEpisode1-url" v-model="newEntry.podcastEpisode.EpisodeUrl" />
-              </div>
-              <div class="form-group">
-                <label for="podcastEpisode1-audio">Episode 1 Audio URL:</label>
-                <input type="text" id="podcastEpisode1-audio" v-model="newEntry.podcastEpisode.audioUrl" />
-              </div>
-              <div class="form-group">
-                <label for="podcastEpisode1-desc">Episode 1 Description:</label>
-                <textarea id="podcastEpisode1-desc" v-model="newEntry.podcastEpisode.description"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="podcastEpisode1-time">Episode 1 Start Time (seconds):</label>
-                <input type="number" id="podcastEpisode1-time" v-model="newEntry.podcastEpisode.podcastStartTime"
-                  min="0" />
-              </div>
-
-              <hr class="section-divider">
-
-              <div class="form-group">
-                <label for="podcastEpisode2-title">Episode 2 Title:</label>
-                <input type="text" id="podcastEpisode2-title" v-model="newEntry.podcastEpisode2.title" />
-              </div>
-              <div class="form-group">
-                <label for="podcastEpisode2-url">Episode 2 URL:</label>
-                <input type="text" id="podcastEpisode2-url" v-model="newEntry.podcastEpisode2.EpisodeUrl" />
-              </div>
-              <div class="form-group">
-                <label for="podcastEpisode2-audio">Episode 2 Audio URL:</label>
-                <input type="text" id="podcastEpisode2-audio" v-model="newEntry.podcastEpisode2.audioUrl" />
-              </div>
-              <div class="form-group">
-                <label for="podcastEpisode2-desc">Episode 2 Description:</label>
-                <textarea id="podcastEpisode2-desc" v-model="newEntry.podcastEpisode2.description"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="podcastEpisode2-time">Episode 2 Start Time (seconds):</label>
-                <input type="number" id="podcastEpisode2-time" v-model="newEntry.podcastEpisode2.podcastStartTime"
-                  min="0" />
-              </div>
+          <div v-show="activeSection === 'podcasts'" class="form-section">
+            <div class="form-group">
+              <label for="podcastEpisode1-title">Episode 1 Title:</label>
+              <input type="text" id="podcastEpisode1-title" v-model="newEntry.podcastEpisode.title" />
             </div>
-          </details>
+            <div class="form-group">
+              <label for="podcastEpisode1-url">Episode 1 URL:</label>
+              <input type="text" id="podcastEpisode1-url" v-model="newEntry.podcastEpisode.EpisodeUrl" />
+            </div>
+            <div class="form-group">
+              <label for="podcastEpisode1-audio">Episode 1 Audio URL:</label>
+              <input type="text" id="podcastEpisode1-audio" v-model="newEntry.podcastEpisode.audioUrl" />
+            </div>
+            <div class="form-group">
+              <label for="podcastEpisode1-desc">Episode 1 Description:</label>
+              <textarea id="podcastEpisode1-desc" v-model="newEntry.podcastEpisode.description"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="podcastEpisode1-time">Episode 1 Start Time (seconds):</label>
+              <input type="number" id="podcastEpisode1-time" v-model="newEntry.podcastEpisode.podcastStartTime"
+                min="0" />
+            </div>
+
+            <hr class="section-divider">
+
+            <div class="form-group">
+              <label for="podcastEpisode2-title">Episode 2 Title:</label>
+              <input type="text" id="podcastEpisode2-title" v-model="newEntry.podcastEpisode2.title" />
+            </div>
+            <div class="form-group">
+              <label for="podcastEpisode2-url">Episode 2 URL:</label>
+              <input type="text" id="podcastEpisode2-url" v-model="newEntry.podcastEpisode2.EpisodeUrl" />
+            </div>
+            <div class="form-group">
+              <label for="podcastEpisode2-audio">Episode 2 Audio URL:</label>
+              <input type="text" id="podcastEpisode2-audio" v-model="newEntry.podcastEpisode2.audioUrl" />
+            </div>
+            <div class="form-group">
+              <label for="podcastEpisode2-desc">Episode 2 Description:</label>
+              <textarea id="podcastEpisode2-desc" v-model="newEntry.podcastEpisode2.description"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="podcastEpisode2-time">Episode 2 Start Time (seconds):</label>
+              <input type="number" id="podcastEpisode2-time" v-model="newEntry.podcastEpisode2.podcastStartTime"
+                min="0" />
+            </div>
+          </div>
 
           <!-- Citations -->
-          <details>
-            <summary class="section-summary">Citations ▼</summary>
-            <div class="form-section">
-              <button type="button" @click="addCitation" class="add-button">Add Citation</button>
-              <div v-for="(citation, index) in newEntry.citations" :key="index" class="citation-group">
-                <h3>Citation {{ index + 1 }}</h3>
-                <div class="form-group">
-                  <label :for="`citation-${index}-title`">Title:</label>
-                  <input type="text" :id="`citation-${index}-title`" v-model="citation.title" />
-                </div>
-                <div class="form-group">
-                  <label :for="`citation-${index}-author`">Author:</label>
-                  <input type="text" :id="`citation-${index}-author`" v-model="citation.author" />
-                </div>
-                <div class="form-group">
-                  <label :for="`citation-${index}-url`">URL:</label>
-                  <input type="text" :id="`citation-${index}-url`" v-model="citation.url" />
-                </div>
-                <div class="form-group">
-                  <label :for="`citation-${index}-year`">Year:</label>
-                  <input type="text" :id="`citation-${index}-year`" v-model="citation.year" />
-                </div>
-                <div class="form-group">
-                  <label :for="`citation-${index}-image`">Image URL:</label>
-                  <input type="text" :id="`citation-${index}-image`" v-model="citation.imageUrl" />
-                </div>
-                <button type="button" @click="removeCitation(index)" class="remove-button">Remove Citation</button>
+          <div v-show="activeSection === 'citations'" class="form-section">
+            <button type="button" @click="addCitation" class="add-button">Add Citation</button>
+            <div v-for="(citation, index) in newEntry.citations" :key="index" class="citation-group">
+              <h3>Citation {{ index + 1 }}</h3>
+              <div class="form-group">
+                <label :for="`citation-${index}-title`">Title:</label>
+                <input type="text" :id="`citation-${index}-title`" v-model="citation.title" />
               </div>
+              <div class="form-group">
+                <label :for="`citation-${index}-author`">Author:</label>
+                <input type="text" :id="`citation-${index}-author`" v-model="citation.author" />
+              </div>
+              <div class="form-group">
+                <label :for="`citation-${index}-url`">URL:</label>
+                <input type="text" :id="`citation-${index}-url`" v-model="citation.url" />
+              </div>
+              <div class="form-group">
+                <label :for="`citation-${index}-year`">Year:</label>
+                <input type="text" :id="`citation-${index}-year`" v-model="citation.year" />
+              </div>
+              <div class="form-group">
+                <label :for="`citation-${index}-image`">Image URL:</label>
+                <input type="text" :id="`citation-${index}-image`" v-model="citation.imageUrl" />
+              </div>
+              <button type="button" @click="removeCitation(index)" class="remove-button">Remove Citation</button>
             </div>
-          </details>
+          </div>
 
           <!-- Resources -->
-          <details>
-            <summary class="section-summary">Resources ▼</summary>
-            <div class="form-section">
-              <button type="button" @click="addResource" class="add-button">Add Resource</button>
-              <div v-for="(resource, index) in newEntry.resources" :key="index" class="resource-group">
-                <h3>Resource {{ index + 1 }}</h3>
-                <div class="form-group">
-                  <label :for="`resource-${index}-title`">Title:</label>
-                  <input type="text" :id="`resource-${index}-title`" v-model="resource.title" />
-                </div>
-                <div class="form-group">
-                  <label :for="`resource-${index}-author`">Author:</label>
-                  <input type="text" :id="`resource-${index}-author`" v-model="resource.author" />
-                </div>
-                <div class="form-group">
-                  <label :for="`resource-${index}-url`">URL:</label>
-                  <input type="text" :id="`resource-${index}-url`" v-model="resource.url" />
-                </div>
-                <div class="form-group">
-                  <label :for="`resource-${index}-description`">Description:</label>
-                  <textarea :id="`resource-${index}-description`" v-model="resource.description"></textarea>
-                </div>
-                <button type="button" @click="removeResource(index)" class="remove-button">Remove Resource</button>
+          <div v-show="activeSection === 'resources'" class="form-section">
+            <button type="button" @click="addResource" class="add-button">Add Resource</button>
+            <div v-for="(resource, index) in newEntry.resources" :key="index" class="resource-group">
+              <h3>Resource {{ index + 1 }}</h3>
+              <div class="form-group">
+                <label :for="`resource-${index}-title`">Title:</label>
+                <input type="text" :id="`resource-${index}-title`" v-model="resource.title" />
               </div>
+              <div class="form-group">
+                <label :for="`resource-${index}-author`">Author:</label>
+                <input type="text" :id="`resource-${index}-author`" v-model="resource.author" />
+              </div>
+              <div class="form-group">
+                <label :for="`resource-${index}-url`">URL:</label>
+                <input type="text" :id="`resource-${index}-url`" v-model="resource.url" />
+              </div>
+              <div class="form-group">
+                <label :for="`resource-${index}-description`">Description:</label>
+                <textarea :id="`resource-${index}-description`" v-model="resource.description"></textarea>
+              </div>
+              <button type="button" @click="removeResource(index)" class="remove-button">Remove Resource</button>
             </div>
-          </details>
+          </div>
 
           <!-- Cautions -->
-          <details>
-            <summary class="section-summary">Cautions ▼</summary>
-            <div class="form-section">
-              <div class="form-group">
-                <label for="cautionLevel">Caution Level:</label>
-                <input type="text" id="cautionLevel" v-model="newEntry.cautionLevel" />
-              </div>
-              <div class="form-group">
-                <label for="caution">Caution Text:</label>
-                <textarea id="caution" v-model="newEntry.caution"></textarea>
-              </div>
+          <div v-show="activeSection === 'cautions'" class="form-section">
+            <div class="form-group">
+              <label for="cautionLevel">Caution Level:</label>
+              <input type="text" id="cautionLevel" v-model="newEntry.cautionLevel" />
             </div>
-          </details>
+            <div class="form-group">
+              <label for="caution">Caution Text:</label>
+              <textarea id="caution" v-model="newEntry.caution"></textarea>
+            </div>
+          </div>
 
           <!-- Closing -->
-          <details>
-            <summary class="section-summary">Closing ▼</summary>
-            <div class="form-section">
-              <div class="form-group">
-                <label for="closingText">Closing Text:</label>
-                <textarea id="closingText" v-model="newEntry.closingText"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="closingText2">Additional Closing Text:</label>
-                <textarea id="closingText2" v-model="newEntry.closingText2"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="modal">Modal Content:</label>
-                <textarea id="modal" v-model="newEntry.modal"></textarea>
-              </div>
+          <div v-show="activeSection === 'closing'" class="form-section">
+            <div class="form-group">
+              <label for="closingText">Closing Text:</label>
+              <textarea id="closingText" v-model="newEntry.closingText"></textarea>
             </div>
-          </details>
+            <div class="form-group">
+              <label for="closingText2">Additional Closing Text:</label>
+              <textarea id="closingText2" v-model="newEntry.closingText2"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="modal">Modal Content:</label>
+              <textarea id="modal" v-model="newEntry.modal"></textarea>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -352,7 +362,8 @@ export default {
         type: '',
         message: ''
       },
-      submittedEntry: null
+      submittedEntry: null,
+      activeSection: 'explanations'
     }
   },
   methods: {
@@ -760,5 +771,62 @@ details[open] .form-section {
 .submitted-preview h3 {
   margin-bottom: 1rem;
   color: #333;
+}
+
+.explanation-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.section-button {
+  padding: 0.5rem 1rem;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.section-button:hover {
+  background-color: #e0e0e0;
+}
+
+.section-button.active {
+  background-color: #4a90e2;
+  color: white;
+  border-color: #357abd;
+}
+
+/* Fade transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Or slide transition */
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.slide-enter-from {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+.slide-leave-to {
+  transform: translateX(-20px);
+  opacity: 0;
 }
 </style>
