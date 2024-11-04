@@ -27,7 +27,7 @@ export const quizStore = defineStore('quiz', {
             imageUrl: '',
             imageAltText: '',
             podcastEpisode: {
-                title: '',
+                title: 'Episode Title',
                 EpisodeUrl: '',
                 audioUrl: '',
                 description: '',
@@ -110,14 +110,33 @@ export const quizStore = defineStore('quiz', {
         },
         async saveDraftQuizEntry() {
             try {
-                const docRef = await addDoc(collection(db, 'quizEntries'), this.draftQuizEntry);
+                // Add validation/initialization
+                const entryToSave = {
+                    ...this.draftQuizEntry,
+                    podcastEpisode: this.draftQuizEntry.podcastEpisode || {
+                        title: '',
+                        EpisodeUrl: '',
+                        audioUrl: '',
+                        description: '',
+                        podcastStartTime: 0
+                    },
+                    podcastEpisode2: this.draftQuizEntry.podcastEpisode2 || {
+                        title: '',
+                        EpisodeUrl: '',
+                        audioUrl: '',
+                        description: '',
+                        podcastStartTime: 0
+                    }
+                };
+
+                console.log('Saving entry with podcast data:', entryToSave);
+                const docRef = await addDoc(collection(db, 'quizEntries'), entryToSave);
                 console.log('Document written with ID: ', docRef.id);
                 this.saveStatus = {
                     message: 'Quiz entry saved successfully!',
                     type: 'success',
                     show: true
                 };
-                this.resetDraftQuizEntry();
                 return docRef.id;
             } catch (e) {
                 console.error('Error adding document: ', e);

@@ -20,10 +20,17 @@ export default {
     props: {
         podcastEpisode: {
             type: Object,
-            default: null
+            default: () => ({
+                title: '',
+                EpisodeUrl: '',
+                audioUrl: '',
+                description: '',
+                podcastStartTime: 0
+            })
         }
     },
     mounted() {
+        console.log('PodcastReference mounted, podcastEpisode:', this.podcastEpisode);
         if (this.podcastEpisode && this.podcastEpisode.podcastStartTime > 0) {
             this.$nextTick(() => {
                 this.$refs.audio.currentTime = this.podcastEpisode.podcastStartTime;

@@ -107,7 +107,7 @@ export default {
     }
   },
   mounted() {
-    console.log("----QuizItem mounted------")
+    console.log('QuizItem mounted, currentQuizItem:', this.currentQuizItem);
   },
 
   methods: {

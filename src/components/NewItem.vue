@@ -23,8 +23,8 @@
     </div>
 
     <div v-if="previewMode" class="preview-section">
-      <QuizItem :currentQuizItem="newEntry" :itemNum="0" :reviewing="true" :chosen="true" :basicMode="false"
-        :userAnswer="newEntry.correctAnswer" :showAllContent="true" />
+      <QuizItem :currentQuizItem="newEntry" :itemNum="0" :reviewMode="true" :basicMode="false"
+        :userAnswer="newEntry.correctAnswer" />
     </div>
 
     <form v-else @submit.prevent="submitForm">
@@ -357,9 +357,8 @@ export default {
     async submitForm() {
       try {
         await this.store.saveDraftQuizEntry();
-        // Handle success (maybe redirect or show success message)
+        console.log('Submitting entry:', this.newEntry);
       } catch (e) {
-        // Handle error
         console.error('Error submitting form:', e);
       }
     },
