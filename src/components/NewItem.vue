@@ -254,7 +254,6 @@
                 <label :for="`citation-${index}-image`">Image URL:</label>
                 <input type="text" :id="`citation-${index}-image`" v-model="citation.imageUrl" />
               </div>
-              <button type="button" @click="removeCitation(index)" class="remove-button">Remove Citation</button>
             </div>
             <button type="button" @click="addCitation" class="add-button">Add Another Citation</button>
           </div>
@@ -279,7 +278,6 @@
                 <label :for="`resource-${index}-description`">Description:</label>
                 <textarea :id="`resource-${index}-description`" v-model="resource.description"></textarea>
               </div>
-              <button type="button" @click="removeResource(index)" class="remove-button">Remove Resource</button>
             </div>
             <button type="button" @click="addResource" class="add-button">Add Another Resource</button>
           </div>
@@ -433,7 +431,7 @@ export default {
       } else {
         this.activeSection = 'resources';
         if (!this.newEntry.resources || this.newEntry.resources.length === 0) {
-          this.addResource();  // Add first resource automatically
+          this.addResource();
         }
       }
     }
@@ -547,11 +545,51 @@ button:hover {
 
 .citation-group,
 .resource-group {
-  margin-top: 15px;
-  padding: 15px;
-  border: 1px solid #444;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.citation-group:last-child,
+.resource-group:last-child {
+  border-bottom: none;
+  margin-bottom: 10px;
+}
+
+.citation-group h3,
+.resource-group h3 {
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.add-button,
+.remove-button {
+  padding: 0.5rem 1rem;
   border-radius: 4px;
-  background-color: #222;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.add-button {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.remove-button {
+  background-color: #dc3545;
+  color: white;
+  margin-top: 15px;
+}
+
+.add-button:hover {
+  background-color: #357abd;
+}
+
+.remove-button:hover {
+  background-color: #c82333;
 }
 
 h2 {
@@ -616,16 +654,6 @@ details[open] .form-section {
   margin: 16px 0;
   border: none;
   border-top: 1px solid #444;
-}
-
-.add-button {
-  margin-bottom: 20px;
-  background-color: #4CAF50;
-}
-
-.remove-button {
-  margin-top: 10px;
-  background-color: #f44336;
 }
 
 .preview-controls {
@@ -850,8 +878,8 @@ details[open] .form-section {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1rem;
-  padding: 1rem;
+  margin: .7rem 1rem;
+  padding: .7rem;
   background-color: white;
   border-radius: 8px;
 }
