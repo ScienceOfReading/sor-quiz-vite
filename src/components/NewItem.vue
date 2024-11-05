@@ -618,6 +618,8 @@ details[open] .form-section {
 .preview-controls-text {
   margin-right: 1rem;
   font-size: x-large;
+  color: #333;
+  font-weight: 500;
 }
 
 .button-group {
@@ -835,7 +837,7 @@ details[open] .form-section {
 }
 
 .section-button {
-  padding: 0.5rem 1rem;
+  padding: 0.3rem .7rem;
   background-color: #f0f0f0;
   color: #333;
   border: 1px solid #ddd;
