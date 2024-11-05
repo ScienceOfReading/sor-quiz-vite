@@ -134,11 +134,11 @@
             :class="['section-button', { active: activeSection === 'podcasts' }]">
             Podcasts
           </button>
-          <button type="button" @click="activeSection = activeSection === 'citations' ? '' : 'citations'"
+          <button type="button" @click="handleCitationsClick"
             :class="['section-button', { active: activeSection === 'citations' }]">
             Citations
           </button>
-          <button type="button" @click="activeSection = activeSection === 'resources' ? '' : 'resources'"
+          <button type="button" @click="handleResourcesClick"
             :class="['section-button', { active: activeSection === 'resources' }]">
             Resources
           </button>
@@ -232,7 +232,6 @@
 
           <!-- Citations -->
           <div v-show="activeSection === 'citations'" class="form-section">
-            <button type="button" @click="addCitation" class="add-button">Add Citation</button>
             <div v-for="(citation, index) in newEntry.citations" :key="index" class="citation-group">
               <h3>Citation {{ index + 1 }}</h3>
               <div class="form-group">
@@ -257,11 +256,11 @@
               </div>
               <button type="button" @click="removeCitation(index)" class="remove-button">Remove Citation</button>
             </div>
+            <button type="button" @click="addCitation" class="add-button">Add Another Citation</button>
           </div>
 
           <!-- Resources -->
           <div v-show="activeSection === 'resources'" class="form-section">
-            <button type="button" @click="addResource" class="add-button">Add Resource</button>
             <div v-for="(resource, index) in newEntry.resources" :key="index" class="resource-group">
               <h3>Resource {{ index + 1 }}</h3>
               <div class="form-group">
@@ -282,6 +281,7 @@
               </div>
               <button type="button" @click="removeResource(index)" class="remove-button">Remove Resource</button>
             </div>
+            <button type="button" @click="addResource" class="add-button">Add Another Resource</button>
           </div>
 
           <!-- Cautions -->
@@ -416,6 +416,26 @@ export default {
     },
     returnToQuizzes() {
       this.$router.push('/');
+    },
+    handleCitationsClick() {
+      if (this.activeSection === 'citations') {
+        this.activeSection = '';
+      } else {
+        this.activeSection = 'citations';
+        if (!this.newEntry.citations || this.newEntry.citations.length === 0) {
+          this.addCitation();
+        }
+      }
+    },
+    handleResourcesClick() {
+      if (this.activeSection === 'resources') {
+        this.activeSection = '';
+      } else {
+        this.activeSection = 'resources';
+        if (!this.newEntry.resources || this.newEntry.resources.length === 0) {
+          this.addResource();  // Add first resource automatically
+        }
+      }
     }
   }
 };
