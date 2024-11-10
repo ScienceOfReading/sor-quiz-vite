@@ -134,23 +134,53 @@ export default {
       return correct
     },
 
-    nextItem() {
-      console.log("-----In nextItem-----")
-      this.itemNum++;
-      this.numCompleted++;
-      this.chosen = false;
+    async nextItem() {
+      try {
+        const currentQuestion = this.quizItems[this.itemNum];
+        const selectedAnswer = this.userAnswers[this.itemNum];
+        const correctAnswer = currentQuestion.correctAnswer;
+        const questionId = currentQuestion.id;
+        const questionTitle = currentQuestion.title;
 
-      // Update complete status
-      this.complete = this.itemNum === this.quizItems.length - 1;
+        console.log('Next Item Answer Check:', {
+          questionNumber: this.itemNum,
+          questionId: questionId,
+          questionTitle: questionTitle,
+          selectedAnswer: selectedAnswer,
+          correctAnswer: correctAnswer
+        });
 
-      // In basic mode, exit review mode after showing answer
-      if (this.basicMode && this.reviewMode) {
-        this.reviewMode = false;
+        // Save to store with correctness, ID, and title
+        await this.store.setUserAnswer(
+          this.itemNum,
+          selectedAnswer,
+          correctAnswer,
+          questionId,
+          questionTitle
+        );
+
+        // Save progress
+        await saveUserProgress(this.selectedQuiz, {
+          lastQuestionAnswered: this.itemNum,
+          userAnswers: this.store.userAnswers,
+          incorrectQuestions: this.store.incorrectQuestions,
+          totalCorrect: this.store.userAnswers.filter(a => a.correct).length,
+          totalAnswered: this.store.userAnswers.length,
+          timestamp: new Date()
+        });
+
+        // Advance to next question
+        if (this.itemNum < this.quizItems.length - 1) {
+          this.itemNum++;
+          this.chosen = false;
+          this.reviewMode = false;
+        } else {
+          this.complete = true;
+          this.showResults = true;
+        }
+      } catch (error) {
+        console.error("Error in nextItem method:", error);
       }
-
-      console.log("Next. itemNum:", this.itemNum,
-        "complete:", this.complete,
-        "reviewMode:", this.reviewMode);
     },
     async checkIt() {
       try {
