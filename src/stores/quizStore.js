@@ -57,7 +57,7 @@ export const quizStore = defineStore('quiz', {
             type: '', // 'success' or 'error'
             show: false
         },
-        incorrectQuestionIds: []  // Add this to track incorrect answers
+        incorrectQuestions: []  // Changed from incorrectQuestionIds to store more info
     }),
     actions: {
         async recordQuizAttempt(quizStarted) {
@@ -166,10 +166,10 @@ export const quizStore = defineStore('quiz', {
             console.log('Setting current quiz:', quizId);
             this.currentQuizId = quizId;
             this.userAnswers = []; // Reset answers when starting new quiz
-            this.incorrectQuestionIds = [];  // Reset incorrect questions
+            this.incorrectQuestions = [];  // Reset incorrect questions
         },
-        async setUserAnswer(index, selectedAnswer, correctAnswer, questionId) {
-            console.log(`Question ${index}: Selected ${selectedAnswer}, Correct ${correctAnswer}, ID ${questionId}`);
+        async setUserAnswer(index, selectedAnswer, correctAnswer, questionId, questionTitle) {
+            console.log(`Question ${index}: Selected ${selectedAnswer}, Correct ${correctAnswer}, ID ${questionId}, Title: ${questionTitle}`);
 
             const isCorrect = selectedAnswer === correctAnswer;
 
@@ -177,13 +177,17 @@ export const quizStore = defineStore('quiz', {
             this.userAnswers[index] = {
                 selected: selectedAnswer,
                 correct: isCorrect,
-                questionId: questionId,  // Store the question ID
+                questionId: questionId,
+                questionTitle: questionTitle,
                 timestamp: new Date()
             };
 
-            // Update incorrect questions array
-            if (!isCorrect && !this.incorrectQuestionIds.includes(questionId)) {
-                this.incorrectQuestionIds.push(questionId);
+            // Update incorrect questions array with both ID and title
+            if (!isCorrect && !this.incorrectQuestions.some(q => q.id === questionId)) {
+                this.incorrectQuestions.push({
+                    id: questionId,
+                    title: questionTitle
+                });
             }
 
             try {
@@ -199,11 +203,11 @@ export const quizStore = defineStore('quiz', {
                     userId,
                     quizId: this.currentQuizId,
                     userAnswers: this.userAnswers,
-                    incorrectQuestionIds: this.incorrectQuestionIds,  // Save the incorrect IDs
+                    incorrectQuestions: this.incorrectQuestions,
                     lastUpdated: serverTimestamp()
                 }, { merge: true });
 
-                console.log('Answer and incorrectQuestionIds saved to Firebase');
+                console.log('Answer and incorrect questions saved to Firebase');
             } catch (error) {
                 console.error('Error saving answer:', error);
             }

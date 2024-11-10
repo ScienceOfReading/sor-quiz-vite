@@ -157,28 +157,31 @@ export default {
         const currentQuestion = this.quizItems[this.itemNum];
         const selectedAnswer = this.userAnswers[this.itemNum];
         const correctAnswer = currentQuestion.correctAnswer;
-        const questionId = currentQuestion.id;  // Get the question ID
+        const questionId = currentQuestion.id;
+        const questionTitle = currentQuestion.title;  // Get the question title
 
         console.log('Answer Check:', {
           questionNumber: this.itemNum,
           questionId: questionId,
+          questionTitle: questionTitle,
           selectedAnswer: selectedAnswer,
           correctAnswer: correctAnswer
         });
 
-        // Save to store with correctness and question ID
+        // Save to store with correctness, ID, and title
         await this.store.setUserAnswer(
           this.itemNum,
           selectedAnswer,
           correctAnswer,
-          questionId
+          questionId,
+          questionTitle
         );
 
         // Save progress including incorrect questions
         await saveUserProgress(this.selectedQuiz, {
           lastQuestionAnswered: this.itemNum,
           userAnswers: this.store.userAnswers,
-          incorrectQuestionIds: this.store.incorrectQuestionIds,
+          incorrectQuestions: this.store.incorrectQuestions,
           totalCorrect: this.store.userAnswers.filter(a => a.correct).length,
           totalAnswered: this.store.userAnswers.length,
           timestamp: new Date()
