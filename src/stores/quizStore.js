@@ -169,52 +169,39 @@ export const quizStore = defineStore('quiz', {
             this.incorrectQuestions = [];  // Reset incorrect questions
         },
         async setUserAnswer(index, selectedAnswer, correctAnswer, questionId, questionTitle, quizEntry) {
-            // Early validation
-            if (selectedAnswer === undefined || correctAnswer === undefined) {
-                console.error('Invalid answer data:', { selectedAnswer, correctAnswer });
+            // Skip correctness check for sortable lists
+            if (Array.isArray(selectedAnswer)) {
+                console.log('Sortable list answer - skipping correctness check');
+
+                this.userAnswers[index] = {
+                    selected: selectedAnswer,
+                    questionId: questionId || '',
+                    questionTitle: questionTitle || '',
+                    timestamp: new Date().toISOString()
+                };
+
+                // Don't add to incorrectQuestions for sortable lists
                 return;
             }
 
-            let isCorrect;
-            if (Array.isArray(selectedAnswer)) {
-                // For sortable lists
-                isCorrect = JSON.stringify(selectedAnswer) === JSON.stringify(correctAnswer);
+            // Regular multiple choice handling
+            const isCorrect = selectedAnswer === correctAnswer;
 
-                this.userAnswers[index] = {
-                    selected: selectedAnswer || [],  // Ensure we have an array
-                    correct: isCorrect,
-                    questionId: questionId || '',
-                    questionTitle: questionTitle || '',
-                    timestamp: new Date().toISOString()
-                };
+            this.userAnswers[index] = {
+                selected: selectedAnswer,
+                correct: isCorrect,
+                questionId: questionId || '',
+                questionTitle: questionTitle || '',
+                timestamp: new Date().toISOString()
+            };
 
-                if (!isCorrect) {
-                    this.incorrectQuestions.push({
-                        id: questionId || '',
-                        title: questionTitle || '',
-                        chosenAnswer: (selectedAnswer || []).join(', ').substring(0, 100)
-                    });
-                }
-            } else {
-                // Multiple choice
-                isCorrect = selectedAnswer === correctAnswer;
-
-                this.userAnswers[index] = {
-                    selected: selectedAnswer || '',
-                    correct: isCorrect,
-                    questionId: questionId || '',
-                    questionTitle: questionTitle || '',
-                    timestamp: new Date().toISOString()
-                };
-
-                if (!isCorrect && !this.incorrectQuestions.some(q => q.id === questionId)) {
-                    const chosenOptionText = quizEntry?.[`option${selectedAnswer}`] || '';
-                    this.incorrectQuestions.push({
-                        id: questionId || '',
-                        title: questionTitle || '',
-                        chosenAnswer: chosenOptionText.substring(0, 100)
-                    });
-                }
+            if (!isCorrect && !this.incorrectQuestions.some(q => q.id === questionId)) {
+                const chosenOptionText = quizEntry[`option${selectedAnswer}`];
+                this.incorrectQuestions.push({
+                    id: questionId || '',
+                    title: questionTitle || '',
+                    chosenAnswer: chosenOptionText?.substring(0, 100) || ''
+                });
             }
 
             try {
@@ -224,37 +211,16 @@ export const quizStore = defineStore('quiz', {
                     return;
                 }
 
-                // Clean the data before saving
-                const cleanUserAnswers = this.userAnswers.filter(answer =>
-                    answer !== null && answer !== undefined
-                ).map(answer => ({
-                    selected: answer.selected || '',
-                    correct: !!answer.correct,
-                    questionId: answer.questionId || '',
-                    questionTitle: answer.questionTitle || '',
-                    timestamp: answer.timestamp || new Date().toISOString()
-                }));
-
-                const cleanIncorrectQuestions = this.incorrectQuestions.filter(q =>
-                    q !== null && q !== undefined
-                ).map(q => ({
-                    id: q.id || '',
-                    title: q.title || '',
-                    chosenAnswer: q.chosenAnswer || ''
-                }));
-
-                const dataToSave = {
-                    userId,
-                    quizId: this.currentQuizId || '',
-                    userAnswers: cleanUserAnswers,
-                    incorrectQuestions: cleanIncorrectQuestions,
-                    lastUpdated: serverTimestamp()
-                };
-
                 const attemptRef = doc(db, 'quizAttempts', `${userId}_${this.currentQuizId}`);
-                await setDoc(attemptRef, dataToSave, { merge: true });
+                await setDoc(attemptRef, {
+                    userId,
+                    quizId: this.currentQuizId,
+                    userAnswers: this.userAnswers,
+                    incorrectQuestions: this.incorrectQuestions,
+                    lastUpdated: serverTimestamp()
+                }, { merge: true });
 
-                console.log('Successfully saved to Firebase');
+                console.log('Answer saved to Firebase');
             } catch (error) {
                 console.error('Firebase save error:', error);
                 throw error;

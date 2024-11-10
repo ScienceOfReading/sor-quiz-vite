@@ -191,47 +191,25 @@ export default {
           return;
         }
 
-        // Debug logging
-        console.log('Current question:', {
+        // Debug log to see what we're dealing with
+        console.log('Question type:', {
           type: currentQuestion.answer_type,
-          itemNum: this.itemNum,
-          question: currentQuestion
+          isSortable: currentQuestion.answer_type === 'sortableList'
         });
 
         let selectedAnswer;
-        if (currentQuestion.answer_type === 'sortableList') {
-          // Debug what's available
-          console.log('Sortable list state:', {
-            items: this.items,
-            userAnswers: this.userAnswers,
-            currentOrder: this.currentOrder, // if you're using this
-            sortableItems: this.sortableItems // or this
-          });
-
-          // Try different possible properties where the order might be stored
-          selectedAnswer = this.items ||
-            this.currentOrder ||
-            this.sortableItems ||
-            this.userAnswers[this.itemNum];
-
-          console.log('Selected sortable answer:', selectedAnswer);
+        // Make sure we're checking the answer_type correctly
+        if (currentQuestion.answer_type === 'sortableList' || currentQuestion.answer_type === 'sortable') {
+          // For sortable lists, just use the items array
+          selectedAnswer = currentQuestion.items || [];
+          console.log('Using sortable items:', selectedAnswer);
         } else {
+          // Only for multiple choice
           selectedAnswer = this.userAnswers[this.itemNum];
-        }
-
-        // More detailed validation
-        if (!selectedAnswer) {
-          console.error('No valid answer for question:', {
-            itemNum: this.itemNum,
-            questionType: currentQuestion.answer_type,
-            availableData: {
-              items: this.items,
-              userAnswers: this.userAnswers,
-              currentOrder: this.currentOrder,
-              sortableItems: this.sortableItems
-            }
-          });
-          return;
+          if (selectedAnswer === undefined) {
+            console.error('No valid answer for multiple choice question:', this.itemNum);
+            return;
+          }
         }
 
         const questionData = {
@@ -241,8 +219,6 @@ export default {
           questionTitle: currentQuestion.title || '',
           quizEntry: currentQuestion
         };
-
-        console.log('About to save answer:', questionData);
 
         await this.store.setUserAnswer(
           this.itemNum,
@@ -257,16 +233,12 @@ export default {
           this.reviewMode = !this.reviewMode;
           if (!this.reviewMode) {
             this.itemNum++;
-            this.chosen = false;
+            this.chosen = false
           }
         }
 
       } catch (error) {
-        console.error("Error in checkIt method:", error, {
-          currentQuestion: this.quizItems[this.itemNum],
-          itemNum: this.itemNum,
-          userAnswers: this.userAnswers
-        });
+        console.error("Error in checkIt method:", error);
       }
     },
     answerSelected() {
