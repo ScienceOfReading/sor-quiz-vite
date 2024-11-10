@@ -7,7 +7,7 @@ export const quizStore = defineStore('quiz', {
     state: () => ({
         quizAttempts: [],
         quizEdits: [],
-        userAnswers: [], // Store user answers here
+        userAnswers: [], // Will now store objects instead of just answer values
         currentQuizId: null,
         draftQuizEntry: {
             title: 'Sample Title',
@@ -166,26 +166,15 @@ export const quizStore = defineStore('quiz', {
             this.currentQuizId = quizId;
             this.userAnswers = []; // Reset answers when starting new quiz
         },
-        setUserAnswer(questionIndex, answer) {
-            this.userAnswers[questionIndex] = answer;
-        },
-        async recordQuizEdit(quizStarted) {
-            const quizEdit = {
-                timestamp: new Date(),
-            };
+        async setUserAnswer(index, selectedAnswer, correctAnswer) {
+            console.log(`Question ${index}: Selected ${selectedAnswer}, Correct ${correctAnswer}`);
 
-            try {
-                const docRef = await addDoc(collection(db, 'quizEdit'), quizEdit);
-                console.log("Quiz attempt saved with ID: ", docRef.id);
-                this.quizEdits.push(quizEdit);
-            } catch (e) {
-                console.error("Error saving quiz attempt: ", e);
-                throw e;
-            }
-        },
-        async setUserAnswer(index, answer) {
-            console.log(`Setting answer ${answer} for question ${index}`);
-            this.userAnswers[index] = answer;
+            // Store both the answer and whether it was correct
+            this.userAnswers[index] = {
+                selected: selectedAnswer,
+                correct: selectedAnswer === correctAnswer,
+                timestamp: new Date()
+            };
 
             try {
                 const userId = auth.currentUser?.uid;
@@ -203,9 +192,23 @@ export const quizStore = defineStore('quiz', {
                     lastUpdated: serverTimestamp()
                 }, { merge: true });
 
-                console.log('Answer saved to Firebase');
+                console.log('Answer and correctness saved to Firebase');
             } catch (error) {
                 console.error('Error saving answer:', error);
+            }
+        },
+        async recordQuizEdit(quizStarted) {
+            const quizEdit = {
+                timestamp: new Date(),
+            };
+
+            try {
+                const docRef = await addDoc(collection(db, 'quizEdit'), quizEdit);
+                console.log("Quiz attempt saved with ID: ", docRef.id);
+                this.quizEdits.push(quizEdit);
+            } catch (e) {
+                console.error("Error saving quiz attempt: ", e);
+                throw e;
             }
         },
     },

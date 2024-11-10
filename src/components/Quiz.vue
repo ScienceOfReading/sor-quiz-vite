@@ -154,16 +154,41 @@ export default {
     },
     async checkIt() {
       try {
-        console.log('Current itemNum:', this.itemNum);
-        console.log('Current answer:', this.userAnswers[this.itemNum]);
+        const currentQuestion = this.quizItems[this.itemNum];
+        const selectedAnswer = this.userAnswers[this.itemNum];
+        const correctAnswer = currentQuestion.correctAnswer;
 
-        // Save to store
-        this.store.setUserAnswer(this.itemNum, this.userAnswers[this.itemNum]);
+        // Debug logging
+        console.log('Answer Check:', {
+          questionNumber: this.itemNum,
+          selectedAnswer: selectedAnswer,
+          correctAnswer: correctAnswer,
+          questionData: currentQuestion,
+          answerType: typeof selectedAnswer,
+          correctType: typeof correctAnswer
+        });
 
-        // Save progress
+        // Make sure we're comparing the same types
+        let isCorrect = false;
+        if (typeof selectedAnswer === 'string') {
+          isCorrect = parseInt(selectedAnswer) === correctAnswer;
+        } else {
+          isCorrect = selectedAnswer === correctAnswer;
+        }
+
+        // Save to store with correctness
+        await this.store.setUserAnswer(
+          this.itemNum,
+          selectedAnswer,
+          correctAnswer
+        );
+
+        // Save progress with corrected counting
         await saveUserProgress(this.selectedQuiz, {
           lastQuestionAnswered: this.itemNum,
-          userAnswers: this.userAnswers,
+          userAnswers: this.store.userAnswers,
+          totalCorrect: this.store.userAnswers.filter(a => a.correct).length,
+          totalAnswered: this.store.userAnswers.length,
           timestamp: new Date()
         });
 
