@@ -52,7 +52,7 @@ import QuizItem from './QuizItem.vue';
 import { quizEntries } from '../data/quiz-items.js'
 import { quizSets } from '../data/quizSets.js'
 import { quizStore } from '../stores/quizStore'; // Import the store
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 export default {
   name: 'Quiz',
@@ -66,13 +66,15 @@ export default {
       required: true
     }
   },
-  setup() {
-    const store = quizStore()
-    const userAnswers = ref([])
+  setup(props) {
+    const store = quizStore();
+
+    onMounted(() => {
+      store.setCurrentQuiz(props.selectedQuiz);
+    });
 
     return {
-      store,
-      userAnswers
+      store
     }
   },
   data() {
@@ -151,23 +153,17 @@ export default {
     },
     async checkIt() {
       try {
-        console.log("In checkIt, userAnswers:", this.$userAnswers);
-        await this.store.saveUserAnswers();
+        // Save the current answer to the store
+        this.store.setUserAnswer(this.itemNum, this.userAnswers[this.itemNum]);
 
         if (this.basicMode) {
-          // Toggle review mode
           this.reviewMode = !this.reviewMode;
-
-          // If exiting review mode, move to next question
           if (!this.reviewMode) {
             this.itemNum++;
             this.chosen = false;
           }
         }
-
-        // Update complete status
         this.complete = this.itemNum === this.quizItems.length - 1;
-
       } catch (error) {
         console.error("Error in checkIt method:", error);
       }

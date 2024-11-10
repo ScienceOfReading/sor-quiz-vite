@@ -7,6 +7,7 @@ export const quizStore = defineStore('quiz', {
     state: () => ({
         quizAttempts: [],
         userAnswers: [], // Store user answers here
+        currentQuizId: null,
         draftQuizEntry: {
             title: 'Sample Title',
             subtitle: 'Sample Subtitle',
@@ -59,19 +60,19 @@ export const quizStore = defineStore('quiz', {
     actions: {
         async recordQuizAttempt(quizStarted) {
             const attempt = {
+                quizId: this.currentQuizId,
                 quizStarted,
-                userAnswers: this.userAnswers, // Include user answers
+                userAnswers: this.userAnswers,
                 timestamp: new Date(),
             };
-            this.quizAttempts.push(attempt);
-            console.log("Quiz attempt recorded:", attempt);
 
-            // Firestore logic to save the attempt
             try {
                 const docRef = await addDoc(collection(db, 'quizAttempts'), attempt);
-                console.log("Document written with ID: ", docRef.id);
+                console.log("Quiz attempt saved with ID: ", docRef.id);
+                this.quizAttempts.push(attempt);
             } catch (e) {
-                console.error("Error adding document: ", e);
+                console.error("Error saving quiz attempt: ", e);
+                throw e;
             }
         },
         async saveUserAnswers() {
@@ -154,6 +155,13 @@ export const quizStore = defineStore('quiz', {
                 type: '',
                 show: false
             };
+        },
+        setCurrentQuiz(quizId) {
+            this.currentQuizId = quizId;
+            this.userAnswers = []; // Reset answers when starting new quiz
+        },
+        setUserAnswer(questionIndex, answer) {
+            this.userAnswers[questionIndex] = answer;
         }
     },
 });
