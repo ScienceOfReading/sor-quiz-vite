@@ -168,8 +168,8 @@ export const quizStore = defineStore('quiz', {
             this.userAnswers = []; // Reset answers when starting new quiz
             this.incorrectQuestions = [];  // Reset incorrect questions
         },
-        async setUserAnswer(index, selectedAnswer, correctAnswer, questionId, questionTitle) {
-            console.log(`Question ${index}: Selected ${selectedAnswer}, Correct ${correctAnswer}, ID ${questionId}, Title: ${questionTitle}`);
+        async setUserAnswer(index, selectedAnswer, correctAnswer, questionId, questionTitle, quizEntry) {
+            console.log(`Question ${index}: Selected ${selectedAnswer}, Correct ${correctAnswer}`);
 
             const isCorrect = selectedAnswer === correctAnswer;
 
@@ -182,11 +182,15 @@ export const quizStore = defineStore('quiz', {
                 timestamp: new Date()
             };
 
-            // Update incorrect questions array with both ID and title
+            // Update incorrect questions array with chosen option text
             if (!isCorrect && !this.incorrectQuestions.some(q => q.id === questionId)) {
+                // Get the text of the option they chose (e.g., option1, option2, etc.)
+                const chosenOptionText = quizEntry[`option${selectedAnswer}`];
+
                 this.incorrectQuestions.push({
                     id: questionId,
-                    title: questionTitle
+                    title: questionTitle,
+                    chosenAnswer: chosenOptionText?.substring(0, 100) || ''  // Truncate long answers
                 });
             }
 
@@ -197,7 +201,6 @@ export const quizStore = defineStore('quiz', {
                     return;
                 }
 
-                // Save to Firebase with incorrect questions array
                 const attemptRef = doc(db, 'quizAttempts', `${userId}_${this.currentQuizId}`);
                 await setDoc(attemptRef, {
                     userId,

@@ -156,7 +156,8 @@ export default {
           selectedAnswer,
           correctAnswer,
           questionId,
-          questionTitle
+          questionTitle,
+          currentQuestion
         );
 
         // Save progress
@@ -188,7 +189,7 @@ export default {
         const selectedAnswer = this.userAnswers[this.itemNum];
         const correctAnswer = currentQuestion.correctAnswer;
         const questionId = currentQuestion.id;
-        const questionTitle = currentQuestion.title;  // Get the question title
+        const questionTitle = currentQuestion.title;
 
         console.log('Answer Check:', {
           questionNumber: this.itemNum,
@@ -204,7 +205,8 @@ export default {
           selectedAnswer,
           correctAnswer,
           questionId,
-          questionTitle
+          questionTitle,
+          currentQuestion
         );
 
         // Save progress including incorrect questions
