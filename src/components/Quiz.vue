@@ -52,7 +52,8 @@ import QuizItem from './QuizItem.vue';
 import { quizEntries } from '../data/quiz-items.js'
 import { quizSets } from '../data/quizSets.js'
 import { quizStore } from '../stores/quizStore'; // Import the store
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { saveUserProgress } from '../firebase';
 
 export default {
   name: 'Quiz',
@@ -66,13 +67,15 @@ export default {
       required: true
     }
   },
-  setup() {
-    const store = quizStore()
-    const userAnswers = ref([])
+  setup(props) {
+    const store = quizStore();
+
+    onMounted(() => {
+      store.setCurrentQuiz(props.selectedQuiz);
+    });
 
     return {
-      store,
-      userAnswers
+      store
     }
   },
   data() {
@@ -151,22 +154,46 @@ export default {
     },
     async checkIt() {
       try {
-        console.log("In checkIt, userAnswers:", this.$userAnswers);
-        await this.store.saveUserAnswers();
+        const currentQuestion = this.quizItems[this.itemNum];
+        const selectedAnswer = this.userAnswers[this.itemNum];
+        const correctAnswer = currentQuestion.correctAnswer;
+        const questionId = currentQuestion.id;
+        const questionTitle = currentQuestion.title;  // Get the question title
+
+        console.log('Answer Check:', {
+          questionNumber: this.itemNum,
+          questionId: questionId,
+          questionTitle: questionTitle,
+          selectedAnswer: selectedAnswer,
+          correctAnswer: correctAnswer
+        });
+
+        // Save to store with correctness, ID, and title
+        await this.store.setUserAnswer(
+          this.itemNum,
+          selectedAnswer,
+          correctAnswer,
+          questionId,
+          questionTitle
+        );
+
+        // Save progress including incorrect questions
+        await saveUserProgress(this.selectedQuiz, {
+          lastQuestionAnswered: this.itemNum,
+          userAnswers: this.store.userAnswers,
+          incorrectQuestions: this.store.incorrectQuestions,
+          totalCorrect: this.store.userAnswers.filter(a => a.correct).length,
+          totalAnswered: this.store.userAnswers.length,
+          timestamp: new Date()
+        });
 
         if (this.basicMode) {
-          // Toggle review mode
           this.reviewMode = !this.reviewMode;
-
-          // If exiting review mode, move to next question
           if (!this.reviewMode) {
             this.itemNum++;
             this.chosen = false;
           }
         }
-
-        // Update complete status
-        this.complete = this.itemNum === this.quizItems.length - 1;
 
       } catch (error) {
         console.error("Error in checkIt method:", error);

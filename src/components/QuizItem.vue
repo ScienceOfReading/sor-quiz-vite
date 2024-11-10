@@ -137,8 +137,10 @@ export default {
       this.explanationComponent.checkAnswer();
     },
     handleAnswerSelected(selectedOption) {
-      console.log("Answer selected:", selectedOption);
-      this.$emit('selected'); // Emit to parent (Quiz.vue)
+      console.log("Answer selected in QuizItem:", selectedOption);
+      this.userAnswer = selectedOption;
+      this.$emit('update:userAnswer', selectedOption);
+      this.$emit('selected');
     }
   },
   setup(props, { emit }) {

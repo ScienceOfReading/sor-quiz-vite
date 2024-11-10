@@ -1,12 +1,14 @@
 // src/stores/quizStore.js
 import { defineStore } from 'pinia';
-import { db } from '../firebase'; // Adjust the path as necessary
-import { collection, addDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase'; // Adjust the path as necessary
+import { collection, addDoc, serverTimestamp, doc, setDoc } from 'firebase/firestore';
 
 export const quizStore = defineStore('quiz', {
     state: () => ({
         quizAttempts: [],
-        userAnswers: [], // Store user answers here
+        quizEdits: [],
+        userAnswers: [], // Will now store objects instead of just answer values
+        currentQuizId: null,
         draftQuizEntry: {
             title: 'Sample Title',
             subtitle: 'Sample Subtitle',
@@ -54,24 +56,28 @@ export const quizStore = defineStore('quiz', {
             message: '',
             type: '', // 'success' or 'error'
             show: false
-        }
+        },
+        incorrectQuestions: []  // Changed from incorrectQuestionIds to store more info
     }),
     actions: {
         async recordQuizAttempt(quizStarted) {
-            const attempt = {
-                quizStarted,
-                userAnswers: this.userAnswers, // Include user answers
-                timestamp: new Date(),
-            };
-            this.quizAttempts.push(attempt);
-            console.log("Quiz attempt recorded:", attempt);
+            const userId = auth.currentUser?.uid;
 
-            // Firestore logic to save the attempt
+            const attempt = {
+                userId,  // Add user ID
+                quizId: this.currentQuizId,
+                quizStarted,
+                userAnswers: this.userAnswers,
+                timestamp: serverTimestamp()
+            };
+
             try {
                 const docRef = await addDoc(collection(db, 'quizAttempts'), attempt);
-                console.log("Document written with ID: ", docRef.id);
+                console.log("Quiz attempt saved with ID: ", docRef.id);
+                this.quizAttempts.push(attempt);
             } catch (e) {
-                console.error("Error adding document: ", e);
+                console.error("Error saving quiz attempt: ", e);
+                throw e;
             }
         },
         async saveUserAnswers() {
@@ -126,10 +132,11 @@ export const quizStore = defineStore('quiz', {
                         audioUrl: '',
                         description: '',
                         podcastStartTime: 0
-                    }
+                    },
+                    timestamp: new Date(),
                 };
 
-                console.log('Saving entry with podcast data:', entryToSave);
+                console.log('Saving entry with podcast data:', entryToSave, 'at timestamp:', entryToSave.timestamp);
                 const docRef = await addDoc(collection(db, 'quizEntries'), entryToSave);
                 console.log('Document written with ID: ', docRef.id);
                 this.saveStatus = {
@@ -154,6 +161,70 @@ export const quizStore = defineStore('quiz', {
                 type: '',
                 show: false
             };
-        }
+        },
+        setCurrentQuiz(quizId) {
+            console.log('Setting current quiz:', quizId);
+            this.currentQuizId = quizId;
+            this.userAnswers = []; // Reset answers when starting new quiz
+            this.incorrectQuestions = [];  // Reset incorrect questions
+        },
+        async setUserAnswer(index, selectedAnswer, correctAnswer, questionId, questionTitle) {
+            console.log(`Question ${index}: Selected ${selectedAnswer}, Correct ${correctAnswer}, ID ${questionId}, Title: ${questionTitle}`);
+
+            const isCorrect = selectedAnswer === correctAnswer;
+
+            // Store answer data
+            this.userAnswers[index] = {
+                selected: selectedAnswer,
+                correct: isCorrect,
+                questionId: questionId,
+                questionTitle: questionTitle,
+                timestamp: new Date()
+            };
+
+            // Update incorrect questions array with both ID and title
+            if (!isCorrect && !this.incorrectQuestions.some(q => q.id === questionId)) {
+                this.incorrectQuestions.push({
+                    id: questionId,
+                    title: questionTitle
+                });
+            }
+
+            try {
+                const userId = auth.currentUser?.uid;
+                if (!userId) {
+                    console.error('No user ID available');
+                    return;
+                }
+
+                // Save to Firebase with incorrect questions array
+                const attemptRef = doc(db, 'quizAttempts', `${userId}_${this.currentQuizId}`);
+                await setDoc(attemptRef, {
+                    userId,
+                    quizId: this.currentQuizId,
+                    userAnswers: this.userAnswers,
+                    incorrectQuestions: this.incorrectQuestions,
+                    lastUpdated: serverTimestamp()
+                }, { merge: true });
+
+                console.log('Answer and incorrect questions saved to Firebase');
+            } catch (error) {
+                console.error('Error saving answer:', error);
+            }
+        },
+        async recordQuizEdit(quizStarted) {
+            const quizEdit = {
+                timestamp: new Date(),
+            };
+
+            try {
+                const docRef = await addDoc(collection(db, 'quizEdit'), quizEdit);
+                console.log("Quiz attempt saved with ID: ", docRef.id);
+                this.quizEdits.push(quizEdit);
+            } catch (e) {
+                console.error("Error saving quiz attempt: ", e);
+                throw e;
+            }
+        },
     },
 });
