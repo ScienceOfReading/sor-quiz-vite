@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full place-content-center mx-auto">
+  <div v-if="currentQuizItem" class="w-full place-content-center mx-auto">
     <!-- Display the question for all question types -->
     <h2 class="text-xl font-bold mb-4">{{ quizItem.subtitle }}</h2>
     <!-- Existing question types -->
@@ -26,6 +26,9 @@
     <Explanation :quizItem="quizItem" :reviewMode="reviewMode" :userAnswer="userAnswer" ref="explanationComponent" />
 
   </div>
+  <div v-else class="error-message">
+    Error loading quiz item
+  </div>
 </template>
 
 <script>
@@ -40,7 +43,17 @@ export default {
   props: {
     currentQuizItem: {
       type: Object,
-      required: true
+      required: true,
+      validator(value) {
+        // Add basic validation
+        const required = ['title', 'Question', 'answer_type'];
+        const valid = required.every(prop => value.hasOwnProperty(prop));
+        if (!valid) {
+          console.warn('QuizItem missing required properties:',
+            required.filter(prop => !value.hasOwnProperty(prop)));
+        }
+        return valid;
+      }
     },
     itemNum: {
       type: Number,
@@ -66,9 +79,12 @@ export default {
     SortableList,
   },
   computed: {
-    // You can remove this if you're not using it
     quizItem() {
-      return this.currentQuizItem; // Automatically updates when quizItem changes
+      if (!this.currentQuizItem) {
+        console.error('No quiz item provided');
+        return {};
+      }
+      return this.currentQuizItem;
     }
   },
   watch: {
