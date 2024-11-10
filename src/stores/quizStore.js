@@ -169,29 +169,52 @@ export const quizStore = defineStore('quiz', {
             this.incorrectQuestions = [];  // Reset incorrect questions
         },
         async setUserAnswer(index, selectedAnswer, correctAnswer, questionId, questionTitle, quizEntry) {
-            console.log(`Question ${index}: Selected ${selectedAnswer}, Correct ${correctAnswer}`);
+            // Early validation
+            if (selectedAnswer === undefined || correctAnswer === undefined) {
+                console.error('Invalid answer data:', { selectedAnswer, correctAnswer });
+                return;
+            }
 
-            const isCorrect = selectedAnswer === correctAnswer;
+            let isCorrect;
+            if (Array.isArray(selectedAnswer)) {
+                // For sortable lists
+                isCorrect = JSON.stringify(selectedAnswer) === JSON.stringify(correctAnswer);
 
-            // Store answer data
-            this.userAnswers[index] = {
-                selected: selectedAnswer,
-                correct: isCorrect,
-                questionId: questionId,
-                questionTitle: questionTitle,
-                timestamp: new Date()
-            };
+                this.userAnswers[index] = {
+                    selected: selectedAnswer || [],  // Ensure we have an array
+                    correct: isCorrect,
+                    questionId: questionId || '',
+                    questionTitle: questionTitle || '',
+                    timestamp: new Date().toISOString()
+                };
 
-            // Update incorrect questions array with chosen option text
-            if (!isCorrect && !this.incorrectQuestions.some(q => q.id === questionId)) {
-                // Get the text of the option they chose (e.g., option1, option2, etc.)
-                const chosenOptionText = quizEntry[`option${selectedAnswer}`];
+                if (!isCorrect) {
+                    this.incorrectQuestions.push({
+                        id: questionId || '',
+                        title: questionTitle || '',
+                        chosenAnswer: (selectedAnswer || []).join(', ').substring(0, 100)
+                    });
+                }
+            } else {
+                // Multiple choice
+                isCorrect = selectedAnswer === correctAnswer;
 
-                this.incorrectQuestions.push({
-                    id: questionId,
-                    title: questionTitle,
-                    chosenAnswer: chosenOptionText?.substring(0, 100) || ''  // Truncate long answers
-                });
+                this.userAnswers[index] = {
+                    selected: selectedAnswer || '',
+                    correct: isCorrect,
+                    questionId: questionId || '',
+                    questionTitle: questionTitle || '',
+                    timestamp: new Date().toISOString()
+                };
+
+                if (!isCorrect && !this.incorrectQuestions.some(q => q.id === questionId)) {
+                    const chosenOptionText = quizEntry?.[`option${selectedAnswer}`] || '';
+                    this.incorrectQuestions.push({
+                        id: questionId || '',
+                        title: questionTitle || '',
+                        chosenAnswer: chosenOptionText.substring(0, 100)
+                    });
+                }
             }
 
             try {
@@ -201,18 +224,40 @@ export const quizStore = defineStore('quiz', {
                     return;
                 }
 
-                const attemptRef = doc(db, 'quizAttempts', `${userId}_${this.currentQuizId}`);
-                await setDoc(attemptRef, {
-                    userId,
-                    quizId: this.currentQuizId,
-                    userAnswers: this.userAnswers,
-                    incorrectQuestions: this.incorrectQuestions,
-                    lastUpdated: serverTimestamp()
-                }, { merge: true });
+                // Clean the data before saving
+                const cleanUserAnswers = this.userAnswers.filter(answer =>
+                    answer !== null && answer !== undefined
+                ).map(answer => ({
+                    selected: answer.selected || '',
+                    correct: !!answer.correct,
+                    questionId: answer.questionId || '',
+                    questionTitle: answer.questionTitle || '',
+                    timestamp: answer.timestamp || new Date().toISOString()
+                }));
 
-                console.log('Answer and incorrect questions saved to Firebase');
+                const cleanIncorrectQuestions = this.incorrectQuestions.filter(q =>
+                    q !== null && q !== undefined
+                ).map(q => ({
+                    id: q.id || '',
+                    title: q.title || '',
+                    chosenAnswer: q.chosenAnswer || ''
+                }));
+
+                const dataToSave = {
+                    userId,
+                    quizId: this.currentQuizId || '',
+                    userAnswers: cleanUserAnswers,
+                    incorrectQuestions: cleanIncorrectQuestions,
+                    lastUpdated: serverTimestamp()
+                };
+
+                const attemptRef = doc(db, 'quizAttempts', `${userId}_${this.currentQuizId}`);
+                await setDoc(attemptRef, dataToSave, { merge: true });
+
+                console.log('Successfully saved to Firebase');
             } catch (error) {
-                console.error('Error saving answer:', error);
+                console.error('Firebase save error:', error);
+                throw error;
             }
         },
         async recordQuizEdit(quizStarted) {

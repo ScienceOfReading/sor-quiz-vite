@@ -186,38 +186,72 @@ export default {
     async checkIt() {
       try {
         const currentQuestion = this.quizItems[this.itemNum];
-        const selectedAnswer = this.userAnswers[this.itemNum];
-        const correctAnswer = currentQuestion.correctAnswer;
-        const questionId = currentQuestion.id;
-        const questionTitle = currentQuestion.title;
+        if (!currentQuestion) {
+          console.error('No question found for index:', this.itemNum);
+          return;
+        }
 
-        console.log('Answer Check:', {
-          questionNumber: this.itemNum,
-          questionId: questionId,
-          questionTitle: questionTitle,
-          selectedAnswer: selectedAnswer,
-          correctAnswer: correctAnswer
+        // Debug logging
+        console.log('Current question:', {
+          type: currentQuestion.answer_type,
+          itemNum: this.itemNum,
+          question: currentQuestion
         });
 
-        // Save to store with correctness, ID, and title
+        let selectedAnswer;
+        if (currentQuestion.answer_type === 'sortableList') {
+          // Debug what's available
+          console.log('Sortable list state:', {
+            items: this.items,
+            userAnswers: this.userAnswers,
+            currentOrder: this.currentOrder, // if you're using this
+            sortableItems: this.sortableItems // or this
+          });
+
+          // Try different possible properties where the order might be stored
+          selectedAnswer = this.items ||
+            this.currentOrder ||
+            this.sortableItems ||
+            this.userAnswers[this.itemNum];
+
+          console.log('Selected sortable answer:', selectedAnswer);
+        } else {
+          selectedAnswer = this.userAnswers[this.itemNum];
+        }
+
+        // More detailed validation
+        if (!selectedAnswer) {
+          console.error('No valid answer for question:', {
+            itemNum: this.itemNum,
+            questionType: currentQuestion.answer_type,
+            availableData: {
+              items: this.items,
+              userAnswers: this.userAnswers,
+              currentOrder: this.currentOrder,
+              sortableItems: this.sortableItems
+            }
+          });
+          return;
+        }
+
+        const questionData = {
+          selectedAnswer,
+          correctAnswer: currentQuestion.correctAnswer || '',
+          questionId: currentQuestion.id || '',
+          questionTitle: currentQuestion.title || '',
+          quizEntry: currentQuestion
+        };
+
+        console.log('About to save answer:', questionData);
+
         await this.store.setUserAnswer(
           this.itemNum,
-          selectedAnswer,
-          correctAnswer,
-          questionId,
-          questionTitle,
-          currentQuestion
+          questionData.selectedAnswer,
+          questionData.correctAnswer,
+          questionData.questionId,
+          questionData.questionTitle,
+          questionData.quizEntry
         );
-
-        // Save progress including incorrect questions
-        await saveUserProgress(this.selectedQuiz, {
-          lastQuestionAnswered: this.itemNum,
-          userAnswers: this.store.userAnswers,
-          incorrectQuestions: this.store.incorrectQuestions,
-          totalCorrect: this.store.userAnswers.filter(a => a.correct).length,
-          totalAnswered: this.store.userAnswers.length,
-          timestamp: new Date()
-        });
 
         if (this.basicMode) {
           this.reviewMode = !this.reviewMode;
@@ -228,7 +262,11 @@ export default {
         }
 
       } catch (error) {
-        console.error("Error in checkIt method:", error);
+        console.error("Error in checkIt method:", error, {
+          currentQuestion: this.quizItems[this.itemNum],
+          itemNum: this.itemNum,
+          userAnswers: this.userAnswers
+        });
       }
     },
     answerSelected() {
