@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createPinia, defineStore } from 'pinia'
 import './style.css'
 import App from './App.vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -22,6 +22,8 @@ import Vue3Lottie from 'vue3-lottie'
 
 import LiteYouTubeEmbed from 'vue-lite-youtube-embed';
 import 'vue-lite-youtube-embed/style.css'
+
+import { auth, signInAnonymouslyWithPersistence } from './firebase';
 
 inject();
 
@@ -61,4 +63,39 @@ const router = createRouter({
 
 app.use(router); // Use the router
 app.use(pinia);
+
+// Create an auth store with Pinia
+export const useAuthStore = defineStore('auth', {
+    state: () => ({
+        user: null,
+        loading: true,
+        error: null
+    }),
+    actions: {
+        async signInAnonymously() {
+            try {
+                const user = await signInAnonymouslyWithPersistence();
+                this.user = user;
+                return user;
+            } catch (error) {
+                console.error('Error signing in:', error);
+                this.error = error.message;
+                throw error;
+            }
+        },
+
+        initializeAuthListener() {
+            auth.onAuthStateChanged((user) => {
+                this.user = user;
+                this.loading = false;
+                console.log('Auth state changed:', user ? user.uid : 'No user');
+            });
+        }
+    }
+});
+
+// Initialize auth store and sign in anonymously
+const authStore = useAuthStore(pinia);
+authStore.signInAnonymously().catch(console.error);
+
 app.mount('#app')

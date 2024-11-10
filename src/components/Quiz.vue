@@ -53,6 +53,7 @@ import { quizEntries } from '../data/quiz-items.js'
 import { quizSets } from '../data/quizSets.js'
 import { quizStore } from '../stores/quizStore'; // Import the store
 import { ref, onMounted } from 'vue'
+import { saveUserProgress } from '../firebase';
 
 export default {
   name: 'Quiz',
@@ -153,8 +154,16 @@ export default {
     },
     async checkIt() {
       try {
-        // Save the current answer to the store
+        // Save the current answer to store
         this.store.setUserAnswer(this.itemNum, this.userAnswers[this.itemNum]);
+
+        // Save progress after each answer
+        await saveUserProgress(this.selectedQuiz, {
+          lastQuestionAnswered: this.itemNum,
+          totalAnswered: this.numCompleted + 1,
+          userAnswers: this.userAnswers,
+          completed: this.complete
+        });
 
         if (this.basicMode) {
           this.reviewMode = !this.reviewMode;
@@ -163,7 +172,19 @@ export default {
             this.chosen = false;
           }
         }
+
         this.complete = this.itemNum === this.quizItems.length - 1;
+
+        // If quiz is complete, save final progress
+        if (this.complete) {
+          await saveUserProgress(this.selectedQuiz, {
+            completed: true,
+            completedAt: new Date(),
+            finalScore: this.calculateScore(), // You'll need to implement this
+            totalQuestions: this.quizItems.length
+          });
+        }
+
       } catch (error) {
         console.error("Error in checkIt method:", error);
       }

@@ -1,7 +1,7 @@
 // src/stores/quizStore.js
 import { defineStore } from 'pinia';
-import { db } from '../firebase'; // Adjust the path as necessary
-import { collection, addDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase'; // Adjust the path as necessary
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 export const quizStore = defineStore('quiz', {
     state: () => ({
@@ -60,11 +60,14 @@ export const quizStore = defineStore('quiz', {
     }),
     actions: {
         async recordQuizAttempt(quizStarted) {
+            const userId = auth.currentUser?.uid;
+
             const attempt = {
+                userId,  // Add user ID
                 quizId: this.currentQuizId,
                 quizStarted,
                 userAnswers: this.userAnswers,
-                timestamp: new Date(),
+                timestamp: serverTimestamp()
             };
 
             try {
