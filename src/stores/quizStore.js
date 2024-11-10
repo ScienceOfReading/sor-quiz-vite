@@ -56,7 +56,8 @@ export const quizStore = defineStore('quiz', {
             message: '',
             type: '', // 'success' or 'error'
             show: false
-        }
+        },
+        incorrectQuestionIds: []  // Add this to track incorrect answers
     }),
     actions: {
         async recordQuizAttempt(quizStarted) {
@@ -165,16 +166,25 @@ export const quizStore = defineStore('quiz', {
             console.log('Setting current quiz:', quizId);
             this.currentQuizId = quizId;
             this.userAnswers = []; // Reset answers when starting new quiz
+            this.incorrectQuestionIds = [];  // Reset incorrect questions
         },
-        async setUserAnswer(index, selectedAnswer, correctAnswer) {
-            console.log(`Question ${index}: Selected ${selectedAnswer}, Correct ${correctAnswer}`);
+        async setUserAnswer(index, selectedAnswer, correctAnswer, questionId) {
+            console.log(`Question ${index}: Selected ${selectedAnswer}, Correct ${correctAnswer}, ID ${questionId}`);
 
-            // Store both the answer and whether it was correct
+            const isCorrect = selectedAnswer === correctAnswer;
+
+            // Store answer data
             this.userAnswers[index] = {
                 selected: selectedAnswer,
-                correct: selectedAnswer === correctAnswer,
+                correct: isCorrect,
+                questionId: questionId,  // Store the question ID
                 timestamp: new Date()
             };
+
+            // Update incorrect questions array
+            if (!isCorrect && !this.incorrectQuestionIds.includes(questionId)) {
+                this.incorrectQuestionIds.push(questionId);
+            }
 
             try {
                 const userId = auth.currentUser?.uid;
@@ -183,16 +193,17 @@ export const quizStore = defineStore('quiz', {
                     return;
                 }
 
-                // Save to Firebase
+                // Save to Firebase with incorrect questions array
                 const attemptRef = doc(db, 'quizAttempts', `${userId}_${this.currentQuizId}`);
                 await setDoc(attemptRef, {
                     userId,
                     quizId: this.currentQuizId,
                     userAnswers: this.userAnswers,
+                    incorrectQuestionIds: this.incorrectQuestionIds,  // Save the incorrect IDs
                     lastUpdated: serverTimestamp()
                 }, { merge: true });
 
-                console.log('Answer and correctness saved to Firebase');
+                console.log('Answer and incorrectQuestionIds saved to Firebase');
             } catch (error) {
                 console.error('Error saving answer:', error);
             }

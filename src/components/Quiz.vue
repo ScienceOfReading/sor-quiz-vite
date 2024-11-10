@@ -157,36 +157,28 @@ export default {
         const currentQuestion = this.quizItems[this.itemNum];
         const selectedAnswer = this.userAnswers[this.itemNum];
         const correctAnswer = currentQuestion.correctAnswer;
+        const questionId = currentQuestion.id;  // Get the question ID
 
-        // Debug logging
         console.log('Answer Check:', {
           questionNumber: this.itemNum,
+          questionId: questionId,
           selectedAnswer: selectedAnswer,
-          correctAnswer: correctAnswer,
-          questionData: currentQuestion,
-          answerType: typeof selectedAnswer,
-          correctType: typeof correctAnswer
+          correctAnswer: correctAnswer
         });
 
-        // Make sure we're comparing the same types
-        let isCorrect = false;
-        if (typeof selectedAnswer === 'string') {
-          isCorrect = parseInt(selectedAnswer) === correctAnswer;
-        } else {
-          isCorrect = selectedAnswer === correctAnswer;
-        }
-
-        // Save to store with correctness
+        // Save to store with correctness and question ID
         await this.store.setUserAnswer(
           this.itemNum,
           selectedAnswer,
-          correctAnswer
+          correctAnswer,
+          questionId
         );
 
-        // Save progress with corrected counting
+        // Save progress including incorrect questions
         await saveUserProgress(this.selectedQuiz, {
           lastQuestionAnswered: this.itemNum,
           userAnswers: this.store.userAnswers,
+          incorrectQuestionIds: this.store.incorrectQuestionIds,
           totalCorrect: this.store.userAnswers.filter(a => a.correct).length,
           totalAnswered: this.store.userAnswers.length,
           timestamp: new Date()
@@ -200,7 +192,6 @@ export default {
           }
         }
 
-        console.log('Updated userAnswers array:', this.userAnswers);
       } catch (error) {
         console.error("Error in checkIt method:", error);
       }
