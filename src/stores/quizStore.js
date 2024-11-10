@@ -1,7 +1,7 @@
 // src/stores/quizStore.js
 import { defineStore } from 'pinia';
 import { auth, db } from '../firebase'; // Adjust the path as necessary
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, setDoc } from 'firebase/firestore';
 
 export const quizStore = defineStore('quiz', {
     state: () => ({
@@ -162,6 +162,7 @@ export const quizStore = defineStore('quiz', {
             };
         },
         setCurrentQuiz(quizId) {
+            console.log('Setting current quiz:', quizId);
             this.currentQuizId = quizId;
             this.userAnswers = []; // Reset answers when starting new quiz
         },
@@ -180,6 +181,31 @@ export const quizStore = defineStore('quiz', {
             } catch (e) {
                 console.error("Error saving quiz attempt: ", e);
                 throw e;
+            }
+        },
+        async setUserAnswer(index, answer) {
+            console.log(`Setting answer ${answer} for question ${index}`);
+            this.userAnswers[index] = answer;
+
+            try {
+                const userId = auth.currentUser?.uid;
+                if (!userId) {
+                    console.error('No user ID available');
+                    return;
+                }
+
+                // Save to Firebase
+                const attemptRef = doc(db, 'quizAttempts', `${userId}_${this.currentQuizId}`);
+                await setDoc(attemptRef, {
+                    userId,
+                    quizId: this.currentQuizId,
+                    userAnswers: this.userAnswers,
+                    lastUpdated: serverTimestamp()
+                }, { merge: true });
+
+                console.log('Answer saved to Firebase');
+            } catch (error) {
+                console.error('Error saving answer:', error);
             }
         },
     },

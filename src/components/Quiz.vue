@@ -154,15 +154,17 @@ export default {
     },
     async checkIt() {
       try {
-        // Save the current answer to store
+        console.log('Current itemNum:', this.itemNum);
+        console.log('Current answer:', this.userAnswers[this.itemNum]);
+
+        // Save to store
         this.store.setUserAnswer(this.itemNum, this.userAnswers[this.itemNum]);
 
-        // Save progress after each answer
+        // Save progress
         await saveUserProgress(this.selectedQuiz, {
           lastQuestionAnswered: this.itemNum,
-          totalAnswered: this.numCompleted + 1,
           userAnswers: this.userAnswers,
-          completed: this.complete
+          timestamp: new Date()
         });
 
         if (this.basicMode) {
@@ -173,18 +175,7 @@ export default {
           }
         }
 
-        this.complete = this.itemNum === this.quizItems.length - 1;
-
-        // If quiz is complete, save final progress
-        if (this.complete) {
-          await saveUserProgress(this.selectedQuiz, {
-            completed: true,
-            completedAt: new Date(),
-            finalScore: this.calculateScore(), // You'll need to implement this
-            totalQuestions: this.quizItems.length
-          });
-        }
-
+        console.log('Updated userAnswers array:', this.userAnswers);
       } catch (error) {
         console.error("Error in checkIt method:", error);
       }
