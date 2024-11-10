@@ -6,6 +6,7 @@ import { collection, addDoc } from 'firebase/firestore';
 export const quizStore = defineStore('quiz', {
     state: () => ({
         quizAttempts: [],
+        quizEdits: [],
         userAnswers: [], // Store user answers here
         currentQuizId: null,
         draftQuizEntry: {
@@ -127,10 +128,11 @@ export const quizStore = defineStore('quiz', {
                         audioUrl: '',
                         description: '',
                         podcastStartTime: 0
-                    }
+                    },
+                    timestamp: new Date(),
                 };
 
-                console.log('Saving entry with podcast data:', entryToSave);
+                console.log('Saving entry with podcast data:', entryToSave, 'at timestamp:', entryToSave.timestamp);
                 const docRef = await addDoc(collection(db, 'quizEntries'), entryToSave);
                 console.log('Document written with ID: ', docRef.id);
                 this.saveStatus = {
@@ -162,6 +164,20 @@ export const quizStore = defineStore('quiz', {
         },
         setUserAnswer(questionIndex, answer) {
             this.userAnswers[questionIndex] = answer;
-        }
+        },
+        async recordQuizEdit(quizStarted) {
+            const quizEdit = {
+                timestamp: new Date(),
+            };
+
+            try {
+                const docRef = await addDoc(collection(db, 'quizEdit'), quizEdit);
+                console.log("Quiz attempt saved with ID: ", docRef.id);
+                this.quizEdits.push(quizEdit);
+            } catch (e) {
+                console.error("Error saving quiz attempt: ", e);
+                throw e;
+            }
+        },
     },
 });

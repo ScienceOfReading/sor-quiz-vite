@@ -397,6 +397,7 @@ export default {
     },
     async submitForm() {
       try {
+        await this.store.recordQuizEdit();
         await this.store.saveDraftQuizEntry();
         this.submittedEntry = { ...this.newEntry };
         this.submitStatus = {
