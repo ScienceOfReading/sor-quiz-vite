@@ -33,6 +33,9 @@
     <p v-if="!basicMode && chosen && complete && !reviewMode">No more questions...</p>
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="submit">Submit</button>
   </div>
+  <div v-else-if="basicMode && !reviewMode && !chosen">
+    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">&nbsp;</button>
+  </div>
   <div v-else-if="basicMode && chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
       {{ reviewMode ? 'Next2' : 'Check it' }}
@@ -234,7 +237,7 @@ export default {
 
         if (this.basicMode) {
           if (this.itemNum >= this.quizItems.length - 1) {
-            this.complete = true;
+            this.complete = false;
             this.showResults = true;
           } else {
             this.reviewMode = !this.reviewMode;
