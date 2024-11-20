@@ -35,14 +35,14 @@
   </div>
   <div v-else-if="basicMode && chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
-      {{ reviewMode ? 'Next' : 'Check it' }}
+      {{ reviewMode ? 'Next2' : 'Check it' }}
     </button>
   </div>
   <div v-else-if="basicMode && !reviewMode && !chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">&nbsp;</button>
   </div>
   <div v-else>
-    <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="nextItem">Next</button>
+    <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="nextItem">Next1</button>
 
   </div>
 </template>
@@ -135,7 +135,9 @@ export default {
     },
 
     async nextItem() {
+      console.log("----In nextItem----");
       try {
+        console.log("----In nextItem----");
         const currentQuestion = this.quizItems[this.itemNum];
         const selectedAnswer = this.userAnswers[this.itemNum];
         const correctAnswer = currentQuestion.correctAnswer;
@@ -171,6 +173,7 @@ export default {
         });
 
         // Advance to next question
+        console.log("itemNum: ", this.itemNum, "quizItems.length: ", this.quizItems.length);
         if (this.itemNum < this.quizItems.length - 1) {
           this.itemNum++;
           this.chosen = false;
@@ -230,13 +233,17 @@ export default {
         );
 
         if (this.basicMode) {
-          this.reviewMode = !this.reviewMode;
-          if (!this.reviewMode) {
-            this.itemNum++;
-            this.chosen = false
+          if (this.itemNum >= this.quizItems.length - 1) {
+            this.complete = true;
+            this.showResults = true;
+          } else {
+            this.reviewMode = !this.reviewMode;
+            if (!this.reviewMode) {
+              this.itemNum++;
+              this.chosen = false
+            }
           }
         }
-
       } catch (error) {
         console.error("Error in checkIt method:", error);
       }
