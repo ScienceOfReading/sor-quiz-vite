@@ -90,12 +90,12 @@ export default {
   watch: {
 
     itemNum(newItemNum, oldItemNum) {
-      console.log("In quizItem watcher itemNum, item changed from", oldItemNum, " to ", newItemNum);
-      console.log("In quizItem  watcher itemNum, reviewmode is: ", this.reviewMode)
-      console.log("In quizItem  Watcher, basicMode is: ", this.basicMode, "and reviewMode is: ", this.reviewMode)
+      console.log("In itemNumwatcher itemNum, item changed from", oldItemNum, " to ", newItemNum);
+      console.log("In itemNum watcher itemNum, reviewmode is: ", this.reviewMode)
+      console.log("In itemNum  Watcher, basicMode is: ", this.basicMode, "and reviewMode is: ", this.reviewMode)
       if (this.basicMode == false)
-        console.log("In quizItem watcher, quizItem is: ", this.quizItem);
-      console.log("Exit QuizItem itemNum watcher");
+        console.log("In itemNum watcher, quizItem is: ", this.quizItem);
+      console.log("Exit itemNum itemNum watcher");
     },
     quizItem: {
       handler(newVal) {
@@ -106,9 +106,9 @@ export default {
     reviewMode(oldStatus, newStatus) {
       console.log("reviewMode changed from ", oldStatus, " to ", newStatus);
       if (this.reviewMode) {
-        console.log("in quizItem  watcher, this.$userAnswers", this.$userAnswers);
-        console.log("in quizItem  watcher, this.itemNum", this.itemNum);
-        console.log("in quizItem  watcher, this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
+        console.log("in reviewMode watcher, this.$userAnswers", this.$userAnswers);
+        console.log("in reviewMode  watcher, this.itemNum", this.itemNum);
+        console.log("in reviewMode  watcher, this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
 
 
       }

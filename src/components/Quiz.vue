@@ -4,7 +4,7 @@
     <p v-if="!showResults">{{ numCompleted + 1 }} / {{ this.quizItems.length }}</p>
   </div>
 
-  <div v-if="showResults"
+  <div v-if="quizState === 'resultSummary'"
     class="sm:w-full md:w-9/12 lg:w-5/6 px-2 quizzes-container text-center border-solid bodrder-stone-400">
     <h5 class="text-stone-400 pt-2"></h5>
     <p class="question-text mb-2">Results</p>
@@ -21,7 +21,7 @@
   </div>
 
 
-  <div v-if="reviewMode && complete" class="mt-6">
+  <div v-if="quizState === 'basicResults' && complete" class="mt-6">
     We're done!! Thank you!
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
   </div>
@@ -29,19 +29,19 @@
 
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="startReview">Let's see what's happening.</button>
   </div>
-  <div v-else-if="!basicMode && chosen && complete && !reviewMode">
+  <div v-else-if="quizState === 'advancedAsk' && chosen && complete">
     <p v-if="!basicMode && chosen && complete && !reviewMode">No more questions...</p>
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="submit">Submit</button>
   </div>
   <div v-else-if="basicMode && !reviewMode && !chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">&nbsp;</button>
   </div>
-  <div v-else-if="basicMode && chosen">
+  <div v-else-if="quizState === 'basicAsk' && chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
       {{ reviewMode ? 'Next2' : 'Check it' }}
     </button>
   </div>
-  <div v-else-if="basicMode && !reviewMode && !chosen">
+  <div v-else-if="quizState === 'basicAsk' && !chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">&nbsp;</button>
   </div>
   <div v-else>
@@ -191,6 +191,7 @@ export default {
         } else {
           this.complete = true;
           this.showResults = true;
+          this.quizState = 'resultSummary';
         }
       } catch (error) {
         console.error("Error in nextItem method:", error);
