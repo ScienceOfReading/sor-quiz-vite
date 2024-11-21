@@ -20,33 +20,36 @@
       v-model:userAnswer="userAnswers[itemNum]" @selected="chosen = true" />
   </div>
 
-
+  <div>
+    <p>{{ quizState }}, itemNum: {{ itemNum }}, complete: {{ complete }}, chosen: {{ chosen }}, reviewMode: {{
+      reviewMode }}</p>
+  </div>
   <div v-if="quizState === 'basicResults' && complete" class="mt-6">
     We're done!! Thank you!
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
   </div>
-  <div v-else-if="quizState === 'resultSummary'">
-
-    <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="startReview">Let's see what's happening.</button>
+  <div v-else-if="quizState === 'basicAsk' && chosen">
+    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
+      'Check it' </button>
   </div>
   <div v-else-if="quizState === 'advancedAsk' && chosen && complete">
     <p v-if="!basicMode && chosen && complete && !reviewMode">No more questions...</p>
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="submit">Submit</button>
   </div>
-  <div v-else-if="basicMode && !reviewMode && !chosen">
-    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">&nbsp;</button>
-  </div>
-  <div v-else-if="quizState === 'basicAsk' && chosen">
-    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
-      {{ reviewMode ? 'Next2' : 'Check it' }}
-    </button>
+  <div v-else-if="quizState === 'basicResults'">
+    <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="nextQuestion">Next Question</button>
   </div>
   <div v-else-if="quizState === 'basicAsk' && !chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">&nbsp;</button>
   </div>
+  <div v-else-if="quizState === 'resultSummary'">
+    <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="startReview">Let's see what's happening.</button>
+  </div>
+  <div v-else-if="quizState === 'advancedResults'">
+    <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="nextReview">Review Next</button>
+  </div>
   <div v-else>
-    <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="nextItem">Next1</button>
-
+    <p>Error: Unknown quiz state</p>
   </div>
 </template>
 
@@ -143,7 +146,34 @@ export default {
       console.log("--FInished numCorrect--");
       return correct
     },
-
+    nextQuestion() {
+      console.log("----In nextQuestion----");
+      if (this.itemNum < this.quizItems.length - 1) {
+        this.itemNum++;
+        this.chosen = false;
+        this.reviewMode = false;
+        this.quizState = 'basicAsk';
+      } else {
+        this.complete = true;
+        this.showResults = true;
+        this.quizState = 'resultSummary';
+      }
+    },
+    nextReview() {
+      console.log("----In nextReview----");
+      this.reviewMode = true;
+      this.quizState = 'advancedResults';
+      console.log("Reviewing itemNum: ", this.itemNum, "quizItems.length: ", this.quizItems.length);
+      if (this.itemNum < this.quizItems.length - 1) {
+        this.itemNum++;
+        this.chosen = false;
+        this.reviewMode = false;
+      } else {
+        this.complete = true;
+        this.showResults = true;
+        this.quizState = 'resultSummary';
+      }
+    },
     async nextItem() {
       console.log("----In nextItem----");
       try {
@@ -198,6 +228,8 @@ export default {
       }
     },
     async checkIt() {
+      console.log("----In checkIt----");
+      this.quizState = 'basicResults';
       try {
         const currentQuestion = this.quizItems[this.itemNum];
         if (!currentQuestion) {
@@ -244,11 +276,13 @@ export default {
         );
 
         if (this.basicMode) {
-          if (this.itemNum >= this.quizItems.length - 1) {
-            this.complete = false;
+          if (this.itemNum > this.quizItems.length - 1) {
+            this.complete = true;
             this.showResults = true;
             this.quizState = 'basicResults';
           } else {
+            this.quizState = 'basicResults';
+            this.complete = false;
             this.reviewMode = !this.reviewMode;
             if (!this.reviewMode) {
               this.itemNum++;
@@ -277,6 +311,7 @@ export default {
       this.itemNum = 0;
       this.numCompleted = 1;
       this.reviewMode = true;
+      this.quizState = 'advancedResults';
       console.log("Review started. itemNum:", this.itemNum,
         "reviewMode:", this.reviewMode);
     },
