@@ -25,7 +25,7 @@
     We're done!! Thank you!
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
   </div>
-  <div v-else-if="showResults">
+  <div v-else-if="quizState === 'resultSummary'">
 
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="startReview">Let's see what's happening.</button>
   </div>
@@ -85,6 +85,8 @@ export default {
     console.log("Data item:");
     //console.log(quizItems[0]);
     const quizChoice = 1;
+    const quizState = 'basicAsk';
+
 
     return {
       quizItems: [],
@@ -118,6 +120,11 @@ export default {
       }
       this.quizItems = quizSetItems;
       this.basicMode = quizSets[this.selectedQuiz].basicMode;
+      if (this.basicMode) {
+        this.quizState = 'basicAsk';
+      } else {
+        this.quizState = 'expertAsk';
+      }
 
       console.log("in buildQuizSet, this.basicMode: ", this.basicMode)
       console.log("Returning quizItems: ", this.quizItems)
@@ -239,6 +246,7 @@ export default {
           if (this.itemNum >= this.quizItems.length - 1) {
             this.complete = false;
             this.showResults = true;
+            this.quizState = 'basicResults';
           } else {
             this.reviewMode = !this.reviewMode;
             if (!this.reviewMode) {
@@ -259,6 +267,7 @@ export default {
       console.log("Complete. Let's see your score. ");
       this.showResults = true;
       this.complete = false
+      //this.quizState = 'resultSummary';
 
     },
     startReview() {
