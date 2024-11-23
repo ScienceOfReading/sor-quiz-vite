@@ -1,7 +1,7 @@
 <template>
   <div class="w-full place-content-center">
     <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
-    <p v-if="!showResults">{{ numCompleted + 1 }} / {{ this.quizItems.length }}</p>
+    <p v-if="!showResults">{{ numCompleted }} / {{ quizItems.length }}</p>
   </div>
 
   <div v-if="quizState === 'resultSummary'"
@@ -15,10 +15,23 @@
       <p class="mb-20">correct.</p>
     </div>
   </div>
+  <div v-else-if="quizState === 'end'"
+    class="sm:w-full md:w-9/12 lg:w-5/6 px-2 quizzes-container text-center border-solid bodrder-stone-400">
+    <h5 class="text-stone-400 pt-2"></h5>
+    <p class="question-text mb-2">Thank you!</p>
+
+    <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
+      <p class="mt-20">You got </p>
+      <p class="text-3xl"> {{ numCorrect() }} of {{ this.quizItems.length }}</p>
+      <p class="mb-20">correct.</p>
+    </div>
+  </div>
   <div v-else class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
     <QuizItem :currentQuizItem="currentQuizItem" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
       v-model:userAnswer="userAnswers[itemNum]" @selected="chosen = true" />
   </div>
+
+
 
   <div>
     <p>{{ quizState }}, itemNum: {{ itemNum }}, complete: {{ complete }}, chosen: {{ chosen }}, reviewMode: {{
@@ -48,20 +61,26 @@
   <div v-else-if="quizState === 'resultSummary'">
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="startReview">Let's see what's happening.</button>
   </div>
+  <div v-else-if="quizState === 'expertResults' && complete">
+    <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="quizDone">Next</button>
+  </div>
   <div v-else-if="quizState === 'expertResults'">
     <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="nextReview">Next</button>
+  </div>
+  <div v-else-if="quizState === 'end'" class="mt-6">
+    We're done!! Thank you!
+    <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
   </div>
   <div v-else>
     <p>Error: Unknown quiz state</p>
   </div>
 </template>
-
 <script>
 import QuizItem from './QuizItem.vue';
 import { quizEntries } from '../data/quiz-items.js'
 import { quizSets } from '../data/quizSets.js'
 import { quizStore } from '../stores/quizStore'; // Import the store
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { saveUserProgress } from '../firebase';
 
 export default {
@@ -101,9 +120,10 @@ export default {
       complete: false,
       chosen: false,
       showResults: false,
-      reviewMode: false,
       itemNum: 0,
-      basicMode: false
+      basicMode: false,
+      reviewMode: false,
+      showEnd: false
     }
   },
   computed: {
@@ -112,6 +132,15 @@ export default {
       console.log("In currentQuizItem, quizItems is: ", this.quizItems);
       console.log("In currentQuizItem, quizItems[itemNum] is: ", this.quizItems[this.itemNum]);
       return this.quizItems[this.itemNum];
+    },
+    numCompleted() {
+      // For basic mode, it's just the current item number
+      if (this.basicMode) {
+        return this.itemNum;
+      }
+
+      // For expert mode, count the number of answered questions
+      return this.userAnswers.filter(answer => answer !== undefined).length;
     }
   },
   methods: {
@@ -164,18 +193,16 @@ export default {
     },
     nextReview() {
       console.log("----In nextReview----");
-      this.reviewMode = true;
       this.quizState = 'expertResults';
       console.log("Reviewing itemNum: ", this.itemNum, "quizItems.length: ", this.quizItems.length);
       if (this.itemNum < this.quizItems.length - 1) {
         this.itemNum++;
         this.chosen = false;
-        this.reviewMode = false;
         this.complete = false;
       } else {
         this.complete = true;
         this.showResults = true;
-        this.quizState = 'resultSummary';
+        this.quizState = 'end';
       }
     },
     async nextItem() {
@@ -221,7 +248,7 @@ export default {
         if (this.itemNum < this.quizItems.length - 1) {
           this.itemNum++;
           this.chosen = false;
-          this.reviewMode = false;
+          // this.reviewMode = false;
         } else {
           this.complete = true;
           this.showResults = true;
@@ -316,8 +343,13 @@ export default {
       this.numCompleted = 1;
       this.reviewMode = true;
       this.quizState = 'expertResults';
+      this.complete = false;
       console.log("Review started. itemNum:", this.itemNum,
         "reviewMode:", this.reviewMode);
+    },
+    quizDone() {
+      //this.$emit('change-view', { showResults: true }); // Emit an event with the new state
+      this.quizState = 'end';
     },
     showOriginalView() {
       this.$emit('change-view', { showQuizzes: true }); // Emit an event with the new state
@@ -326,6 +358,16 @@ export default {
   created() {
     this.buildQuizSet();
     // console.log("In created, ", this.quizItems)
+  },
+  watch: {
+    quizState: {
+      immediate: true,
+      handler(newState) {
+        console.log('quizState changed to:', newState);
+        this.reviewMode = newState === 'expertResults' || newState === 'basicResults';
+        console.log('reviewMode is now:', this.reviewMode);
+      }
+    }
   }
 }
 </script>
