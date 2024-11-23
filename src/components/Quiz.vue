@@ -33,15 +33,21 @@
 
 
 
-  <div>
-    <p>{{ quizState }}, itemNum: {{ itemNum }}, complete: {{ complete }}, chosen: {{ chosen }}, reviewMode: {{
-      reviewMode }}</p>
+  <!--<div>
+    <p>quizState: {{ quizState }}, itemNum: {{ itemNum }}, complete: {{ complete }}, chosen: {{ chosen }}, reviewMode:
+      {{
+        reviewMode }}</p>
   </div>
+-->
   <div v-if="quizState === 'basicResults' && complete" class="mt-6">
     We're done!! Thank you!
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
   </div>
   <div v-else-if="quizState === 'basicAsk' && chosen">
+    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
+      'Check it' </button>
+  </div>
+  <div v-else-if="quizState === 'basicAsk' && !chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
       'Check it' </button>
   </div>
@@ -72,7 +78,7 @@
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
   </div>
   <div v-else>
-    <p>Error: Unknown quiz state</p>
+    <p>Error: Unknown quiz state: {{ quizState }}</p>
   </div>
 </template>
 <script>

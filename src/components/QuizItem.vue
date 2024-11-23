@@ -25,9 +25,9 @@
 
     <Explanation :quizItem="quizItem" :reviewMode="reviewMode" :userAnswer="userAnswer" ref="explanationComponent" />
     <!-- Debug output -->
-    <div class="debug-info">
+    <!--div class="debug-info">
       <p>Review Mode in QuizItem: {{ reviewMode }}</p>
-    </div>
+    </div> -->
   </div>
   <div v-else class="error-message">
     Error loading quiz item
