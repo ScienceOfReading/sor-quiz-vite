@@ -1,7 +1,9 @@
 <template>
   <div class="w-full place-content-center">
     <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
-    <p v-if="!showResults">{{ numCompleted }} / {{ quizItems.length }}</p>
+    <p v-if="quizState !== 'resultSummary' && quizState !== 'end'">
+      {{ numCompleted }} / {{ quizItems.length }}
+    </p>
   </div>
 
   <div v-if="quizState === 'resultSummary'"
@@ -125,7 +127,6 @@ export default {
       userAnswers: [],
       complete: false,
       chosen: false,
-      showResults: false,
       itemNum: 0,
       basicMode: false,
       reviewMode: false,
@@ -193,7 +194,6 @@ export default {
         this.quizState = 'basicAsk';
       } else {
         this.complete = true;
-        this.showResults = true;
         this.quizState = 'resultSummary';
       }
     },
@@ -207,7 +207,6 @@ export default {
         this.complete = false;
       } else {
         this.complete = true;
-        this.showResults = true;
         this.quizState = 'end';
       }
     },
@@ -257,7 +256,6 @@ export default {
           // this.reviewMode = false;
         } else {
           this.complete = true;
-          this.showResults = true;
           this.quizState = 'resultSummary';
         }
       } catch (error) {
@@ -313,10 +311,9 @@ export default {
         );
 
         if (this.basicMode) {
-          if (this.itemNum >= this.quizItems.length - 1) {
+          if (this.itemNum > this.quizItems.length - 1) {
             this.complete = true;
-            this.showResults = true;
-            this.quizState = 'basicResults';
+            this.quizState = 'end';
           } else {
             this.quizState = 'basicResults';
             this.complete = false;
@@ -337,21 +334,16 @@ export default {
     },
     submit() {
       console.log("Complete. Let's see your score. ");
-      this.showResults = true;
-      this.complete = false
-      //this.quizState = 'resultSummary';
-
+      this.complete = false;
+      this.quizState = 'resultSummary';
     },
     startReview() {
       console.log("----Start Review----")
-      this.showResults = true;
       this.itemNum = 0;
       this.numCompleted = 1;
-      this.reviewMode = true;
       this.quizState = 'expertResults';
       this.complete = false;
-      console.log("Review started. itemNum:", this.itemNum,
-        "reviewMode:", this.reviewMode);
+      console.log("Review started. itemNum:", this.itemNum);
     },
     quizDone() {
       //this.$emit('change-view', { showResults: true }); // Emit an event with the new state
