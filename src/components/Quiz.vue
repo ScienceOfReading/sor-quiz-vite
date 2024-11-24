@@ -35,12 +35,12 @@
 
 
 
-  <!--<div>
+  <div>
     <p>quizState: {{ quizState }}, itemNum: {{ itemNum }}, complete: {{ complete }}, chosen: {{ chosen }}, reviewMode:
       {{
         reviewMode }}</p>
   </div>
--->
+
   <div v-if="quizState === 'basicResults' && complete" class="mt-6">
     We're done!! Thank you!
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
@@ -56,6 +56,9 @@
   <div v-else-if="quizState === 'expertAsk' && chosen && complete">
     <p v-if="!basicMode && chosen && complete && !reviewMode">No more questions...</p>
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="submit">Submit</button>
+  </div>
+  <div v-else-if="quizState === 'basicResults' && complete">
+    <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="quizDone">quizDone</button>
   </div>
   <div v-else-if="quizState === 'basicResults'">
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="nextQuestion">Next Question</button>
@@ -310,20 +313,21 @@ export default {
           questionData.quizEntry
         );
 
-        if (this.basicMode) {
-          if (this.itemNum > this.quizItems.length - 1) {
-            this.complete = true;
-            this.quizState = 'end';
-          } else {
-            this.quizState = 'basicResults';
-            this.complete = false;
-            this.reviewMode = !this.reviewMode;
-            if (!this.reviewMode) {
-              this.itemNum++;
-              this.chosen = false
-            }
+
+        if (this.itemNum === this.quizItems.length - 1) {
+          console.log("In checkIt, itemNum: ", this.itemNum, "quizItems.length: ", this.quizItems.length);
+          this.complete = true;
+          //this.quizState = 'end';
+        } else {
+          this.quizState = 'basicResults';
+          this.complete = false;
+          this.reviewMode = !this.reviewMode;
+          if (!this.reviewMode) {
+            this.itemNum++;
+            this.chosen = false
           }
         }
+
       } catch (error) {
         console.error("Error in checkIt method:", error);
       }
@@ -334,13 +338,16 @@ export default {
     },
     submit() {
       console.log("Complete. Let's see your score. ");
-      this.complete = false;
-      this.quizState = 'resultSummary';
+      this.showResults = true;
+      this.complete = false
+      //this.quizState = 'resultSummary';
+
     },
     startReview() {
       console.log("----Start Review----")
       this.itemNum = 0;
       this.numCompleted = 1;
+      this.reviewMode = true;
       this.quizState = 'expertResults';
       this.complete = false;
       console.log("Review started. itemNum:", this.itemNum);
