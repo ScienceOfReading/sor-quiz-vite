@@ -35,7 +35,7 @@
       </p>
     </div>
     <QuizItem :currentQuizItem="currentQuizItem" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
-      v-model:userAnswer="userAnswers[itemNum]" @selected="chosen = true" />
+      v-model:userAnswer="userAnswers[itemNum]" :debug="debug" @selected="chosen = true" />
   </div>
 
 
@@ -123,7 +123,7 @@ export default {
     //console.log(quizItems[0]);
     const quizChoice = 1;
     const quizState = 'chooseQuiz';
-    const debug = false;
+    const debug = true;
 
     return {
       quizItems: [],
