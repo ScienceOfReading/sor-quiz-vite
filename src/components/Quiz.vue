@@ -38,7 +38,9 @@
       v-model:userAnswer="userAnswers[itemNum]" :debug="debug" @selected="chosen = true" />
   </div>
 
-
+  <div v-if="selectError === true">
+    <p class="text-orange-500">Please select an answer.</p>
+  </div>
 
   <!-- Debug info -->
   <div v-if="debug === true">
@@ -51,8 +53,7 @@
       'Check it' </button>
   </div>
   <div v-else-if="quizState === 'basicAsk' && !chosen">
-    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
-      '' </button>
+    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="selectionError">&nbsp; </button>
   </div>
   <div v-else-if="quizState === 'expertAsk' && chosen && complete">
     <p v-if="!basicMode && chosen && complete && !reviewMode">No more questions...</p>
@@ -65,7 +66,7 @@
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="nextQuestion">Next Question</button>
   </div>
   <div v-else-if="quizState === 'expertAsk' && !chosen">
-    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400">&nbsp;</button>
+    <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="selectionError">&nbsp; </button>
   </div>
   <div v-else-if="quizState === 'expertAsk' && chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="nextItem">Next</button>
@@ -123,6 +124,7 @@ export default {
     //console.log(quizItems[0]);
     const quizChoice = 1;
     const quizState = 'chooseQuiz';
+
     const debug = true;
 
     return {
@@ -134,6 +136,7 @@ export default {
       basicMode: false,
       reviewMode: false,
       showEnd: false,
+      selectError: false,
       debug: debug
     }
   },
@@ -334,6 +337,7 @@ export default {
     },
     answerSelected() {
       console.log("In answerSelected");
+      this.selectError = false;
       // No need to set chosen here, it's handled in the event listener
     },
     submit() {
@@ -367,6 +371,10 @@ export default {
           complete: this.complete
         }
       });
+    },
+    selectionError() {
+      console.log("In selectionError");
+      this.selectError = true;
     },
     quizDone() {
       console.log("Before quizDone:", {
