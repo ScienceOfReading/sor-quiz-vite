@@ -106,6 +106,10 @@ export default {
     selectedQuiz: {
       type: Number,
       required: true
+    },
+    debug: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props) {
@@ -125,7 +129,6 @@ export default {
     const quizChoice = 1;
     const quizState = 'chooseQuiz';
 
-    const debug = true;
 
     return {
       quizItems: [],
@@ -137,7 +140,7 @@ export default {
       reviewMode: false,
       showEnd: false,
       selectError: false,
-      debug: debug
+      debug: this.debug
     }
   },
   computed: {

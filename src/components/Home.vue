@@ -37,7 +37,7 @@
             </div>
         </div>
         <div v-else>
-            <Quiz @change-view="handleChangeView" :selectedQuiz="selectedQuiz"></Quiz>
+            <Quiz @change-view="handleChangeView" :selectedQuiz="selectedQuiz" :debug="debug"></Quiz>
         </div>
     </div>
 </template>
@@ -57,7 +57,8 @@ export default {
             showQuizzes: true,
             selectedQuiz: 100000,
             quiz: quizStore(),
-            quizSets: quizSets // Add quizSets to data if needed
+            quizSets: quizSets, // Add quizSets to data if needed
+            debug: true
         }
     },
     methods: {
