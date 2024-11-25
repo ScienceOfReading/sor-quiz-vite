@@ -20,7 +20,7 @@
                                 class="place-self-center place-content-center lg:text-3xl sm:text-2xl">Admin, Board
                                 Members</button></div>
                     </div>
-                    <div class="mt-2 mb-8">
+                    <div v-if="debug" class="mt-2 mb-8">
                         <button @click="showQuiz(4)"
                             class="place-self-center place-content-center lg:text-3xl sm:text-2xl">Test
                             Expert</button>
@@ -58,7 +58,7 @@ export default {
             selectedQuiz: 100000,
             quiz: quizStore(),
             quizSets: quizSets, // Add quizSets to data if needed
-            debug: true
+            debug: false
         }
     },
     methods: {
