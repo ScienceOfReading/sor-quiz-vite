@@ -35,17 +35,14 @@
 
 
 
-  <!--div>
+  <div>
     <p>quizState: {{ quizState }}, itemNum: {{ itemNum }}, complete: {{ complete }}, chosen: {{ chosen }}, reviewMode:
       {{
         reviewMode }}</p>
-  </div-->
-
-  <div v-if="quizState === 'basicResults' && complete" class="mt-6">
-    We're done!! Thank you!
-    <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
   </div>
-  <div v-else-if="quizState === 'basicAsk' && chosen">
+
+
+  <div v-if="quizState === 'basicAsk' && chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
       'Check it' </button>
   </div>
@@ -58,6 +55,7 @@
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="submit">Submit</button>
   </div>
   <div v-else-if="quizState === 'basicResults' && complete">
+    <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="quizDone">quizDone</button>
     <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="quizDone">quizDone</button>
   </div>
   <div v-else-if="quizState === 'basicResults'">
@@ -316,8 +314,10 @@ export default {
 
         if (this.itemNum === this.quizItems.length - 1) {
           console.log("In checkIt, itemNum: ", this.itemNum, "quizItems.length: ", this.quizItems.length);
+          this.quizState = 'basicResults';
           this.complete = true;
-          //this.quizState = 'end';
+          this.reviewMode = !this.reviewMode;
+
         } else {
           this.quizState = 'basicResults';
           this.complete = false;
@@ -354,6 +354,7 @@ export default {
     },
     quizDone() {
       //this.$emit('change-view', { showResults: true }); // Emit an event with the new state
+      console.log("In quizDone");
       this.quizState = 'end';
     },
     showOriginalView() {
