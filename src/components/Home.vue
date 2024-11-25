@@ -14,11 +14,16 @@
                     </div>
                     <div class="mt-2 mb-8 gap-16 columns-2">
                         <div><button @click="showQuiz(2)"
-                                class="place-self-center place-content-centerlg:text-3xl sm:text-2xl">Kinder-First</button>
+                                class="place-self-center place-content-center lg:text-3xl sm:text-2xl">Kinder-First</button>
                         </div>
                         <div><button @click="showQuiz(3)"
-                                class="place-self-center place-content-centerlg:text-3xl sm:text-2xl">Admin, Board
+                                class="place-self-center place-content-center lg:text-3xl sm:text-2xl">Admin, Board
                                 Members</button></div>
+                    </div>
+                    <div class="mt-2 mb-8">
+                        <button @click="showQuiz(4)"
+                            class="place-self-center place-content-center lg:text-3xl sm:text-2xl">Test
+                            Expert</button>
                     </div>
                 </div>
             </div>
@@ -34,7 +39,6 @@
         <div v-else>
             <Quiz @change-view="handleChangeView" :selectedQuiz="selectedQuiz"></Quiz>
         </div>
-
     </div>
 </template>
 

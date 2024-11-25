@@ -1,7 +1,11 @@
 <template>
-  <!-- Add debug info -->
-  <div>
-    <p>QuizItem Debug - reviewMode: {{ reviewMode }}, basicMode: {{ basicMode }}</p>
+  <div v-if="debug === true" style="background-color: #f0f0f0; padding: 10px; margin: 5px;">
+    <p>QuizItem Debug:</p>
+    <ul>
+      <li>reviewMode: {{ reviewMode }}</li>
+      <li>Has currentQuizItem: {{ !!currentQuizItem }}</li>
+      <li>Explanation should show: {{ reviewMode }}</li>
+    </ul>
   </div>
   <div v-if="currentQuizItem" class="w-full place-content-center mx-auto">
     <!-- Display the question for all question types -->
@@ -27,7 +31,7 @@
         :bottomLabel="quizItem.bottomLabel" @order-changed="handleOrderChanged" />
     </div>
     <!-- Debug the Explanation rendering condition -->
-    <div>
+    <div v-if="debug === true">
       <p>Should show Explanation: {{ reviewMode && !basicMode }}</p>
     </div>
     <Explanation :quizItem="quizItem" :reviewMode="reviewMode" :userAnswer="userAnswer" ref="explanationComponent" />
@@ -80,6 +84,10 @@ export default {
     userAnswer: {
       type: [String, Number, Array],
       default: null
+    },
+    debug: {
+      type: Boolean,
+      required: true
     }
   },
   components: {

@@ -27,7 +27,7 @@
     </div>
   </div>
   <div v-else class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
-    <div class="debug-info">
+    <div v-if="debug === true" class="debug-info">
       <p>Quiz Debug (before QuizItem):
         quizState: {{ quizState }},
         reviewMode: {{ reviewMode }},
@@ -41,10 +41,9 @@
 
 
   <!-- Debug info -->
-  <div v-if="true">
+  <div v-if="debug === true">
     <p>quizState: {{ quizState }}, itemNum: {{ itemNum }}, complete: {{ complete }}, chosen: {{ chosen }}, reviewMode:
-      {{
-        reviewMode }}</p>
+      {{ reviewMode }}</p>
   </div>
 
   <div v-if="quizState === 'basicAsk' && chosen">
@@ -124,7 +123,7 @@ export default {
     //console.log(quizItems[0]);
     const quizChoice = 1;
     const quizState = 'chooseQuiz';
-
+    const debug = false;
 
     return {
       quizItems: [],
@@ -134,7 +133,8 @@ export default {
       itemNum: 0,
       basicMode: false,
       reviewMode: false,
-      showEnd: false
+      showEnd: false,
+      debug: debug
     }
   },
   computed: {
@@ -353,7 +353,9 @@ export default {
         }
       });
 
+      // Force all state changes in the correct order
       this.itemNum = 0;
+      this.reviewMode = true;  // Set this before quizState
       this.quizState = 'expertResults';
       this.complete = false;
 
