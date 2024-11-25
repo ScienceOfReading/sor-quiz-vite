@@ -169,6 +169,12 @@ export const quizStore = defineStore('quiz', {
             this.incorrectQuestions = [];  // Reset incorrect questions
         },
         async setUserAnswer(index, selectedAnswer, correctAnswer, questionId, questionTitle, quizEntry) {
+            // Validate inputs before proceeding
+            if (selectedAnswer === undefined) {
+                console.error('Invalid selectedAnswer:', selectedAnswer);
+                return;
+            }
+
             // Skip correctness check for sortable lists
             if (Array.isArray(selectedAnswer)) {
                 console.log('Sortable list answer - skipping correctness check');
@@ -196,7 +202,7 @@ export const quizStore = defineStore('quiz', {
             };
 
             if (!isCorrect && !this.incorrectQuestions.some(q => q.id === questionId)) {
-                const chosenOptionText = quizEntry[`option${selectedAnswer}`];
+                const chosenOptionText = quizEntry?.[`option${selectedAnswer}`] || '';
                 this.incorrectQuestions.push({
                     id: questionId || '',
                     title: questionTitle || '',
@@ -211,16 +217,24 @@ export const quizStore = defineStore('quiz', {
                     return;
                 }
 
+                // Clean data before saving to Firebase
+                const cleanUserAnswers = this.userAnswers.filter(answer =>
+                    answer !== null && answer !== undefined
+                );
+
+                const cleanIncorrectQuestions = this.incorrectQuestions.filter(q =>
+                    q !== null && q !== undefined
+                );
+
                 const attemptRef = doc(db, 'quizAttempts', `${userId}_${this.currentQuizId}`);
                 await setDoc(attemptRef, {
                     userId,
                     quizId: this.currentQuizId,
-                    userAnswers: this.userAnswers,
-                    incorrectQuestions: this.incorrectQuestions,
+                    userAnswers: cleanUserAnswers,
+                    incorrectQuestions: cleanIncorrectQuestions,
                     lastUpdated: serverTimestamp()
                 }, { merge: true });
 
-                console.log('Answer saved to Firebase');
             } catch (error) {
                 console.error('Firebase save error:', error);
                 throw error;

@@ -17,8 +17,7 @@
       <p class="mb-20">correct.</p>
     </div>
   </div>
-  <div v-else-if="quizState === 'end'"
-    class="sm:w-full md:w-9/12 lg:w-5/6 px-2 quizzes-container text-center border-solid bodrder-stone-400">
+  <div v-else-if="quizState === 'end'" class="sm:w-full md:w-9/12 lg:w-5/6 px-2 quizzes-container text-center">
     <h5 class="text-stone-400 pt-2"></h5>
     <p class="question-text mb-2">Thank you!</p>
 
@@ -48,14 +47,13 @@
   </div>
   <div v-else-if="quizState === 'basicAsk' && !chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
-      'Check it' </button>
+      '' </button>
   </div>
   <div v-else-if="quizState === 'expertAsk' && chosen && complete">
     <p v-if="!basicMode && chosen && complete && !reviewMode">No more questions...</p>
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="submit">Submit</button>
   </div>
   <div v-else-if="quizState === 'basicResults' && complete">
-    <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="quizDone">quizDone</button>
     <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="quizDone">quizDone</button>
   </div>
   <div v-else-if="quizState === 'basicResults'">
@@ -124,7 +122,6 @@ export default {
 
     return {
       quizItems: [],
-      numCompleted: 0,
       userAnswers: [],
       complete: false,
       chosen: false,
@@ -265,7 +262,7 @@ export default {
     },
     async checkIt() {
       console.log("----In checkIt----");
-      this.quizState = 'basicResults';
+
       try {
         const currentQuestion = this.quizItems[this.itemNum];
         if (!currentQuestion) {
@@ -311,21 +308,18 @@ export default {
           questionData.quizEntry
         );
 
-
+        this.quizState = 'basicResults';
+        this.reviewMode = true;
+        console.log("In checkIt, itemNum: ", this.itemNum, "quizItems.length: ", this.quizItems.length);
         if (this.itemNum === this.quizItems.length - 1) {
-          console.log("In checkIt, itemNum: ", this.itemNum, "quizItems.length: ", this.quizItems.length);
-          this.quizState = 'basicResults';
           this.complete = true;
-          this.reviewMode = !this.reviewMode;
+
 
         } else {
-          this.quizState = 'basicResults';
           this.complete = false;
-          this.reviewMode = !this.reviewMode;
-          if (!this.reviewMode) {
-            this.itemNum++;
-            this.chosen = false
-          }
+          // this.itemNum++;
+          this.chosen = false
+
         }
 
       } catch (error) {
@@ -347,15 +341,31 @@ export default {
       console.log("----Start Review----")
       this.itemNum = 0;
       this.numCompleted = 1;
-      this.reviewMode = true;
+      //this.reviewMode = true;
       this.quizState = 'expertResults';
       this.complete = false;
       console.log("Review started. itemNum:", this.itemNum);
     },
     quizDone() {
-      //this.$emit('change-view', { showResults: true }); // Emit an event with the new state
-      console.log("In quizDone");
+      console.log("Before quizDone:", {
+        currentState: this.quizState,
+        complete: this.complete,
+        reviewMode: this.reviewMode
+      });
+
+      // Force exit from review mode
+      this.reviewMode = false;
+      // Clear any intermediate states
+      this.chosen = false;
+      // Set final states
+      this.complete = true;
       this.quizState = 'end';
+
+      console.log("After quizDone:", {
+        currentState: this.quizState,
+        complete: this.complete,
+        reviewMode: this.reviewMode
+      });
     },
     showOriginalView() {
       this.$emit('change-view', { showQuizzes: true }); // Emit an event with the new state
