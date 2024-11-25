@@ -1,5 +1,5 @@
 <template>
-  <div v-if="debug === true" style="background-color: #f0f0f0; padding: 10px; margin: 5px;">
+  <div v-if="debug === true" style="padding: 5px; margin: 5px;">
     <p>QuizItem Debug:</p>
     <ul>
       <li>reviewMode: {{ reviewMode }}</li>
@@ -284,5 +284,9 @@ a {
 
 .incorrect-choice {
   color: red;
+}
+
+.debug-info {
+  color: blueviolet;
 }
 </style>
