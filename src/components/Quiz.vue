@@ -18,8 +18,7 @@
     </div>
   </div>
   <div v-else-if="quizState === 'end'" class="sm:w-full md:w-9/12 lg:w-5/6 px-2 quizzes-container text-center">
-    <h5 class="text-stone-400 pt-2"></h5>
-    <p class="question-text mb-2">Thank you!</p>
+    <h5 class="text-stone-400 pt-2">&nbsp;</h5>
 
     <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
       <p class="mt-20">You got </p>
@@ -28,18 +27,25 @@
     </div>
   </div>
   <div v-else class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
+    <div class="debug-info">
+      <p>Quiz Debug (before QuizItem):
+        quizState: {{ quizState }},
+        reviewMode: {{ reviewMode }},
+        basicMode: {{ basicMode }}
+      </p>
+    </div>
     <QuizItem :currentQuizItem="currentQuizItem" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
       v-model:userAnswer="userAnswers[itemNum]" @selected="chosen = true" />
   </div>
 
 
 
-  <div>
+  <!-- Debug info -->
+  <div v-if="true">
     <p>quizState: {{ quizState }}, itemNum: {{ itemNum }}, complete: {{ complete }}, chosen: {{ chosen }}, reviewMode:
       {{
         reviewMode }}</p>
   </div>
-
 
   <div v-if="quizState === 'basicAsk' && chosen">
     <button class="bg-stone-400 w-32 h-10 mt-6 text-amber-400" @click="checkIt">
@@ -75,7 +81,7 @@
     <button class="bg-stone-400 w-32 h-10 mt-3 mb-3 text-amber-400" @click="nextReview">Next</button>
   </div>
   <div v-else-if="quizState === 'end'" class="mt-6">
-    We're done!! Thank you!
+    <p>Thank you!</p>
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
   </div>
   <div v-else>
@@ -338,13 +344,27 @@ export default {
 
     },
     startReview() {
-      console.log("----Start Review----")
+      console.log("----Start Review----", {
+        beforeState: {
+          quizState: this.quizState,
+          itemNum: this.itemNum,
+          reviewMode: this.reviewMode,
+          complete: this.complete
+        }
+      });
+
       this.itemNum = 0;
-      this.numCompleted = 1;
-      //this.reviewMode = true;
       this.quizState = 'expertResults';
       this.complete = false;
-      console.log("Review started. itemNum:", this.itemNum);
+
+      console.log("After startReview:", {
+        afterState: {
+          quizState: this.quizState,
+          itemNum: this.itemNum,
+          reviewMode: this.reviewMode,
+          complete: this.complete
+        }
+      });
     },
     quizDone() {
       console.log("Before quizDone:", {
@@ -379,9 +399,19 @@ export default {
     quizState: {
       immediate: true,
       handler(newState) {
-        console.log('quizState changed to:', newState);
+        console.log('quizState watcher:', {
+          newState,
+          isExpertResults: newState === 'expertResults',
+          isBasicResults: newState === 'basicResults',
+          shouldBeReviewMode: newState === 'expertResults' || newState === 'basicResults'
+        });
+
         this.reviewMode = newState === 'expertResults' || newState === 'basicResults';
-        console.log('reviewMode is now:', this.reviewMode);
+
+        console.log('After setting reviewMode:', {
+          reviewMode: this.reviewMode,
+          quizState: this.quizState
+        });
       }
     }
   }

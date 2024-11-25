@@ -1,4 +1,8 @@
 <template>
+  <!-- Add debug info -->
+  <div>
+    <p>QuizItem Debug - reviewMode: {{ reviewMode }}, basicMode: {{ basicMode }}</p>
+  </div>
   <div v-if="currentQuizItem" class="w-full place-content-center mx-auto">
     <!-- Display the question for all question types -->
     <h2 class="text-xl font-bold mb-4">{{ quizItem.subtitle }}</h2>
@@ -22,7 +26,10 @@
         :correctOrder="quizItem.correctOrder" :disabled="reviewMode" :topLabel="quizItem.topLabel"
         :bottomLabel="quizItem.bottomLabel" @order-changed="handleOrderChanged" />
     </div>
-
+    <!-- Debug the Explanation rendering condition -->
+    <div>
+      <p>Should show Explanation: {{ reviewMode && !basicMode }}</p>
+    </div>
     <Explanation :quizItem="quizItem" :reviewMode="reviewMode" :userAnswer="userAnswer" ref="explanationComponent" />
     <!-- Debug output -->
     <!--div class="debug-info">
