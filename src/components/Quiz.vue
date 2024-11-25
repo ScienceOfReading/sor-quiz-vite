@@ -35,11 +35,11 @@
 
 
 
-  <div>
+  <!--div>
     <p>quizState: {{ quizState }}, itemNum: {{ itemNum }}, complete: {{ complete }}, chosen: {{ chosen }}, reviewMode:
       {{
         reviewMode }}</p>
-  </div>
+  </div-->
 
   <div v-if="quizState === 'basicResults' && complete" class="mt-6">
     We're done!! Thank you!
