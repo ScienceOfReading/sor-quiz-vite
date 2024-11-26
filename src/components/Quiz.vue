@@ -1,7 +1,6 @@
 <template>
-  <div class="hidden">
-    <p>Review mode: {{ reviewMode }}</p>
-  </div>
+  <span v-show="false">{{ reviewModeTracker }}</span>
+
   <div class="w-full place-content-center">
     <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
     <p v-if="quizState !== 'resultSummary' && quizState !== 'end'">
@@ -90,6 +89,7 @@
   <div v-else>
     <p>Error: Unknown quiz state: {{ quizState }}</p>
   </div>
+  <span v-show="false">{{ reviewModeTracker }}</span>
 </template>
 <script>
 import QuizItem from './QuizItem.vue';
@@ -162,6 +162,9 @@ export default {
 
       // For expert mode, count the number of answered questions
       return this.userAnswers.filter(answer => answer !== undefined).length;
+    },
+    reviewModeTracker() {
+      return this.reviewMode;  // Explicitly track reviewMode
     }
   },
   methods: {
