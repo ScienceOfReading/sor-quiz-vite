@@ -522,6 +522,8 @@ textarea {
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   transition: all 0.2s ease;
+  color: #333;
+  padding: 8px;
 }
 
 input:focus,
