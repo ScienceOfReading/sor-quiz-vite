@@ -1,4 +1,7 @@
 <template>
+  <div class="hidden">
+    <p>Review mode: {{ reviewMode }}</p>
+  </div>
   <div class="w-full place-content-center">
     <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
     <p v-if="quizState !== 'resultSummary' && quizState !== 'end'">
@@ -38,12 +41,12 @@
       v-model:userAnswer="userAnswers[itemNum]" :debug="debug" @selected="chosen = true" />
   </div>
 
-  <div v-if="selectError === true">
+  <!--div v-if="selectError === true">
     <p class="text-orange-500">Please select an answer.</p>
-  </div>
+  </div-->
 
   <!-- Debug info -->
-  <div v-if="debug === true">
+  <div v-if="false">
     <p>quizState: {{ quizState }}, itemNum: {{ itemNum }}, complete: {{ complete }}, chosen: {{ chosen }}, reviewMode:
       {{ reviewMode }}</p>
   </div>
@@ -128,6 +131,7 @@ export default {
     //console.log(quizItems[0]);
     const quizChoice = 1;
     const quizState = 'chooseQuiz';
+    const reviewMode = false;
 
 
     return {
@@ -137,7 +141,7 @@ export default {
       chosen: false,
       itemNum: 0,
       basicMode: false,
-      reviewMode: false,
+      reviewMode: reviewMode,
       showEnd: false,
       selectError: false,
       debug: this.debug
