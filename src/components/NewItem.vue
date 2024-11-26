@@ -60,19 +60,23 @@
             <div class="form-section">
               <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" id="title" v-model="newEntry.title" required />
+                <input type="text" id="title" v-model="newEntry.title" :placeholder="newEntry.title"
+                  @focus="handleFocus($event, 'title')" @blur="handleBlur($event, 'title')" />
               </div>
               <div class="form-group">
                 <label for="subtitle">Subtitle:</label>
-                <input type="text" id="subtitle" v-model="newEntry.subtitle" />
+                <input type="text" id="subtitle" v-model="newEntry.subtitle" :placeholder="newEntry.subtitle"
+                  @focus="handleFocus($event, 'subtitle')" @blur="handleBlur($event, 'subtitle')" />
               </div>
               <div class="form-group">
                 <label for="question">Question:</label>
-                <textarea id="question" v-model="newEntry.Question" required></textarea>
+                <textarea id="question" v-model="newEntry.Question" :placeholder="newEntry.Question"
+                  @focus="handleFocus($event, 'Question')" @blur="handleBlur($event, 'Question')"></textarea>
               </div>
               <div class="form-group">
                 <label for="questionP2">Question Line 2 (optional):</label>
-                <textarea id="questionP2" v-model="newEntry.questionP2"></textarea>
+                <textarea id="questionP2" v-model="newEntry.questionP2" :placeholder="newEntry.questionP2"
+                  @focus="handleFocus($event, 'questionP2')" @blur="handleBlur($event, 'questionP2')"></textarea>
               </div>
             </div>
           </details>
@@ -86,27 +90,34 @@
             <div class="form-section">
               <div class="form-group">
                 <label for="option1">Option 1:</label>
-                <input type="text" id="option1" v-model="newEntry.option1" required />
+                <input type="text" id="option1" v-model="newEntry.option1" :placeholder="newEntry.option1"
+                  @focus="handleFocus($event, 'option1')" @blur="handleBlur($event, 'option1')" />
               </div>
               <div class="form-group">
                 <label for="option2">Option 2:</label>
-                <input type="text" id="option2" v-model="newEntry.option2" required />
+                <input type="text" id="option2" v-model="newEntry.option2" :placeholder="newEntry.option2"
+                  @focus="handleFocus($event, 'option2')" @blur="handleBlur($event, 'option2')" />
               </div>
               <div class="form-group">
                 <label for="option3">Option 3:</label>
-                <input type="text" id="option3" v-model="newEntry.option3" />
+                <input type="text" id="option3" v-model="newEntry.option3" :placeholder="newEntry.option3"
+                  @focus="handleFocus($event, 'option3')" @blur="handleBlur($event, 'option3')" />
               </div>
               <div class="form-group">
                 <label for="option4">Option 4:</label>
-                <input type="text" id="option4" v-model="newEntry.option4" />
+                <input type="text" id="option4" v-model="newEntry.option4" :placeholder="newEntry.option4"
+                  @focus="handleFocus($event, 'option4')" @blur="handleBlur($event, 'option4')" />
               </div>
               <div class="form-group">
                 <label for="option5">Option 5:</label>
-                <input type="text" id="option5" v-model="newEntry.option5" />
+                <input type="text" id="option5" v-model="newEntry.option5" :placeholder="newEntry.option5"
+                  @focus="handleFocus($event, 'option5')" @blur="handleBlur($event, 'option5')" />
               </div>
               <div class="form-group">
                 <label for="correctAnswer">Correct Answer (1-5):</label>
-                <input type="number" id="correctAnswer" v-model="newEntry.correctAnswer" min="1" max="5" required />
+                <input type="number" id="correctAnswer" v-model="newEntry.correctAnswer" min="1" max="5" required
+                  :placeholder="newEntry.correctAnswer" @focus="handleFocus($event, 'correctAnswer')"
+                  @blur="handleBlur($event, 'correctAnswer')" />
               </div>
             </div>
           </details>
@@ -157,11 +168,13 @@
           <div v-show="activeSection === 'explanations'" class="form-section">
             <div class="form-group">
               <label for="explanation">Primary Explanation:</label>
-              <textarea id="explanation" v-model="newEntry.explanation"></textarea>
+              <textarea id="explanation" v-model="newEntry.explanation" :placeholder="newEntry.explanation"
+                @focus="handleFocus($event, 'explanation')" @blur="handleBlur($event, 'explanation')"></textarea>
             </div>
             <div class="form-group">
               <label for="explanation2">Secondary Explanation:</label>
-              <textarea id="explanation2" v-model="newEntry.explanation2"></textarea>
+              <textarea id="explanation2" v-model="newEntry.explanation2" :placeholder="newEntry.explanation2"
+                @focus="handleFocus($event, 'explanation2')" @blur="handleBlur($event, 'explanation2')"></textarea>
             </div>
           </div>
 
@@ -169,15 +182,18 @@
           <div v-show="activeSection === 'media'" class="form-section">
             <div class="form-group">
               <label for="videoId">YouTube Video ID:</label>
-              <input type="text" id="videoId" v-model="newEntry.videoId" />
+              <input type="text" id="videoId" v-model="newEntry.videoId" :placeholder="newEntry.videoId"
+                @focus="handleFocus($event, 'videoId')" @blur="handleBlur($event, 'videoId')" />
             </div>
             <div class="form-group">
               <label for="imageUrl">Image URL:</label>
-              <input type="text" id="imageUrl" v-model="newEntry.imageUrl" />
+              <input type="text" id="imageUrl" v-model="newEntry.imageUrl" :placeholder="newEntry.imageUrl"
+                @focus="handleFocus($event, 'imageUrl')" @blur="handleBlur($event, 'imageUrl')" />
             </div>
             <div class="form-group">
               <label for="imageAltText">Image Alt Text:</label>
-              <input type="text" id="imageAltText" v-model="newEntry.imageAltText" />
+              <input type="text" id="imageAltText" v-model="newEntry.imageAltText" :placeholder="newEntry.imageAltText"
+                @focus="handleFocus($event, 'imageAltText')" @blur="handleBlur($event, 'imageAltText')" />
             </div>
           </div>
 
@@ -185,48 +201,68 @@
           <div v-show="activeSection === 'podcasts'" class="form-section">
             <div class="form-group">
               <label for="podcastEpisode1-title">Episode 1 Title:</label>
-              <input type="text" id="podcastEpisode1-title" v-model="newEntry.podcastEpisode.title" />
+              <input type="text" id="podcastEpisode1-title" v-model="newEntry.podcastEpisode.title"
+                :placeholder="newEntry.podcastEpisode.title" @focus="handleFocus($event, 'podcastEpisode1-title')"
+                @blur="handleBlur($event, 'podcastEpisode1-title')" />
             </div>
             <div class="form-group">
               <label for="podcastEpisode1-url">Episode 1 URL:</label>
-              <input type="text" id="podcastEpisode1-url" v-model="newEntry.podcastEpisode.EpisodeUrl" />
+              <input type="text" id="podcastEpisode1-url" v-model="newEntry.podcastEpisode.EpisodeUrl"
+                :placeholder="newEntry.podcastEpisode.EpisodeUrl" @focus="handleFocus($event, 'podcastEpisode1-url')"
+                @blur="handleBlur($event, 'podcastEpisode1-url')" />
             </div>
             <div class="form-group">
               <label for="podcastEpisode1-audio">Episode 1 Audio URL:</label>
-              <input type="text" id="podcastEpisode1-audio" v-model="newEntry.podcastEpisode.audioUrl" />
+              <input type="text" id="podcastEpisode1-audio" v-model="newEntry.podcastEpisode.audioUrl"
+                :placeholder="newEntry.podcastEpisode.audioUrl" @focus="handleFocus($event, 'podcastEpisode1-audio')"
+                @blur="handleBlur($event, 'podcastEpisode1-audio')" />
             </div>
             <div class="form-group">
               <label for="podcastEpisode1-desc">Episode 1 Description:</label>
-              <textarea id="podcastEpisode1-desc" v-model="newEntry.podcastEpisode.description"></textarea>
+              <textarea id="podcastEpisode1-desc" v-model="newEntry.podcastEpisode.description"
+                :placeholder="newEntry.podcastEpisode.description" @focus="handleFocus($event, 'podcastEpisode1-desc')"
+                @blur="handleBlur($event, 'podcastEpisode1-desc')"></textarea>
             </div>
             <div class="form-group">
               <label for="podcastEpisode1-time">Episode 1 Start Time (seconds):</label>
-              <input type="number" id="podcastEpisode1-time" v-model="newEntry.podcastEpisode.podcastStartTime"
-                min="0" />
+              <input type="number" id="podcastEpisode1-time" v-model="newEntry.podcastEpisode.podcastStartTime" min="0"
+                :placeholder="newEntry.podcastEpisode.podcastStartTime"
+                @focus="handleFocus($event, 'podcastEpisode1-time')"
+                @blur="handleBlur($event, 'podcastEpisode1-time')" />
             </div>
 
             <hr class="section-divider">
 
             <div class="form-group">
               <label for="podcastEpisode2-title">Episode 2 Title:</label>
-              <input type="text" id="podcastEpisode2-title" v-model="newEntry.podcastEpisode2.title" />
+              <input type="text" id="podcastEpisode2-title" v-model="newEntry.podcastEpisode2.title"
+                :placeholder="newEntry.podcastEpisode2.title" @focus="handleFocus($event, 'podcastEpisode2-title')"
+                @blur="handleBlur($event, 'podcastEpisode2-title')" />
             </div>
             <div class="form-group">
               <label for="podcastEpisode2-url">Episode 2 URL:</label>
-              <input type="text" id="podcastEpisode2-url" v-model="newEntry.podcastEpisode2.EpisodeUrl" />
+              <input type="text" id="podcastEpisode2-url" v-model="newEntry.podcastEpisode2.EpisodeUrl"
+                :placeholder="newEntry.podcastEpisode2.EpisodeUrl" @focus="handleFocus($event, 'podcastEpisode2-url')"
+                @blur="handleBlur($event, 'podcastEpisode2-url')" />
             </div>
             <div class="form-group">
               <label for="podcastEpisode2-audio">Episode 2 Audio URL:</label>
-              <input type="text" id="podcastEpisode2-audio" v-model="newEntry.podcastEpisode2.audioUrl" />
+              <input type="text" id="podcastEpisode2-audio" v-model="newEntry.podcastEpisode2.audioUrl"
+                :placeholder="newEntry.podcastEpisode2.audioUrl" @focus="handleFocus($event, 'podcastEpisode2-audio')"
+                @blur="handleBlur($event, 'podcastEpisode2-audio')" />
             </div>
             <div class="form-group">
               <label for="podcastEpisode2-desc">Episode 2 Description:</label>
-              <textarea id="podcastEpisode2-desc" v-model="newEntry.podcastEpisode2.description"></textarea>
+              <textarea id="podcastEpisode2-desc" v-model="newEntry.podcastEpisode2.description"
+                :placeholder="newEntry.podcastEpisode2.description" @focus="handleFocus($event, 'podcastEpisode2-desc')"
+                @blur="handleBlur($event, 'podcastEpisode2-desc')"></textarea>
             </div>
             <div class="form-group">
               <label for="podcastEpisode2-time">Episode 2 Start Time (seconds):</label>
-              <input type="number" id="podcastEpisode2-time" v-model="newEntry.podcastEpisode2.podcastStartTime"
-                min="0" />
+              <input type="number" id="podcastEpisode2-time" v-model="newEntry.podcastEpisode2.podcastStartTime" min="0"
+                :placeholder="newEntry.podcastEpisode2.podcastStartTime"
+                @focus="handleFocus($event, 'podcastEpisode2-time')"
+                @blur="handleBlur($event, 'podcastEpisode2-time')" />
             </div>
           </div>
 
@@ -236,23 +272,33 @@
               <h3>Citation {{ index + 1 }}</h3>
               <div class="form-group">
                 <label :for="`citation-${index}-title`">Title:</label>
-                <input type="text" :id="`citation-${index}-title`" v-model="citation.title" />
+                <input type="text" :id="`citation-${index}-title`" v-model="citation.title"
+                  :placeholder="citation.title" @focus="handleFocus($event, `citation-${index}-title`)"
+                  @blur="handleBlur($event, `citation-${index}-title`)" />
               </div>
               <div class="form-group">
                 <label :for="`citation-${index}-author`">Author:</label>
-                <input type="text" :id="`citation-${index}-author`" v-model="citation.author" />
+                <input type="text" :id="`citation-${index}-author`" v-model="citation.author"
+                  :placeholder="citation.author" @focus="handleFocus($event, `citation-${index}-author`)"
+                  @blur="handleBlur($event, `citation-${index}-author`)" />
               </div>
               <div class="form-group">
                 <label :for="`citation-${index}-url`">URL:</label>
-                <input type="text" :id="`citation-${index}-url`" v-model="citation.url" />
+                <input type="text" :id="`citation-${index}-url`" v-model="citation.url" :placeholder="citation.url"
+                  @focus="handleFocus($event, `citation-${index}-url`)"
+                  @blur="handleBlur($event, `citation-${index}-url`)" />
               </div>
               <div class="form-group">
                 <label :for="`citation-${index}-year`">Year:</label>
-                <input type="text" :id="`citation-${index}-year`" v-model="citation.year" />
+                <input type="text" :id="`citation-${index}-year`" v-model="citation.year" :placeholder="citation.year"
+                  @focus="handleFocus($event, `citation-${index}-year`)"
+                  @blur="handleBlur($event, `citation-${index}-year`)" />
               </div>
               <div class="form-group">
                 <label :for="`citation-${index}-image`">Image URL:</label>
-                <input type="text" :id="`citation-${index}-image`" v-model="citation.imageUrl" />
+                <input type="text" :id="`citation-${index}-image`" v-model="citation.imageUrl"
+                  :placeholder="citation.imageUrl" @focus="handleFocus($event, `citation-${index}-image`)"
+                  @blur="handleBlur($event, `citation-${index}-image`)" />
               </div>
             </div>
             <button type="button" @click="addCitation" class="add-button">Add Another Citation</button>
@@ -264,19 +310,27 @@
               <h3>Resource {{ index + 1 }}</h3>
               <div class="form-group">
                 <label :for="`resource-${index}-title`">Title:</label>
-                <input type="text" :id="`resource-${index}-title`" v-model="resource.title" />
+                <input type="text" :id="`resource-${index}-title`" v-model="resource.title"
+                  :placeholder="resource.title" @focus="handleFocus($event, `resource-${index}-title`)"
+                  @blur="handleBlur($event, `resource-${index}-title`)" />
               </div>
               <div class="form-group">
                 <label :for="`resource-${index}-author`">Author:</label>
-                <input type="text" :id="`resource-${index}-author`" v-model="resource.author" />
+                <input type="text" :id="`resource-${index}-author`" v-model="resource.author"
+                  :placeholder="resource.author" @focus="handleFocus($event, `resource-${index}-author`)"
+                  @blur="handleBlur($event, `resource-${index}-author`)" />
               </div>
               <div class="form-group">
                 <label :for="`resource-${index}-url`">URL:</label>
-                <input type="text" :id="`resource-${index}-url`" v-model="resource.url" />
+                <input type="text" :id="`resource-${index}-url`" v-model="resource.url" :placeholder="resource.url"
+                  @focus="handleFocus($event, `resource-${index}-url`)"
+                  @blur="handleBlur($event, `resource-${index}-url`)" />
               </div>
               <div class="form-group">
                 <label :for="`resource-${index}-description`">Description:</label>
-                <textarea :id="`resource-${index}-description`" v-model="resource.description"></textarea>
+                <textarea :id="`resource-${index}-description`" v-model="resource.description"
+                  :placeholder="resource.description" @focus="handleFocus($event, `resource-${index}-description`)"
+                  @blur="handleBlur($event, `resource-${index}-description`)"></textarea>
               </div>
             </div>
             <button type="button" @click="addResource" class="add-button">Add Another Resource</button>
@@ -286,11 +340,13 @@
           <div v-show="activeSection === 'cautions'" class="form-section">
             <div class="form-group">
               <label for="cautionLevel">Caution Level:</label>
-              <input type="text" id="cautionLevel" v-model="newEntry.cautionLevel" />
+              <input type="text" id="cautionLevel" v-model="newEntry.cautionLevel" :placeholder="newEntry.cautionLevel"
+                @focus="handleFocus($event, 'cautionLevel')" @blur="handleBlur($event, 'cautionLevel')" />
             </div>
             <div class="form-group">
               <label for="caution">Caution Text:</label>
-              <textarea id="caution" v-model="newEntry.caution"></textarea>
+              <textarea id="caution" v-model="newEntry.caution" :placeholder="newEntry.caution"
+                @focus="handleFocus($event, 'caution')" @blur="handleBlur($event, 'caution')"></textarea>
             </div>
           </div>
 
@@ -298,15 +354,18 @@
           <div v-show="activeSection === 'closing'" class="form-section">
             <div class="form-group">
               <label for="closingText">Closing Text:</label>
-              <textarea id="closingText" v-model="newEntry.closingText"></textarea>
+              <textarea id="closingText" v-model="newEntry.closingText" :placeholder="newEntry.closingText"
+                @focus="handleFocus($event, 'closingText')" @blur="handleBlur($event, 'closingText')"></textarea>
             </div>
             <div class="form-group">
               <label for="closingText2">Additional Closing Text:</label>
-              <textarea id="closingText2" v-model="newEntry.closingText2"></textarea>
+              <textarea id="closingText2" v-model="newEntry.closingText2" :placeholder="newEntry.closingText2"
+                @focus="handleFocus($event, 'closingText2')" @blur="handleBlur($event, 'closingText2')"></textarea>
             </div>
             <div class="form-group">
               <label for="modal">Modal Content:</label>
-              <textarea id="modal" v-model="newEntry.modal"></textarea>
+              <textarea id="modal" v-model="newEntry.modal" :placeholder="newEntry.modal"
+                @focus="handleFocus($event, 'modal')" @blur="handleBlur($event, 'modal')"></textarea>
             </div>
           </div>
         </div>
@@ -434,6 +493,15 @@ export default {
         if (!this.newEntry.resources || this.newEntry.resources.length === 0) {
           this.addResource();
         }
+      }
+    },
+    handleFocus(event, field) {
+      event.target._originalValue = event.target.value;
+      this.newEntry[field] = '';
+    },
+    handleBlur(event, field) {
+      if (!this.newEntry[field] && event.target._originalValue) {
+        this.newEntry[field] = event.target._originalValue;
       }
     }
   }
@@ -940,5 +1008,23 @@ details[open] .form-section {
 
 .form-group:has(textarea) label {
   margin-top: 0;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #999;
+  font-style: italic;
+  transition: opacity 0.2s ease;
+}
+
+input:focus::placeholder,
+textarea:focus::placeholder {
+  opacity: 0.5;
+}
+
+/* When focused and empty */
+input:focus:placeholder-shown,
+textarea:focus:placeholder-shown {
+  color: #ccc;
 }
 </style>
