@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="mt-32 w-full place-content-center">
-                <p class="h3">SOR Quizzes is a <a href="https://github.com/ScienceOfReading/sor-quiz-vite">community
+                <p class="h3">SOR Quizzes is a <a href="https://github.com/EdJones/sor-quizzes">community
                         driven
                         effort</a>, created by <a href="https://skunkworks-edu.com">Skunkworks\edu</a>.</p>
                 <div class="router-link-container">
