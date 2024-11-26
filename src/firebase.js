@@ -54,6 +54,7 @@ export const saveUserProgress = async (quizId, progress) => {
             ...progress,
             lastUpdated: serverTimestamp()
         }, { merge: true });
+        console.log('Progress saved:', progressRef.id);
     } catch (error) {
         console.error('Error saving progress:', error);
         throw error;

@@ -327,6 +327,15 @@ export default {
           questionData.quizEntry
         );
 
+        await saveUserProgress(this.selectedQuiz, {
+          lastQuestionAnswered: this.itemNum,
+          userAnswers: this.store.userAnswers,
+          incorrectQuestions: this.store.incorrectQuestions,
+          totalCorrect: this.store.userAnswers.filter(a => a.correct).length,
+          totalAnswered: this.store.userAnswers.length,
+          timestamp: new Date()
+        });
+
         this.quizState = 'basicResults';
         this.reviewMode = true;
         console.log("In checkIt, itemNum: ", this.itemNum, "quizItems.length: ", this.quizItems.length);
