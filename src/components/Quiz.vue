@@ -85,6 +85,9 @@
   <div v-else-if="quizState === 'end'" class="mt-6">
     <p>Thank you!</p>
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
+    <div class="router-link-container">
+      <router-link to="/new-item" class="button-75">Suggest a New Quiz Entry</router-link>
+    </div>
   </div>
   <div v-else>
     <p>Error: Unknown quiz state: {{ quizState }}</p>
