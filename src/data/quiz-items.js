@@ -1238,7 +1238,7 @@ export const quizEntries = [{
     title: "Why Care?",
     subtitle: "",
     id: 37,
-    Question: "T/F: Poverty is the main reason so mamy schools have such low 4th grade reading scores.",
+    Question: "T/F: Poverty is the main reason so many schools have such low 4th grade reading scores.",
     answer_type: "mc",
     option1: "True",
     option2: "False",
