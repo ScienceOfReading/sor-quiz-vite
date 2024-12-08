@@ -5,14 +5,18 @@
                 <span class="lg:text-3xl sm:text-2xl">Science of Reading Quizzes</span>
             </div>
             <div class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
-                <div class="mt-24 grid quiz-item w-full border-4 place-self-center place-content-center text-center">
+                <div class="mt-16 grid quiz-item w-full border-4 place-self-center place-content-center text-center">
                     <p class="h2 mt-8">We're just getting started, but for now...</p>
                     <p class="font-bold text-sky-900 h2">Choose a role / level of difficulty:</p>
-                    <div class="mt-8 mb-2 gap-16 columns-2">
+                    <div class="mt-8 mb-2 gap-16 columns-1">
+                        <div><button @click="showQuiz(5)" class="lg:text-3xl sm:text-2xl">Why Care?</button></div>
+
+                    </div>
+                    <div class="mt-2 mb-2 gap-16 columns-2">
                         <div><button @click="showQuiz(0)" class="lg:text-3xl sm:text-2xl">Expert</button></div>
                         <div><button @click="showQuiz(1)" class="lg:text-3xl sm:text-2xl">Basic</button></div>
                     </div>
-                    <div class="mt-2 mb-8 gap-16 columns-2">
+                    <div class="mt-2 mb-4 gap-16 columns-2">
                         <div><button @click="showQuiz(2)"
                                 class="place-self-center place-content-center lg:text-3xl sm:text-2xl">Kinder-First</button>
                         </div>
@@ -27,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-32 w-full place-content-center">
+            <div class="mt-24 w-full place-content-center">
                 <p class="h3">SOR Quizzes is a <a href="https://github.com/EdJones/sor-quizzes">community
                         driven
                         effort</a>, created by <a href="https://skunkworks-edu.com">Skunkworks\edu</a>.</p>
