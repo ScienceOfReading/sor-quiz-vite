@@ -1201,6 +1201,7 @@ export const quizEntries = [{
     title: "Why Care?",
     subtitle: "",
     id: 36,
+    Question: "T/F: Well off suburban white kids generally do fine with current approaches to reading instruction.",
     answer_type: "mc",
     option1: "True",
     option2: "False",
