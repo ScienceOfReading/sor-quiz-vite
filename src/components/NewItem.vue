@@ -591,17 +591,27 @@ details[open] .arrow-indicator {
   font-size: 0.85rem;
   color: #fff;
   border-radius: 4px;
+  z-index: 1;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 input[type="text"],
 input[type="number"],
 textarea {
+  width: 100%;
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(74, 144, 226, 0.2);
   border-radius: 8px;
   padding: 12px;
   transition: all 0.2s ease;
   font-size: 0.95rem;
+  box-sizing: border-box;
+  color: #333;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
 input:focus,
