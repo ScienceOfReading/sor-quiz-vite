@@ -918,6 +918,32 @@ details[open] .form-section {
 }
 
 @media screen and (max-width: 991px) {
+  .preview-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .preview-controls-text {
+    text-align: center;
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .button-group {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .preview-toggle,
+  .return-button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    flex: 1 1 auto;
+    text-align: center;
+    min-width: 120px;
+  }
+
   .smaller-button {
     max-height: fit-content;
     font-size: 12px;
