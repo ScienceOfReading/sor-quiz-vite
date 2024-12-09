@@ -513,9 +513,10 @@ export default {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background: linear-gradient(145deg, #ffffff, #f0f4ff);
+  background: linear-gradient(145deg, #2a2d3e, #1f2235);
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+  color: #fff;
 }
 
 .section-summary {
@@ -585,10 +586,10 @@ details[open] .arrow-indicator {
   position: absolute;
   top: -10px;
   left: 12px;
-  background: white;
+  background: #3f3f88;
   padding: 0 8px;
   font-size: 0.85rem;
-  color: #4a90e2;
+  color: #fff;
   border-radius: 4px;
 }
 
@@ -742,13 +743,17 @@ details[open] .form-section {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
 }
 
 .preview-controls-text {
   margin-right: 1rem;
   font-size: x-large;
-  color: #333;
+  color: #fff;
   font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .button-group {
