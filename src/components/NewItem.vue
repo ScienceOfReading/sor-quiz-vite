@@ -513,25 +513,29 @@ export default {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: white;
+  background: linear-gradient(145deg, #ffffff, #f0f4ff);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
 }
 
 .section-summary {
-  background: rgba(74, 144, 226, 0.8);
+  background: linear-gradient(135deg, #4a90e2, #357abd);
   color: white;
   padding: 0.75rem;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
 }
 
 .section-summary:hover {
-  background: rgba(74, 144, 226, 0.9);
+  background: linear-gradient(135deg, #357abd, #2868a9);
+  transform: translateY(-1px);
 }
 
 /* Remove default details marker */
@@ -564,40 +568,46 @@ details[open] .arrow-indicator {
 }
 
 .form-section {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(74, 144, 226, 0.1);
+  border-radius: 12px;
   padding: 20px;
+  transition: all 0.3s ease;
 }
 
 .form-group {
-  margin-bottom: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  position: relative;
+  margin-bottom: 20px;
 }
 
-label {
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 500;
-  font-size: 0.95rem;
+.form-group label {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background: white;
+  padding: 0 8px;
+  font-size: 0.85rem;
+  color: #4a90e2;
+  border-radius: 4px;
 }
 
 input[type="text"],
 input[type="number"],
 textarea {
   background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  border: 1px solid rgba(74, 144, 226, 0.2);
+  border-radius: 8px;
+  padding: 12px;
   transition: all 0.2s ease;
-  color: #333;
-  padding: 8px;
+  font-size: 0.95rem;
 }
 
 input:focus,
 textarea:focus {
   background: white;
   border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
   outline: none;
 }
 
@@ -746,22 +756,27 @@ details[open] .form-section {
   gap: 1rem;
 }
 
-.preview-toggle {
-  background-color: #666;
+.preview-toggle,
+.return-button {
+  background: linear-gradient(135deg, #4a90e2, #357abd);
   color: white;
-  padding: 0.2rem .7rem;
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
 }
 
-.return-button {
-  background-color: #666;
-  color: white;
-  padding: 0.2rem .7rem;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
+.preview-toggle:hover,
+.return-button:hover {
+  background: linear-gradient(135deg, #357abd, #2868a9);
+  transform: translateY(-1px);
+}
+
+.preview-toggle.active,
+.return-button.active {
+  background: linear-gradient(135deg, #45a049, #3d8b41);
 }
 
 .smaller-button {
@@ -778,13 +793,11 @@ details[open] .form-section {
 }
 
 .preview-section {
-  margin: 2rem 0;
-  padding: 2rem;
-  border: 1px solid #444;
-  border-radius: 4px;
-  background-color: #2a2a2a;
-  max-width: 800px;
-  margin: 0 auto;
+  background: linear-gradient(145deg, #ffffff, #f0f4ff);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
 }
 
 .form-group-section {
@@ -865,12 +878,10 @@ details[open] .form-section {
 }
 
 .json-preview {
-  margin: 1rem 0;
-  padding: 1rem;
-  background-color: #1a1a1a;
-  border: 1px solid #444;
-  border-radius: 4px;
-  overflow-x: auto;
+  background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
 }
 
 /* Override vue-json-pretty theme for dark mode */
@@ -1012,14 +1023,13 @@ details[open] .form-section {
 
 input::placeholder,
 textarea::placeholder {
-  color: #999;
-  font-style: italic;
+  color: #aab7c4;
   transition: opacity 0.2s ease;
 }
 
 input:focus::placeholder,
 textarea:focus::placeholder {
-  opacity: 0.5;
+  opacity: 0;
 }
 
 /* When focused and empty */
