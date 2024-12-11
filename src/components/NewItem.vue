@@ -37,8 +37,15 @@
     </div>
 
     <div v-if="jsonPreviewMode" class="json-preview">
-      <vue-json-pretty :data="newEntry" :deep="2" :showLength="true" :showLine="true" :showDoubleQuotes="true"
-        :highlightMouseoverNode="true" />
+      <div class="json-header">
+        <h3>JSON Preview</h3>
+        <button @click="copyToClipboard" class="copy-button">
+          <span v-if="!copySuccess">Copy JSON</span>
+          <span v-else>Copied!</span>
+        </button>
+      </div>
+      <VueJsonPretty :data="newEntry" :deep="2" :showLength="true" :showDoubleQuotes="true" :showLine="true"
+        :selectableType="'single'" />
     </div>
 
     <div v-if="previewMode" class="preview-section">
@@ -427,7 +434,8 @@ export default {
         message: ''
       },
       submittedEntry: null,
-      activeSection: ''
+      activeSection: '',
+      copySuccess: false
     }
   },
   methods: {
@@ -502,6 +510,20 @@ export default {
     handleBlur(event, field) {
       if (!this.newEntry[field] && event.target._originalValue) {
         this.newEntry[field] = event.target._originalValue;
+      }
+    },
+    async copyToClipboard() {
+      try {
+        const jsonString = JSON.stringify(this.newEntry, null, 2);
+        await navigator.clipboard.writeText(jsonString);
+        this.copySuccess = true;
+        console.log('Copied to clipboard:', jsonString); // Debug log
+        setTimeout(() => {
+          this.copySuccess = false;
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+        this.copySuccess = false;
       }
     }
   }
