@@ -564,7 +564,8 @@ export default {
         // Create a deep copy of the template
         const templateData = JSON.parse(JSON.stringify(template));
 
-        // Clear specific fields that should be unique
+        // Store the original ID before clearing it from the draft
+        templateData.originalId = template.id;
         templateData.id = null;
         templateData.title = `Copy of ${templateData.title}`;
 
