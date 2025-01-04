@@ -1347,4 +1347,66 @@ export const quizEntries = [{
     closingText2: "",
     modal: ""
 },
+{
+    title: "",
+    subtitle: "",
+    id: 2000, // New ID for the new quiz entry
+    Question: "T/F: Learning Science and the Science of Reading are largely the same thing.",
+    questionP2: "",
+    answer_type: "mc",
+    option1: "T",
+    option2: "F",
+    option3: "",
+    option4: "",
+    option5: "",
+    correctAnswer: 1,
+    explanation: "While not completely separate, the two are more complementary.",
+    explanation2: "In some ways, SOR can be thought of as what to teach, while Learning Science often guides us in how to teach.",
+    citations: [{
+        title: "Project Follow Through: A Case Study of Contingencies Influencing Instructional Practices of the Educational Establishment",
+        author: "Cathy L. Watkins",
+        subtitle: "History, Design, Results, and Implications of the Largest Education Experiment in History",
+        url: "https://www.formapex.com/telechargementpublic/watkins1997a.pdf",
+        year: 1997
+    }],
+    videoUrl: "",
+    videoId: "",
+    image: "",
+    imageUrl: "",
+    imageAltText: "",
+    podcastEpisode: {
+        title: "",
+        EpisodeUrl: "",
+        audioUrl: "",
+        description: "",
+        podcastStartTime: 0,
+    },
+    podcastEpisode2: {
+        title: "",
+        EpisodeUrl: "",
+        audioUrl: "",
+        description: "",
+        podcastStartTime: 0,
+    },
+    cautionLevel: "",
+    caution: "",
+    citations: [{
+        title: "",
+        author: "",
+        url: "",
+        year: "",
+        imageUrl: "",
+    }],
+    ref1: "",
+    ref2: "",
+    resources: [{
+        title: "",
+        author: "",
+        url: "",
+        description: "",
+    }],
+    closingText: "Would you like to contribute to building up this section?",
+    closingText2: "",
+    modal: ""
+}
 ]
