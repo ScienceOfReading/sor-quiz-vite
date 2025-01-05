@@ -31,11 +31,11 @@
                             class="place-self-center place-content-center lg:text-3xl sm:text-2xl">Test
                             Expert</button>
                     </div>
-                    <div class="mt-2 mb-8">
+                    <!--div class="mt-2 mb-8">
                         <button @click="showQuiz(6)"
                             class="place-self-center place-content-center lg:text-2xl sm:text-xl  px-4 py-1">Learning
                             Science</button>
-                    </div>
+                    </div-->
                 </div>
             </div>
             <div class="mt-24 w-full place-content-center">
