@@ -85,17 +85,18 @@
   <div v-else-if="quizState === 'end'" class="mt-6">
     <p>Thank you!</p>
     <div class="mt-4 mb-4 flex justify-center">
-      <div class="w-full md:w-1/2">
+      <div class="w-full md:w-1/2 px-2">
         <label for="feedback" class="block mb-2 feedback-label relative pr-20">
-          Please add your feedback on this quiz set. Together we can raise up teachers everywhere!
+          Please add your feedback on this quiz set. Together we can raise up teachers everywhere.
           <img src="/images/partners.png" alt="Partners" class="absolute right-0 top-1/2 -translate-y-1/2" width="54"
             height="54" />
         </label>
-        <textarea id="feedback" v-model="userFeedback" class="w-full p-2 border rounded-md h-20" rows="3">
+        <textarea id="feedback" v-model="userFeedback" class="w-full p-2 border rounded-md h-16" rows="3">
         </textarea>
       </div>
     </div>
-    <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
+    <button class="bg-stone-400 h-10 mt-4 text-amber-400" @click="showOriginalView">Submit thoughts & return to
+      Quizzes</button>
     <div class="router-link-container">
       <router-link to="/new-item" class="button-75">Suggest a New Quiz Entry</router-link>
     </div>
