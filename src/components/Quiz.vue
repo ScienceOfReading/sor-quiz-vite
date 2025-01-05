@@ -84,6 +84,13 @@
   </div>
   <div v-else-if="quizState === 'end'" class="mt-6">
     <p>Thank you!</p>
+    <div class="mt-4 mb-4 flex justify-center">
+      <div class="w-full md:w-1/2">
+        <label for="feedback" class="block mb-2">Please add your feedback on this quiz set.</label>
+        <textarea id="feedback" v-model="userFeedback" class="w-full p-2 border rounded-md h-20" rows="3">
+        </textarea>
+      </div>
+    </div>
     <button class="bg-stone-400 h-10 mt-6 text-amber-400" @click="showOriginalView">Return to Quizzes</button>
     <div class="router-link-container">
       <router-link to="/new-item" class="button-75">Suggest a New Quiz Entry</router-link>
@@ -147,7 +154,8 @@ export default {
       reviewMode: reviewMode,
       showEnd: false,
       selectError: false,
-      debug: this.debug
+      debug: this.debug,
+      userFeedback: ''
     }
   },
   computed: {
@@ -419,7 +427,19 @@ export default {
         reviewMode: this.reviewMode
       });
     },
-    showOriginalView() {
+    async showOriginalView() {
+      // Save feedback if provided
+      if (this.userFeedback.trim()) {
+        try {
+          await saveUserProgress(this.selectedQuiz, {
+            feedback: this.userFeedback,
+            timestamp: new Date()
+          });
+        } catch (error) {
+          console.error("Error saving feedback:", error);
+        }
+      }
+
       this.$emit('change-view', { showQuizzes: true }); // Emit an event with the new state
     }
   },
