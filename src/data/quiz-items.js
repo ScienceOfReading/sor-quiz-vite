@@ -1286,7 +1286,7 @@ export const quizEntries = [{
     closingText2: "",
     modal: ""
 }, {
-    title: "",
+    title: "Major Experiments",
     subtitle: "",
     id: 38, // New ID for the new quiz entry
     Question: "The largest education experiment ever found stunning evidence about poor kids and learning.",
@@ -1348,7 +1348,7 @@ export const quizEntries = [{
     modal: ""
 },
 {
-    title: "",
+    title: "Learning Science",
     subtitle: "",
     id: 2000, // New ID for the new quiz entry
     Question: "T/F: Learning Science and the Science of Reading are largely the same thing.",
