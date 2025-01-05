@@ -275,11 +275,10 @@ a {
 }
 
 .list-item-right {
-    /*padding: 5px;
-  margin-left: 20px;
-  padding-top: 5px;*/
     margin-top: auto;
     margin-bottom: auto;
+    min-width: 60px;
+    padding-right: 8px;
 }
 
 

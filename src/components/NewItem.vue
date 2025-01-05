@@ -37,8 +37,15 @@
     </div>
 
     <div v-if="jsonPreviewMode" class="json-preview">
-      <vue-json-pretty :data="newEntry" :deep="2" :showLength="true" :showLine="true" :showDoubleQuotes="true"
-        :highlightMouseoverNode="true" />
+      <div class="json-header">
+        <h3>JSON Preview</h3>
+        <button @click="copyToClipboard" class="copy-button">
+          <span v-if="!copySuccess">Copy JSON</span>
+          <span v-else>Copied!</span>
+        </button>
+      </div>
+      <VueJsonPretty :data="newEntry" :deep="2" :showLength="true" :showDoubleQuotes="true" :showLine="true"
+        :selectableType="'single'" />
     </div>
 
     <div v-if="previewMode" class="preview-section">
@@ -47,6 +54,25 @@
     </div>
 
     <form v-else @submit.prevent="submitForm">
+      <!-- Add this at the top of the form, before other sections -->
+      <div class="template-selector">
+        <div class="section-summary">
+          <h2>Start With...</h2>
+        </div>
+        <div class="form-section">
+          <div class="form-group">
+            <label for="template-select">Choose a starting point:</label>
+            <select id="template-select" v-model="selectedTemplate" @change="useTemplate">
+              <option value="">Start from scratch</option>
+              <optgroup label="Existing Quiz Items">
+                <option v-for="item in existingQuizItems" :key="item.id" :value="item.id">
+                  {{ item.id }}. {{ item.title || 'Untitled' }}
+                </option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+      </div>
       <!-- Question Group -->
       <div class="form-group-section question-section">
         <h2></h2>
@@ -382,6 +408,7 @@ import { quizStore } from '../stores/quizStore';
 import QuizItem from './QuizItem.vue';
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
+import { quizEntries } from '../data/quiz-items';
 
 export default {
   components: {
@@ -427,7 +454,10 @@ export default {
         message: ''
       },
       submittedEntry: null,
-      activeSection: ''
+      activeSection: '',
+      copySuccess: false,
+      selectedTemplate: '',
+      existingQuizItems: quizEntries
     }
   },
   methods: {
@@ -502,6 +532,45 @@ export default {
     handleBlur(event, field) {
       if (!this.newEntry[field] && event.target._originalValue) {
         this.newEntry[field] = event.target._originalValue;
+      }
+    },
+    async copyToClipboard() {
+      try {
+        const jsonString = JSON.stringify(this.newEntry, null, 2);
+        await navigator.clipboard.writeText(jsonString);
+        this.copySuccess = true;
+        console.log('Copied to clipboard:', jsonString); // Debug log
+        setTimeout(() => {
+          this.copySuccess = false;
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+        this.copySuccess = false;
+      }
+    },
+    useTemplate() {
+      if (!this.selectedTemplate) {
+        // If "Start from scratch" selected, initialize empty template
+        this.store.initializeDraftQuizEntry({});
+        return;
+      }
+
+      // Find the selected quiz item
+      const template = this.existingQuizItems.find(
+        item => item.id === this.selectedTemplate
+      );
+
+      if (template) {
+        // Create a deep copy of the template
+        const templateData = JSON.parse(JSON.stringify(template));
+
+        // Store the original ID before clearing it from the draft
+        templateData.originalId = template.id;
+        templateData.id = null;
+        templateData.title = `Copy of ${templateData.title}`;
+
+        // Initialize the draft with the template
+        this.store.updateDraftQuizEntry(templateData);
       }
     }
   }
@@ -1077,5 +1146,32 @@ textarea:focus::placeholder {
 input:focus:placeholder-shown,
 textarea:focus:placeholder-shown {
   color: #ccc;
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(74, 144, 226, 0.2);
+  border-radius: 8px;
+  color: #333;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+select:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+  outline: none;
+}
+
+optgroup {
+  font-weight: bold;
+  color: #4a90e2;
+}
+
+option {
+  padding: 8px;
+  color: #333;
 }
 </style>
