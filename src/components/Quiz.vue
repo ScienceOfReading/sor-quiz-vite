@@ -86,7 +86,11 @@
     <p>Thank you!</p>
     <div class="mt-4 mb-4 flex justify-center">
       <div class="w-full md:w-1/2">
-        <label for="feedback" class="block mb-2">Please add your feedback on this quiz set.</label>
+        <label for="feedback" class="block mb-2 feedback-label relative pr-20">
+          Please add your feedback on this quiz set. Together we can raise up teachers everywhere!
+          <img src="/images/partners.png" alt="Partners" class="absolute right-0 top-1/2 -translate-y-1/2" width="54"
+            height="54" />
+        </label>
         <textarea id="feedback" v-model="userFeedback" class="w-full p-2 border rounded-md h-20" rows="3">
         </textarea>
       </div>
@@ -100,6 +104,11 @@
     <p>Error: Unknown quiz state: {{ quizState }}</p>
   </div>
   <span v-show="false">{{ reviewModeTracker }}</span>
+
+  <div class="text-xs text-gray-500 mt-8">
+    <a href="https://www.flaticon.com/free-icons/collaboration" title="collaboration icons"
+      class="text-gray-500">Collaboration icons created by small.smiles - Flaticon</a>
+  </div>
 </template>
 <script>
 import QuizItem from './QuizItem.vue';
@@ -498,5 +507,42 @@ export default {
   border-top-right-radius: 2dvw;
   border-radius: 2dvw;
 
+}
+
+.mt-4.mb-4.flex.justify-center {
+  width: 100%;
+}
+
+textarea#feedback {
+  width: 100%;
+  min-height: 120px;
+  padding: 1rem;
+  background: rgba(63, 63, 136, 0.15);
+  border: 1px solid rgba(74, 144, 226, 0.3);
+  border-radius: 12px;
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+textarea#feedback:focus {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(74, 144, 226, 0.5);
+  box-shadow: 0 0 20px rgba(74, 144, 226, 0.2);
+  outline: none;
+}
+
+textarea#feedback::placeholder {
+  color: rgba(51, 51, 51, 0.6);
+}
+
+label[for="feedback"] {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 500;
 }
 </style>
