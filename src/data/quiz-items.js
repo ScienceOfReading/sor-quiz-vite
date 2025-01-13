@@ -1313,9 +1313,9 @@ export const quizEntries = [{
     imageUrl: "",
     imageAltText: "",
     podcastEpisode: {
-        title: "",
-        EpisodeUrl: "",
-        audioUrl: "",
+        title: "Ep 39. Project Follow Through: Direct Instruction's overlooked success with Marcy Stein",
+        EpisodeUrl: "https://chalkandtalkpodcast.podbean.com/e/project-follow-through-direct-instructions-overlooked-success-with-marcy-stein/",
+        audioUrl: "https://mcdn.podbean.com/mf/web/n3k77va6mp6ypmzx/Project_Follow_Through_Direct_Instruction_s_overlooked_success_with_Marcy_Stein7lbk1.mp3",
         description: "",
         podcastStartTime: 0,
     },

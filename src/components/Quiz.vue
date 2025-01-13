@@ -86,7 +86,7 @@
     <p>Thank you!</p>
     <div class="mt-4 mb-4 flex justify-center">
       <div class="w-full md:w-1/2 px-2">
-        <label for="feedback" class="block mb-2 feedback-label relative pr-20">
+        <label for="feedback" class="block mb-2 feedback-label relative pr-20 text-stone-900 dark:text-gray-50">
           Please add your feedback on this quiz set. Together we can raise up teachers everywhere.
           <img src="/images/partners.png" alt="Partners" class="absolute right-0 top-1/2 -translate-y-1/2" width="54"
             height="54" />
@@ -545,5 +545,25 @@ label[for="feedback"] {
   color: #333;
   font-size: 1rem;
   font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  .feedback-label {
+    color: #ffffff !important;
+  }
+
+  textarea#feedback {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+}
+
+:root[class~="dark"] .feedback-label {
+  color: #ffffff !important;
+}
+
+:root[class~="dark"] textarea#feedback {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 </style>
