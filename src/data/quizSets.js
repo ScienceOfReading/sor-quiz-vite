@@ -26,7 +26,7 @@ export const quizSets = [{
 {
     setName: "Why Care?",
     basicMode: true,
-    items: [34, 35, 36, 37, 38]
+    items: [34, 35, 37, 36, 38]
 },
 {
     setName: "Learning Science",
