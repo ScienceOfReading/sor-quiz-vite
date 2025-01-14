@@ -40,12 +40,20 @@ export default {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    border: 1px solid #b4b9be;
-    border-radius: 4px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: #b4b9be;
-    margin-top: 1rem;
+    border: 1px solid rgba(180, 185, 190, 0.3);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    background: rgba(100, 110, 120, 0.08);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.resource:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-color: rgba(180, 185, 190, 0.5);
 }
 
 .resource-content {
@@ -60,11 +68,12 @@ export default {
     margin-right: 0.75rem;
     font-size: 1.25rem;
     color: #4a5568;
+    opacity: 0.8;
 }
 
 .resource-text {
     font-size: 0.875rem;
-    line-height: 1.5;
+    line-height: 1.6;
     margin: 0;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -75,9 +84,11 @@ export default {
     color: #3182ce;
     text-decoration: none;
     word-break: break-all;
+    transition: color 0.2s ease;
 }
 
 .resource-link:hover {
+    color: #2c5282;
     text-decoration: underline;
 }
 
@@ -90,13 +101,14 @@ export default {
     width: 100%;
     height: auto;
     object-fit: cover;
-    border-radius: 4px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 640px) {
     .resource {
         flex-direction: row;
-        padding: 0.75rem;
+        padding: 1rem;
     }
 
     .resource-icon {
@@ -110,5 +122,26 @@ export default {
     .resource-image-wrapper {
         width: 80px;
     }
+}
+
+:root[class~="dark"] .resource {
+    background: rgba(30, 35, 40, 0.5);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+:root[class~="dark"] .resource-text {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+:root[class~="dark"] .resource-icon {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+:root[class~="dark"] .resource-link {
+    color: #63b3ed;
+}
+
+:root[class~="dark"] .resource-link:hover {
+    color: #90cdf4;
 }
 </style>
