@@ -1285,8 +1285,8 @@ export const quizEntries = [{
     ref2: "",
     podcastEpisode: {
         title: "Steubenville Part 2: Program Service Vision",
-        EpisodeUrl: "https://edtrust.org/the-equity-line/steubenville-part-2-program-service-vision/    ",
-        audioUrl: "https://cf-hls-media.sndcdn.com/media/159660/957543/1117202/v33A1beRyAbZ.128.mp3?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiKjovL2NmLWhscy1tZWRpYS5zbmRjZG4uY29tL21lZGlhLzE1OTY2MC8qLyovdjMzQTFiZVJ5QWJaLjEyOC5tcDMiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3MzM2NzAwODV9fX1dfQ__&Signature=HO3UN29fMAW~VdpKcvpcwN-DfDuftHGRS5YJPLu95YeVycEXpRpeto9gQ5GlC2DyGn8gDePzS9jjvcqa1D~xs69AKp8dVFLLM2BpHlZJ6QI8U0PH-TWY3qRyOi-izRGGiASmGeDGzwEWeFB4YHDj~pljUGfkJ6lzdzkSg1IZyIeRAq2clKFU3y3qliL7xFFCkHUxVCqAlMfBXldBlxytuNyMhiAD1luWpJWUV3U6IHH3PJe~OFL38W-LqaRXgxOue-2NZ5BXGqX4qtWWQgQAGk92KtrOB2iy2HHSyu7s1KPmQ4khd509PosYdvHHxalGS-yYLPB0thVbMnRVVvh6Jg__&Key-Pair-Id=APKAI6TU7MMXM5DG6EPQ",
+        EpisodeUrl: "https://edtrust.org/the-equity-line/steubenville-part-2-program-service-vision/",
+        audioUrl: "",
         description: "",
         podcastStartTime: 0,
     },

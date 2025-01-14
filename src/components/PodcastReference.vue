@@ -5,10 +5,12 @@
             <h4 class="podcast-title">{{ podcastEpisode.title }}</h4>
         </div>
         <div class="podcast-content">
-            <audio ref="audio" :src="podcastEpisode.audioUrl" controls class="podcast-player"></audio>
+            <audio v-if="podcastEpisode.audioUrl" ref="audio" :src="podcastEpisode.audioUrl" controls
+                class="podcast-player"></audio>
             <p v-if="podcastEpisode.description" class="podcast-description">{{ podcastEpisode.description }}</p>
             <a :href="podcastEpisode.EpisodeUrl" target="_blank" rel="noopener noreferrer" class="podcast-link">
-                <font-awesome-icon icon="external-link-alt" /> &nbsp; Episode Page
+                <font-awesome-icon icon="external-link-alt" /> &nbsp; {{ podcastEpisode.audioUrl ? 'Episode Page' :
+                'Listen to Episode' }}
             </a>
         </div>
     </div>
