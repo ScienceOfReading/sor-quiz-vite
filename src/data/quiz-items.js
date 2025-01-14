@@ -1287,7 +1287,7 @@ export const quizEntries = [{
         title: "Steubenville Part 2: Program Service Vision",
         EpisodeUrl: "https://edtrust.org/the-equity-line/steubenville-part-2-program-service-vision/",
         audioUrl: "",
-        description: "",
+        description: "100% low-socioeconomic-status district achieves top state ratings through systematic instruction.",
         podcastStartTime: 0,
     },
     closingText: "While it is popular to point to nearly everything but instructional fundamentals, we have enough evidedieence for the success of solid teaching fundamentals.",
