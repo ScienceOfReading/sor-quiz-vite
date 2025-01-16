@@ -8,9 +8,12 @@
                 <div class="construction-animation mb-6">
                     <font-awesome-icon :icon="['fas', 'tools']" class="text-4xl text-amber-500 animate-pulse" />
                 </div>
-
+                <div class="router-link-container">
+                    <router-link to="/new-item" class="button-75">Add/Edit a New Quiz Entry</router-link>
+                </div>
                 <div class="feedback-section">
-                    <p class="mb-4">What would you like to see in this quiz?</p>
+                    <p class="mt-4 mb-4">OR </p>
+                    <p class="mb-4">Tell us what would you like to see in this quiz</p>
                     <textarea v-model="feedback" class="w-full p-4 mb-4 min-h-[120px] rounded-lg"
                         placeholder="Share your thoughts..."></textarea>
                     <button @click="submitFeedback"
