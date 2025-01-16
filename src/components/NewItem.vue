@@ -58,17 +58,17 @@
       <div class="template-selector">
         <div class="form-section bg-indigo-950/10 dark:bg-indigo-950/30 rounded-lg p-6">
           <div class="form-group">
-            <label for="template-select" class="block text-lg font-medium mb-2">
-              Choose a starting point:
-            </label>
+            <label for="template-select" class="text-stone-400">Choose a starting point:</label>
             <select id="template-select" v-model="selectedTemplate" @change="useTemplate" class="w-full px-4 py-2 rounded-lg border border-gray-300/50 
-                     bg-white/60 dark:bg-gray-700/60 
+                     bg-white/50 dark:bg-gray-500/50 
                      dark:border-gray-600/50 dark:text-gray-200
                      focus:ring-2 focus:ring-amber-400 focus:border-transparent
                      backdrop-blur-sm
                      transition-colors duration-200 ease-in-out
                      appearance-none cursor-pointer
-                     hover:bg-white/70 dark:hover:bg-gray-700/70">
+                     hover:bg-white/40 dark:hover:bg-gray-500/40
+                     dark:[&>*]:bg-gray-700
+                     text-gray-200">
               <option value="" class="py-2">Start from scratch</option>
               <optgroup label="Existing Quiz Items" class="font-medium">
                 <option v-for="item in existingQuizItems" :key="item.id" :value="item.id" class="py-1">
@@ -76,8 +76,8 @@
                 </option>
               </optgroup>
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+              <svg class="fill-current h-4 w-4 text-gray-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
               </svg>
             </div>
@@ -597,6 +597,18 @@ export default {
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
   color: #fff;
+}
+
+#template-select {
+  background: rgba(34, 32, 125, 0.95);
+  border: 1px solid rgba(74, 144, 226, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  color: #b1b3be;
+  dark: text-gray-200
 }
 
 .section-summary {
