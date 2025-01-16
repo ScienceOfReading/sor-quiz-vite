@@ -31,11 +31,11 @@
                             class="place-self-center place-content-center lg:text-3xl sm:text-2xl">Test
                             Expert</button>
                     </div>
-                    <!--div class="mt-2 mb-8">
+                    <div class="mt-2 mb-8">
                         <button @click="showQuiz(6)"
                             class="place-self-center place-content-center lg:text-2xl sm:text-xl  px-4 py-1">Learning
                             Science</button>
-                    </div-->
+                    </div>
                 </div>
             </div>
             <div class="mt-24 w-full place-content-center">
@@ -46,6 +46,9 @@
                     <router-link to="/new-item" class="button-75">Suggest a New Quiz Entry</router-link>
                 </div>
             </div>
+        </div>
+        <div v-else-if="showInProgress">
+            <p>We're building this quiz set for you. What would you put here?</p>
         </div>
         <div v-else>
             <Quiz @change-view="handleChangeView" :selectedQuiz="selectedQuiz" :debug="debug"></Quiz>
@@ -76,13 +79,17 @@ export default {
         showQuiz(quizNum) {
             console.info("Quiz selected: ", quizNum);
             this.showQuizzes = false;
-            this.selectedQuiz = quizNum;
-            const startTime = Math.floor(Date.now() / 1000);
-            this.quiz.recordQuizAttempt(startTime);
+            if (this.quizSets[quizNum].inProgress) {
+                this.showInProgress = true;
+            } else {
+                this.selectedQuiz = quizNum;
+                const startTime = Math.floor(Date.now() / 1000);
+                this.quiz.recordQuizAttempt(startTime);
+            }
         },
-        handleChangeView() {
-            this.showQuizzes = true;
-        }
+    },
+    handleChangeView() {
+        this.showQuizzes = true;
     }
 }
 </script>

@@ -31,6 +31,7 @@ export const quizSets = [{
 {
     setName: "Learning Science",
     basicMode: true,
-    items: [39]
+    items: [39],
+    inProgress: true
 }
 ];
