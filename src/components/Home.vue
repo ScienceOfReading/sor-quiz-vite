@@ -48,7 +48,7 @@
             </div>
         </div>
         <div v-else-if="showInProgress">
-            <p>We're building this quiz set for you. What would you put here?</p>
+            <InProgress :selectedQuiz="selectedQuiz" />
         </div>
         <div v-else>
             <Quiz @change-view="handleChangeView" :selectedQuiz="selectedQuiz" :debug="debug"></Quiz>
@@ -58,13 +58,15 @@
 
 <script>
 import Quiz from './Quiz.vue';
+import InProgress from './InProgress.vue';
 import { quizStore } from '../stores/quizStore';
 import { quizSets } from '../data/quizSets'; // Import quizSets
 
 export default {
     name: 'Home',
     components: {
-        Quiz
+        Quiz,
+        InProgress
     },
     data() {
         return {
@@ -79,6 +81,7 @@ export default {
         showQuiz(quizNum) {
             console.info("Quiz selected: ", quizNum);
             this.showQuizzes = false;
+            this.selectedQuiz = quizNum;
             if (this.quizSets[quizNum].inProgress) {
                 this.showInProgress = true;
             } else {
