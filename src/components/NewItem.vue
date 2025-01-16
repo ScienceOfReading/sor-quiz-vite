@@ -56,20 +56,31 @@
     <form v-else @submit.prevent="submitForm">
       <!-- Add this at the top of the form, before other sections -->
       <div class="template-selector">
-        <div class="section-summary">
-          <h2>Start With...</h2>
-        </div>
-        <div class="form-section">
+        <div class="form-section bg-indigo-950/10 dark:bg-indigo-950/30 rounded-lg p-6">
           <div class="form-group">
-            <label for="template-select">Choose a starting point:</label>
-            <select id="template-select" v-model="selectedTemplate" @change="useTemplate">
-              <option value="">Start from scratch</option>
-              <optgroup label="Existing Quiz Items">
-                <option v-for="item in existingQuizItems" :key="item.id" :value="item.id">
+            <label for="template-select" class="block text-lg font-medium mb-2">
+              Choose a starting point:
+            </label>
+            <select id="template-select" v-model="selectedTemplate" @change="useTemplate" class="w-full px-4 py-2 rounded-lg border border-gray-300/50 
+                     bg-white/60 dark:bg-gray-700/60 
+                     dark:border-gray-600/50 dark:text-gray-200
+                     focus:ring-2 focus:ring-amber-400 focus:border-transparent
+                     backdrop-blur-sm
+                     transition-colors duration-200 ease-in-out
+                     appearance-none cursor-pointer
+                     hover:bg-white/70 dark:hover:bg-gray-700/70">
+              <option value="" class="py-2">Start from scratch</option>
+              <optgroup label="Existing Quiz Items" class="font-medium">
+                <option v-for="item in existingQuizItems" :key="item.id" :value="item.id" class="py-1">
                   {{ item.id }}. {{ item.title || 'Untitled' }}
                 </option>
               </optgroup>
             </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -638,7 +649,7 @@ details[open] .arrow-indicator {
 }
 
 .form-section {
-  background: rgba(255, 255, 255, 0.9);
+  background: #3f3f88;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(74, 144, 226, 0.1);
   border-radius: 12px;
