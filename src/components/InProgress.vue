@@ -163,7 +163,7 @@ textarea:focus {
     .return-button {
         width: 60px !important;
         padding: 0.25rem 0.35rem !important;
-        font-size: 0.75rem !important;
+        font-size: 0.875rem !important;
     }
 }
 </style>
