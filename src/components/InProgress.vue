@@ -162,7 +162,7 @@ textarea:focus {
 @media (max-width: 640px) {
     .return-button {
         width: 60px !important;
-        padding: 0.25rem !important;
+        padding: 0.25rem 0.35rem !important;
         font-size: 0.75rem !important;
     }
 }
