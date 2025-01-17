@@ -3,13 +3,13 @@
         <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center relative">
             <div class="absolute top-4 right-4">
                 <router-link to="/"
-                    class="bg-stone-400 px-4 py-2 text-amber-400 rounded hover:bg-stone-500 transition-all">
+                    class="bg-stone-400 px-3 py-2 text-amber-400 rounded hover:bg-stone-500 transition-all text-sm sm:text-base">
                     Return to Quizzes
                 </router-link>
             </div>
 
             <div class="p-8 sm:p-4">
-                <div class="sm:pr-32">
+                <div class="sm:pr-40">
                     <h2 class="text-2xl mb-4">Coming Soon!</h2>
                     <h2 class="text-2xl mb-4">{{ quizTitle }}</h2>
                     <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz? </p>
