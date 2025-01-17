@@ -151,8 +151,6 @@ textarea:focus {
 }
 
 .return-button {
-    @apply bg-stone-400 px-1 py-1 text-amber-400 rounded hover:bg-stone-500 transition-all text-sm sm:text-base inline-block max-w-[100px] sm:max-w-none text-center leading-tight;
-    margin-right: 5px;
-    margin-left: .5em;
+    @apply bg-stone-400 px-1 py-1 text-amber-400 rounded hover:bg-stone-500 transition-all text-sm sm:text-base inline-block max-w-[100px] sm:max-w-none text-center leading-tight sm:mr-0.5 sm:ml-1;
 }
 </style>
