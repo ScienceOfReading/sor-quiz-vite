@@ -9,7 +9,7 @@
             </div>
 
             <div class="p-8 sm:p-4">
-                <div class="sm:pr-40">
+                <div class="md:text-center sm:text-left">
                     <h2 class="text-2xl mb-4">Coming Soon!</h2>
                     <h2 class="text-2xl mb-4">{{ quizTitle }}</h2>
                     <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz? </p>
