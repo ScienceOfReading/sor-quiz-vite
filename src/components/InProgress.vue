@@ -2,8 +2,7 @@
     <div class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
         <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center relative">
             <div class="absolute top-4 right-4">
-                <router-link to="/" class="bg-stone-400 px-3 py-2 text-amber-400 rounded hover:bg-stone-500 transition-all 
-                           text-sm sm:text-base inline-block max-w-[100px] sm:max-w-none text-center leading-tight">
+                <router-link to="/" class="return-button">
                     Return to Quizzes
                 </router-link>
             </div>
@@ -149,5 +148,11 @@ textarea:focus {
     50% {
         transform: translateY(-10px);
     }
+}
+
+.return-button {
+    @apply bg-stone-400 px-1 py-1 text-amber-400 rounded hover:bg-stone-500 transition-all text-sm sm:text-base inline-block max-w-[100px] sm:max-w-none text-center leading-tight;
+    margin-right: 5px;
+    margin-left: 1em;
 }
 </style>
