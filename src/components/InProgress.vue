@@ -1,11 +1,18 @@
 <template>
     <div class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
-        <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
+        <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center relative">
+            <div class="absolute top-4 right-4">
+                <router-link to="/"
+                    class="bg-stone-400 px-4 py-2 text-amber-400 rounded hover:bg-stone-500 transition-all">
+                    Return to Quizzes
+                </router-link>
+            </div>
+
             <div class="p-8">
                 <h2 class="text-2xl mb-4">Coming Soon!</h2>
                 <h2 class="text-2xl mb-4">{{ quizTitle }}</h2>
-                <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz set? </p>
-                <p class="text-lg mb-6">Add/improve a question! Together we can raise up teachers everywhere.</p>
+                <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz? </p>
+                <p class="text-lg mb-6">Add/improve a question. Together we can raise up teachers everywhere.</p>
                 <div class="construction-animation mb-6">
                     <font-awesome-icon :icon="['fas', 'tools']" class="text-4xl text-amber-500 animate-pulse" />
                 </div>
