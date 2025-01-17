@@ -151,6 +151,19 @@ textarea:focus {
 }
 
 .return-button {
-    @apply bg-stone-400 text-amber-400 rounded hover:bg-stone-500 transition-all text-sm sm:text-base inline-block text-center leading-tight py-2 w-[60px] sm:w-auto sm:px-3 sm:py-2 sm:mr-0.5 sm:ml-1;
+    @apply bg-stone-400 text-amber-400 rounded hover:bg-stone-500 transition-all text-sm sm:text-base inline-block text-center leading-tight py-2;
+    width: auto !important;
+    padding: 0.5rem !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    font-size: 0.875rem !important;
+}
+
+@media (max-width: 640px) {
+    .return-button {
+        width: 60px !important;
+        padding: 0.25rem !important;
+        font-size: 0.75rem !important;
+    }
 }
 </style>
