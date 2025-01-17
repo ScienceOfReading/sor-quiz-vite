@@ -3,13 +3,14 @@
         <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
             <div class="p-8">
                 <h2 class="text-2xl mb-4">Coming Soon!</h2>
-                <p class="text-lg mb-6">We're building the "{{ quizTitle }}" quiz set.</p>
-
+                <h2 class="text-2xl mb-4">{{ quizTitle }}</h2>
+                <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz set? </p>
+                <p class="text-lg mb-6">Add/improve a question! Together we can raise up teachers everywhere.</p>
                 <div class="construction-animation mb-6">
                     <font-awesome-icon :icon="['fas', 'tools']" class="text-4xl text-amber-500 animate-pulse" />
                 </div>
                 <div class="router-link-container">
-                    <router-link to="/new-item" class="button-75">Add/Edit a New Quiz Entry</router-link>
+                    <router-link to="/new-item" class="button-77">Add/Edit a New Quiz Entry</router-link>
                 </div>
                 <div class="feedback-section">
                     <p class="mt-4 mb-4">OR </p>
@@ -72,6 +73,35 @@ export default {
 </script>
 
 <style scoped>
+.button-77 {
+    align-items: center;
+    background-image: linear-gradient(90deg, #4a7ff3 40%, #702afa);
+    border: 0;
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font-family: "Codec cold", sans-serif;
+    font-size: 16px;
+    font-weight: 100;
+    height: 30px;
+    justify-content: center;
+    letter-spacing: .4px;
+    line-height: 1;
+    max-width: fit-content;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    margin-top: 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
 textarea {
     background: rgba(63, 63, 136, 0.15);
     border: 1px solid rgba(74, 144, 226, 0.3);
