@@ -8,14 +8,18 @@
                 </router-link>
             </div>
 
-            <div class="p-8">
-                <h2 class="text-2xl mb-4">Coming Soon!</h2>
-                <h2 class="text-2xl mb-4">{{ quizTitle }}</h2>
-                <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz? </p>
-                <p class="text-lg mb-6">Add/improve a question. Together we can raise up teachers everywhere.</p>
+            <div class="p-8 sm:p-4">
+                <div class="sm:pr-32">
+                    <h2 class="text-2xl mb-4">Coming Soon!</h2>
+                    <h2 class="text-2xl mb-4">{{ quizTitle }}</h2>
+                    <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz? </p>
+                    <p class="text-lg mb-6">Add/improve a question. Together we can raise up teachers everywhere.</p>
+                </div>
+
                 <div class="construction-animation mb-6">
                     <font-awesome-icon :icon="['fas', 'tools']" class="text-4xl text-amber-500 animate-pulse" />
                 </div>
+
                 <div class="router-link-container">
                     <router-link to="/new-item" class="button-77">Add/Edit a New Quiz Entry</router-link>
                 </div>
