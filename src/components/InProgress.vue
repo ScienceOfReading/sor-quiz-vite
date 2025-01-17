@@ -1,22 +1,19 @@
 <template>
     <div class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
-        <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center">
-            <div class="p-8 sm:p-4">
-                <div class="flex justify-between items-start gap-4">
-                    <div class="flex-1">
-                        <h2 class="text-2xl mb-4">Coming Soon!</h2>
-                        <h2 class="text-2xl mb-4">{{ quizTitle }}</h2>
-                        <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz? </p>
-                        <p class="text-lg mb-6">Add/improve a question. Together we can raise up teachers everywhere.
-                        </p>
-                    </div>
+        <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center relative">
+            <div class="absolute top-4 right-4">
+                <router-link to="/" class="bg-stone-400 px-3 py-2 text-amber-400 rounded hover:bg-stone-500 transition-all 
+                           text-sm sm:text-base inline-block max-w-[80px] sm:max-w-none text-center leading-tight">
+                    Return to Quizzes
+                </router-link>
+            </div>
 
-                    <div class="flex-shrink-0">
-                        <router-link to="/"
-                            class="bg-stone-400 px-3 py-2 text-amber-400 rounded hover:bg-stone-500 transition-all text-sm sm:text-base">
-                            Return to Quizzes
-                        </router-link>
-                    </div>
+            <div class="p-8 sm:p-4">
+                <div class="md:text-center sm:text-left sm:pl-2 sm:pr-24">
+                    <h2 class="text-2xl mb-4">Coming Soon!</h2>
+                    <h2 class="text-2xl mb-4">{{ quizTitle }}</h2>
+                    <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz? </p>
+                    <p class="text-lg mb-6">Add/improve a question. Together we can raise up teachers everywhere.</p>
                 </div>
 
                 <div class="construction-animation mb-6">
