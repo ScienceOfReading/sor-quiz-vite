@@ -9,7 +9,7 @@
 
             <div class="p-8 sm:p-4">
                 <div class="md:text-center sm:text-left sm:pl-2 sm:pr-24">
-                    <h2 class="text-2xl mb-4">Coming Soon!</h2>
+                    <h2 class="text-2xl mb-4 mr-2">Coming Soon!</h2>
                     <h2 class="text-2xl mb-4">{{ quizTitle }}</h2>
                     <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz? </p>
                     <p class="text-lg mb-6">Add/improve a question. Together we can raise up teachers everywhere.</p>
@@ -153,6 +153,6 @@ textarea:focus {
 .return-button {
     @apply bg-stone-400 px-1 py-1 text-amber-400 rounded hover:bg-stone-500 transition-all text-sm sm:text-base inline-block max-w-[100px] sm:max-w-none text-center leading-tight;
     margin-right: 5px;
-    margin-left: 1em;
+    margin-left: .5em;
 }
 </style>
