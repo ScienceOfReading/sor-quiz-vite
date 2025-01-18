@@ -36,7 +36,7 @@ export const quizSets = [{
     podcastEpisode: {
         title: "Why the science of reading needs the science of learning",
         EpisodeUrl: "https://lnns.co/njyfzcC9hg0",
-        audioUrl: "/src/audio/ListenNotes.com-qI4gdOVET1h-1737205341.mp3",
+        audioUrl: "/src/audio/geiger.mp3",
         description: "'The science of reading tells us WHAT to teach... The science of learning tells us HOW to teach...' - Anna Geiger",
         podcastStartTime: 0,
     }
