@@ -90,10 +90,12 @@ export default {
                 this.quiz.recordQuizAttempt(startTime);
             }
         },
+        handleChangeView() {
+            console.log("Home: handleChangeView called");
+            this.showQuizzes = true;
+            this.showInProgress = false;
+        }
     },
-    handleChangeView() {
-        this.showQuizzes = true;
-    }
 }
 </script>
 

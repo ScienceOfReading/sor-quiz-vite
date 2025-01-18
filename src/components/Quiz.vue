@@ -438,19 +438,26 @@ export default {
       });
     },
     async showOriginalView() {
+      console.log("showOriginalView clicked");
+      console.log("Current feedback:", this.userFeedback);
+
       // Save feedback if provided
       if (this.userFeedback.trim()) {
         try {
+          console.log("Attempting to save feedback");
           await saveUserProgress(this.selectedQuiz, {
             feedback: this.userFeedback,
             timestamp: new Date()
           });
+          console.log("Feedback saved successfully");
         } catch (error) {
           console.error("Error saving feedback:", error);
         }
       }
 
+      console.log("Emitting change-view event");
       this.$emit('change-view', { showQuizzes: true }); // Emit an event with the new state
+      console.log("Event emitted");
     }
   },
   created() {
