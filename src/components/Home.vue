@@ -48,7 +48,7 @@
             </div>
         </div>
         <div v-else-if="showInProgress">
-            <InProgress :selectedQuiz="selectedQuiz" />
+            <InProgress :selectedQuiz="selectedQuiz" @change-view="handleChangeView" />
         </div>
         <div v-else>
             <Quiz @change-view="handleChangeView" :selectedQuiz="selectedQuiz" :debug="debug"></Quiz>
@@ -74,7 +74,8 @@ export default {
             selectedQuiz: 100000,
             quiz: quizStore(),
             quizSets: quizSets, // Add quizSets to data if needed
-            debug: false
+            debug: false,
+            showInProgress: false  // Add this if not already present
         }
     },
     methods: {
@@ -90,12 +91,20 @@ export default {
                 this.quiz.recordQuizAttempt(startTime);
             }
         },
+<<<<<<< Updated upstream
         handleChangeView() {
+=======
+        handleChangeView() {  // Move this inside methods
+>>>>>>> Stashed changes
             console.log("Home: handleChangeView called");
             this.showQuizzes = true;
             this.showInProgress = false;
         }
+<<<<<<< Updated upstream
     },
+=======
+    }
+>>>>>>> Stashed changes
 }
 </script>
 

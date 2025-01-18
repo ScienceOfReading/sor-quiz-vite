@@ -3,9 +3,9 @@
         <div
             class="grid quiz-item w-full border-4 border-dashed place-self-center place-content-center text-center relative">
             <div class="absolute top-4 right-4">
-                <router-link to="/" class="return-button">
+                <button @click="returnToQuizzes" class="return-button">
                     Return to Quizzes
-                </router-link>
+                </button>
             </div>
 
             <div class="p-8 sm:p-4">
@@ -60,6 +60,7 @@ export default {
     components: {
         PodcastReference
     },
+    emits: ['change-view'],
     props: {
         selectedQuiz: {
             type: Number,
@@ -91,6 +92,9 @@ export default {
                     console.error('Error saving feedback:', error);
                 }
             }
+        },
+        returnToQuizzes() {
+            this.$emit('change-view', { showQuizzes: true });
         }
     }
 }
