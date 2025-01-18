@@ -10,12 +10,11 @@
             <div class="p-8 sm:p-4">
                 <div class="md:text-center sm:text-left sm:pl-2 sm:pr-24">
                     <h2 class="text-2xl mb-4 mr-2">Coming Soon!</h2>
-                    <h2 class="text-2xl mb-4">{{ quizTitle }}</h2>
                     <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz? </p>
                     <p class="text-lg mb-6">Add/improve a question. Together we can raise up teachers everywhere.</p>
                 </div>
 
-                <div class="construction-animation mb-6">
+                <div class="construction-animation mb-4">
                     <font-awesome-icon :icon="['fas', 'tools']" class="text-4xl text-amber-500 animate-pulse" />
                 </div>
 
@@ -32,6 +31,9 @@
                         Submit Suggestion
                     </button>
                 </div>
+                <div class="podcast-episode">
+                    <PodcastReference :podcastEpisode="podcastEpisode" />
+                </div>
             </div>
         </div>
     </div>
@@ -42,12 +44,16 @@ import { quizSets } from '../data/quizSets';
 import { saveUserProgress } from '../firebase';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTools } from '@fortawesome/free-solid-svg-icons';
+import PodcastReference from './PodcastReference.vue';
 
 // Add the tools icon to the library
 library.add(faTools);
 
 export default {
     name: 'InProgress',
+    components: {
+        PodcastReference
+    },
     props: {
         selectedQuiz: {
             type: Number,
@@ -57,11 +63,13 @@ export default {
     data() {
         return {
             feedback: '',
-            quizTitle: ''
+            quizTitle: '',
+            podcastEpisode: null
         }
     },
     created() {
         this.quizTitle = quizSets[this.selectedQuiz]?.setName || 'New';
+        this.podcastEpisode = quizSets[this.selectedQuiz]?.podcastEpisode || null;
     },
     methods: {
         async submitFeedback() {
