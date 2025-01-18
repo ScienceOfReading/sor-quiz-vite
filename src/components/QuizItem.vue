@@ -9,9 +9,9 @@
   </div>
   <div v-if="currentQuizItem" class="w-full place-content-center mx-auto">
     <!-- Display the question for all question types -->
-    <h2 class="text-xl font-bold mb-4">{{ quizItem.subtitle }}</h2>
+    <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">{{ quizItem.subtitle }}</h2>
     <!-- Existing question types -->
-    <div v-if="quizItem.answer_type == 'mc'">
+    <div v-if="quizItem.answer_type == 'mc'" class="text-gray-900 dark:text-white">
       <MultipleChoice @answer-selected="handleAnswerSelected" :quizItem="quizItem" :reviewMode="reviewMode"
         :itemNum="itemNum" :basicMode="basicMode" />
     </div>
@@ -208,6 +208,7 @@ a {
   margin: 2;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 400;
+  @apply text-gray-900 dark:text-white;
 }
 
 .answer {
@@ -216,6 +217,7 @@ a {
   border-style: solid;
   border-width: 2pt;
   text-align: left;
+  @apply text-gray-900 dark:text-white;
 }
 
 

@@ -49,7 +49,7 @@
     </div>
 
     <div v-if="previewMode" class="preview-section">
-      <QuizItem :currentQuizItem="newEntry" :itemNum="0" :reviewMode="true" :basicMode="false"
+      <QuizItem class="border-dashed" :currentQuizItem="newEntry" :itemNum="0" :reviewMode="true" :basicMode="false"
         :userAnswer="newEntry.correctAnswer" />
     </div>
 
@@ -901,10 +901,17 @@ details[open] .form-section {
 
 .preview-section {
   background: linear-gradient(145deg, #ffffff, #f0f4ff);
+  border: 2px dashed #4a90e2;
   border-radius: 12px;
   padding: 24px;
   margin: 20px 0;
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .preview-section {
+    border-color: #357abd;
+  }
 }
 
 .form-group-section {
@@ -1196,5 +1203,9 @@ optgroup {
 option {
   padding: 8px;
   color: #333;
+}
+
+.border-dashed {
+  border-style: dashed !important;
 }
 </style>
