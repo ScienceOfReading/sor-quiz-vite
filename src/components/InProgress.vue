@@ -1,6 +1,7 @@
 <template>
     <div class="sm:w-full md:w-9/12 lg:w-5/6 lg:px-4 quizzes-container text-center">
-        <div class="grid quiz-item w-full border-4 place-self-center place-content-center text-center relative">
+        <div
+            class="grid quiz-item w-full border-4 border-dashed place-self-center place-content-center text-center relative">
             <div class="absolute top-4 right-4">
                 <router-link to="/" class="return-button">
                     Return to Quizzes
@@ -173,5 +174,9 @@ textarea:focus {
         padding: 0.25rem 0.35rem !important;
         font-size: 1rem !important;
     }
+}
+
+.border-dashed {
+    border-style: dashed !important;
 }
 </style>
