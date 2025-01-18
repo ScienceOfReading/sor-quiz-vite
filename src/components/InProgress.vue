@@ -88,6 +88,7 @@ export default {
                     });
                     this.feedback = '';
                     alert('Thank you for your feedback!');
+                    this.$emit('change-view', { showQuizzes: true });
                 } catch (error) {
                     console.error('Error saving feedback:', error);
                 }
