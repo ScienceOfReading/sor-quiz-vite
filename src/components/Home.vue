@@ -91,18 +91,11 @@ export default {
                 this.quiz.recordQuizAttempt(startTime);
             }
         },
-<<<<<<< Updated upstream
-        handleChangeView() {
-=======
         handleChangeView() {  // Move this inside methods
->>>>>>> Stashed changes
             console.log("Home: handleChangeView called");
             this.showQuizzes = true;
             this.showInProgress = false;
         }
-<<<<<<< Updated upstream
-    },
-=======
     }
 >>>>>>> Stashed changes
 }
