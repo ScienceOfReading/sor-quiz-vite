@@ -88,6 +88,10 @@ export default {
     debug: {
       type: Boolean,
       required: true
+    },
+    previewMode: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -198,7 +202,7 @@ a {
 }
 
 .quiz-item {
-  border-style: solid;
+  border-style: v-bind(previewMode ? 'dashed' : 'solid');
   border-top-right-radius: 2dvw;
   border-radius: 2dvw;
 
