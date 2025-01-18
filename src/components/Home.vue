@@ -97,7 +97,6 @@ export default {
             this.showInProgress = false;
         }
     }
->>>>>>> Stashed changes
 }
 </script>
 
