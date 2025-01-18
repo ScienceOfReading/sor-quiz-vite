@@ -10,13 +10,18 @@
 
             <div class="p-8 sm:p-4">
                 <div class="md:text-center sm:text-left sm:pl-2 sm:pr-24">
-                    <h2 class="text-2xl mb-4 mr-2">Coming Soon!</h2>
+                    <div class="flex items-center justify-center gap-4 mb-4">
+                        <h2 class="text-2xl">Coming Soon!</h2>
+                        <div>
+                            <font-awesome-icon :icon="['fas', 'tools']" class="text-2xl text-amber-500" />
+                        </div>
+                    </div>
                     <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz? </p>
-                    <p class="text-lg mb-6">Add/improve a question. Together we can raise up teachers everywhere.</p>
-                </div>
-
-                <div class="construction-animation mb-4">
-                    <font-awesome-icon :icon="['fas', 'tools']" class="text-4xl text-amber-500 animate-pulse" />
+                    <p class="text-lg mb-6 relative pr-16">
+                        Add/improve a question. Together we can raise up teachers everywhere.
+                        <img src="/images/partners.png" alt="Partners" class="absolute right-0 top-1/2 -translate-y-1/2"
+                            width="34" height="34" />
+                    </p>
                 </div>
 
                 <div class="router-link-container">
