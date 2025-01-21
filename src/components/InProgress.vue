@@ -10,10 +10,10 @@
 
             <div class="p-8 sm:p-4">
                 <div class="md:text-center sm:text-left sm:pl-2 sm:pr-24">
-                    <div class="flex items-center justify-center gap-4 mb-4">
-                        <h2 class="text-2xl">Coming Soon!</h2>
+                    <div class="flex items-center justify-center gap-2 mb-4">
+                        <h2 class="text-2xl">Coming Soon</h2>
                         <div>
-                            <font-awesome-icon :icon="['fas', 'tools']" class="text-2xl text-amber-500" />
+                            <font-awesome-icon :icon="['fas', 'tools']" class="text-xl text-gray-400" />
                         </div>
                     </div>
                     <p class="text-lg mb-6">Want to see a "{{ quizTitle }}" quiz? </p>
@@ -38,7 +38,10 @@
                     </button>
                 </div>
                 <div class="podcast-episode">
-                    <PodcastReference :podcastEpisode="podcastEpisode" />
+                    {{ Array.isArray(podcastEpisodes) }}
+                    <PodcastReference v-for="(episode, index) in podcastEpisodes" :key="index"
+                        :podcastEpisode="episode" />
+
                 </div>
             </div>
         </div>
@@ -71,12 +74,31 @@ export default {
         return {
             feedback: '',
             quizTitle: '',
-            podcastEpisode: null
+            podcastEpisode: null,
+            podcastEpisodes: null
         }
     },
     created() {
+        console.log('Selected Quiz Index:', this.selectedQuiz);
+        console.log('Quiz Name:', quizSets[this.selectedQuiz]?.setName);
+        console.log('Full Quiz Data:', quizSets[this.selectedQuiz]);
+
         this.quizTitle = quizSets[this.selectedQuiz]?.setName || 'New';
-        this.podcastEpisode = quizSets[this.selectedQuiz]?.podcastEpisode || null;
+
+        // Ensure we get the episodes array
+        const currentQuiz = quizSets[this.selectedQuiz];
+        if (currentQuiz?.podcastEpisodes) {
+            console.log('Found podcastEpisodes:', currentQuiz.podcastEpisodes);
+            this.podcastEpisodes = [...currentQuiz.podcastEpisodes];
+        } else if (currentQuiz?.podcastEpisode) {
+            console.log('Found single podcastEpisode');
+            this.podcastEpisode = currentQuiz.podcastEpisode;
+        } else {
+            console.log('No podcast data found');
+        }
+
+        console.log('Final podcastEpisodes:', this.podcastEpisodes);
+        console.log('Is Array?:', Array.isArray(this.podcastEpisodes));
     },
     methods: {
         async submitFeedback() {

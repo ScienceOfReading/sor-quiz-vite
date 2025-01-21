@@ -33,13 +33,20 @@ export const quizSets = [{
     basicMode: true,
     items: [39],
     inProgress: true,
-    podcastEpisode: {
+    podcastEpisodes: [{
         title: "Why the science of reading needs the science of learning",
         EpisodeUrl: "https://lnns.co/njyfzcC9hg0",
         audioUrl: "/audio/geiger.mp3",
         description: "'The science of reading tells us WHAT to teach... The science of learning tells us HOW to teach...' - Anna Geiger",
         podcastStartTime: 0,
-    }
+    },
+    {
+        title: "S4E18: Blake Harvard on Attention and Memory Constraints",
+        EpisodeUrl: "https://educationrickshaw.com/2025/01/14/s4e18-blake-harvard-on-attention-and-memory-constraints/",
+        audioUrl: "https://educationrickshaw.com/wp-content/uploads/2025/01/blake-final-edit-1.mp3",
+        description: "A quick overview of the science of reading and how it relates to attention and memory constraints.",
+        podcastStartTime: 173,
+    }]
 },
 {
     setName: "Legislation and Policy",
@@ -53,13 +60,20 @@ export const quizSets = [{
         resourceType: "PDF",
         resourceUrl: "https://www.education.gov.au/sites/default/files/documents/2024/09/19/science-of-reading-guide-for-educators.pdf",
     },
-    podcastEpisode: {
+    podcastEpisodes: [{
         title: "Why the science of reading needs the science of learning",
         EpisodeUrl: "https://lnns.co/njyfzcC9hg0",
         audioUrl: "/audio/geiger.mp3",
         description: "'The science of reading tells us WHAT to teach... The science of learning tells us HOW to teach...' - Anna Geiger",
         podcastStartTime: 0,
-    }
+    },
+    {
+        title: "S4E18: Blake Harvard on Attention and Memory Constraints",
+        EpisodeUrl: "https://educationrickshaw.com/2025/01/14/s4e18-blake-harvard-on-attention-and-memory-constraints/",
+        audioUrl: "https://educationrickshaw.com/wp-content/uploads/2025/01/blake-final-edit-1.mp3",
+        description: "An overview of current reading legislation and its impact on education policy across different states.",
+        podcastStartTime: 173,
+    }]
 }
 
 ];
