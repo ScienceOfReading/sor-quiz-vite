@@ -416,6 +416,11 @@
         <button type="submit">Submit</button>
       </div>
     </form>
+
+    <!-- Add save status indicator -->
+    <div v-if="saveStatus.show" :class="['save-status-indicator', saveStatus.type]" role="status" aria-live="polite">
+      {{ saveStatus.message }}
+    </div>
   </div>
 </template>
 
@@ -426,6 +431,7 @@ import QuizItem from './QuizItem.vue';
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import { quizEntries } from '../data/quiz-items';
+import { ref, watch } from 'vue';
 
 export default {
   components: {
@@ -455,6 +461,13 @@ export default {
         console.log('Save status changed:', newStatus);
       },
       deep: true
+    },
+    // Deep watch newEntry for any changes
+    newEntry: {
+      handler(newVal) {
+        this.triggerAutoSave();
+      },
+      deep: true
     }
   },
   data() {
@@ -474,7 +487,14 @@ export default {
       activeSection: '',
       copySuccess: false,
       selectedTemplate: '',
-      existingQuizItems: quizEntries
+      existingQuizItems: quizEntries,
+      autoSaveTimeout: null,
+      lastSaved: null,
+      saveStatus: {
+        show: false,
+        message: '',
+        type: ''
+      }
     }
   },
   methods: {
@@ -589,6 +609,41 @@ export default {
         // Initialize the draft with the template
         this.store.updateDraftQuizEntry(templateData);
       }
+    },
+    triggerAutoSave() {
+      // Clear any existing timeout
+      if (this.autoSaveTimeout) {
+        clearTimeout(this.autoSaveTimeout);
+      }
+
+      // Set new timeout for 2 seconds after last change
+      this.autoSaveTimeout = setTimeout(async () => {
+        try {
+          await this.store.saveDraftQuizEntry();
+          this.lastSaved = new Date();
+          this.showSaveStatus('Auto-saved', 'success');
+        } catch (error) {
+          console.error('Auto-save failed:', error);
+          this.showSaveStatus('Auto-save failed', 'error');
+        }
+      }, 2000);
+    },
+    showSaveStatus(message, type) {
+      this.saveStatus = {
+        show: true,
+        message,
+        type
+      };
+
+      // Hide the status after 3 seconds
+      setTimeout(() => {
+        this.saveStatus.show = false;
+      }, 3000);
+    }
+  },
+  beforeUnmount() {
+    if (this.autoSaveTimeout) {
+      clearTimeout(this.autoSaveTimeout);
     }
   }
 };
@@ -1238,5 +1293,48 @@ option {
 
 .border-dashed {
   border-style: dashed !important;
+}
+
+.save-status-indicator {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  z-index: 50;
+  animation: fadeInOut 3s ease-in-out;
+  pointer-events: none;
+}
+
+.save-status-indicator.success {
+  background-color: rgba(34, 197, 94, 0.9);
+  color: white;
+}
+
+.save-status-indicator.error {
+  background-color: rgba(239, 68, 68, 0.9);
+  color: white;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
 }
 </style>
