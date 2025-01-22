@@ -76,7 +76,7 @@
                      text-gray-200">
               <option value="" class="py-2">Start from scratch</option>
               <optgroup label="Existing Quiz Items" class="font-medium">
-                <option v-for="item in existingQuizItems" :key="item.id" :value="item.id" class="py-1">
+                <option v-for="item in reversedQuizItems" :key="item.id" :value="item.id" class="py-1">
                   {{ item.id }}. {{ item.title || 'Untitled' }}
                 </option>
               </optgroup>
@@ -453,6 +453,9 @@ export default {
     },
     formattedJson() {
       return JSON.stringify(this.newEntry, null, 2);
+    },
+    reversedQuizItems() {
+      return [...this.existingQuizItems].reverse();
     }
   },
   watch: {
