@@ -412,7 +412,9 @@
         </div>
       </div>
 
-      <button type="submit">Submit</button>
+      <div class="mt-4">
+        <button type="submit">Submit</button>
+      </div>
     </form>
   </div>
 </template>
@@ -668,7 +670,7 @@ details[open] .arrow-indicator {
   background: #3f3f88;
   backdrop-filter: blur(10px);
 
-  padding: 20px;
+  padding: 10px;
   transition: all 0.3s ease;
 }
 
@@ -688,6 +690,8 @@ details[open] .arrow-indicator {
 
 .form-group1 {
   position: relative;
+  margin-left: -5px;
+  margin-right: -5px;
 }
 
 .form-group label {
