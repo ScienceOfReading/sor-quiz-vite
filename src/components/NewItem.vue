@@ -61,8 +61,8 @@
     <form v-else @submit.prevent="submitForm">
       <!-- Add this at the top of the form, before other sections -->
       <div class="template-selector">
-        <div class="form-section bg-indigo-950/10 dark:bg-indigo-950/30 rounded-lg p-6">
-          <div class="form-group">
+        <div class="form1-section bg-indigo-950/10 dark:bg-indigo-950/30 ">
+          <div class="form-group1">
             <label for="template-select" class="text-stone-400">Choose a starting point:</label>
             <select id="template-select" v-model="selectedTemplate" @change="useTemplate" class="w-full px-4 py-2 rounded-lg border border-gray-300/50 
                      bg-white/50 dark:bg-gray-500/50 
@@ -91,7 +91,6 @@
       </div>
       <!-- Question Group -->
       <div class="form-group-section question-section">
-        <h2></h2>
         <div class="question-content-wrapper">
           <!-- Basic Information -->
           <details>
@@ -665,6 +664,14 @@ details[open] .arrow-indicator {
   transform: rotate(180deg);
 }
 
+.form1-section {
+  background: #3f3f88;
+  backdrop-filter: blur(10px);
+
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
 .form-section {
   background: #3f3f88;
   backdrop-filter: blur(10px);
@@ -679,7 +686,24 @@ details[open] .arrow-indicator {
   margin-bottom: 20px;
 }
 
+.form-group1 {
+  position: relative;
+}
+
 .form-group label {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background: #3f3f88;
+  padding: 0 8px;
+  font-size: 0.85rem;
+  color: #fff;
+  border-radius: 4px;
+  z-index: 1;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.form-group1 label {
   position: absolute;
   top: -10px;
   left: 12px;
@@ -919,18 +943,18 @@ details[open] .form-section {
 
 .form-group-section {
   background: rgba(63, 63, 136, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 0px solid rgba(255, 255, 255, 0.1);
 }
 
 .form-group-section h2 {
   color: #fff;
   margin-bottom: 0.75rem;
   padding-bottom: 0.25rem;
-  border-bottom: 1px solid #444;
+  border-bottom: 0px solid #444;
 }
 
 .question-section {
-  border-left: 4px solid #4CAF50;
+
   /* Green accent for question section */
 }
 
@@ -960,7 +984,7 @@ details[open] .form-section {
       rgba(63, 63, 136, 0.1) 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  /* border: 1px solid rgba(255, 255, 255, 0.18); */
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   padding: 0.5rem;
   border-radius: 4px;
