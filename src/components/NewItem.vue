@@ -985,6 +985,7 @@ details[open] .form-section {
 .smaller-button {
   max-height: 25px;
   font-size: 12px;
+  line-height: 1;
 }
 
 .return-button.active {
