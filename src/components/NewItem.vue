@@ -75,6 +75,11 @@
                      dark:[&>*]:bg-gray-700
                      text-gray-200">
               <option value="" class="py-2">Start from scratch</option>
+              <optgroup label="Draft Quiz Items" class="font-medium" v-if="draftQuizItems.length">
+                <option v-for="item in draftQuizItems" :key="item.id" :value="item.id" class="py-1">
+                  {{ item.id || 'New' }}. {{ item.title || 'Untitled Draft' }}
+                </option>
+              </optgroup>
               <optgroup label="Existing Quiz Items" class="font-medium">
                 <option v-for="item in reversedQuizItems" :key="item.id" :value="item.id" class="py-1">
                   {{ item.id }}. {{ item.title || 'Untitled' }}
@@ -454,6 +459,10 @@ export default {
     formattedJson() {
       return JSON.stringify(this.newEntry, null, 2);
     },
+    draftQuizItems() {
+      const drafts = localStorage.getItem('draftQuizEntries');
+      return drafts ? JSON.parse(drafts) : [];
+    },
     reversedQuizItems() {
       return [...this.existingQuizItems].reverse();
     }
@@ -595,21 +604,26 @@ export default {
         return;
       }
 
-      // Find the selected quiz item
+      // Check if it's a draft item
+      const draftItem = this.draftQuizItems.find(
+        item => item.id === this.selectedTemplate
+      );
+
+      if (draftItem) {
+        this.store.updateDraftQuizEntry(draftItem);
+        return;
+      }
+
+      // Otherwise, handle existing quiz item
       const template = this.existingQuizItems.find(
         item => item.id === this.selectedTemplate
       );
 
       if (template) {
-        // Create a deep copy of the template
         const templateData = JSON.parse(JSON.stringify(template));
-
-        // Store the original ID before clearing it from the draft
         templateData.originalId = template.id;
         templateData.id = null;
         templateData.title = `Copy of ${templateData.title}`;
-
-        // Initialize the draft with the template
         this.store.updateDraftQuizEntry(templateData);
       }
     },
