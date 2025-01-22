@@ -26,7 +26,7 @@
           :class="['return-button smaller-button', { active: returnButton.active }]">
           Return to Quizzes
         </button>
-        <button type="button" @click="previewMode = !previewMode" :class="['preview-toggle', { active: previewMode }]">
+        <button type="button" @click="togglePreviewMode" :class="['preview-toggle', { active: previewMode }]">
           {{ previewMode ? 'Edit Mode' : 'Preview Mode' }}
         </button>
         <button type="button" @click="jsonPreviewMode = !jsonPreviewMode"
@@ -642,7 +642,12 @@ export default {
       setTimeout(() => {
         this.saveStatus.show = false;
       }, 3000);
-    }
+    },
+    togglePreviewMode() {
+      this.previewMode = !this.previewMode;
+      // Hide JSON when toggling preview mode in either direction
+      this.jsonPreviewMode = false;
+    },
   },
   beforeUnmount() {
     if (this.autoSaveTimeout) {
