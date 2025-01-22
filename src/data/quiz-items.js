@@ -1459,5 +1459,53 @@ export const quizEntries = [{
     closingText: "",
     closingText2: "",
     modal: ""
+},
+{
+    title: "Progress Monitoring in Upper Elementary",
+    subtitle: "",
+    id: 42,
+    Question: "Is ORF an essential tool for progress monitoring and assessing comprehension in grades 3-6?",
+    questionP2: "",
+    answer_type: "mc",
+    option1: "Yes",
+    option2: "No",
+    option3: "",
+    option4: "",
+    option5: "",
+    correctAnswer: "1",
+    explanation: "See Dr. Stollar's explanation here, and, if you can, add the relevant research.",
+    explanation2: "",
+    videoUrl: "",
+    videoId: "uVJcGKrl9Xs",
+    image: "",
+    imageUrl: "",
+    imageAltText: "",
+    podcastEpisode: {
+        title: "",
+        EpisodeUrl: "",
+        audioUrl: "",
+        description: "",
+        podcastStartTime: 0
+    },
+    cautionLevel: "",
+    caution: "",
+    citations: [{
+        title: "",
+        author: "",
+        url: "",
+        year: "",
+        imageUrl: ""
+    }],
+    ref1: "",
+    ref2: "",
+    resources: [{
+        title: "",
+        author: "",
+        url: "",
+        description: ""
+    }],
+    closingText: "",
+    closingText2: "",
+    modal: ""
 }
 ]
