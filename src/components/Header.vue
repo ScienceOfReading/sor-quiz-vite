@@ -1,4 +1,4 @@
-&lt;template>
+<template>
   <header class="bg-white shadow">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
@@ -30,9 +30,9 @@
       </div>
     </nav>
   </header>
-&lt;/template>
+</template>
 
-&lt;script setup>
+<script setup>
 import { useAuthStore } from '../stores/authStore';
 import { useRouter } from 'vue-router';
 
@@ -47,4 +47,4 @@ const handleLogout = async () => {
     console.error('Logout error:', error);
   }
 };
-&lt;/script>
+</script>

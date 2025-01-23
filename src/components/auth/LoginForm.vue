@@ -1,4 +1,4 @@
-&lt;template>
+<template>
   <div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
     <h2 class="text-2xl font-bold mb-6 text-center">{{ isRegister ? 'Register' : 'Login' }}</h2>
     
@@ -53,11 +53,11 @@
       </button>
     </p>
   </div>
-&lt;/template>
+</template>
 
-&lt;script setup>
+<script setup>
 import { ref } from 'vue';
-import { useAuthStore } from '@/stores/authStore';
+import { useAuthStore } from '../../stores/authStore';
 import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
@@ -91,4 +91,4 @@ const handleGoogleLogin = async () => {
     error.value = err.message;
   }
 };
-&lt;/script>
+</script>
