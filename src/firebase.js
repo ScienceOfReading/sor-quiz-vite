@@ -1,7 +1,7 @@
 // src/firebase.js
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { getAuth, setPersistence, browserLocalPersistence, signInAnonymously } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -17,47 +17,30 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Enable persistence
-setPersistence(auth, browserLocalPersistence)
-    .then(() => {
-        console.log('Firebase persistence enabled');
-    })
-    .catch((error) => {
-        console.error('Error enabling persistence:', error);
-    });
-
-// Auth helper functions
-export const signInAnonymouslyWithPersistence = async () => {
-    try {
-        if (!auth.currentUser) {
-            const credential = await signInAnonymously(auth);
-            console.log('New anonymous user signed in:', credential.user.uid);
-            return credential.user;
-        }
-        console.log('Existing anonymous user:', auth.currentUser.uid);
-        return auth.currentUser;
-    } catch (error) {
-        console.error('Error in anonymous sign in:', error);
-        throw error;
-    }
-};
-
 export const saveUserProgress = async (quizId, progress) => {
     try {
         const userId = auth.currentUser?.uid;
-        if (!userId) throw new Error('No authenticated user');
+        if (!userId) {
+            console.log('No user found, progress will not be saved');
+            return;
+        }
 
         const progressRef = doc(db, 'userProgress', `${userId}_${quizId}`);
         await setDoc(progressRef, {
             userId,
             quizId,
+            isAnonymous: auth.currentUser.isAnonymous,
             ...progress,
             lastUpdated: serverTimestamp()
         }, { merge: true });
         console.log('Progress saved:', progressRef.id);
     } catch (error) {
         console.error('Error saving progress:', error);
-        throw error;
+        // Don't throw error for anonymous users to avoid disrupting the quiz experience
+        if (!auth.currentUser?.isAnonymous) {
+            throw error;
+        }
     }
 };
+
 export { db, auth };

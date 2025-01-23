@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  signInAnonymously,
   signOut,
   onAuthStateChanged
 } from 'firebase/auth';
@@ -19,6 +20,7 @@ export const useAuthStore = defineStore('auth', {
   getters: {
     isAuthenticated: (state) => !!state.user,
     isAnonymous: (state) => state.user?.isAnonymous ?? true,
+    canEdit: (state) => state.user && !state.user.isAnonymous,
   },
 
   actions: {
@@ -30,6 +32,20 @@ export const useAuthStore = defineStore('auth', {
           resolve(user);
         });
       });
+    },
+
+    async signInAnonymously() {
+      try {
+        if (!auth.currentUser) {
+          const credential = await signInAnonymously(auth);
+          this.user = credential.user;
+          return credential.user;
+        }
+        return auth.currentUser;
+      } catch (error) {
+        this.error = error.message;
+        throw error;
+      }
     },
 
     async registerWithEmail(email, password) {
@@ -72,7 +88,8 @@ export const useAuthStore = defineStore('auth', {
     async logout() {
       try {
         await signOut(auth);
-        this.user = null;
+        // After logout, sign in anonymously
+        await this.signInAnonymously();
       } catch (error) {
         this.error = error.message;
         throw error;

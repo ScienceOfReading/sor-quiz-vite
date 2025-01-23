@@ -9,8 +9,8 @@
         </div>
         
         <div class="flex items-center">
-          <template v-if="authStore.isAuthenticated">
-            <span class="text-gray-700 mr-4">{{ authStore.user?.email || 'Anonymous User' }}</span>
+          <template v-if="authStore.canEdit">
+            <span class="text-gray-700 mr-4">{{ authStore.user?.email }}</span>
             <button
               @click="handleLogout"
               class="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
@@ -18,12 +18,12 @@
               Logout
             </button>
           </template>
-          <template v-else>
+          <template v-else-if="$route.path.includes('/edit')">
             <router-link
               to="/login"
               class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-              Login
+              Login to Edit
             </router-link>
           </template>
         </div>
@@ -42,7 +42,9 @@ const router = useRouter();
 const handleLogout = async () => {
   try {
     await authStore.logout();
-    router.push('/login');
+    if (router.currentRoute.value.path.includes('/edit')) {
+      router.push('/');
+    }
   } catch (error) {
     console.error('Logout error:', error);
   }

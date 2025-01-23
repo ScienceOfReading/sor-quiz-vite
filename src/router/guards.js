@@ -8,7 +8,8 @@ export async function requireAuth(to, from, next) {
     await authStore.init();
   }
 
-  if (!authStore.isAuthenticated) {
+  // Check if user can edit (non-anonymous user)
+  if (!authStore.canEdit) {
     // Redirect to login page with return url
     next({
       path: '/login',
