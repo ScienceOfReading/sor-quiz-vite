@@ -1,8 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { requireAuth } from './guards';
 import LoginForm from '../components/auth/LoginForm.vue';
+import Home from '../components/Home.vue';
 
 const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
   {
     path: '/login',
     name: 'Login',
@@ -15,7 +21,11 @@ const routes = [
     component: () => import('../components/Quiz.vue'),
     beforeEnter: requireAuth
   },
-  // Add more routes as needed
+  // Catch all route for 404
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/'
+  }
 ];
 
 const router = createRouter({

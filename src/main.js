@@ -39,30 +39,16 @@ library.add(faExternalLinkAlt)
 library.add(faBook)
 const app = createApp(App)
 const pinia = createPinia(); // Create a Pinia store instance
+app.use(pinia);
+
+// Import and use the router
+import router from './router';
+app.use(router);
 
 app.config.globalProperties.$userAnswers = []
 app.use(Vue3Lottie)
-app.component(LiteYouTubeEmbed)
+app.component('lite-youtube-embed', LiteYouTubeEmbed)
 app.component('font-awesome-icon', FontAwesomeIcon)
-
-import { createRouter, createWebHistory } from 'vue-router'; // Import the router
-//import App from './App.vue'; // Import the main App component
-import NewItem from './components/NewItem.vue'; // Import the new component
-
-// Define your routes
-const routes = [
-    { path: '/', component: App }, // Main application route
-    { path: '/new-item', component: NewItem }, // New item route
-];
-
-// Create the router instance
-const router = createRouter({
-    history: createWebHistory(),
-    routes,
-});
-
-app.use(router); // Use the router
-app.use(pinia);
 
 // Create an auth store with Pinia
 export const useAuthStore = defineStore('auth', {
@@ -84,7 +70,8 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
-        initializeAuthListener() {
+        async init() {
+            await this.signInAnonymously().catch(console.error);
             auth.onAuthStateChanged((user) => {
                 this.user = user;
                 this.loading = false;
@@ -94,8 +81,8 @@ export const useAuthStore = defineStore('auth', {
     }
 });
 
-// Initialize auth store and sign in anonymously
-const authStore = useAuthStore(pinia);
-authStore.signInAnonymously().catch(console.error);
+// Initialize the auth store
+const authStore = useAuthStore();
+await authStore.init();
 
 app.mount('#app')
