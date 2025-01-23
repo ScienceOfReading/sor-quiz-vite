@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { requireAuth } from './guards';
 import LoginForm from '../components/auth/LoginForm.vue';
 import Home from '../components/Home.vue';
+import NewItem from '../components/NewItem.vue';
 
 const routes = [
   {
@@ -14,12 +15,15 @@ const routes = [
     name: 'Login',
     component: LoginForm
   },
-  // Add the auth guard to protected routes
+  {
+    path: '/new-item',
+    name: 'NewItem',
+    component: NewItem
+  },
   {
     path: '/quiz/:id',
     name: 'Quiz',
-    component: () => import('../components/Quiz.vue'),
-    beforeEnter: requireAuth
+    component: () => import('../components/Quiz.vue')
   },
   // Catch all route for 404
   {

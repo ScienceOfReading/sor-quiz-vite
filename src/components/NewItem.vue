@@ -36,6 +36,16 @@
       </div>
     </div>
 
+    <div v-if="!auth.user" class="alert alert-info mb-4">
+      <p>You are currently using the quiz builder anonymously. Your quiz entry will be saved as a draft.</p>
+      <p>To submit your quiz for review, please <router-link to="/login" class="text-blue-600 hover:text-blue-800">sign in</router-link>.</p>
+    </div>
+
+    <div v-if="auth.user && auth.user.isAnonymous" class="alert alert-info mb-4">
+      <p>You are currently using the quiz builder anonymously. Your quiz entry will be saved as a draft.</p>
+      <p>To submit your quiz for review, please <router-link to="/login" class="text-blue-600 hover:text-blue-800">sign in</router-link> with an email account.</p>
+    </div>
+
     <div v-if="jsonPreviewMode" class="json-preview">
       <div class="json-header">
         <h3>JSON Preview</h3>
