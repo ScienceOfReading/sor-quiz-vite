@@ -1,10 +1,13 @@
 <template>
   <div class="app-container">
-    <header class="flex justify-between items-center p-4 border-b dark:border-gray-700">
-      <div class="flex items-center gap-2">
+    <header class="flex justify-between items-center p-4">
+      <div class="flex items-center gap-4">
         <router-link to="/" class="flex items-center">
           <img :src="logo" alt="SOR Quizzes" class="h-8 md:h-10" />
         </router-link>
+        <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-200 hidden md:block">
+          Science of Reading Quizzes
+        </h1>
       </div>
       <UserStatus />
     </header>
