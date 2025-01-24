@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { auth } from '../firebase';
+import { auth, githubProvider } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -82,6 +82,20 @@ export const useAuthStore = defineStore('auth', {
       } catch (error) {
         this.error = error.message;
         throw error;
+      }
+    },
+
+    async signInWithGithub() {
+      this.loading = true;
+      this.error = null;
+      try {
+        const result = await signInWithPopup(auth, githubProvider);
+        this.user = result.user;
+      } catch (error) {
+        this.error = error.message;
+        console.error('GitHub auth error:', error);
+      } finally {
+        this.loading = false;
       }
     },
 

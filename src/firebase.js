@@ -1,7 +1,7 @@
 // src/firebase.js
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getAuth, GithubAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -16,6 +16,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+const githubProvider = new GithubAuthProvider();
 
 export const saveUserProgress = async (quizId, progress) => {
     try {
@@ -43,4 +45,4 @@ export const saveUserProgress = async (quizId, progress) => {
     }
 };
 
-export { db, auth };
+export { db, auth, githubProvider };
