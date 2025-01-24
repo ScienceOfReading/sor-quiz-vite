@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
-    <header class="flex justify-between items-center p-4">
-      <div class="flex items-center gap-4">
+    <header class="flex justify-between items-center py-2 px-4">
+      <div class="flex items-center gap-3">
         <router-link to="/" class="flex items-center">
-          <img :src="logo" alt="SOR Quizzes" class="h-8 md:h-10" />
+          <img :src="logo" alt="SOR Quizzes" class="h-7 md:h-8" />
         </router-link>
-        <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-200 hidden md:block">
+        <h1 class="text-xxl font-semibold text-gray-800 dark:text-gray-200 hidden md:block">
           Science of Reading Quizzes
         </h1>
       </div>

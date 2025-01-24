@@ -1,7 +1,7 @@
 <template>
-    <div class="user-status flex items-center gap-2 p-2 text-sm">
+    <div class="user-status flex items-center gap-2 p-1 text-sm">
         <template v-if="authStore.user">
-            <div class="flex flex-col gap-1 bg-gray-100 rounded-lg px-3 py-2">
+            <div class="flex flex-col gap-0.5 bg-gray-100 rounded-lg px-3 py-1.5">
                 <!-- User Status with Provider Icon -->
                 <div class="flex items-center gap-2">
                     <!-- Google Icon -->
@@ -33,14 +33,14 @@
 
                 <!-- Login/Sign Out Buttons -->
                 <router-link v-if="authStore.user.isAnonymous" to="/login"
-                    class="text-blue-500 hover:text-blue-600 text-sm transition-colors">
+                    class="text-blue-500 hover:text-blue-600 text-xs transition-colors">
                     Sign In
                 </router-link>
                 <button v-else @click="handleSignOut"
-                    class="text-gray-500 hover:text-red-500 text-sm transition-colors flex items-center gap-1"
+                    class="text-gray-500 hover:text-red-500 text-xs transition-colors flex items-center gap-1"
                     title="Sign Out">
                     <span>Sign Out</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -50,7 +50,7 @@
         </template>
         <template v-else>
             <router-link to="/login"
-                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md text-sm transition-colors">
+                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm transition-colors">
                 Sign In
             </router-link>
         </template>
