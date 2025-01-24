@@ -1,15 +1,21 @@
 <template>
     <div class="user-status flex items-center gap-2 p-2 text-sm">
         <template v-if="authStore.user">
-            <div class="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-2">
+            <div class="flex flex-col gap-1 bg-gray-100 rounded-lg px-3 py-2">
                 <!-- User Status -->
                 <span class="text-gray-600">
-                    {{ authStore.user.isAnonymous ? 'Anonymous User' : (authStore.user.email || 'Signed In') }}
+                    {{ displayName }}
                 </span>
 
-                <!-- Sign Out Button (only show for non-anonymous users) -->
-                <button v-if="!authStore.user.isAnonymous" @click="handleSignOut"
-                    class="ml-2 text-gray-500 hover:text-red-500" title="Sign Out">
+                <!-- Login/Sign Out Buttons -->
+                <router-link v-if="authStore.user.isAnonymous" to="/login"
+                    class="text-blue-500 hover:text-blue-600 text-sm transition-colors">
+                    Sign In
+                </router-link>
+                <button v-else @click="handleSignOut"
+                    class="text-gray-500 hover:text-red-500 text-sm transition-colors flex items-center gap-1"
+                    title="Sign Out">
+                    <span>Sign Out</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -19,7 +25,8 @@
             </div>
         </template>
         <template v-else>
-            <router-link to="/login" class="text-gray-600 hover:text-gray-800">
+            <router-link to="/login"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md text-sm transition-colors">
                 Sign In
             </router-link>
         </template>
@@ -27,11 +34,18 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { useAuthStore } from '../stores/authStore';
 import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
 const router = useRouter();
+
+const displayName = computed(() => {
+    if (authStore.user.isAnonymous) return 'Anonymous User';
+    if (!authStore.user.email) return 'Signed In';
+    return authStore.user.email.split('@')[0];
+});
 
 const handleSignOut = async () => {
     try {
