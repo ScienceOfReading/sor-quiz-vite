@@ -6,7 +6,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   signInAnonymously,
-  signOut,
+  signOut as firebaseSignOut,
   onAuthStateChanged
 } from 'firebase/auth';
 
@@ -49,39 +49,45 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async registerWithEmail(email, password) {
+      this.loading = true;
+      this.error = null;
       try {
-        this.error = null;
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        this.user = userCredential.user;
-        return userCredential.user;
+        const result = await createUserWithEmailAndPassword(auth, email, password);
+        this.user = result.user;
       } catch (error) {
         this.error = error.message;
         throw error;
+      } finally {
+        this.loading = false;
       }
     },
 
     async loginWithEmail(email, password) {
+      this.loading = true;
+      this.error = null;
       try {
-        this.error = null;
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        this.user = userCredential.user;
-        return userCredential.user;
+        const result = await signInWithEmailAndPassword(auth, email, password);
+        this.user = result.user;
       } catch (error) {
         this.error = error.message;
         throw error;
+      } finally {
+        this.loading = false;
       }
     },
 
     async loginWithGoogle() {
+      this.loading = true;
+      this.error = null;
       try {
-        this.error = null;
         const provider = new GoogleAuthProvider();
-        const userCredential = await signInWithPopup(auth, provider);
-        this.user = userCredential.user;
-        return userCredential.user;
+        const result = await signInWithPopup(auth, provider);
+        this.user = result.user;
       } catch (error) {
         this.error = error.message;
         throw error;
+      } finally {
+        this.loading = false;
       }
     },
 
@@ -93,21 +99,28 @@ export const useAuthStore = defineStore('auth', {
         this.user = result.user;
       } catch (error) {
         this.error = error.message;
-        console.error('GitHub auth error:', error);
+        throw error;
       } finally {
         this.loading = false;
       }
     },
 
-    async logout() {
+    async signOut() {
+      this.loading = true;
+      this.error = null;
       try {
-        await signOut(auth);
-        // After logout, sign in anonymously
-        await this.signInAnonymously();
+        await firebaseSignOut(auth);
+        this.user = null;
       } catch (error) {
         this.error = error.message;
         throw error;
+      } finally {
+        this.loading = false;
       }
+    },
+
+    setUser(user) {
+      this.user = user;
     }
   }
 });
