@@ -1,15 +1,10 @@
 <template>
   <div class="app-container">
     <header class="flex justify-between items-center p-4 border-b dark:border-gray-700">
-      <div class="flex items-center gap-4">
-        <h1 class="text-xl font-bold">SOR Quizzes</h1>
-        <button @click="showHelp = !showHelp"
-          class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100" title="Help & About">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </button>
+      <div class="flex items-center gap-2">
+        <router-link to="/" class="flex items-center">
+          <img :src="logo" alt="SOR Quizzes" class="h-8 md:h-10" />
+        </router-link>
       </div>
       <UserStatus />
     </header>
@@ -59,6 +54,7 @@
 <script setup>
 import { ref } from 'vue';
 import UserStatus from './components/UserStatus.vue';
+import logo from './assets/sor-quizzes-logo.png';
 
 const showHelp = ref(false);
 </script>
