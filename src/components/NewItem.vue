@@ -38,12 +38,14 @@
 
     <div v-if="!auth.user" class="alert alert-info mb-4">
       <p>You are currently using the quiz builder anonymously. Your quiz entry will be saved as a draft.</p>
-      <p>To submit your quiz for review, please <router-link to="/login" class="text-blue-600 hover:text-blue-800">sign in</router-link>.</p>
+      <p>To submit your quiz for review, please <router-link to="/login" class="text-blue-600 hover:text-blue-800">sign
+          in</router-link>.</p>
     </div>
 
     <div v-if="auth.user && auth.user.isAnonymous" class="alert alert-info mb-4">
       <p>You are currently using the quiz builder anonymously. Your quiz entry will be saved as a draft.</p>
-      <p>To submit your quiz for review, please <router-link to="/login" class="text-blue-600 hover:text-blue-800">sign in</router-link> with an email account.</p>
+      <p>To submit your quiz for review, please <router-link to="/login" class="text-blue-600 hover:text-blue-800">sign
+          in</router-link> with an email account.</p>
     </div>
 
     <div v-if="jsonPreviewMode" class="json-preview">
@@ -442,6 +444,7 @@
 <script>
 import { db } from '../firebase';
 import { quizStore } from '../stores/quizStore';
+import { useAuthStore } from '../stores/authStore';
 import QuizItem from './QuizItem.vue';
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
@@ -455,7 +458,8 @@ export default {
   },
   setup() {
     const store = quizStore();
-    return { store };
+    const auth = useAuthStore();
+    return { store, auth };
   },
   computed: {
     newEntry: {
