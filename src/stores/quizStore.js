@@ -358,14 +358,14 @@ export const quizStore = defineStore('quiz', {
                 }
 
                 // Final validation before submission
-                const validationErrors = this.validateDraftQuizEntry(this.draftQuizEntry);
-                if (validationErrors.length > 0) {
+                const validation = this.validateDraftQuizEntry(this.draftQuizEntry);
+                if (validation.errors.length > 0) {
                     this.saveStatus = {
-                        message: 'Cannot submit: ' + validationErrors.join(', '),
+                        message: 'Cannot submit: ' + validation.errors.join(', '),
                         type: 'error',
                         show: true
                     };
-                    throw new Error('Validation failed: ' + validationErrors.join(', '));
+                    throw new Error('Validation failed: ' + validation.errors.join(', '));
                 }
 
                 const docRef = doc(db, 'quizEntries', draftId);
@@ -396,7 +396,10 @@ export const quizStore = defineStore('quiz', {
         },
 
         validateDraftQuizEntry(draft) {
-            const errors = [];
+            const validation = {
+                errors: [],
+                invalidFields: new Set()
+            };
             
             // Default values to check against
             const defaultValues = {
@@ -414,11 +417,13 @@ export const quizStore = defineStore('quiz', {
             
             // Required fields - check for empty or default values
             if (!draft.title?.trim() || draft.title === defaultValues.title) {
-                errors.push('Title is required');
+                validation.errors.push('Title is required');
+                validation.invalidFields.add('title');
             }
 
             if (!draft.Question?.trim() || draft.Question === defaultValues.Question) {
-                errors.push('Question is required');
+                validation.errors.push('Question is required');
+                validation.invalidFields.add('Question');
             }
 
             // Answer type specific validation
@@ -438,55 +443,70 @@ export const quizStore = defineStore('quiz', {
                 );
 
                 if (nonDefaultOptions.length < 2) {
-                    errors.push('Multiple choice questions require at least 2 non-default options');
+                    validation.errors.push('Multiple choice questions require at least 2 non-default options');
+                    // Mark all empty or default options as invalid
+                    options.forEach((opt, index) => {
+                        if (!opt?.trim() || opt === defaultValues[`option${index + 1}`]) {
+                            validation.invalidFields.add(`option${index + 1}`);
+                        }
+                    });
                 }
                 
                 if (!draft.correctAnswer || draft.correctAnswer < 1 || draft.correctAnswer > nonDefaultOptions.length) {
-                    errors.push('Please select a valid correct answer');
+                    validation.errors.push('Please select a valid correct answer');
+                    validation.invalidFields.add('correctAnswer');
                 }
 
                 // Check if the selected correct answer is still a default value
                 const correctOptionIndex = draft.correctAnswer - 1;
                 if (correctOptionIndex >= 0 && 
                     options[correctOptionIndex] === defaultValues[`option${draft.correctAnswer}`]) {
-                    errors.push('The correct answer cannot be a default option');
+                    validation.errors.push('The correct answer cannot be a default option');
+                    validation.invalidFields.add(`option${draft.correctAnswer}`);
                 }
             }
 
             // Explanation validation - check for default value
             if (!draft.explanation?.trim() || draft.explanation === defaultValues.explanation) {
-                errors.push('Explanation is required');
+                validation.errors.push('Explanation is required');
+                validation.invalidFields.add('explanation');
             }
 
             // Media validation - if URLs are provided, they should be valid
             if (draft.videoUrl && !this.isValidUrl(draft.videoUrl)) {
-                errors.push('Invalid video URL');
+                validation.errors.push('Invalid video URL');
+                validation.invalidFields.add('videoUrl');
             }
             if (draft.imageUrl && !this.isValidUrl(draft.imageUrl)) {
-                errors.push('Invalid image URL');
+                validation.errors.push('Invalid image URL');
+                validation.invalidFields.add('imageUrl');
             }
 
             // Podcast episode validation
             if (draft.podcastEpisode?.EpisodeUrl && !this.isValidUrl(draft.podcastEpisode.EpisodeUrl)) {
-                errors.push('Invalid podcast episode URL');
+                validation.errors.push('Invalid podcast episode URL');
+                validation.invalidFields.add('podcastEpisodeUrl');
             }
             if (draft.podcastEpisode?.audioUrl && !this.isValidUrl(draft.podcastEpisode.audioUrl)) {
-                errors.push('Invalid podcast audio URL');
+                validation.errors.push('Invalid podcast audio URL');
+                validation.invalidFields.add('podcastAudioUrl');
             }
 
             // Citations validation
             if (draft.citations?.length > 0) {
                 draft.citations.forEach((citation, index) => {
                     if (!citation.title?.trim()) {
-                        errors.push(`Citation ${index + 1} requires a title`);
+                        validation.errors.push(`Citation ${index + 1} requires a title`);
+                        validation.invalidFields.add(`citation-${index}-title`);
                     }
                     if (citation.url && !this.isValidUrl(citation.url)) {
-                        errors.push(`Citation ${index + 1} has an invalid URL`);
+                        validation.errors.push(`Citation ${index + 1} has an invalid URL`);
+                        validation.invalidFields.add(`citation-${index}-url`);
                     }
                 });
             }
 
-            return errors;
+            return validation;
         },
 
         isValidUrl(string) {
