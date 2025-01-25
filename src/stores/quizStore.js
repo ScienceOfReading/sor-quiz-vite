@@ -1,7 +1,7 @@
 // src/stores/quizStore.js
 import { defineStore } from 'pinia';
 import { auth, db } from '../firebase';
-import { collection, addDoc, serverTimestamp, doc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, setDoc, query, where, getDocs } from 'firebase/firestore';
 import { useAuthStore } from './authStore';
 
 export const quizStore = defineStore('quiz', {
@@ -54,6 +54,9 @@ export const quizStore = defineStore('quiz', {
             modal: '',
             status: 'draft' 
         },
+        draftQuizItems: [],
+        draftQuizItemsLoading: false,
+        draftQuizItemsError: null,
         saveStatus: {
             message: '',
             type: '', 
@@ -190,6 +193,24 @@ export const quizStore = defineStore('quiz', {
         // Actions related to creating, editing, and managing
         // quiz entries and drafts
         // =============================================
+
+        async fetchDraftQuizItems() {
+            this.draftQuizItemsLoading = true;
+            this.draftQuizItemsError = null;
+            try {
+                const q = query(collection(db, 'quizEntries'), where('status', '==', 'draft'));
+                const querySnapshot = await getDocs(q);
+                this.draftQuizItems = querySnapshot.docs.map(doc => ({
+                    ...doc.data(),
+                    id: doc.id
+                }));
+            } catch (error) {
+                console.error('Error fetching draft quiz items:', error);
+                this.draftQuizItemsError = error.message;
+            } finally {
+                this.draftQuizItemsLoading = false;
+            }
+        },
 
         async saveDraftQuizEntry() {
             try {
