@@ -582,8 +582,18 @@ export default {
     },
     async submitForm() {
       try {
+        // First save the draft
         await this.store.recordQuizEdit();
-        await this.store.saveDraftQuizEntry();
+        const draftId = await this.store.saveDraftQuizEntry();
+        
+        // Only proceed with submission if we got a valid draft ID
+        if (!draftId) {
+          throw new Error('Failed to save draft');
+        }
+
+        // Then submit for review
+        await this.store.submitForReview(draftId);
+        
         this.submittedEntry = { ...this.newEntry };
         this.submitStatus = {
           show: true,
@@ -594,8 +604,16 @@ export default {
         this.submitStatus = {
           show: true,
           type: 'error',
-          message: 'Error submitting quiz entry: ' + e.message
+          message: e.message || 'Error submitting quiz entry'
         };
+        
+        // If this was a validation error, keep the form open
+        if (e.message.includes('Validation failed')) {
+          return;
+        }
+        
+        // For other errors, may want to reset the form
+        this.store.resetDraftQuizEntry();
       }
     },
     returnToQuizzes() {

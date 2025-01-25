@@ -227,21 +227,6 @@ export const quizStore = defineStore('quiz', {
                 const user = auth.currentUser;
                 if (!user) throw new Error('No user found');
 
-                // If the draft has an ID, check ownership before updating
-                if (this.draftQuizEntry.id) {
-                    const existingDraft = this.draftQuizItems.find(item => item.id === this.draftQuizEntry.id);
-                    if (existingDraft) {
-                        // If trying to update someone else's draft, create a new one instead
-                        if (existingDraft.userId !== user.uid) {
-                            console.log('Creating new draft from existing one');
-                            // Clear the ID to force creating a new draft
-                            this.draftQuizEntry.id = null;
-                        } else {
-                            return await this.updateExistingDraftEntry(this.draftQuizEntry.id);
-                        }
-                    }
-                }
-
                 const entryToSave = {
                     ...this.draftQuizEntry,
                     userId: user.uid,
@@ -265,23 +250,43 @@ export const quizStore = defineStore('quiz', {
                     timestamp: serverTimestamp(),
                 };
 
-                console.log('Saving new draft entry:', entryToSave);
-                const docRef = await addDoc(collection(db, 'quizEntries'), entryToSave);
-                console.log('Document written with ID:', docRef.id);
+                let docRef;
                 
-                // Update the local draft with the new ID
-                this.draftQuizEntry.id = docRef.id;
+                // If we have an ID, try to update the existing draft
+                if (this.draftQuizEntry.id) {
+                    const existingDraft = this.draftQuizItems.find(item => item.id === this.draftQuizEntry.id);
+                    if (existingDraft && existingDraft.userId === user.uid) {
+                        // Update existing draft
+                        docRef = doc(db, 'quizEntries', this.draftQuizEntry.id);
+                        await setDoc(docRef, entryToSave, { merge: true });
+                        console.log('Updated existing draft:', this.draftQuizEntry.id);
+                    } else {
+                        // Create new draft if we can't update the existing one
+                        docRef = await addDoc(collection(db, 'quizEntries'), entryToSave);
+                        console.log('Created new draft from existing:', docRef.id);
+                        this.draftQuizEntry.id = docRef.id;
+                    }
+                } else {
+                    // Create new draft
+                    docRef = await addDoc(collection(db, 'quizEntries'), entryToSave);
+                    console.log('Created new draft:', docRef.id);
+                    this.draftQuizEntry.id = docRef.id;
+                }
+
+                // Refresh the draft items list
+                await this.fetchDraftQuizItems();
                 
                 this.saveStatus = {
                     message: 'Draft saved successfully!',
                     type: 'success',
                     show: true
                 };
-                return docRef.id;
+                
+                return this.draftQuizEntry.id;
             } catch (e) {
                 console.error('Error saving draft:', e);
                 this.saveStatus = {
-                    message: 'Error saving draft: ' + e.message,
+                    message: e.message || 'Error saving draft',
                     type: 'error',
                     show: true
                 };
@@ -326,7 +331,63 @@ export const quizStore = defineStore('quiz', {
             } catch (e) {
                 console.error('Error updating draft:', e);
                 this.saveStatus = {
-                    message: 'Error updating draft: ' + e.message,
+                    message: e.message || 'Error updating draft',
+                    type: 'error',
+                    show: true
+                };
+                throw e;
+            }
+        },
+
+        async submitForReview(draftId) {
+            try {
+                const user = auth.currentUser;
+                if (!user) throw new Error('No user found');
+                if (user.isAnonymous) throw new Error('Must be signed in to submit for review');
+
+                // Make sure we have the latest draft items
+                await this.fetchDraftQuizItems();
+
+                // Verify ownership before submitting
+                const existingDraft = this.draftQuizItems.find(item => item.id === draftId);
+                if (!existingDraft) {
+                    throw new Error('Draft not found - please try saving again');
+                }
+                if (existingDraft.userId !== user.uid) {
+                    throw new Error('You can only submit your own drafts');
+                }
+
+                // Final validation before submission
+                const validationErrors = this.validateDraftQuizEntry(this.draftQuizEntry);
+                if (validationErrors.length > 0) {
+                    this.saveStatus = {
+                        message: 'Cannot submit: ' + validationErrors.join(', '),
+                        type: 'error',
+                        show: true
+                    };
+                    throw new Error('Validation failed: ' + validationErrors.join(', '));
+                }
+
+                const docRef = doc(db, 'quizEntries', draftId);
+                await setDoc(docRef, {
+                    status: 'pending',
+                    submittedAt: serverTimestamp(),
+                    timestamp: serverTimestamp(),
+                }, { merge: true });
+
+                // Refresh the draft items list after submission
+                await this.fetchDraftQuizItems();
+
+                this.saveStatus = {
+                    message: 'Quiz entry submitted for review!',
+                    type: 'success',
+                    show: true
+                };
+                return draftId;
+            } catch (e) {
+                console.error('Error submitting for review:', e);
+                this.saveStatus = {
+                    message: e.message || 'Error submitting for review',
                     type: 'error',
                     show: true
                 };
@@ -434,47 +495,6 @@ export const quizStore = defineStore('quiz', {
                 return true;
             } catch (_) {
                 return false;
-            }
-        },
-
-        async submitForReview(draftId) {
-            try {
-                const user = auth.currentUser;
-                if (!user) throw new Error('No user found');
-                if (user.isAnonymous) throw new Error('Must be signed in to submit for review');
-
-                // Validate the draft
-                const validationErrors = this.validateDraftQuizEntry(this.draftQuizEntry);
-                if (validationErrors.length > 0) {
-                    this.saveStatus = {
-                        message: 'Cannot submit: ' + validationErrors.join(', '),
-                        type: 'error',
-                        show: true
-                    };
-                    throw new Error('Validation failed');
-                }
-
-                const docRef = doc(db, 'quizEntries', draftId);
-                await setDoc(docRef, {
-                    status: 'pending',
-                    submittedAt: serverTimestamp(),
-                    timestamp: serverTimestamp(),
-                }, { merge: true });
-
-                this.saveStatus = {
-                    message: 'Quiz entry submitted for review!',
-                    type: 'success',
-                    show: true
-                };
-                return draftId;
-            } catch (e) {
-                console.error('Error submitting for review:', e);
-                this.saveStatus = {
-                    message: 'Error submitting: ' + e.message,
-                    type: 'error',
-                    show: true
-                };
-                throw e;
             }
         },
 
