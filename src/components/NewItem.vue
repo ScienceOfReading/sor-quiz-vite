@@ -89,14 +89,27 @@
                      dark:[&>*]:bg-gray-700
                      text-gray-200">
               <option value="" class="py-2">Start from scratch</option>
-              <optgroup label="Draft Quiz Items" class="font-medium" v-if="draftQuizItems.length">
-                <option v-for="item in draftQuizItems" :key="item.id" :value="item.id" class="py-1">
-                  {{ item.id || 'New' }}. {{ item.title || 'Untitled Draft' }}
-                </option>
-              </optgroup>
-              <optgroup label="Existing Quiz Items" class="font-medium">
-                <option v-for="item in reversedQuizItems" :key="item.id" :value="item.id" class="py-1">
-                  {{ item.id }}. {{ item.title || 'Untitled' }}
+              <template v-if="isLoadingDrafts">
+                <option disabled>Loading draft items...</option>
+              </template>
+              <template v-else-if="draftLoadError">
+                <option disabled>Error loading drafts: {{ draftLoadError }}</option>
+              </template>
+              <template v-else>
+                <optgroup label="My Draft Items" class="font-medium text-amber-500" v-if="userDraftQuizItems.length">
+                  <option v-for="item in userDraftQuizItems" :key="item.id" :value="item.id" class="py-1 text-amber-700">
+                    {{ item.id || 'Draft' }}. {{ item.title || '(Untitled Draft)' }}
+                  </option>
+                </optgroup>
+                <optgroup label="Other Draft Items" class="font-medium text-gray-500" v-if="otherDraftQuizItems.length">
+                  <option v-for="item in otherDraftQuizItems" :key="item.id" :value="item.id" class="py-1 text-gray-600">
+                    {{ item.id || 'Draft' }}. {{ item.title || '(Untitled Draft)' }}
+                  </option>
+                </optgroup>
+              </template>
+              <optgroup label="Permanent Quiz Items" class="font-medium text-blue-500">
+                <option v-for="item in permanentQuizItems" :key="item.id" :value="item.id" class="py-1 text-blue-700">
+                  {{ String(item.id).padStart(3, '0') }}. {{ item.title }}
                 </option>
               </optgroup>
             </select>
@@ -444,14 +457,13 @@
 </template>
 
 <script>
-import { db } from '../firebase';
 import { quizStore } from '../stores/quizStore';
 import { useAuthStore } from '../stores/authStore';
 import QuizItem from './QuizItem.vue';
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import { quizEntries } from '../data/quiz-items';
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 
 export default {
   components: {
@@ -461,6 +473,11 @@ export default {
   setup() {
     const store = quizStore();
     const auth = useAuthStore();
+
+    onMounted(() => {
+      store.fetchDraftQuizItems();
+    });
+
     return { store, auth };
   },
   computed: {
@@ -475,27 +492,41 @@ export default {
     formattedJson() {
       return JSON.stringify(this.newEntry, null, 2);
     },
-    draftQuizItems() {
-      const drafts = localStorage.getItem('draftQuizEntries');
-      return drafts ? JSON.parse(drafts) : [];
+    userDraftQuizItems() {
+      return this.store.draftQuizItems
+        .filter(item => item.userId === this.auth.user?.uid)
+        .sort((a, b) => {
+          // First sort by timestamp
+          const timeCompare = (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0);
+          if (timeCompare !== 0) return timeCompare;
+          // Then by ID if timestamps are equal
+          return (b.id || '').localeCompare(a.id || '');
+        });
     },
-    reversedQuizItems() {
-      return [...this.existingQuizItems].reverse();
-    }
-  },
-  watch: {
-    'store.saveStatus': {
-      handler(newStatus) {
-        console.log('Save status changed:', newStatus);
-      },
-      deep: true
+    otherDraftQuizItems() {
+      return this.store.draftQuizItems
+        .filter(item => item.userId && item.userId !== this.auth.user?.uid)
+        .sort((a, b) => {
+          // First sort by timestamp
+          const timeCompare = (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0);
+          if (timeCompare !== 0) return timeCompare;
+          // Then by ID if timestamps are equal
+          return (b.id || '').localeCompare(a.id || '');
+        });
     },
-    // Deep watch newEntry for any changes
-    newEntry: {
-      handler(newVal) {
-        this.triggerAutoSave();
-      },
-      deep: true
+    permanentQuizItems() {
+      // Sort by numeric ID, handling potential string IDs
+      return [...quizEntries].sort((a, b) => {
+        const aId = typeof a.id === 'string' ? parseInt(a.id, 10) : a.id;
+        const bId = typeof b.id === 'string' ? parseInt(b.id, 10) : b.id;
+        return aId - bId;
+      });
+    },
+    isLoadingDrafts() {
+      return this.store.draftQuizItemsLoading;
+    },
+    draftLoadError() {
+      return this.store.draftQuizItemsError;
     }
   },
   data() {
@@ -615,32 +646,25 @@ export default {
     },
     useTemplate() {
       if (!this.selectedTemplate) {
-        // If "Start from scratch" selected, initialize empty template
-        this.store.initializeDraftQuizEntry({});
+        this.store.resetDraftQuizEntry();
         return;
       }
 
       // Check if it's a draft item
-      const draftItem = this.draftQuizItems.find(
-        item => item.id === this.selectedTemplate
-      );
+      const draftItem = [...this.userDraftQuizItems, ...this.otherDraftQuizItems]
+        .find(item => item.id === this.selectedTemplate);
 
       if (draftItem) {
         this.store.updateDraftQuizEntry(draftItem);
         return;
       }
 
-      // Otherwise, handle existing quiz item
-      const template = this.existingQuizItems.find(
-        item => item.id === this.selectedTemplate
-      );
+      // If not a draft, check permanent items
+      const permanentItem = this.permanentQuizItems
+        .find(item => item.id.toString() === this.selectedTemplate.toString());
 
-      if (template) {
-        const templateData = JSON.parse(JSON.stringify(template));
-        templateData.originalId = template.id;
-        templateData.id = null;
-        templateData.title = `Copy of ${templateData.title}`;
-        this.store.updateDraftQuizEntry(templateData);
+      if (permanentItem) {
+        this.store.updateDraftQuizEntry(permanentItem);
       }
     },
     triggerAutoSave() {
@@ -706,8 +730,7 @@ export default {
   transition: all 0.2s ease;
   font-size: 0.95rem;
   box-sizing: border-box;
-  color: #b1b3be;
-  dark: text-gray-200
+  color: #333;
 }
 
 .section-summary {
@@ -1010,7 +1033,9 @@ details[open] .form-section {
 
 .preview-toggle.active,
 .return-button.active {
-  background: linear-gradient(135deg, #45a049, #3d8b41);
+  background-color: #4a90e2;
+  color: white;
+  border-color: #357abd;
 }
 
 .smaller-button {
@@ -1233,6 +1258,7 @@ details[open] .form-section {
 }
 
 .section-button {
+  width: 100%;
   padding: 0.3rem .7rem;
   background-color: #f0f0f0;
   color: #333;

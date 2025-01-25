@@ -1,7 +1,16 @@
 // src/stores/quizStore.js
 import { defineStore } from 'pinia';
 import { auth, db } from '../firebase';
-import { collection, addDoc, serverTimestamp, doc, setDoc, query, where, getDocs } from 'firebase/firestore';
+import { 
+  collection, 
+  addDoc, 
+  serverTimestamp, 
+  doc, 
+  setDoc, 
+  query, 
+  where, 
+  getDocs 
+} from 'firebase/firestore';
 import { useAuthStore } from './authStore';
 
 export const quizStore = defineStore('quiz', {
@@ -10,9 +19,12 @@ export const quizStore = defineStore('quiz', {
         quizEdits: [],
         userAnswers: [], 
         currentQuizId: null,
+        draftQuizItems: [],
+        draftQuizItemsLoading: false,
+        draftQuizItemsError: null,
         draftQuizEntry: {
-            title: 'Sample Title',
-            subtitle: 'Sample Subtitle',
+            title: '',
+            subtitle: '',
             Question: 'What is your question?',
             questionP2: '',
             answer_type: 'mc',
@@ -52,11 +64,9 @@ export const quizStore = defineStore('quiz', {
             closingText: '',
             closingText2: '',
             modal: '',
-            status: 'draft' 
+            status: 'draft',
+            id: null
         },
-        draftQuizItems: [],
-        draftQuizItemsLoading: false,
-        draftQuizItemsError: null,
         saveStatus: {
             message: '',
             type: '', 
@@ -78,7 +88,7 @@ export const quizStore = defineStore('quiz', {
             this.incorrectQuestions = [];  
         },
 
-        setUserAnswer(index, selectedAnswer, correctAnswer, questionId, questionTitle, quizEntry) {
+        async setUserAnswer(index, selectedAnswer, correctAnswer, questionId, questionTitle, quizEntry) {
             if (selectedAnswer === undefined) {
                 console.error('Invalid selectedAnswer:', selectedAnswer);
                 return;
@@ -217,6 +227,11 @@ export const quizStore = defineStore('quiz', {
                 const user = auth.currentUser;
                 if (!user) throw new Error('No user found');
 
+                // If the draft has an ID, update it instead of creating a new one
+                if (this.draftQuizEntry.id) {
+                    return await this.updateExistingDraftEntry(this.draftQuizEntry.id);
+                }
+
                 const authStore = useAuthStore();
                 const canPublish = !user.isAnonymous;
 
@@ -225,7 +240,7 @@ export const quizStore = defineStore('quiz', {
                     userId: user.uid,
                     userEmail: user.email,
                     isAnonymous: user.isAnonymous,
-                    status: canPublish ? 'pending' : 'draft',
+                    status: 'draft', // Always save as draft initially
                     podcastEpisode: this.draftQuizEntry.podcastEpisode || {
                         title: '',
                         EpisodeUrl: '',
@@ -243,22 +258,88 @@ export const quizStore = defineStore('quiz', {
                     timestamp: serverTimestamp(),
                 };
 
-                console.log('Saving entry:', entryToSave);
+                console.log('Saving new draft entry:', entryToSave);
                 const docRef = await addDoc(collection(db, 'quizEntries'), entryToSave);
                 console.log('Document written with ID:', docRef.id);
                 
+                // Update the local draft with the new ID
+                this.draftQuizEntry.id = docRef.id;
+                
                 this.saveStatus = {
-                    message: canPublish 
-                        ? 'Quiz entry submitted for review!' 
-                        : 'Quiz entry saved as draft. Sign in to submit for review.',
+                    message: 'Draft saved successfully!',
                     type: 'success',
                     show: true
                 };
                 return docRef.id;
             } catch (e) {
-                console.error('Error adding document:', e);
+                console.error('Error saving draft:', e);
                 this.saveStatus = {
-                    message: 'Error saving quiz entry: ' + e.message,
+                    message: 'Error saving draft: ' + e.message,
+                    type: 'error',
+                    show: true
+                };
+                throw e;
+            }
+        },
+
+        async updateExistingDraftEntry(draftId) {
+            try {
+                const user = auth.currentUser;
+                if (!user) throw new Error('No user found');
+
+                const entryToUpdate = {
+                    ...this.draftQuizEntry,
+                    userId: user.uid,
+                    userEmail: user.email,
+                    isAnonymous: user.isAnonymous,
+                    status: 'draft',
+                    timestamp: serverTimestamp(),
+                };
+
+                console.log('Updating draft entry:', entryToUpdate);
+                const docRef = doc(db, 'quizEntries', draftId);
+                await setDoc(docRef, entryToUpdate, { merge: true });
+                console.log('Document updated:', draftId);
+
+                this.saveStatus = {
+                    message: 'Draft updated successfully!',
+                    type: 'success',
+                    show: true
+                };
+                return draftId;
+            } catch (e) {
+                console.error('Error updating draft:', e);
+                this.saveStatus = {
+                    message: 'Error updating draft: ' + e.message,
+                    type: 'error',
+                    show: true
+                };
+                throw e;
+            }
+        },
+
+        async submitForReview(draftId) {
+            try {
+                const user = auth.currentUser;
+                if (!user) throw new Error('No user found');
+                if (user.isAnonymous) throw new Error('Must be signed in to submit for review');
+
+                const docRef = doc(db, 'quizEntries', draftId);
+                await setDoc(docRef, {
+                    status: 'pending',
+                    timestamp: serverTimestamp(),
+                }, { merge: true });
+
+                this.saveStatus = {
+                    message: 'Quiz entry submitted for review!',
+                    type: 'success',
+                    show: true
+                };
+                return draftId;
+            } catch (e) {
+                console.error('Error submitting for review:', e);
+                this.saveStatus = {
+                    message: 'Error submitting: ' + e.message,
                     type: 'error',
                     show: true
                 };
@@ -267,7 +348,12 @@ export const quizStore = defineStore('quiz', {
         },
 
         updateDraftQuizEntry(entry) {
-            this.draftQuizEntry = { ...this.draftQuizEntry, ...entry };
+            const currentId = this.draftQuizEntry.id;
+            this.draftQuizEntry = { 
+                ...this.draftQuizEntry, 
+                ...entry,
+                id: entry.id || currentId // Keep existing ID if new entry doesn't have one
+            };
         },
 
         resetDraftQuizEntry() {
