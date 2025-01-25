@@ -218,7 +218,10 @@
 
           <!-- Explanation toggle -->
           <div class="section-summary" @click="showExplanationSection = !showExplanationSection">
-            <span class="summary-text">Add/Edit Explanation Section</span>
+            <span class="summary-text">
+              Add/Edit Explanation Section
+              <span v-if="hasExplanationSectionErrors" class="section-error-indicator" title="This section contains validation errors">⚠️</span>
+            </span>
             <span class="arrow-indicator" :class="{ 'rotated': !showExplanationSection }">▼</span>
           </div>
         </div>
@@ -628,6 +631,27 @@ export default {
     },
     invalidFields() {
       return this.validationState.invalidFields;
+    },
+    hasExplanationSectionErrors() {
+      const explanationFields = [
+        'explanation',
+        'explanation2',
+        'videoId',
+        'imageUrl',
+        'imageAltText',
+        'podcastEpisode.title',
+        'podcastEpisode.EpisodeUrl',
+        'podcastEpisode.audioUrl',
+        'podcastEpisode.description',
+        'podcastEpisode.podcastStartTime',
+        'podcastEpisode2.title',
+        'podcastEpisode2.EpisodeUrl',
+        'podcastEpisode2.audioUrl',
+        'podcastEpisode2.description',
+        'podcastEpisode2.podcastStartTime'
+      ];
+      
+      return explanationFields.some(field => this.validationState.invalidFields.has(field));
     }
   },
   data() {
@@ -1420,7 +1444,8 @@ details[open] .form-section {
 
 .explanation-toggles {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
   gap: 0.5rem;
   margin: .7rem 1rem;
   padding: .7rem;
@@ -1429,24 +1454,13 @@ details[open] .form-section {
 }
 
 .section-button {
-  width: 100%;
+  flex: 1;
   padding: 0.3rem .7rem;
-  background-color: #f0f0f0;
-  color: #333;
-  border: 1px solid #ddd;
+  border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s;
-}
-
-.section-button:hover {
-  background-color: #e0e0e0;
-}
-
-.section-button.active {
-  background-color: #4a90e2;
-  color: white;
-  border-color: #357abd;
+  transition: background-color 0.2s;
+  white-space: nowrap;
 }
 
 /* Fade transition */
@@ -1673,5 +1687,12 @@ option {
   border-width: 5px;
   border-style: solid;
   border-color: #ef4444 transparent transparent transparent;
+}
+
+.section-error-indicator {
+  color: #ef4444;
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  vertical-align: middle;
 }
 </style>
