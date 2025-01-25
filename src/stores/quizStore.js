@@ -334,15 +334,130 @@ export const quizStore = defineStore('quiz', {
             }
         },
 
+        validateDraftQuizEntry(draft) {
+            const errors = [];
+            
+            // Default values to check against
+            const defaultValues = {
+                title: '',
+                subtitle: '',
+                Question: 'What is your question?',
+                questionP2: '',
+                option1: 'First option',
+                option2: 'Second option',
+                option3: 'Third option',
+                option4: 'Fourth option',
+                option5: 'Fifth option',
+                explanation: 'Here is why option 1 is correct...'
+            };
+            
+            // Required fields - check for empty or default values
+            if (!draft.title?.trim() || draft.title === defaultValues.title) {
+                errors.push('Title is required');
+            }
+
+            if (!draft.Question?.trim() || draft.Question === defaultValues.Question) {
+                errors.push('Question is required');
+            }
+
+            // Answer type specific validation
+            if (draft.answer_type === 'mc') {
+                // For multiple choice, need at least 2 options and a correct answer
+                const options = [
+                    draft.option1,
+                    draft.option2,
+                    draft.option3,
+                    draft.option4,
+                    draft.option5
+                ];
+
+                // Check if options are just default values
+                const nonDefaultOptions = options.filter(
+                    (opt, index) => opt?.trim() && opt !== defaultValues[`option${index + 1}`]
+                );
+
+                if (nonDefaultOptions.length < 2) {
+                    errors.push('Multiple choice questions require at least 2 non-default options');
+                }
+                
+                if (!draft.correctAnswer || draft.correctAnswer < 1 || draft.correctAnswer > nonDefaultOptions.length) {
+                    errors.push('Please select a valid correct answer');
+                }
+
+                // Check if the selected correct answer is still a default value
+                const correctOptionIndex = draft.correctAnswer - 1;
+                if (correctOptionIndex >= 0 && 
+                    options[correctOptionIndex] === defaultValues[`option${draft.correctAnswer}`]) {
+                    errors.push('The correct answer cannot be a default option');
+                }
+            }
+
+            // Explanation validation - check for default value
+            if (!draft.explanation?.trim() || draft.explanation === defaultValues.explanation) {
+                errors.push('Explanation is required');
+            }
+
+            // Media validation - if URLs are provided, they should be valid
+            if (draft.videoUrl && !this.isValidUrl(draft.videoUrl)) {
+                errors.push('Invalid video URL');
+            }
+            if (draft.imageUrl && !this.isValidUrl(draft.imageUrl)) {
+                errors.push('Invalid image URL');
+            }
+
+            // Podcast episode validation
+            if (draft.podcastEpisode?.EpisodeUrl && !this.isValidUrl(draft.podcastEpisode.EpisodeUrl)) {
+                errors.push('Invalid podcast episode URL');
+            }
+            if (draft.podcastEpisode?.audioUrl && !this.isValidUrl(draft.podcastEpisode.audioUrl)) {
+                errors.push('Invalid podcast audio URL');
+            }
+
+            // Citations validation
+            if (draft.citations?.length > 0) {
+                draft.citations.forEach((citation, index) => {
+                    if (!citation.title?.trim()) {
+                        errors.push(`Citation ${index + 1} requires a title`);
+                    }
+                    if (citation.url && !this.isValidUrl(citation.url)) {
+                        errors.push(`Citation ${index + 1} has an invalid URL`);
+                    }
+                });
+            }
+
+            return errors;
+        },
+
+        isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        },
+
         async submitForReview(draftId) {
             try {
                 const user = auth.currentUser;
                 if (!user) throw new Error('No user found');
                 if (user.isAnonymous) throw new Error('Must be signed in to submit for review');
 
+                // Validate the draft
+                const validationErrors = this.validateDraftQuizEntry(this.draftQuizEntry);
+                if (validationErrors.length > 0) {
+                    this.saveStatus = {
+                        message: 'Cannot submit: ' + validationErrors.join(', '),
+                        type: 'error',
+                        show: true
+                    };
+                    throw new Error('Validation failed');
+                }
+
                 const docRef = doc(db, 'quizEntries', draftId);
                 await setDoc(docRef, {
                     status: 'pending',
+                    submittedAt: serverTimestamp(),
                     timestamp: serverTimestamp(),
                 }, { merge: true });
 
