@@ -227,13 +227,20 @@ export const quizStore = defineStore('quiz', {
                 const user = auth.currentUser;
                 if (!user) throw new Error('No user found');
 
-                // If the draft has an ID, update it instead of creating a new one
+                // If the draft has an ID, check ownership before updating
                 if (this.draftQuizEntry.id) {
-                    return await this.updateExistingDraftEntry(this.draftQuizEntry.id);
+                    const existingDraft = this.draftQuizItems.find(item => item.id === this.draftQuizEntry.id);
+                    if (existingDraft) {
+                        // If trying to update someone else's draft, create a new one instead
+                        if (existingDraft.userId !== user.uid) {
+                            console.log('Creating new draft from existing one');
+                            // Clear the ID to force creating a new draft
+                            this.draftQuizEntry.id = null;
+                        } else {
+                            return await this.updateExistingDraftEntry(this.draftQuizEntry.id);
+                        }
+                    }
                 }
-
-                const authStore = useAuthStore();
-                const canPublish = !user.isAnonymous;
 
                 const entryToSave = {
                     ...this.draftQuizEntry,
@@ -286,6 +293,15 @@ export const quizStore = defineStore('quiz', {
             try {
                 const user = auth.currentUser;
                 if (!user) throw new Error('No user found');
+
+                // Verify ownership before updating
+                const existingDraft = this.draftQuizItems.find(item => item.id === draftId);
+                if (!existingDraft) {
+                    throw new Error('Draft not found');
+                }
+                if (existingDraft.userId !== user.uid) {
+                    throw new Error('You can only edit your own drafts');
+                }
 
                 const entryToUpdate = {
                     ...this.draftQuizEntry,
