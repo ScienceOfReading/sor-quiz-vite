@@ -19,20 +19,22 @@
       </div>
     </div>
 
-    <div class="preview-controls">
-      <span class="preview-controls-text">Help build these quizzes. </span>
-      <div class="button-group">
-        <button type="button" @click="returnToQuizzes"
-          :class="['return-button smaller-button', { active: returnButton.active }]">
-          Return to Quizzes
-        </button>
-        <button type="button" @click="togglePreviewMode" :class="['preview-toggle', { active: previewMode }]">
-          {{ previewMode ? 'Edit Mode' : 'Preview Mode' }}
-        </button>
-        <button type="button" @click="jsonPreviewMode = !jsonPreviewMode"
-          :class="['preview-toggle', { active: jsonPreviewMode }]">
-          {{ jsonPreviewMode ? 'Hide JSON' : 'Show JSON' }}
-        </button>
+    <div class="flex items-center gap-4">
+      <span class="preview-controls-text">Help build these quizzes.</span>
+      <div class="preview-controls">
+        <div class="button-group">
+          <button type="button" @click="returnToQuizzes"
+            :class="['return-button smaller-button', { active: returnButton.active }]">
+            Return to Quizzes
+          </button>
+          <button type="button" @click="togglePreviewMode" :class="['preview-toggle', { active: previewMode }]">
+            {{ previewMode ? 'Edit Mode' : 'Preview Mode' }}
+          </button>
+          <button type="button" @click="jsonPreviewMode = !jsonPreviewMode"
+            :class="['preview-toggle', { active: jsonPreviewMode }]">
+            {{ jsonPreviewMode ? 'Hide JSON' : 'Show JSON' }}
+          </button>
+        </div>
       </div>
     </div>
 
@@ -975,6 +977,7 @@ details[open] .form-section {
 }
 
 .preview-controls-text {
+  padding-left: .8rem;
   margin-right: 1rem;
   font-size: x-large;
   color: #fff;
