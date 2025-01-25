@@ -444,8 +444,13 @@
         </div>
       </div>
 
-      <div class="mt-4">
-        <button type="submit">Submit</button>
+      <div class="mt-4 flex justify-between items-center">
+        <button type="button" @click="saveDraft" class="save-draft-btn">
+          Save Draft
+        </button>
+        <button type="submit" class="submit-btn">
+          Submit for Review
+        </button>
       </div>
     </form>
 
@@ -582,17 +587,13 @@ export default {
     },
     async submitForm() {
       try {
-        // First save the draft
-        await this.store.recordQuizEdit();
-        const draftId = await this.store.saveDraftQuizEntry();
-        
-        // Only proceed with submission if we got a valid draft ID
-        if (!draftId) {
-          throw new Error('Failed to save draft');
+        // Only submit for review, no saving here
+        if (!this.store.draftQuizEntry.id) {
+          throw new Error('Please save your draft first before submitting');
         }
 
-        // Then submit for review
-        await this.store.submitForReview(draftId);
+        // Submit for review
+        await this.store.submitForReview(this.store.draftQuizEntry.id);
         
         this.submittedEntry = { ...this.newEntry };
         this.submitStatus = {
@@ -606,14 +607,28 @@ export default {
           type: 'error',
           message: e.message || 'Error submitting quiz entry'
         };
+      }
+    },
+    async saveDraft() {
+      try {
+        await this.store.recordQuizEdit();
+        const draftId = await this.store.saveDraftQuizEntry();
         
-        // If this was a validation error, keep the form open
-        if (e.message.includes('Validation failed')) {
-          return;
+        if (!draftId) {
+          throw new Error('Failed to save draft');
         }
-        
-        // For other errors, may want to reset the form
-        this.store.resetDraftQuizEntry();
+
+        this.submitStatus = {
+          show: true,
+          type: 'success',
+          message: 'Draft saved successfully!'
+        };
+      } catch (e) {
+        this.submitStatus = {
+          show: true,
+          type: 'error',
+          message: e.message || 'Error saving draft'
+        };
       }
     },
     returnToQuizzes() {
@@ -1420,5 +1435,31 @@ option {
     opacity: 0;
     transform: translateY(-1rem);
   }
+}
+
+.save-draft-btn {
+  background-color: #4a5568;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.save-draft-btn:hover {
+  background-color: #2d3748;
+}
+
+.submit-btn {
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: #4338ca;
 }
 </style>
