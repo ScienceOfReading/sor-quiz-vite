@@ -97,12 +97,14 @@
               </template>
               <template v-else>
                 <optgroup label="My Draft Items" class="font-medium text-amber-500" v-if="userDraftQuizItems.length">
-                  <option v-for="item in userDraftQuizItems" :key="item.id" :value="item.id" class="py-1 text-amber-700">
+                  <option v-for="item in userDraftQuizItems" :key="item.id" :value="item.id"
+                    class="py-1 text-amber-700">
                     {{ item.id || 'Draft' }}. {{ item.title || '(Untitled Draft)' }}
                   </option>
                 </optgroup>
                 <optgroup label="Other Draft Items" class="font-medium text-gray-500" v-if="otherDraftQuizItems.length">
-                  <option v-for="item in otherDraftQuizItems" :key="item.id" :value="item.id" class="py-1 text-gray-600">
+                  <option v-for="item in otherDraftQuizItems" :key="item.id" :value="item.id"
+                    class="py-1 text-gray-600">
                     {{ item.id || 'Draft' }}. {{ item.title || '(Untitled Draft)' }}
                   </option>
                 </optgroup>
@@ -133,31 +135,31 @@
             <div class="form-section">
               <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" id="title" v-model="newEntry.title" 
+                <input type="text" id="title" v-model="newEntry.title"
                   :class="['form-input', { 'invalid-field': invalidFields.has('title') }]"
-                  :data-error="getFieldError('title')"
-                  :placeholder="newEntry.title" @focus="handleFocus($event, 'title')" @blur="handleBlur($event, 'title')" />
+                  :data-error="getFieldError('title')" :placeholder="newEntry.title"
+                  @focus="handleFocus($event, 'title')" @blur="handleBlur($event, 'title')" />
               </div>
               <div class="form-group">
                 <label for="subtitle">Subtitle:</label>
-                <input type="text" id="subtitle" v-model="newEntry.subtitle" 
+                <input type="text" id="subtitle" v-model="newEntry.subtitle"
                   :class="['form-input', { 'invalid-field': invalidFields.has('subtitle') }]"
-                  :data-error="getFieldError('subtitle')"
-                  :placeholder="newEntry.subtitle" @focus="handleFocus($event, 'subtitle')" @blur="handleBlur($event, 'subtitle')" />
+                  :data-error="getFieldError('subtitle')" :placeholder="newEntry.subtitle"
+                  @focus="handleFocus($event, 'subtitle')" @blur="handleBlur($event, 'subtitle')" />
               </div>
               <div class="form-group">
                 <label for="question">Question:</label>
-                <textarea id="question" v-model="newEntry.Question" 
+                <textarea id="question" v-model="newEntry.Question"
                   :class="['form-textarea', { 'invalid-field': invalidFields.has('Question') }]"
-                  :data-error="getFieldError('Question')"
-                  :placeholder="newEntry.Question" @focus="handleFocus($event, 'Question')" @blur="handleBlur($event, 'Question')"></textarea>
+                  :data-error="getFieldError('Question')" :placeholder="newEntry.Question"
+                  @focus="handleFocus($event, 'Question')" @blur="handleBlur($event, 'Question')"></textarea>
               </div>
               <div class="form-group">
                 <label for="questionP2">Question Line 2 (optional):</label>
-                <textarea id="questionP2" v-model="newEntry.questionP2" 
+                <textarea id="questionP2" v-model="newEntry.questionP2"
                   :class="['form-textarea', { 'invalid-field': invalidFields.has('questionP2') }]"
-                  :data-error="getFieldError('questionP2')"
-                  :placeholder="newEntry.questionP2" @focus="handleFocus($event, 'questionP2')" @blur="handleBlur($event, 'questionP2')"></textarea>
+                  :data-error="getFieldError('questionP2')" :placeholder="newEntry.questionP2"
+                  @focus="handleFocus($event, 'questionP2')" @blur="handleBlur($event, 'questionP2')"></textarea>
               </div>
             </div>
           </details>
@@ -171,45 +173,44 @@
             <div class="form-section">
               <div class="form-group">
                 <label for="option1">Option 1:</label>
-                <input type="text" id="option1" v-model="newEntry.option1" 
+                <input type="text" id="option1" v-model="newEntry.option1"
                   :class="['form-input', { 'invalid-field': invalidFields.has('option1') }]"
-                  :data-error="getFieldError('option1')"
-                  :placeholder="newEntry.option1" @focus="handleFocus($event, 'option1')" @blur="handleBlur($event, 'option1')" />
+                  :data-error="getFieldError('option1')" :placeholder="newEntry.option1"
+                  @focus="handleFocus($event, 'option1')" @blur="handleBlur($event, 'option1')" />
               </div>
               <div class="form-group">
                 <label for="option2">Option 2:</label>
-                <input type="text" id="option2" v-model="newEntry.option2" 
+                <input type="text" id="option2" v-model="newEntry.option2"
                   :class="['form-input', { 'invalid-field': invalidFields.has('option2') }]"
-                  :data-error="getFieldError('option2')"
-                  :placeholder="newEntry.option2" @focus="handleFocus($event, 'option2')" @blur="handleBlur($event, 'option2')" />
+                  :data-error="getFieldError('option2')" :placeholder="newEntry.option2"
+                  @focus="handleFocus($event, 'option2')" @blur="handleBlur($event, 'option2')" />
               </div>
               <div class="form-group">
                 <label for="option3">Option 3:</label>
-                <input type="text" id="option3" v-model="newEntry.option3" 
+                <input type="text" id="option3" v-model="newEntry.option3"
                   :class="['form-input', { 'invalid-field': invalidFields.has('option3') }]"
-                  :data-error="getFieldError('option3')"
-                  :placeholder="newEntry.option3" @focus="handleFocus($event, 'option3')" @blur="handleBlur($event, 'option3')" />
+                  :data-error="getFieldError('option3')" :placeholder="newEntry.option3"
+                  @focus="handleFocus($event, 'option3')" @blur="handleBlur($event, 'option3')" />
               </div>
               <div class="form-group">
                 <label for="option4">Option 4:</label>
-                <input type="text" id="option4" v-model="newEntry.option4" 
+                <input type="text" id="option4" v-model="newEntry.option4"
                   :class="['form-input', { 'invalid-field': invalidFields.has('option4') }]"
-                  :data-error="getFieldError('option4')"
-                  :placeholder="newEntry.option4" @focus="handleFocus($event, 'option4')" @blur="handleBlur($event, 'option4')" />
+                  :data-error="getFieldError('option4')" :placeholder="newEntry.option4"
+                  @focus="handleFocus($event, 'option4')" @blur="handleBlur($event, 'option4')" />
               </div>
               <div class="form-group">
                 <label for="option5">Option 5:</label>
-                <input type="text" id="option5" v-model="newEntry.option5" 
+                <input type="text" id="option5" v-model="newEntry.option5"
                   :class="['form-input', { 'invalid-field': invalidFields.has('option5') }]"
-                  :data-error="getFieldError('option5')"
-                  :placeholder="newEntry.option5" @focus="handleFocus($event, 'option5')" @blur="handleBlur($event, 'option5')" />
+                  :data-error="getFieldError('option5')" :placeholder="newEntry.option5"
+                  @focus="handleFocus($event, 'option5')" @blur="handleBlur($event, 'option5')" />
               </div>
               <div class="form-group">
                 <label for="correctAnswer">Correct Answer (1-5):</label>
-                <input type="number" id="correctAnswer" v-model="newEntry.correctAnswer" 
+                <input type="number" id="correctAnswer" v-model="newEntry.correctAnswer"
                   :class="['form-input', { 'invalid-field': invalidFields.has('correctAnswer') }]"
-                  :data-error="getFieldError('correctAnswer')"
-                  min="1" max="5" required
+                  :data-error="getFieldError('correctAnswer')" min="1" max="5" required
                   :placeholder="newEntry.correctAnswer" @focus="handleFocus($event, 'correctAnswer')"
                   @blur="handleBlur($event, 'correctAnswer')" />
               </div>
@@ -220,7 +221,8 @@
           <div class="section-summary" @click="showExplanationSection = !showExplanationSection">
             <span class="summary-text">
               Add/Edit Explanation Section
-              <span v-if="hasExplanationSectionErrors" class="section-error-indicator" title="This section contains validation errors">⚠️</span>
+              <span v-if="hasExplanationSectionErrors" class="section-error-indicator"
+                title="This section contains validation errors">⚠️</span>
             </span>
             <span class="arrow-indicator" :class="{ 'rotated': !showExplanationSection }">▼</span>
           </div>
@@ -265,17 +267,17 @@
           <div v-show="activeSection === 'explanations'" class="form-section">
             <div class="form-group">
               <label for="explanation">Primary Explanation:</label>
-              <textarea id="explanation" v-model="newEntry.explanation" 
+              <textarea id="explanation" v-model="newEntry.explanation"
                 :class="['form-textarea', { 'invalid-field': invalidFields.has('explanation') }]"
-                :data-error="getFieldError('explanation')"
-                :placeholder="newEntry.explanation" @focus="handleFocus($event, 'explanation')" @blur="handleBlur($event, 'explanation')"></textarea>
+                :data-error="getFieldError('explanation')" :placeholder="newEntry.explanation"
+                @focus="handleFocus($event, 'explanation')" @blur="handleBlur($event, 'explanation')"></textarea>
             </div>
             <div class="form-group">
               <label for="explanation2">Secondary Explanation:</label>
-              <textarea id="explanation2" v-model="newEntry.explanation2" 
+              <textarea id="explanation2" v-model="newEntry.explanation2"
                 :class="['form-textarea', { 'invalid-field': invalidFields.has('explanation2') }]"
-                :data-error="getFieldError('explanation2')"
-                :placeholder="newEntry.explanation2" @focus="handleFocus($event, 'explanation2')" @blur="handleBlur($event, 'explanation2')"></textarea>
+                :data-error="getFieldError('explanation2')" :placeholder="newEntry.explanation2"
+                @focus="handleFocus($event, 'explanation2')" @blur="handleBlur($event, 'explanation2')"></textarea>
             </div>
           </div>
 
@@ -283,24 +285,24 @@
           <div v-show="activeSection === 'media'" class="form-section">
             <div class="form-group">
               <label for="videoId">YouTube Video ID:</label>
-              <input type="text" id="videoId" v-model="newEntry.videoId" 
+              <input type="text" id="videoId" v-model="newEntry.videoId"
                 :class="['form-input', { 'invalid-field': invalidFields.has('videoId') }]"
-                :data-error="getFieldError('videoId')"
-                :placeholder="newEntry.videoId" @focus="handleFocus($event, 'videoId')" @blur="handleBlur($event, 'videoId')" />
+                :data-error="getFieldError('videoId')" :placeholder="newEntry.videoId"
+                @focus="handleFocus($event, 'videoId')" @blur="handleBlur($event, 'videoId')" />
             </div>
             <div class="form-group">
               <label for="imageUrl">Image URL:</label>
-              <input type="text" id="imageUrl" v-model="newEntry.imageUrl" 
+              <input type="text" id="imageUrl" v-model="newEntry.imageUrl"
                 :class="['form-input', { 'invalid-field': invalidFields.has('imageUrl') }]"
-                :data-error="getFieldError('imageUrl')"
-                :placeholder="newEntry.imageUrl" @focus="handleFocus($event, 'imageUrl')" @blur="handleBlur($event, 'imageUrl')" />
+                :data-error="getFieldError('imageUrl')" :placeholder="newEntry.imageUrl"
+                @focus="handleFocus($event, 'imageUrl')" @blur="handleBlur($event, 'imageUrl')" />
             </div>
             <div class="form-group">
               <label for="imageAltText">Image Alt Text:</label>
-              <input type="text" id="imageAltText" v-model="newEntry.imageAltText" 
+              <input type="text" id="imageAltText" v-model="newEntry.imageAltText"
                 :class="['form-input', { 'invalid-field': invalidFields.has('imageAltText') }]"
-                :data-error="getFieldError('imageAltText')"
-                :placeholder="newEntry.imageAltText" @focus="handleFocus($event, 'imageAltText')" @blur="handleBlur($event, 'imageAltText')" />
+                :data-error="getFieldError('imageAltText')" :placeholder="newEntry.imageAltText"
+                @focus="handleFocus($event, 'imageAltText')" @blur="handleBlur($event, 'imageAltText')" />
             </div>
           </div>
 
@@ -308,38 +310,43 @@
           <div v-show="activeSection === 'podcasts'" class="form-section">
             <div class="form-group">
               <label for="podcastEpisode1-title">Episode 1 Title:</label>
-              <input type="text" id="podcastEpisode1-title" v-model="newEntry.podcastEpisode.title" 
+              <input type="text" id="podcastEpisode1-title" v-model="newEntry.podcastEpisode.title"
                 :class="['form-input', { 'invalid-field': invalidFields.has('podcastEpisode.title') }]"
-                :data-error="getFieldError('podcastEpisode.title')"
-                :placeholder="newEntry.podcastEpisode.title" @focus="handleFocus($event, 'podcastEpisode.title')" @blur="handleBlur($event, 'podcastEpisode.title')" />
+                :data-error="getFieldError('podcastEpisode.title')" :placeholder="newEntry.podcastEpisode.title"
+                @focus="handleFocus($event, 'podcastEpisode.title')"
+                @blur="handleBlur($event, 'podcastEpisode.title')" />
             </div>
             <div class="form-group">
               <label for="podcastEpisode1-url">Episode 1 URL:</label>
-              <input type="text" id="podcastEpisode1-url" v-model="newEntry.podcastEpisode.EpisodeUrl" 
+              <input type="text" id="podcastEpisode1-url" v-model="newEntry.podcastEpisode.EpisodeUrl"
                 :class="['form-input', { 'invalid-field': invalidFields.has('podcastEpisode.EpisodeUrl') }]"
                 :data-error="getFieldError('podcastEpisode.EpisodeUrl')"
-                :placeholder="newEntry.podcastEpisode.EpisodeUrl" @focus="handleFocus($event, 'podcastEpisode.EpisodeUrl')" @blur="handleBlur($event, 'podcastEpisode.EpisodeUrl')" />
+                :placeholder="newEntry.podcastEpisode.EpisodeUrl"
+                @focus="handleFocus($event, 'podcastEpisode.EpisodeUrl')"
+                @blur="handleBlur($event, 'podcastEpisode.EpisodeUrl')" />
             </div>
             <div class="form-group">
               <label for="podcastEpisode1-audio">Episode 1 Audio URL:</label>
-              <input type="text" id="podcastEpisode1-audio" v-model="newEntry.podcastEpisode.audioUrl" 
+              <input type="text" id="podcastEpisode1-audio" v-model="newEntry.podcastEpisode.audioUrl"
                 :class="['form-input', { 'invalid-field': invalidFields.has('podcastEpisode.audioUrl') }]"
-                :data-error="getFieldError('podcastEpisode.audioUrl')"
-                :placeholder="newEntry.podcastEpisode.audioUrl" @focus="handleFocus($event, 'podcastEpisode.audioUrl')" @blur="handleBlur($event, 'podcastEpisode.audioUrl')" />
+                :data-error="getFieldError('podcastEpisode.audioUrl')" :placeholder="newEntry.podcastEpisode.audioUrl"
+                @focus="handleFocus($event, 'podcastEpisode.audioUrl')"
+                @blur="handleBlur($event, 'podcastEpisode.audioUrl')" />
             </div>
             <div class="form-group">
               <label for="podcastEpisode1-desc">Episode 1 Description:</label>
-              <textarea id="podcastEpisode1-desc" v-model="newEntry.podcastEpisode.description" 
+              <textarea id="podcastEpisode1-desc" v-model="newEntry.podcastEpisode.description"
                 :class="['form-textarea', { 'invalid-field': invalidFields.has('podcastEpisode.description') }]"
                 :data-error="getFieldError('podcastEpisode.description')"
-                :placeholder="newEntry.podcastEpisode.description" @focus="handleFocus($event, 'podcastEpisode.description')" @blur="handleBlur($event, 'podcastEpisode.description')"></textarea>
+                :placeholder="newEntry.podcastEpisode.description"
+                @focus="handleFocus($event, 'podcastEpisode.description')"
+                @blur="handleBlur($event, 'podcastEpisode.description')"></textarea>
             </div>
             <div class="form-group">
               <label for="podcastEpisode1-time">Episode 1 Start Time (seconds):</label>
-              <input type="number" id="podcastEpisode1-time" v-model="newEntry.podcastEpisode.podcastStartTime" 
+              <input type="number" id="podcastEpisode1-time" v-model="newEntry.podcastEpisode.podcastStartTime"
                 :class="['form-input', { 'invalid-field': invalidFields.has('podcastEpisode.podcastStartTime') }]"
-                :data-error="getFieldError('podcastEpisode.podcastStartTime')"
-                min="0" 
+                :data-error="getFieldError('podcastEpisode.podcastStartTime')" min="0"
                 :placeholder="newEntry.podcastEpisode.podcastStartTime"
                 @focus="handleFocus($event, 'podcastEpisode.podcastStartTime')"
                 @blur="handleBlur($event, 'podcastEpisode.podcastStartTime')" />
@@ -349,38 +356,43 @@
 
             <div class="form-group">
               <label for="podcastEpisode2-title">Episode 2 Title:</label>
-              <input type="text" id="podcastEpisode2-title" v-model="newEntry.podcastEpisode2.title" 
+              <input type="text" id="podcastEpisode2-title" v-model="newEntry.podcastEpisode2.title"
                 :class="['form-input', { 'invalid-field': invalidFields.has('podcastEpisode2.title') }]"
-                :data-error="getFieldError('podcastEpisode2.title')"
-                :placeholder="newEntry.podcastEpisode2.title" @focus="handleFocus($event, 'podcastEpisode2.title')" @blur="handleBlur($event, 'podcastEpisode2.title')" />
+                :data-error="getFieldError('podcastEpisode2.title')" :placeholder="newEntry.podcastEpisode2.title"
+                @focus="handleFocus($event, 'podcastEpisode2.title')"
+                @blur="handleBlur($event, 'podcastEpisode2.title')" />
             </div>
             <div class="form-group">
               <label for="podcastEpisode2-url">Episode 2 URL:</label>
-              <input type="text" id="podcastEpisode2-url" v-model="newEntry.podcastEpisode2.EpisodeUrl" 
+              <input type="text" id="podcastEpisode2-url" v-model="newEntry.podcastEpisode2.EpisodeUrl"
                 :class="['form-input', { 'invalid-field': invalidFields.has('podcastEpisode2.EpisodeUrl') }]"
                 :data-error="getFieldError('podcastEpisode2.EpisodeUrl')"
-                :placeholder="newEntry.podcastEpisode2.EpisodeUrl" @focus="handleFocus($event, 'podcastEpisode2.EpisodeUrl')" @blur="handleBlur($event, 'podcastEpisode2.EpisodeUrl')" />
+                :placeholder="newEntry.podcastEpisode2.EpisodeUrl"
+                @focus="handleFocus($event, 'podcastEpisode2.EpisodeUrl')"
+                @blur="handleBlur($event, 'podcastEpisode2.EpisodeUrl')" />
             </div>
             <div class="form-group">
               <label for="podcastEpisode2-audio">Episode 2 Audio URL:</label>
-              <input type="text" id="podcastEpisode2-audio" v-model="newEntry.podcastEpisode2.audioUrl" 
+              <input type="text" id="podcastEpisode2-audio" v-model="newEntry.podcastEpisode2.audioUrl"
                 :class="['form-input', { 'invalid-field': invalidFields.has('podcastEpisode2.audioUrl') }]"
-                :data-error="getFieldError('podcastEpisode2.audioUrl')"
-                :placeholder="newEntry.podcastEpisode2.audioUrl" @focus="handleFocus($event, 'podcastEpisode2.audioUrl')" @blur="handleBlur($event, 'podcastEpisode2.audioUrl')" />
+                :data-error="getFieldError('podcastEpisode2.audioUrl')" :placeholder="newEntry.podcastEpisode2.audioUrl"
+                @focus="handleFocus($event, 'podcastEpisode2.audioUrl')"
+                @blur="handleBlur($event, 'podcastEpisode2.audioUrl')" />
             </div>
             <div class="form-group">
               <label for="podcastEpisode2-desc">Episode 2 Description:</label>
-              <textarea id="podcastEpisode2-desc" v-model="newEntry.podcastEpisode2.description" 
+              <textarea id="podcastEpisode2-desc" v-model="newEntry.podcastEpisode2.description"
                 :class="['form-textarea', { 'invalid-field': invalidFields.has('podcastEpisode2.description') }]"
                 :data-error="getFieldError('podcastEpisode2.description')"
-                :placeholder="newEntry.podcastEpisode2.description" @focus="handleFocus($event, 'podcastEpisode2.description')" @blur="handleBlur($event, 'podcastEpisode2.description')"></textarea>
+                :placeholder="newEntry.podcastEpisode2.description"
+                @focus="handleFocus($event, 'podcastEpisode2.description')"
+                @blur="handleBlur($event, 'podcastEpisode2.description')"></textarea>
             </div>
             <div class="form-group">
               <label for="podcastEpisode2-time">Episode 2 Start Time (seconds):</label>
-              <input type="number" id="podcastEpisode2-time" v-model="newEntry.podcastEpisode2.podcastStartTime" 
+              <input type="number" id="podcastEpisode2-time" v-model="newEntry.podcastEpisode2.podcastStartTime"
                 :class="['form-input', { 'invalid-field': invalidFields.has('podcastEpisode2.podcastStartTime') }]"
-                :data-error="getFieldError('podcastEpisode2.podcastStartTime')"
-                min="0" 
+                :data-error="getFieldError('podcastEpisode2.podcastStartTime')" min="0"
                 :placeholder="newEntry.podcastEpisode2.podcastStartTime"
                 @focus="handleFocus($event, 'podcastEpisode2.podcastStartTime')"
                 @blur="handleBlur($event, 'podcastEpisode2.podcastStartTime')" />
@@ -393,42 +405,42 @@
               <h3>Citation {{ index + 1 }}</h3>
               <div class="form-group">
                 <label :for="`citation-${index}-title`">Title:</label>
-                <input type="text" :id="`citation-${index}-title`" v-model="citation.title" 
+                <input type="text" :id="`citation-${index}-title`" v-model="citation.title"
                   :class="['form-input', { 'invalid-field': invalidFields.has(`citation-${index}-title`) }]"
-                  :data-error="getFieldError(`citation-${index}-title`)"
-                  :placeholder="citation.title" @focus="handleFocus($event, `citation-${index}-title`)"
+                  :data-error="getFieldError(`citation-${index}-title`)" :placeholder="citation.title"
+                  @focus="handleFocus($event, `citation-${index}-title`)"
                   @blur="handleBlur($event, `citation-${index}-title`)" />
               </div>
               <div class="form-group">
                 <label :for="`citation-${index}-author`">Author:</label>
-                <input type="text" :id="`citation-${index}-author`" v-model="citation.author" 
+                <input type="text" :id="`citation-${index}-author`" v-model="citation.author"
                   :class="['form-input', { 'invalid-field': invalidFields.has(`citation-${index}-author`) }]"
-                  :data-error="getFieldError(`citation-${index}-author`)"
-                  :placeholder="citation.author" @focus="handleFocus($event, `citation-${index}-author`)"
+                  :data-error="getFieldError(`citation-${index}-author`)" :placeholder="citation.author"
+                  @focus="handleFocus($event, `citation-${index}-author`)"
                   @blur="handleBlur($event, `citation-${index}-author`)" />
               </div>
               <div class="form-group">
                 <label :for="`citation-${index}-url`">URL:</label>
-                <input type="text" :id="`citation-${index}-url`" v-model="citation.url" 
+                <input type="text" :id="`citation-${index}-url`" v-model="citation.url"
                   :class="['form-input', { 'invalid-field': invalidFields.has(`citation-${index}-url`) }]"
-                  :data-error="getFieldError(`citation-${index}-url`)"
-                  :placeholder="citation.url" @focus="handleFocus($event, `citation-${index}-url`)"
+                  :data-error="getFieldError(`citation-${index}-url`)" :placeholder="citation.url"
+                  @focus="handleFocus($event, `citation-${index}-url`)"
                   @blur="handleBlur($event, `citation-${index}-url`)" />
               </div>
               <div class="form-group">
                 <label :for="`citation-${index}-year`">Year:</label>
-                <input type="text" :id="`citation-${index}-year`" v-model="citation.year" 
+                <input type="text" :id="`citation-${index}-year`" v-model="citation.year"
                   :class="['form-input', { 'invalid-field': invalidFields.has(`citation-${index}-year`) }]"
-                  :data-error="getFieldError(`citation-${index}-year`)"
-                  :placeholder="citation.year" @focus="handleFocus($event, `citation-${index}-year`)"
+                  :data-error="getFieldError(`citation-${index}-year`)" :placeholder="citation.year"
+                  @focus="handleFocus($event, `citation-${index}-year`)"
                   @blur="handleBlur($event, `citation-${index}-year`)" />
               </div>
               <div class="form-group">
                 <label :for="`citation-${index}-image`">Image URL:</label>
-                <input type="text" :id="`citation-${index}-image`" v-model="citation.imageUrl" 
+                <input type="text" :id="`citation-${index}-image`" v-model="citation.imageUrl"
                   :class="['form-input', { 'invalid-field': invalidFields.has(`citation-${index}-image`) }]"
-                  :data-error="getFieldError(`citation-${index}-image`)"
-                  :placeholder="citation.imageUrl" @focus="handleFocus($event, `citation-${index}-image`)"
+                  :data-error="getFieldError(`citation-${index}-image`)" :placeholder="citation.imageUrl"
+                  @focus="handleFocus($event, `citation-${index}-image`)"
                   @blur="handleBlur($event, `citation-${index}-image`)" />
               </div>
             </div>
@@ -441,34 +453,34 @@
               <h3>Resource {{ index + 1 }}</h3>
               <div class="form-group">
                 <label :for="`resource-${index}-title`">Title:</label>
-                <input type="text" :id="`resource-${index}-title`" v-model="resource.title" 
+                <input type="text" :id="`resource-${index}-title`" v-model="resource.title"
                   :class="['form-input', { 'invalid-field': invalidFields.has(`resource-${index}-title`) }]"
-                  :data-error="getFieldError(`resource-${index}-title`)"
-                  :placeholder="resource.title" @focus="handleFocus($event, `resource-${index}-title`)"
+                  :data-error="getFieldError(`resource-${index}-title`)" :placeholder="resource.title"
+                  @focus="handleFocus($event, `resource-${index}-title`)"
                   @blur="handleBlur($event, `resource-${index}-title`)" />
               </div>
               <div class="form-group">
                 <label :for="`resource-${index}-author`">Author:</label>
-                <input type="text" :id="`resource-${index}-author`" v-model="resource.author" 
+                <input type="text" :id="`resource-${index}-author`" v-model="resource.author"
                   :class="['form-input', { 'invalid-field': invalidFields.has(`resource-${index}-author`) }]"
-                  :data-error="getFieldError(`resource-${index}-author`)"
-                  :placeholder="resource.author" @focus="handleFocus($event, `resource-${index}-author`)"
+                  :data-error="getFieldError(`resource-${index}-author`)" :placeholder="resource.author"
+                  @focus="handleFocus($event, `resource-${index}-author`)"
                   @blur="handleBlur($event, `resource-${index}-author`)" />
               </div>
               <div class="form-group">
                 <label :for="`resource-${index}-url`">URL:</label>
-                <input type="text" :id="`resource-${index}-url`" v-model="resource.url" 
+                <input type="text" :id="`resource-${index}-url`" v-model="resource.url"
                   :class="['form-input', { 'invalid-field': invalidFields.has(`resource-${index}-url`) }]"
-                  :data-error="getFieldError(`resource-${index}-url`)"
-                  :placeholder="resource.url" @focus="handleFocus($event, `resource-${index}-url`)"
+                  :data-error="getFieldError(`resource-${index}-url`)" :placeholder="resource.url"
+                  @focus="handleFocus($event, `resource-${index}-url`)"
                   @blur="handleBlur($event, `resource-${index}-url`)" />
               </div>
               <div class="form-group">
                 <label :for="`resource-${index}-description`">Description:</label>
-                <textarea :id="`resource-${index}-description`" v-model="resource.description" 
+                <textarea :id="`resource-${index}-description`" v-model="resource.description"
                   :class="['form-textarea', { 'invalid-field': invalidFields.has(`resource-${index}-description`) }]"
-                  :data-error="getFieldError(`resource-${index}-description`)"
-                  :placeholder="resource.description" @focus="handleFocus($event, `resource-${index}-description`)"
+                  :data-error="getFieldError(`resource-${index}-description`)" :placeholder="resource.description"
+                  @focus="handleFocus($event, `resource-${index}-description`)"
                   @blur="handleBlur($event, `resource-${index}-description`)"></textarea>
               </div>
             </div>
@@ -479,17 +491,17 @@
           <div v-show="activeSection === 'cautions'" class="form-section">
             <div class="form-group">
               <label for="cautionLevel">Caution Level:</label>
-              <input type="text" id="cautionLevel" v-model="newEntry.cautionLevel" 
+              <input type="text" id="cautionLevel" v-model="newEntry.cautionLevel"
                 :class="['form-input', { 'invalid-field': invalidFields.has('cautionLevel') }]"
-                :data-error="getFieldError('cautionLevel')"
-                :placeholder="newEntry.cautionLevel" @focus="handleFocus($event, 'cautionLevel')" @blur="handleBlur($event, 'cautionLevel')" />
+                :data-error="getFieldError('cautionLevel')" :placeholder="newEntry.cautionLevel"
+                @focus="handleFocus($event, 'cautionLevel')" @blur="handleBlur($event, 'cautionLevel')" />
             </div>
             <div class="form-group">
               <label for="caution">Caution Text:</label>
-              <textarea id="caution" v-model="newEntry.caution" 
+              <textarea id="caution" v-model="newEntry.caution"
                 :class="['form-textarea', { 'invalid-field': invalidFields.has('caution') }]"
-                :data-error="getFieldError('caution')"
-                :placeholder="newEntry.caution" @focus="handleFocus($event, 'caution')" @blur="handleBlur($event, 'caution')"></textarea>
+                :data-error="getFieldError('caution')" :placeholder="newEntry.caution"
+                @focus="handleFocus($event, 'caution')" @blur="handleBlur($event, 'caution')"></textarea>
             </div>
           </div>
 
@@ -497,24 +509,24 @@
           <div v-show="activeSection === 'closing'" class="form-section">
             <div class="form-group">
               <label for="closingText">Closing Text:</label>
-              <textarea id="closingText" v-model="newEntry.closingText" 
+              <textarea id="closingText" v-model="newEntry.closingText"
                 :class="['form-textarea', { 'invalid-field': invalidFields.has('closingText') }]"
-                :data-error="getFieldError('closingText')"
-                :placeholder="newEntry.closingText" @focus="handleFocus($event, 'closingText')" @blur="handleBlur($event, 'closingText')"></textarea>
+                :data-error="getFieldError('closingText')" :placeholder="newEntry.closingText"
+                @focus="handleFocus($event, 'closingText')" @blur="handleBlur($event, 'closingText')"></textarea>
             </div>
             <div class="form-group">
               <label for="closingText2">Additional Closing Text:</label>
-              <textarea id="closingText2" v-model="newEntry.closingText2" 
+              <textarea id="closingText2" v-model="newEntry.closingText2"
                 :class="['form-textarea', { 'invalid-field': invalidFields.has('closingText2') }]"
-                :data-error="getFieldError('closingText2')"
-                :placeholder="newEntry.closingText2" @focus="handleFocus($event, 'closingText2')" @blur="handleBlur($event, 'closingText2')"></textarea>
+                :data-error="getFieldError('closingText2')" :placeholder="newEntry.closingText2"
+                @focus="handleFocus($event, 'closingText2')" @blur="handleBlur($event, 'closingText2')"></textarea>
             </div>
             <div class="form-group">
               <label for="modal">Modal Content:</label>
-              <textarea id="modal" v-model="newEntry.modal" 
+              <textarea id="modal" v-model="newEntry.modal"
                 :class="['form-textarea', { 'invalid-field': invalidFields.has('modal') }]"
-                :data-error="getFieldError('modal')"
-                :placeholder="newEntry.modal" @focus="handleFocus($event, 'modal')" @blur="handleBlur($event, 'modal')"></textarea>
+                :data-error="getFieldError('modal')" :placeholder="newEntry.modal" @focus="handleFocus($event, 'modal')"
+                @blur="handleBlur($event, 'modal')"></textarea>
             </div>
           </div>
         </div>
@@ -524,15 +536,13 @@
         <button type="button" @click="saveDraft" class="save-draft-btn">
           Save Draft
         </button>
-        <button type="submit" 
-          :class="[
-            'submit-btn', 
-            { 'submit-btn-disabled': !canSubmit,
-              'submit-btn-ready': canSubmit }
-          ]"
-          :disabled="!canSubmit"
-          :title="submitButtonTitle"
-        >
+        <button type="submit" :class="[
+          'submit-btn',
+          {
+            'submit-btn-disabled': !canSubmit,
+            'submit-btn-ready': canSubmit
+          }
+        ]" :disabled="!canSubmit" :title="submitButtonTitle">
           Submit for Review
         </button>
       </div>
@@ -650,7 +660,7 @@ export default {
         'podcastEpisode2.description',
         'podcastEpisode2.podcastStartTime'
       ];
-      
+
       return explanationFields.some(field => this.validationState.invalidFields.has(field));
     }
   },
@@ -719,7 +729,7 @@ export default {
 
         // Submit for review
         await this.store.submitForReview(this.store.draftQuizEntry.id);
-        
+
         this.submittedEntry = { ...this.newEntry };
         this.submitStatus = {
           show: true,
@@ -738,7 +748,7 @@ export default {
       try {
         await this.store.recordQuizEdit();
         const draftId = await this.store.saveDraftQuizEntry();
-        
+
         if (!draftId) {
           throw new Error('Failed to save draft');
         }
@@ -1463,6 +1473,27 @@ details[open] .form-section {
   white-space: nowrap;
 }
 
+.section-button {
+  padding: 0.3rem .7rem;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.section-button:hover {
+  background-color: #e0e0e0;
+}
+
+.section-button.active {
+  background-color: #4a90e2;
+  color: white;
+  border-color: #357abd;
+}
+
+
 /* Fade transition */
 .fade-enter-active,
 .fade-leave-active {
@@ -1628,7 +1659,8 @@ option {
   background-color: #4338ca;
 }
 
-.form-input, .form-textarea {
+.form-input,
+.form-textarea {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid #e5e7eb;
@@ -1636,7 +1668,8 @@ option {
   transition: all 0.2s;
 }
 
-.form-input:focus, .form-textarea:focus {
+.form-input:focus,
+.form-textarea:focus {
   border-color: #4f46e5;
   box-shadow: 0 0 0 1px #4f46e5;
   outline: none;
