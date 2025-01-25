@@ -448,7 +448,15 @@
         <button type="button" @click="saveDraft" class="save-draft-btn">
           Save Draft
         </button>
-        <button type="submit" class="submit-btn">
+        <button type="submit" 
+          :class="[
+            'submit-btn', 
+            { 'submit-btn-disabled': !canSubmit,
+              'submit-btn-ready': canSubmit }
+          ]"
+          :disabled="!canSubmit"
+          :title="submitButtonTitle"
+        >
           Submit for Review
         </button>
       </div>
@@ -532,6 +540,18 @@ export default {
     },
     draftLoadError() {
       return this.store.draftQuizItemsError;
+    },
+    canSubmit() {
+      return this.store.draftQuizEntry.id && this.validationState.isValid;
+    },
+    submitButtonTitle() {
+      if (!this.store.draftQuizEntry.id) {
+        return 'Please save your draft first';
+      }
+      if (!this.validationState.isValid) {
+        return 'Please fix validation errors: ' + this.validationState.errors.join(', ');
+      }
+      return 'Submit quiz entry for review';
     }
   },
   data() {
@@ -558,6 +578,10 @@ export default {
         show: false,
         message: '',
         type: ''
+      },
+      validationState: {
+        isValid: false,
+        errors: []
       }
     }
   },
@@ -617,6 +641,9 @@ export default {
         if (!draftId) {
           throw new Error('Failed to save draft');
         }
+
+        // Run validation check after successful save
+        await this.checkValidation();
 
         this.submitStatus = {
           show: true,
@@ -699,6 +726,13 @@ export default {
       if (permanentItem) {
         this.store.updateDraftQuizEntry(permanentItem);
       }
+    },
+    async checkValidation() {
+      const errors = this.store.validateDraftQuizEntry(this.store.draftQuizEntry);
+      this.validationState = {
+        isValid: errors.length === 0,
+        errors: errors
+      };
     },
     triggerAutoSave() {
       // Clear any existing timeout
@@ -1451,15 +1485,28 @@ option {
 }
 
 .submit-btn {
-  background-color: #4f46e5;
-  color: white;
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   font-weight: 500;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
-.submit-btn:hover {
+.submit-btn-disabled {
+  background-color: #9ca3af;
+  color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.submit-btn-disabled:hover {
+  background-color: #6b7280;
+}
+
+.submit-btn-ready {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.submit-btn-ready:hover {
   background-color: #4338ca;
 }
 </style>
