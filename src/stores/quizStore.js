@@ -1,15 +1,15 @@
 // src/stores/quizStore.js
 import { defineStore } from 'pinia';
 import { auth, db } from '../firebase';
-import { 
-  collection, 
-  addDoc, 
-  serverTimestamp, 
-  doc, 
-  setDoc, 
-  query, 
-  where, 
-  getDocs 
+import {
+    collection,
+    addDoc,
+    serverTimestamp,
+    doc,
+    setDoc,
+    query,
+    where,
+    getDocs
 } from 'firebase/firestore';
 import { useAuthStore } from './authStore';
 
@@ -17,7 +17,7 @@ export const quizStore = defineStore('quiz', {
     state: () => ({
         quizAttempts: [],
         quizEdits: [],
-        userAnswers: [], 
+        userAnswers: [],
         currentQuizId: null,
         draftQuizItems: [],
         draftQuizItemsLoading: false,
@@ -69,10 +69,10 @@ export const quizStore = defineStore('quiz', {
         },
         saveStatus: {
             message: '',
-            type: '', 
+            type: '',
             show: false
         },
-        incorrectQuestions: []  
+        incorrectQuestions: []
     }),
     actions: {
         // =============================================
@@ -80,12 +80,12 @@ export const quizStore = defineStore('quiz', {
         // Actions related to taking quizzes, recording answers,
         // and tracking quiz attempts
         // =============================================
-        
+
         setCurrentQuiz(quizId) {
             console.log('Setting current quiz:', quizId);
             this.currentQuizId = quizId;
-            this.userAnswers = []; 
-            this.incorrectQuestions = [];  
+            this.userAnswers = [];
+            this.incorrectQuestions = [];
         },
 
         async setUserAnswer(index, selectedAnswer, correctAnswer, questionId, questionTitle, quizEntry) {
@@ -176,7 +176,7 @@ export const quizStore = defineStore('quiz', {
         },
 
         setUserAnswers(answers) {
-            this.userAnswers = answers; 
+            this.userAnswers = answers;
         },
 
         async saveUserAnswers() {
@@ -186,7 +186,7 @@ export const quizStore = defineStore('quiz', {
             }
 
             const attempt = {
-                userAnswers: this.userAnswers,  
+                userAnswers: this.userAnswers,
                 timestamp: new Date(),
             };
 
@@ -251,7 +251,7 @@ export const quizStore = defineStore('quiz', {
                 };
 
                 let docRef;
-                
+
                 // If we have an ID, try to update the existing draft
                 if (this.draftQuizEntry.id) {
                     const existingDraft = this.draftQuizItems.find(item => item.id === this.draftQuizEntry.id);
@@ -275,13 +275,13 @@ export const quizStore = defineStore('quiz', {
 
                 // Refresh the draft items list
                 await this.fetchDraftQuizItems();
-                
+
                 this.saveStatus = {
                     message: 'Draft saved successfully!',
                     type: 'success',
                     show: true
                 };
-                
+
                 return this.draftQuizEntry.id;
             } catch (e) {
                 console.error('Error saving draft:', e);
@@ -400,7 +400,7 @@ export const quizStore = defineStore('quiz', {
                 errors: [],
                 invalidFields: new Set()
             };
-            
+
             // Default values to check against
             const defaultValues = {
                 title: '',
@@ -414,7 +414,7 @@ export const quizStore = defineStore('quiz', {
                 option5: 'Fifth option',
                 explanation: 'Here is why option 1 is correct...'
             };
-            
+
             // Required fields - check for empty or default values
             if (!draft.title?.trim() || draft.title === defaultValues.title) {
                 validation.errors.push('Title is required');
@@ -451,7 +451,7 @@ export const quizStore = defineStore('quiz', {
                         }
                     });
                 }
-                
+
                 if (!draft.correctAnswer || draft.correctAnswer < 1 || draft.correctAnswer > nonDefaultOptions.length) {
                     validation.errors.push('Please select a valid correct answer');
                     validation.invalidFields.add('correctAnswer');
@@ -459,7 +459,7 @@ export const quizStore = defineStore('quiz', {
 
                 // Check if the selected correct answer is still a default value
                 const correctOptionIndex = draft.correctAnswer - 1;
-                if (correctOptionIndex >= 0 && 
+                if (correctOptionIndex >= 0 &&
                     options[correctOptionIndex] === defaultValues[`option${draft.correctAnswer}`]) {
                     validation.errors.push('The correct answer cannot be a default option');
                     validation.invalidFields.add(`option${draft.correctAnswer}`);
@@ -520,8 +520,8 @@ export const quizStore = defineStore('quiz', {
 
         updateDraftQuizEntry(entry) {
             const currentId = this.draftQuizEntry.id;
-            this.draftQuizEntry = { 
-                ...this.draftQuizEntry, 
+            this.draftQuizEntry = {
+                ...this.draftQuizEntry,
                 ...entry,
                 id: entry.id || currentId // Keep existing ID if new entry doesn't have one
             };
@@ -574,21 +574,26 @@ export const quizStore = defineStore('quiz', {
             };
         },
 
-        async recordQuizEdit(quizStarted) {
+        async recordQuizEdit() {
             try {
-                const user = auth.currentUser;
-                if (!user) return;
-
+                const auth = useAuthStore();
                 const editData = {
-                    userId: user.uid,
-                    isAnonymous: user.isAnonymous,
+                    userId: auth.user?.uid || 'anonymous',
+                    userEmail: auth.user?.email || 'anonymous',
                     timestamp: serverTimestamp(),
-                    quizStarted
+                    quizStarted: false,  // Set a default value
+                    quizCompleted: false,  // Set a default value if needed
+                    editType: 'draft',
+                    draftId: this.draftQuizEntry.id || null,
+                    originalId: this.draftQuizEntry.originalId || null
                 };
 
-                await addDoc(collection(db, 'quizEdits'), editData);
+                const docRef = await addDoc(collection(db, 'quizEdits'), editData);
+                console.log('Quiz edit recorded:', docRef.id);
+                return docRef.id;
             } catch (error) {
                 console.error('Error recording quiz edit:', error);
+                throw error;
             }
         },
 

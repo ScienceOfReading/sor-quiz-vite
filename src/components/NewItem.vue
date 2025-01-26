@@ -825,7 +825,10 @@ export default {
         .find(item => item.id === this.selectedTemplate);
 
       if (draftItem) {
-        this.store.updateDraftQuizEntry(draftItem);
+        const copyItem = { ...draftItem };
+        copyItem.originalId = copyItem.id;  // Save the original ID
+        copyItem.id = null;  // Reset ID for new draft
+        this.store.updateDraftQuizEntry(copyItem);
         return;
       }
 
@@ -834,7 +837,10 @@ export default {
         .find(item => item.id.toString() === this.selectedTemplate.toString());
 
       if (permanentItem) {
-        this.store.updateDraftQuizEntry(permanentItem);
+        const copyItem = { ...permanentItem };
+        copyItem.originalId = copyItem.id;  // Save the original ID
+        copyItem.id = null;  // Reset ID for new draft
+        this.store.updateDraftQuizEntry(copyItem);
       }
     },
     async checkValidation() {
