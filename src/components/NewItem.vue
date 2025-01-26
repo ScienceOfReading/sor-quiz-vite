@@ -80,15 +80,14 @@
             <label for="template-select" class="text-stone-400">Choose a starting point:</label>
             <select id="template-select" v-model="selectedTemplate" @change="useTemplate" class="w-full px-4 py-2 rounded-lg border border-gray-300/50 
                      bg-white/50 dark:bg-gray-500/50 
-                     dark:border-gray-600/50 dark:text-gray-200
+                     dark:border-gray-600/50 color:#ffffff
                      focus:ring-2 focus:ring-amber-400 focus:border-transparent
                      backdrop-blur-sm
                      transition-colors duration-200 ease-in-out
                      appearance-none cursor-pointer
                      hover:bg-white/40 dark:hover:bg-gray-500/40
-                     dark:[&>*]:bg-gray-700
-                     text-gray-200">
-              <option value="" class="py-2">Start from scratch</option>
+                     dark:[&>*]:bg-gray-700 text-white">
+              <option value="" class="py-2 text-white">Start from scratch</option>
               <template v-if="isLoadingDrafts">
                 <option disabled>Loading draft items...</option>
               </template>
@@ -1473,16 +1472,6 @@ details[open] .form-section {
   white-space: nowrap;
 }
 
-.section-button {
-  padding: 0.3rem .7rem;
-  background-color: #f0f0f0;
-  color: #333;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
 .section-button:hover {
   background-color: #e0e0e0;
 }
@@ -1727,5 +1716,11 @@ option {
   margin-left: 0.5rem;
   font-size: 1rem;
   vertical-align: middle;
+}
+
+/* Add this to your existing styles */
+#template-select option {
+  color: white !important;
+  background-color: #3f3f88 !important;
 }
 </style>
