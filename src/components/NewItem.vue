@@ -939,7 +939,8 @@ export default {
   transition: all 0.2s ease;
   font-size: 0.95rem;
   box-sizing: border-box;
-  color: #333;
+  color: #b1b3be;
+  dark: text-gray-200;
 }
 
 .section-summary {
