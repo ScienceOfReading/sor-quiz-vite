@@ -205,20 +205,31 @@ export const quizStore = defineStore('quiz', {
         // =============================================
 
         async fetchDraftQuizItems() {
-            this.draftQuizItemsLoading = true;
-            this.draftQuizItemsError = null;
             try {
-                const q = query(collection(db, 'quizEntries'), where('status', '==', 'draft'));
+                console.log('Fetching draft quiz items...');
+                const draftsRef = collection(db, 'quizEntries');
+                // Log the query parameters
+                console.log('Querying for status == draft');
+
+                const q = query(draftsRef, where('status', '==', 'draft'));
                 const querySnapshot = await getDocs(q);
+
+                // Log the raw results
+                console.log('Raw query results:', querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    status: doc.data().status
+                })));
+
                 this.draftQuizItems = querySnapshot.docs.map(doc => ({
-                    ...doc.data(),
-                    id: doc.id
+                    id: doc.id,
+                    ...doc.data()
                 }));
+
+                console.log('Fetched draft items:', this.draftQuizItems.length);
+                return this.draftQuizItems;
             } catch (error) {
-                console.error('Error fetching draft quiz items:', error);
-                this.draftQuizItemsError = error.message;
-            } finally {
-                this.draftQuizItemsLoading = false;
+                console.error('Error fetching draft items:', error);
+                throw error;
             }
         },
 

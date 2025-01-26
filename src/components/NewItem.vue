@@ -95,16 +95,14 @@
                 <option disabled>Error loading drafts: {{ draftLoadError }}</option>
               </template>
               <template v-else>
-                <optgroup label="My Draft Items" class="font-medium text-amber-500" v-if="userDraftQuizItems.length">
-                  <option v-for="item in userDraftQuizItems" :key="item.id" :value="item.id"
-                    class="py-1 text-amber-700">
-                    {{ item.id || 'Draft' }}. {{ item.title || '(Untitled Draft)' }}
+                <optgroup label="My Draft Quiz Items" class="font-medium" v-if="userDraftQuizItems.length">
+                  <option v-for="item in userDraftQuizItems" :key="item.id" :value="item.id" class="py-1">
+                    {{ item.title || 'Untitled Draft' }}
                   </option>
                 </optgroup>
-                <optgroup label="Other Draft Items" class="font-medium text-gray-500" v-if="otherDraftQuizItems.length">
-                  <option v-for="item in otherDraftQuizItems" :key="item.id" :value="item.id"
-                    class="py-1 text-gray-600">
-                    {{ item.id || 'Draft' }}. {{ item.title || '(Untitled Draft)' }}
+                <optgroup label="Other Draft Items" class="font-medium" v-if="otherDraftQuizItems.length">
+                  <option v-for="item in otherDraftQuizItems" :key="item.id" :value="item.id" class="py-1">
+                    {{ item.title || 'Untitled Draft' }}
                   </option>
                 </optgroup>
               </template>
@@ -561,7 +559,7 @@ import QuizItem from './QuizItem.vue';
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import { quizEntries } from '../data/quiz-items';
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 
 export default {
   components: {
@@ -572,11 +570,23 @@ export default {
     const store = quizStore();
     const auth = useAuthStore();
 
-    onMounted(() => {
-      store.fetchDraftQuizItems();
+    const userDraftQuizItems = computed(() => {
+      return store.draftQuizItems
+        .filter(item => item.userId === auth.user?.uid)
+        .sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
     });
 
-    return { store, auth };
+    const otherDraftQuizItems = computed(() => {
+      return store.draftQuizItems
+        .filter(item => item.userId && item.userId !== auth.user?.uid)
+        .sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+    });
+
+    onMounted(async () => {
+      await store.fetchDraftQuizItems();
+    });
+
+    return { store, auth, userDraftQuizItems, otherDraftQuizItems };
   },
   computed: {
     newEntry: {
@@ -589,28 +599,6 @@ export default {
     },
     formattedJson() {
       return JSON.stringify(this.newEntry, null, 2);
-    },
-    userDraftQuizItems() {
-      return this.store.draftQuizItems
-        .filter(item => item.userId === this.auth.user?.uid)
-        .sort((a, b) => {
-          // First sort by timestamp
-          const timeCompare = (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0);
-          if (timeCompare !== 0) return timeCompare;
-          // Then by ID if timestamps are equal
-          return (b.id || '').localeCompare(a.id || '');
-        });
-    },
-    otherDraftQuizItems() {
-      return this.store.draftQuizItems
-        .filter(item => item.userId && item.userId !== this.auth.user?.uid)
-        .sort((a, b) => {
-          // First sort by timestamp
-          const timeCompare = (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0);
-          if (timeCompare !== 0) return timeCompare;
-          // Then by ID if timestamps are equal
-          return (b.id || '').localeCompare(a.id || '');
-        });
     },
     permanentQuizItems() {
       // Sort by numeric ID, handling potential string IDs
