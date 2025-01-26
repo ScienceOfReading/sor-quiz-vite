@@ -11,6 +11,27 @@
 
 <body>
   <div id="app"></div>
+  <script>
+    // Check for modern JS support
+    try {
+      new Function('const foo = async () => await 1; foo();')();
+    } catch (e) {
+      document.body.innerHTML = `
+        <div style="padding: 2rem; text-align: center; font-family: system-ui, sans-serif;">
+          <h1>Browser Update Needed</h1>
+          <p>This application requires a modern browser to run. Please update your browser to the latest version.</p>
+          <p>We recommend using:</p>
+          <ul style="list-style: none; padding: 0;">
+            <li>✅ Chrome (version 89 or later)</li>
+            <li>✅ Firefox (version 89 or later)</li>
+            <li>✅ Safari (version 15 or later)</li>
+            <li>✅ Edge (version 89 or later)</li>
+          </ul>
+          <p>If you're using a school computer, please contact your IT department for assistance.</p>
+        </div>
+      `;
+    }
+  </script>
   <script type="module" src="/src/main.js"></script>
 </body>
 
