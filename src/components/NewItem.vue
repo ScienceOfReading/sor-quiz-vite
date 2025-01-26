@@ -100,6 +100,11 @@
                     {{ item.title || 'Untitled Draft' }}
                   </option>
                 </optgroup>
+                <optgroup label="Pending Review" class="font-medium" v-if="pendingQuizItems.length">
+                  <option v-for="item in pendingQuizItems" :key="item.id" :value="item.id" class="py-1">
+                    {{ item.title || 'Untitled Pending' }} ({{ item.userEmail || 'Anonymous' }})
+                  </option>
+                </optgroup>
                 <optgroup label="Other Draft Items" class="font-medium" v-if="otherDraftQuizItems.length">
                   <option v-for="item in otherDraftQuizItems" :key="item.id" :value="item.id" class="py-1">
                     {{ item.title || 'Untitled Draft' }}
@@ -582,11 +587,17 @@ export default {
         .sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
     });
 
+    const pendingQuizItems = computed(() => {
+      return store.draftQuizItems
+        .filter(item => item.status === 'pending')
+        .sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+    });
+
     onMounted(async () => {
       await store.fetchDraftQuizItems();
     });
 
-    return { store, auth, userDraftQuizItems, otherDraftQuizItems };
+    return { store, auth, userDraftQuizItems, otherDraftQuizItems, pendingQuizItems };
   },
   computed: {
     newEntry: {
