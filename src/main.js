@@ -1,7 +1,11 @@
+// 1. CSS imports first
+import './style.css'
+
+// 2. Vue core imports
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import './style.css'
-import App from './App.vue'
+
+// 3. FontAwesome imports
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons'
@@ -15,37 +19,37 @@ import { faPodcast } from '@fortawesome/free-solid-svg-icons'
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
 import { faBook } from '@fortawesome/free-solid-svg-icons'
 
-import { inject } from '@vercel/analytics';
-
-//import * as LottiePlayer from "@lottiefiles/lottie-player";
+// 4. Third-party plugins
+import { inject } from '@vercel/analytics'
 import Vue3Lottie from 'vue3-lottie'
-import LiteYouTubeEmbed from 'vue-lite-youtube-embed';
+import LiteYouTubeEmbed from 'vue-lite-youtube-embed'
 import 'vue-lite-youtube-embed/style.css'
 
+// 5. Your app components
+import App from './App.vue'
+
+// 6. Setup
 inject();
 
-library.add(faUserSecret)
-library.add(faCircleQuestion)
-library.add(faCircleMinus)
-library.add(faCircleXmark)
-library.add(faCircleCheck)
-library.add(faCheck)
-library.add(faFlaskVial)
-library.add(faPodcast)
-library.add(faExternalLinkAlt)
-library.add(faBook)
+library.add(
+    faUserSecret,
+    faCircleQuestion,
+    faCircleMinus,
+    faCircleXmark,
+    faCircleCheck,
+    faCheck,
+    faFlaskVial,
+    faPodcast,
+    faExternalLinkAlt,
+    faBook
+)
 
 const app = createApp(App)
-const pinia = createPinia();
-app.use(pinia);
+const pinia = createPinia()
 
-// Import and use the router
-import router from './router';
-app.use(router);
-
-app.config.globalProperties.$userAnswers = []
+app.use(pinia)
 app.use(Vue3Lottie)
-app.component('lite-youtube-embed', LiteYouTubeEmbed)
+app.use(LiteYouTubeEmbed)
 app.component('font-awesome-icon', FontAwesomeIcon)
 
 // Initialize the auth store and sign in anonymously if no user
@@ -56,4 +60,4 @@ if (!authStore.user) {
     await authStore.signInAnonymously();
 }
 
-app.mount('#app');
+app.mount('#app')
