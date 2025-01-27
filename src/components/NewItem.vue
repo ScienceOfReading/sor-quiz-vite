@@ -918,6 +918,7 @@ export default {
     }
   }
 };
+// Spurious comment
 </script>
 
 <style scoped>
