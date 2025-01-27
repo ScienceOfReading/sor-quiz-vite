@@ -60,4 +60,8 @@ if (!authStore.user) {
     await authStore.signInAnonymously();
 }
 
+// Add router
+import router from './router'
+app.use(router)
+
 app.mount('#app')
