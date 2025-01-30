@@ -214,14 +214,14 @@ export default {
       let correct = 0;
       console.log("Length ", this.quizItems.length);
       for (let i = 0; i < this.quizItems.length; i++) {
-        console.log(this.quizItems[i].correctAnswer)
-        console.log("this.$userAnswers[i]this.$userAnswers[i]", this.$userAnswers[i]);
+        console.log(this.quizItems[i].correctAnswer);
+        console.log("this.userAnswers[i]", this.userAnswers[i]);
         console.log("this.quizItems[i].correctAnswer: ", this.quizItems[i].correctAnswer);
-        if (this.$userAnswers[i] == this.quizItems[i].correctAnswer) { correct++ }
+        if (this.userAnswers[i] == this.quizItems[i].correctAnswer) { correct++ }
         console.log("got one right")
       }
       console.log("--Finished numCorrect--");
-      return correct
+      return correct;
     },
     nextQuestion() {
       console.log("----In nextQuestion----");
