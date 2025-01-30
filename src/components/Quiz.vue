@@ -37,7 +37,7 @@
       </p>
     </div>
     <QuizItem :currentQuizItem="currentQuizItem" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
-      v-model:userAnswer="userAnswers[itemNum]" :debug="debug" @selected="chosen = true" />
+      :userAnswer="userAnswers[itemNum]" @selected="answerSelected" :debug="debug" />
   </div>
 
   <!--div v-if="selectError === true">
@@ -156,7 +156,7 @@ export default {
 
     return {
       quizItems: [],
-      userAnswers: [],
+      userAnswers: Array(10).fill(null),  // Initialize with enough slots
       complete: false,
       chosen: false,
       itemNum: 0,
@@ -302,7 +302,6 @@ export default {
     },
     async checkIt() {
       console.log("----In checkIt----");
-
       try {
         const currentQuestion = this.quizItems[this.itemNum];
         if (!currentQuestion) {
@@ -310,7 +309,16 @@ export default {
           return;
         }
 
-        // Debug log to see what we're dealing with
+        // Add debug logging to see what we're working with
+        console.log('Current answer:', this.userAnswers[this.itemNum]);
+        console.log('Current question:', currentQuestion);
+
+        if (!this.userAnswers[this.itemNum]) {
+          console.error('No valid answer for multiple choice question:', this.itemNum);
+          return;
+        }
+
+        // Debug log to see what we're checking the answer_type correctly
         console.log('Question type:', {
           type: currentQuestion.answer_type,
           isSortable: currentQuestion.answer_type === 'sortableList'
@@ -375,10 +383,11 @@ export default {
         console.error("Error in checkIt method:", error);
       }
     },
-    answerSelected() {
-      console.log("In answerSelected");
+    answerSelected(option) {
+      console.log("In answerSelected with answer:", option);
       this.selectError = false;
-      // No need to set chosen here, it's handled in the event listener
+      this.chosen = true;
+      this.userAnswers[this.itemNum] = option;
     },
     submit() {
       console.log("Complete. Let's see your score. ");
