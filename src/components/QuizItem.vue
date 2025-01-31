@@ -12,8 +12,8 @@
     <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">{{ quizItem.subtitle }}</h2>
     <!-- Existing question types -->
     <div v-if="quizItem.answer_type == 'mc'" class="text-gray-900 dark:text-white">
-      <MultipleChoice @answer-selected="handleAnswerSelected" :quizItem="quizItem" :reviewMode="reviewMode"
-        :itemNum="itemNum" :basicMode="basicMode" />
+      <MultipleChoice v-model:userAnswer="userAnswer" @answer-selected="handleAnswerSelected" :quizItem="quizItem"
+        :reviewMode="reviewMode" :itemNum="itemNum" :basicMode="basicMode" />
     </div>
 
     <div v-else-if="quizItem.answer_type == 'true_false'">
@@ -110,7 +110,6 @@ export default {
     }
   },
   watch: {
-
     itemNum(newItemNum, oldItemNum) {
       console.log("In itemNumwatcher itemNum, item changed from", oldItemNum, " to ", newItemNum);
       console.log("In itemNum watcher itemNum, reviewmode is: ", this.reviewMode)
@@ -125,14 +124,11 @@ export default {
       },
       immediate: true // Trigger on component mount
     },
-    reviewMode(oldStatus, newStatus) {
-      console.log("reviewMode changed from ", oldStatus, " to ", newStatus);
-      if (this.reviewMode) {
-        console.log("in reviewMode watcher, this.$userAnswers", this.$userAnswers);
-        console.log("in reviewMode  watcher, this.itemNum", this.itemNum);
-        console.log("in reviewMode  watcher, this.$userAnswers[this.itemNum]", this.$userAnswers[this.itemNum]);
-
-
+    reviewMode: {
+      handler(newVal, oldVal) {
+        console.log("reviewMode changed from ", oldVal, " to ", newVal);
+        // Remove references to $userAnswers
+        console.log("in reviewMode watcher, itemNum:", this.itemNum);
       }
     }
   },
@@ -149,7 +145,6 @@ export default {
   },
 
   methods: {
-
     onHover() {
       console.log("Hovered");
     },
@@ -160,9 +155,7 @@ export default {
     },
     handleAnswerSelected(selectedOption) {
       console.log("Answer selected in QuizItem:", selectedOption);
-      this.userAnswer = selectedOption;
-      this.$emit('update:userAnswer', selectedOption);
-      this.$emit('selected');
+      this.$emit('selected', selectedOption);
     }
   },
   setup(props, { emit }) {

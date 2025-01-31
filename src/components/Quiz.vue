@@ -37,7 +37,7 @@
       </p>
     </div>
     <QuizItem :currentQuizItem="currentQuizItem" :itemNum="itemNum" :reviewMode="reviewMode" :basicMode="basicMode"
-      v-model:userAnswer="userAnswers[itemNum]" :debug="debug" @selected="chosen = true" />
+      :userAnswer="userAnswers[itemNum]" @selected="answerSelected" :debug="debug" />
   </div>
 
   <!--div v-if="selectError === true">
@@ -156,7 +156,7 @@ export default {
 
     return {
       quizItems: [],
-      userAnswers: [],
+      userAnswers: Array(10).fill(null),  // Initialize with enough slots
       complete: false,
       chosen: false,
       itemNum: 0,
@@ -176,13 +176,16 @@ export default {
       return this.quizItems[this.itemNum];
     },
     numCompleted() {
-      // For basic mode, it's just the current item number
-      if (this.basicMode) {
-        return this.itemNum;
+      // During review mode, show current position
+      if (this.reviewMode) {
+        return this.itemNum + 1;
       }
-
+      // For basic mode, it's just the current item number + 1
+      if (this.basicMode) {
+        return this.itemNum + 1;
+      }
       // For expert mode, count the number of answered questions
-      return this.userAnswers.filter(answer => answer !== undefined).length;
+      return this.itemNum + 1;
     },
     reviewModeTracker() {
       return this.reviewMode;  // Explicitly track reviewMode
@@ -214,14 +217,18 @@ export default {
       let correct = 0;
       console.log("Length ", this.quizItems.length);
       for (let i = 0; i < this.quizItems.length; i++) {
-        console.log(this.quizItems[i].correctAnswer)
-        console.log("this.$userAnswers[i]this.$userAnswers[i]", this.$userAnswers[i]);
-        console.log("this.quizItems[i].correctAnswer: ", this.quizItems[i].correctAnswer);
-        if (this.$userAnswers[i] == this.quizItems[i].correctAnswer) { correct++ }
-        console.log("got one right")
+        console.log("Question", i + 1, ":");
+        console.log("User answer:", this.userAnswers[i]);
+        console.log("Correct answer:", this.quizItems[i].correctAnswer);
+        if (this.userAnswers[i] === this.quizItems[i].correctAnswer) {
+          correct++;
+          console.log("✓ Correct!");
+        } else {
+          console.log("✗ Incorrect");
+        }
       }
-      console.log("--Finished numCorrect--");
-      return correct
+      console.log("Total correct:", correct);
+      return correct;
     },
     nextQuestion() {
       console.log("----In nextQuestion----");
@@ -291,7 +298,6 @@ export default {
         if (this.itemNum < this.quizItems.length - 1) {
           this.itemNum++;
           this.chosen = false;
-          // this.reviewMode = false;
         } else {
           this.complete = true;
           this.quizState = 'resultSummary';
@@ -302,7 +308,6 @@ export default {
     },
     async checkIt() {
       console.log("----In checkIt----");
-
       try {
         const currentQuestion = this.quizItems[this.itemNum];
         if (!currentQuestion) {
@@ -310,7 +315,16 @@ export default {
           return;
         }
 
-        // Debug log to see what we're dealing with
+        // Add debug logging to see what we're working with
+        console.log('Current answer:', this.userAnswers[this.itemNum]);
+        console.log('Current question:', currentQuestion);
+
+        if (!this.userAnswers[this.itemNum]) {
+          console.error('No valid answer for multiple choice question:', this.itemNum);
+          return;
+        }
+
+        // Debug log to see what we're checking the answer_type correctly
         console.log('Question type:', {
           type: currentQuestion.answer_type,
           isSortable: currentQuestion.answer_type === 'sortableList'
@@ -375,10 +389,20 @@ export default {
         console.error("Error in checkIt method:", error);
       }
     },
-    answerSelected() {
-      console.log("In answerSelected");
+    answerSelected(option) {
+      console.log("In answerSelected with answer:", option);
       this.selectError = false;
-      // No need to set chosen here, it's handled in the event listener
+      this.chosen = true;
+      this.userAnswers[this.itemNum] = option;
+      // Update store immediately when answer is selected
+      this.store.setUserAnswer(
+        this.itemNum,
+        option,
+        this.currentQuizItem.correctAnswer,
+        this.currentQuizItem.id,
+        this.currentQuizItem.title,
+        this.currentQuizItem
+      );
     },
     submit() {
       console.log("Complete. Let's see your score. ");
