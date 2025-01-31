@@ -176,13 +176,16 @@ export default {
       return this.quizItems[this.itemNum];
     },
     numCompleted() {
+      // During review mode, show current position
+      if (this.reviewMode) {
+        return this.itemNum + 1;
+      }
       // For basic mode, it's just the current item number + 1
       if (this.basicMode) {
         return this.itemNum + 1;
       }
-
       // For expert mode, count the number of answered questions
-      return this.userAnswers.filter(answer => answer !== undefined).length;
+      return this.itemNum + 1;
     },
     reviewModeTracker() {
       return this.reviewMode;  // Explicitly track reviewMode
