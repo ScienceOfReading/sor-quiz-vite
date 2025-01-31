@@ -176,9 +176,9 @@ export default {
       return this.quizItems[this.itemNum];
     },
     numCompleted() {
-      // For basic mode, it's just the current item number
+      // For basic mode, it's just the current item number + 1
       if (this.basicMode) {
-        return this.itemNum;
+        return this.itemNum + 1;
       }
 
       // For expert mode, count the number of answered questions
