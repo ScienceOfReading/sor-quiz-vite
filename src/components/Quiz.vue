@@ -295,7 +295,6 @@ export default {
         if (this.itemNum < this.quizItems.length - 1) {
           this.itemNum++;
           this.chosen = false;
-          // this.reviewMode = false;
         } else {
           this.complete = true;
           this.quizState = 'resultSummary';
@@ -392,6 +391,15 @@ export default {
       this.selectError = false;
       this.chosen = true;
       this.userAnswers[this.itemNum] = option;
+      // Update store immediately when answer is selected
+      this.store.setUserAnswer(
+        this.itemNum,
+        option,
+        this.currentQuizItem.correctAnswer,
+        this.currentQuizItem.id,
+        this.currentQuizItem.title,
+        this.currentQuizItem
+      );
     },
     submit() {
       console.log("Complete. Let's see your score. ");
