@@ -535,7 +535,13 @@
       </div>
 
       <div class="mt-4 flex justify-between items-center">
-        <button type="button" @click="saveDraft" class="save-draft-btn">
+        <button @click="saveDraft"
+          class="px-6 py-3 bg-slate-600 hover:bg-slate-500 text-white rounded-lg flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v16a2 2 0 002 2h12a2 2 0 002-2V8.342a2 2 0 00-.602-1.43l-4.44-4.342A2 2 0 0013.56 2H6a2 2 0 00-2 2z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6" />
+          </svg>
           Save Draft
         </button>
         <button type="submit" :class="[
