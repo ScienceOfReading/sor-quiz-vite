@@ -554,6 +554,8 @@
     <div v-if="saveStatus.show" :class="['save-status-indicator', saveStatus.type]" role="status" aria-live="polite">
       {{ saveStatus.message }}
     </div>
+
+    <ProgressSteps :currentStep="currentStep" />
   </div>
 </template>
 
@@ -565,11 +567,13 @@ import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import { quizEntries } from '../data/quiz-items';
 import { ref, watch, onMounted, computed } from 'vue';
+import ProgressSteps from './ProgressSteps.vue';
 
 export default {
   components: {
     QuizItem,
-    VueJsonPretty
+    VueJsonPretty,
+    ProgressSteps
   },
   setup() {
     const store = quizStore();
@@ -660,6 +664,11 @@ export default {
       ];
 
       return explanationFields.some(field => this.validationState.invalidFields.has(field));
+    },
+    currentStep() {
+      // Implement logic to determine the current step based on the form's state
+      // This is a placeholder and should be replaced with actual implementation
+      return 1; // Placeholder, actual implementation needed
     }
   },
   data() {
