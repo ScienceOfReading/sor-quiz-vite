@@ -18,6 +18,7 @@ export const quizStore = defineStore('quiz', {
         quizAttempts: [],
         quizEdits: [],
         userAnswers: [],
+        simpleAnswers: [],
         currentQuizId: null,
         draftQuizItems: [],
         draftQuizItemsLoading: false,
@@ -85,6 +86,7 @@ export const quizStore = defineStore('quiz', {
             console.log('Setting current quiz:', quizId);
             this.currentQuizId = quizId;
             this.userAnswers = [];
+            this.simpleAnswers = [];
             this.incorrectQuestions = [];
         },
 
@@ -93,6 +95,8 @@ export const quizStore = defineStore('quiz', {
                 console.error('Invalid selectedAnswer:', selectedAnswer);
                 return;
             }
+
+            this.simpleAnswers[index] = selectedAnswer;
 
             if (Array.isArray(selectedAnswer)) {
                 console.log('Sortable list answer - skipping correctness check');

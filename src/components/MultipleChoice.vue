@@ -95,9 +95,14 @@
 <script>
 import OptionIcon from "./OptionIcon.vue";
 import fireworksJSON from '../lottie/fireworks.json'
+import { quizStore } from '../stores/quizStore';
 
 export default {
     name: 'MultipleChoice',
+    setup() {
+        const store = quizStore();
+        return { store };
+    },
     props: {
         quizItem: {
             type: Object,
@@ -129,56 +134,40 @@ export default {
     watch: {
         itemNum(newItemNum, oldItemNum) {
             console.log("In MultipleChoice watcher itemNum, item changed from", oldItemNum, " to ", newItemNum);
-            console.log("In MultipleChoice watcher itemNum, reviewmode is: ", this.reviewMode)
-            this.highlighted = [false, false, false, false, false, false];
-            this.greenOutline = [false, false, false, false, false, false];
-            console.log("In MultipleChoice Watcher, basicMode is: ", this.basicMode, "and reviewMode is: ", this.reviewMode)
-            if (this.basicMode == false)
-                if (this.reviewMode == false) {
-                    console.log("In MultipleChoice itemNum watcher,selection mode");
-                    console.log("newItemNum, this.$userAnswers[newItemNum]]: ", this.itemNum, this.userAnswer)
-                    this.optionsStatus = [1, 1, 1, 1, 1, 1];
-                    console.log("in MultipleChoice watcher itemNum, highlighted: ", this.highlighted);
-                    console.log("in MultipleChoice watcher itemNum, quizItem: ", this.quizItem);
-                }
-                else {
-                    console.log("In MultipleChoice itemNum watcher,review mode for item: ", this.itemNum);
-                    this.highlighted[this.userAnswer] = true;
-                    this.optionsStatus = [2, 2, 2, 2, 2, 2];
-                    console.log("In itemNum watcher, this.optionsStatus[this.$userAnswers[this.itemNum]]: ", this.optionsStatus[this.userAnswer]);
-                    this.optionsStatus[this.userAnswer - 1] = 5;
-                    this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-                    this.highlighted[this.userAnswer] = true;
-                    this.greenOutline[this.quizItem.correctAnswer - 1] = true;
-                    console.log("in MultipleChoice itemNum watcher, highlighted: ", this.highlighted);
-                    console.log("in MultipleChoice itemNum watcher, optionsStatus: ", this.optionsStatus);
-                    console.log("in MultipleChoice itemNum watcher,this.greenOutline: ", this.greenOutline);
-                }
-            console.log("Exit itemNum watcher");
-        },
+            this.highlighted = Array(6).fill(false);
+            this.greenOutline = Array(6).fill(false);
 
-        reviewMode: {
-            handler(newVal, oldVal) {
-                console.log("reviewMode changed from ", oldVal, " to ", newVal);
-                this.highlighted = [false, false, false, false, false, false];
-                if (this.reviewMode) {
-                    this.highlighted[this.userAnswer] = true;
-                    this.optionsStatus = [2, 2, 2, 2, 2, 2];
-                    console.log("in MultipleChoice reviewMode watcher, this.$userAnswers", this.userAnswer);
-                    console.log("in MultipleChoice reviewMode watcher, this.itemNum", this.itemNum);
-                    console.log("in MultipleChoice reviewMode watcher, this.$userAnswers[this.itemNum]", this.userAnswer);
-                    this.optionsStatus[this.userAnswer - 1] = 5;
-                    this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-                    this.greenOutline[this.quizItem.correctAnswer - 1] = true;
-                    console.log("in MultipleChoice reviewMode watcher, highlighted: ", this.highlighted);
-                    console.log("in MultipleChoice reviewMode watcher, optionsStatus: ", this.optionsStatus);
-                    console.log("in itemNum watcher,this.greenOutline: ", this.greenOutline);
+            if (!this.basicMode) {
+                if (!this.reviewMode) {
+                    this.optionsStatus = Array(6).fill(1);
+                } else {
+                    const userAnswer = this.store.simpleAnswers[this.itemNum];
+                    if (userAnswer) {
+                        this.highlighted[userAnswer] = true;
+                        this.optionsStatus = Array(6).fill(2);
+                        this.optionsStatus[userAnswer - 1] = 5;
+                        this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
+                        this.greenOutline[this.quizItem.correctAnswer - 1] = true;
+                    }
                 }
-
-                else { this.optionsStatus = [1, 1, 1, 1, 1, 1]; }
             }
         },
 
+        reviewMode(oldStatus, newStatus) {
+            console.log("reviewMode changed from ", oldStatus, " to ", newStatus);
+            this.highlighted = Array(6).fill(false);
+            if (this.reviewMode) {
+                const userAnswer = this.store.simpleAnswers[this.itemNum];
+                if (userAnswer) {
+                    this.highlighted[userAnswer] = true;
+                    this.optionsStatus = Array(6).fill(2);
+                    this.optionsStatus[userAnswer - 1] = 5;
+                    this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
+                    this.greenOutline[this.quizItem.correctAnswer - 1] = true;
+                }
+            }
+            else { this.optionsStatus = Array(6).fill(1); }
+        },
     },
 
     data() {
@@ -191,15 +180,14 @@ export default {
     },
     mounted() {
         if (this.reviewMode) {
-            this.highlighted[this.userAnswer] = true;
-            this.optionsStatus = [2, 2, 2, 2, 2, 2];
-            console.log("in MultipleChoice mounted(), this.$userAnswers", this.userAnswer, "this.itemNum", this.itemNum, "this.$userAnswers[this.itemNum]", this.userAnswer);
-            this.optionsStatus[this.userAnswer - 1] = 5;
-            this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
-            this.greenOutline[this.quizItem.correctAnswer - 1] = true;
-            console.log("in MultipleChoice mounted(), highlighted: ", this.highlighted);
-            console.log("in MultipleChoicemounted(), optionsStatus: ", this.optionsStatus);
-            console.log("in MultipleChoice mounted(),this.greenOutline: ", this.greenOutline);
+            const userAnswer = this.store.simpleAnswers[this.itemNum];
+            if (userAnswer) {
+                this.highlighted[userAnswer] = true;
+                this.optionsStatus = Array(6).fill(2);
+                this.optionsStatus[userAnswer - 1] = 5;
+                this.optionsStatus[this.quizItem.correctAnswer - 1] = 4;
+                this.greenOutline[this.quizItem.correctAnswer - 1] = true;
+            }
         }
     },
     methods: {
