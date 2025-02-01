@@ -535,7 +535,13 @@
       </div>
 
       <div class="mt-4 flex justify-between items-center">
-        <button type="button" @click="saveDraft" class="save-draft-btn">
+        <button @click="saveDraft"
+          class="px-6 py-2 bg-black hover:bg-gray-900 text-[#02b87d] rounded-lg flex items-center transition-colors border-2 border-[#02b87d]">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v16a2 2 0 002 2h12a2 2 0 002-2V8.342a2 2 0 00-.602-1.43l-4.44-4.342A2 2 0 0013.56 2H6a2 2 0 00-2 2z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6" />
+          </svg>
           Save Draft
         </button>
         <button type="submit" :class="[
@@ -554,6 +560,8 @@
     <div v-if="saveStatus.show" :class="['save-status-indicator', saveStatus.type]" role="status" aria-live="polite">
       {{ saveStatus.message }}
     </div>
+
+    <ProgressSteps :currentStep="currentStep" />
   </div>
 </template>
 
@@ -565,11 +573,13 @@ import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import { quizEntries } from '../data/quiz-items';
 import { ref, watch, onMounted, computed } from 'vue';
+import ProgressSteps from './ProgressSteps.vue';
 
 export default {
   components: {
     QuizItem,
-    VueJsonPretty
+    VueJsonPretty,
+    ProgressSteps
   },
   setup() {
     const store = quizStore();
@@ -660,6 +670,11 @@ export default {
       ];
 
       return explanationFields.some(field => this.validationState.invalidFields.has(field));
+    },
+    currentStep() {
+      // Implement logic to determine the current step based on the form's state
+      // This is a placeholder and should be replaced with actual implementation
+      return 1; // Placeholder, actual implementation needed
     }
   },
   data() {
@@ -945,8 +960,12 @@ export default {
 }
 
 .section-summary {
-  background: linear-gradient(135deg, #4a90e2, #357abd);
-  color: white;
+  /*  background: linear-gradient(135deg, #4a90e2, #357abd);*/
+
+  background: #1e1f26;
+  border-color: #01a6fc;
+  border-width: 2px;
+  color: #01a6fc;
   padding: 0.75rem;
   border-radius: 8px;
   cursor: pointer;
@@ -1074,7 +1093,8 @@ textarea:focus {
   outline: none;
 }
 
-button {
+/* Only style buttons that don't have specific classes */
+button:not([class]) {
   padding: 5px 15px;
   background-color: #4CAF50;
   color: white;
@@ -1083,7 +1103,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+button:not([class]):hover {
   background-color: #45a049;
 }
 
