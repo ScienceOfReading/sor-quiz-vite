@@ -48,12 +48,18 @@
 <script>
 import MultipleChoice from './MultipleChoice.vue';
 import LiteYouTubeEmbed from 'vue-lite-youtube-embed';
-import Explanation from './Explanation.vue'; // Add this import
+import Explanation from './Explanation.vue';
 import SortableList from './SortableList.vue';
 import { ref } from 'vue';
 
 export default {
   name: 'QuizItem',
+  components: {
+    MultipleChoice,
+    Explanation,
+    LiteYouTubeEmbed,
+    SortableList,
+  },
   props: {
     currentQuizItem: {
       type: Object,
@@ -93,12 +99,6 @@ export default {
       type: Boolean,
       default: false
     }
-  },
-  components: {
-    MultipleChoice,
-    Explanation, // Add this component
-    LiteYouTubeEmbed, // Add this component if you're using it
-    SortableList,
   },
   computed: {
     quizItem() {
@@ -148,11 +148,6 @@ export default {
     onHover() {
       console.log("Hovered");
     },
-    handleOrderChanged(newOrder) {
-      this.userAnswer = newOrder;
-      this.$emit('selected');
-      this.explanationComponent.checkAnswer();
-    },
     handleAnswerSelected(selectedOption) {
       console.log("Answer selected in QuizItem:", selectedOption);
       this.$emit('selected', selectedOption);
@@ -163,16 +158,18 @@ export default {
     const explanationComponent = ref(null);
 
     const handleOrderChanged = (newOrder) => {
+      if (!newOrder) return;
       userAnswer.value = newOrder;
-      emit('selected');
-      explanationComponent.value.checkAnswer();
+      emit('selected', newOrder); // Pass the newOrder to selected event
+      if (explanationComponent.value) {
+        explanationComponent.value.checkAnswer();
+      }
     };
 
     return {
       userAnswer,
-      handleOrderChanged,
       explanationComponent,
-      // quizItem: props.quizItem,
+      handleOrderChanged
     };
   },
   emits: ['update:userAnswer', 'selected'],
