@@ -84,14 +84,14 @@ export default {
 
 .resource-description {
     font-size: 0.9rem;
-    line-height: 1.6;
+    line-height: 1.4;
     margin: 0;
     color: #4a5568;
 }
 
 .resource-text {
     font-size: 0.875rem;
-    line-height: 1.6;
+    line-height: 1.4;
     margin: 0;
     word-wrap: break-word;
     overflow-wrap: break-word;
