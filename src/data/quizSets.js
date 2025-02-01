@@ -80,5 +80,25 @@ export const quizSets = [{
         description: "",
         podcastStartTime: 0,
     }]
+},
+{
+    setName: "Repeated Reading",
+    basicMode: true,
+    items: [41],
+    inProgress: true,
+    resource: {
+        title: "",
+        url: "https://www.facebook.com/groups/704498996666615/permalink/2098428430606991/?mibextid=wwXIfr&rdid=1wqUY6YtQWPFMeu8",
+        description: "'How do you guys do repeated reading? I was doing the UFLI passages and...'",
+        resourceType: "Facebook Post",
+        resourceUrl: "https://www.facebook.com/groups/704498996666615/permalink/2098428430606991/",
+    },
+    podcastEpisodes: [{
+        title: "",
+        EpisodeUrl: "",
+        audioUrl: "",
+        description: "",
+        podcastStartTime: 0,
+    }]
 }
 ];
