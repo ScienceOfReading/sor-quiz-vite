@@ -11,7 +11,7 @@ export const quizSets = [{
 {
     setName: "kinder-first",
     basicMode: true,
-    items: [26, 23, 24, 25, 11]
+    items: [23, 24, 25, 11, 41, 26]
 },
 {
     setName: "admin",
@@ -31,7 +31,7 @@ export const quizSets = [{
 {
     setName: "Learning Science",
     basicMode: true,
-    items: [39],
+    items: [42],
     inProgress: true,
     podcastEpisodes: [{
         title: "Why the science of reading needs the science of learning",
