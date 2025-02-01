@@ -1481,7 +1481,7 @@ export const quizEntries = [{
         podcastStartTime: 0
     },
     cautionLevel: "",
-    caution: "",
+    caution: "If you can help us add the research to this section, we'd be very appreciative.",
     citations: [],
     ref1: "",
     ref2: "",
