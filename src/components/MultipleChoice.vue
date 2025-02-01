@@ -32,7 +32,7 @@
                 </div>
             </li>
 
-            <li v-if="quizItem.option3"
+            <li v-if="quizItem.option3 && quizItem.option3 !== 'Third option'"
                 :class="{ [`bg-stone-400 border-amber-500`]: highlighted[3], ['border-green-400']: greenOutline[2] }"
                 class="flex flex-row min-h-14 answer" @click="select(3)">
                 <div class="list-asking">
@@ -48,7 +48,7 @@
                 </div>
             </li>
 
-            <li v-if="quizItem.option4"
+            <li v-if="quizItem.option4 && quizItem.option4 !== 'Fourth option'"
                 :class="{ [`bg-stone-400 border-amber-500`]: highlighted[4], ['border-green-400']: greenOutline[3] }"
                 class="flex flex-row min-h-14 answer" @click="select(4)">
                 <div class="list-asking">
@@ -62,7 +62,7 @@
                     </Vue3Lottie>
                 </div>
             </li>
-            <li v-if="quizItem.option5"
+            <li v-if="quizItem.option5 && quizItem.option5 !== 'Fifth option'"
                 :class="{ [`bg-stone-400 border-amber-500`]: highlighted[5], ['border-green-400']: greenOutline[4] }"
                 class="flex flex-row min-h-14 answer" @click="select(5)">
                 <div class="list-asking">
