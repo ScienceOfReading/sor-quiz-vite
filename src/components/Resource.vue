@@ -2,12 +2,17 @@
     <div class="resource">
         <div class="resource-content">
             <font-awesome-icon :icon="['fas', 'book']" class="resource-icon" />
-            <p class="resource-text">
-                {{ resource.title }}, {{ resource.author }}, {{ resource.year }},
-                <a :href="resource.url" target="_blank" class="resource-link" :title="resource.url">
-                    {{ truncatedUrl }}
-                </a>
-            </p>
+            <div class="resource-text-container">
+                <p v-if="resource.text" class="resource-description">
+                    {{ resource.text }}
+                </p>
+                <p class="resource-text">
+                    {{ resource.title }}, {{ resource.author }}, {{ resource.year }},
+                    <a :href="resource.url" target="_blank" class="resource-link" :title="resource.url">
+                        {{ truncatedUrl }}
+                    </a>
+                </p>
+            </div>
         </div>
         <div v-if="resource.imageUrl" class="resource-image-wrapper">
             <img :src="resource.imageUrl" :alt="resource.imageAltText" class="resource-image" />
@@ -71,6 +76,19 @@ export default {
     opacity: 0.8;
 }
 
+.resource-text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.resource-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+    color: #4a5568;
+}
+
 .resource-text {
     font-size: 0.875rem;
     line-height: 1.6;
@@ -122,6 +140,10 @@ export default {
     .resource-image-wrapper {
         width: 80px;
     }
+
+    .resource-description {
+        font-size: 0.875rem;
+    }
 }
 
 :root[class~="dark"] .resource {
@@ -143,5 +165,9 @@ export default {
 
 :root[class~="dark"] .resource-link:hover {
     color: #90cdf4;
+}
+
+:root[class~="dark"] .resource-description {
+    color: rgba(255, 255, 255, 0.9);
 }
 </style>

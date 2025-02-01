@@ -1485,7 +1485,15 @@ export const quizEntries = [{
     citations: [],
     ref1: "",
     ref2: "",
-    resources: [],
+    resources: [
+        {
+            text: "Heggarty has issued updated guidance on lessons to omit.",
+            title: "Heggarty Alignment Guide",
+            author: "Literacy Resources, LLC",
+            url: "https://wp.heggerty.org/wp-content/uploads/2024/04/2020-2022-Edition-Alignment-Guide_Updated-July-2022.pdf",
+            description: "",
+        }
+    ],
     closingText: "If you can help us add the research to this section, we'd be very appreciative.",
     closingText2: "",
     modal: "",
