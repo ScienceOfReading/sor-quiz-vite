@@ -11,7 +11,7 @@ export const quizSets = [{
 {
     setName: "kinder-first",
     basicMode: true,
-    items: [23, 24, 25, 11, 41, 26]
+    items: [23, 42, 41, 24, 26, 25, 11]
 },
 {
     setName: "admin",
@@ -86,6 +86,7 @@ export const quizSets = [{
     basicMode: true,
     items: [41],
     inProgress: true,
+    inProgressText: "We put this here to show the deeper areas the quizzes should go in to. Do you know what content belongs here?",
     resource: {
         title: "",
         url: "https://www.facebook.com/groups/704498996666615/permalink/2098428430606991/?mibextid=wwXIfr&rdid=1wqUY6YtQWPFMeu8",
