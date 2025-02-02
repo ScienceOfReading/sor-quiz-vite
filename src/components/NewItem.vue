@@ -1497,10 +1497,12 @@ details[open] .form-section {
   cursor: pointer;
   transition: background-color 0.2s;
   white-space: nowrap;
+  background-color: #4a5568;
+  color: white;
 }
 
 .section-button:hover {
-  background-color: #e0e0e0;
+  background-color: #2d3748;
 }
 
 .section-button.active {
@@ -1509,6 +1511,20 @@ details[open] .form-section {
   border-color: #357abd;
 }
 
+@media (prefers-color-scheme: dark) {
+  .section-button {
+    background-color: #4a5568;
+    color: white;
+  }
+
+  .section-button:hover {
+    background-color: #2d3748;
+  }
+
+  .section-button.active {
+    background-color: #4a90e2;
+  }
+}
 
 /* Fade transition */
 .fade-enter-active,
