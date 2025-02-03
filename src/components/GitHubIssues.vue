@@ -76,6 +76,9 @@
                         #{{ issue.number }} {{ issue.state === 'open' ? 'opened' : 'closed' }} {{
                             formatDate(issue.created_at) }} by {{ issue.user.login }}
                     </div>
+                    <div v-if="issue.body" class="issue-body">
+                        <div v-html="renderMarkdown(issue.body)"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -88,6 +91,7 @@ import { quizStore } from '../stores/quizStore';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { faList } from '@fortawesome/free-solid-svg-icons';
+import { marked } from 'marked';
 
 // Add icons to library
 library.add(faList);
@@ -129,12 +133,17 @@ export default {
             return new Date(dateString).toLocaleDateString();
         };
 
+        const renderMarkdown = (text) => {
+            return marked(text);
+        };
+
         return {
             store,
             formatDate,
             filters,
             currentFilter,
-            changeFilter
+            changeFilter,
+            renderMarkdown
         };
     }
 }
@@ -301,5 +310,60 @@ svg {
 .issue-icon.closed {
     color: #8957e5;
     /* purple for closed */
+}
+
+.issue-body {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.issue-body :deep(p) {
+    margin-bottom: 1rem;
+}
+
+.issue-body :deep(a) {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+.issue-body :deep(a:hover) {
+    text-decoration: underline;
+}
+
+.issue-body :deep(pre) {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.issue-body :deep(code) {
+    font-family: monospace;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+}
+
+.issue-body :deep(ul),
+.issue-body :deep(ol) {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+.issue-body :deep(li) {
+    margin: 0.5rem 0;
+}
+
+.issue-body :deep(blockquote) {
+    border-left: 4px solid rgba(255, 255, 255, 0.2);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: rgba(255, 255, 255, 0.6);
 }
 </style>
