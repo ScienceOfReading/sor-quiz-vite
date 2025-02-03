@@ -11,7 +11,12 @@
             <div class="issue-filters">
                 <button v-for="filter in filters" :key="filter.state" @click="changeFilter(filter.state)"
                     :class="['filter-btn', { active: currentFilter === filter.state }]">
-                    <font-awesome-icon :icon="filter.icon" class="mr-2" />
+                    <font-awesome-icon :icon="filter.icon" :class="[
+                        'mr-2',
+                        filter.state === 'open' ? 'text-green-500' :
+                            filter.state === 'closed' ? 'text-purple-500' :
+                                'text-gray-400'
+                    ]" />
                     {{ filter.label }}
                     <span class="count" v-if="filter.count !== undefined">({{ filter.count }})</span>
                 </button>
@@ -27,13 +32,14 @@
         </div>
 
         <div v-else class="issues-list">
-            <div v-for="issue in filteredIssues" :key="issue.number" class="issue-item">
+            <div v-for="issue in store.githubIssues" :key="issue.number" class="issue-item">
                 <div class="issue-content">
                     <div class="issue-header">
                         <h3 class="issue-title">
                             <font-awesome-icon
-                                :icon="issue.state === 'open' ? ['fas', 'exclamation-circle'] : ['fas', 'check-circle']"
-                                :class="issue.state === 'open' ? 'text-green-600' : 'text-purple-600'" class="mr-2" />
+                                :icon="['fas', issue.state === 'open' ? 'exclamation-circle' : 'check-circle']" :style="{
+                                    color: issue.state === 'open' ? '#238636' : '#8957e5'
+                                }" class="mr-2" />
                             {{ issue.title }}
                         </h3>
                         <div class="issue-labels" v-if="issue.labels.length">
@@ -57,14 +63,19 @@
 import { onMounted, ref, computed } from 'vue';
 import { quizStore } from '../stores/quizStore';
 import { library } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import {
-    faExclamationCircle,
+    faCircle,
+    faDotCircle
+} from '@fortawesome/free-regular-svg-icons';
+import {
     faCheckCircle,
-    faList
+    faList,
+    faExclamationCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 // Add icons to library
-library.add(faExclamationCircle, faCheckCircle, faList);
+library.add(faCircle, faDotCircle, faCheckCircle, faList, faExclamationCircle);
 
 export default {
     name: 'GitHubIssues',
@@ -93,8 +104,6 @@ export default {
             }
         ]);
 
-        const filteredIssues = computed(() => store.githubIssues);
-
         const changeFilter = async (filter) => {
             currentFilter.value = filter;
             await store.fetchGitHubIssues(filter);
@@ -113,8 +122,7 @@ export default {
             formatDate,
             filters,
             currentFilter,
-            changeFilter,
-            filteredIssues
+            changeFilter
         };
     }
 }

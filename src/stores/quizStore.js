@@ -654,33 +654,29 @@ export const quizStore = defineStore('quiz', {
                 const token = import.meta.env.VITE_GITHUB_TOKEN;
                 const repo = import.meta.env.VITE_GITHUB_REPO;
 
-                // First time or when requesting 'all', fetch all issues
-                if (!this.allGithubIssues.length || state === 'all') {
-                    const allResponse = await fetch(
-                        `https://api.github.com/repos/${repo}/issues?state=all`,
-                        {
-                            headers: {
-                                'Authorization': `token ${token}`,
-                                'Accept': 'application/vnd.github.v3+json'
-                            }
+                const response = await fetch(
+                    `https://api.github.com/repos/${repo}/issues?state=${state}`,
+                    {
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Accept': 'application/vnd.github.v3+json'
                         }
-                    );
-
-                    if (!allResponse.ok) {
-                        throw new Error(`GitHub API error: ${allResponse.status}`);
                     }
+                );
 
-                    this.allGithubIssues = await allResponse.json();
+                if (!response.ok) {
+                    throw new Error(`GitHub API error: ${response.status}`);
                 }
 
-                // Filter issues based on state
+                const issues = await response.json();
+                this.githubIssues = issues;
+
+                // Update allGithubIssues if we're fetching all issues
                 if (state === 'all') {
-                    this.githubIssues = this.allGithubIssues;
-                } else {
-                    this.githubIssues = this.allGithubIssues.filter(issue => issue.state === state);
+                    this.allGithubIssues = issues;
                 }
 
-                return this.githubIssues;
+                return issues;
             } catch (error) {
                 console.error('Error fetching GitHub issues:', error);
                 this.githubIssuesError = error.message;
