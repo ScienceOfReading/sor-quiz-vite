@@ -43,7 +43,8 @@
         </div>
 
         <div v-else class="issues-list">
-            <div v-for="issue in store.githubIssues" :key="issue.number" class="issue-item">
+            <a v-for="issue in store.githubIssues" :key="issue.number" :href="issue.html_url" target="_blank"
+                rel="noopener noreferrer" class="issue-item block hover:bg-gray-800">
                 <div class="issue-content">
                     <div class="issue-header">
                         <h3 class="issue-title flex items-center gap-2">
@@ -83,13 +84,13 @@
                         <div :class="{ 'line-clamp-3': !expandedIssues[issue.number] }">
                             <div class="whitespace-pre-wrap">{{ issue.body }}</div>
                         </div>
-                        <button v-if="issue.body.split('\n').length > 3" @click="toggleIssue(issue.number)"
+                        <button v-if="issue.body.split('\n').length > 3" @click.stop="toggleIssue(issue.number)"
                             class="text-gray-500 hover:text-gray-400 text-xs mt-1">
                             {{ expandedIssues[issue.number] ? 'Show less' : 'Show more' }}
                         </button>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </template>
@@ -186,15 +187,10 @@ export default {
 }
 
 .issue-item {
-    display: flex;
+    display: block;
     padding: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    gap: 1rem;
     transition: background-color 0.2s;
-}
-
-.issue-item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .issue-item:last-child {
