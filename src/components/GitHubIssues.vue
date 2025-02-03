@@ -11,12 +11,23 @@
             <div class="issue-filters">
                 <button v-for="filter in filters" :key="filter.state" @click="changeFilter(filter.state)"
                     :class="['filter-btn', { active: currentFilter === filter.state }]">
-                    <font-awesome-icon :icon="filter.icon" :class="[
-                        'mr-2',
-                        filter.state === 'open' ? 'text-green-500' :
-                            filter.state === 'closed' ? 'text-purple-500' :
-                                'text-gray-400'
-                    ]" />
+                    <span class="issue-icon" v-if="filter.state !== 'all'">
+                        <svg class="octicon" viewBox="0 0 16 16" width="16" height="16"
+                            :style="{ color: filter.state === 'open' ? '#238636' : '#8957e5' }">
+                            <path v-if="filter.state === 'open'" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z">
+                            </path>
+                            <path v-if="filter.state === 'open'"
+                                d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z">
+                            </path>
+                            <path v-if="filter.state === 'closed'"
+                                d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z">
+                            </path>
+                            <path v-if="filter.state === 'closed'"
+                                d="M11.78 4.22a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L3.72 6.78a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6.5 7.44l3.72-3.72a.75.75 0 0 1 1.06 0Z">
+                            </path>
+                        </svg>
+                    </span>
+                    <font-awesome-icon v-else icon="list" class="mr-2 text-gray-400" />
                     {{ filter.label }}
                     <span class="count" v-if="filter.count !== undefined">({{ filter.count }})</span>
                 </button>
@@ -76,16 +87,10 @@ import { onMounted, ref, computed } from 'vue';
 import { quizStore } from '../stores/quizStore';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import {
-    faDotCircle,
-    faCheckCircle as farCheckCircle
-} from '@fortawesome/free-regular-svg-icons';
-import {
-    faList
-} from '@fortawesome/free-solid-svg-icons';
+import { faList } from '@fortawesome/free-solid-svg-icons';
 
 // Add icons to library
-library.add(faDotCircle, farCheckCircle, faList);
+library.add(faList);
 
 export default {
     name: 'GitHubIssues',
@@ -97,19 +102,16 @@ export default {
             {
                 state: 'open',
                 label: 'Open',
-                icon: ['far', 'dot-circle'],
                 count: store.allGithubIssues.filter(i => i.state === 'open').length
             },
             {
                 state: 'closed',
                 label: 'Closed',
-                icon: ['far', 'check-circle'],
                 count: store.allGithubIssues.filter(i => i.state === 'closed').length
             },
             {
                 state: 'all',
                 label: 'All',
-                icon: ['fas', 'list'],
                 count: store.allGithubIssues.length
             }
         ]);
