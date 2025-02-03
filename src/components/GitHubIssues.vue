@@ -46,7 +46,7 @@
             <div v-for="issue in store.githubIssues" :key="issue.number" class="issue-item">
                 <div class="issue-content">
                     <div class="issue-header">
-                        <h3 class="issue-title">
+                        <h3 class="issue-title flex items-center gap-2">
                             <span class="issue-icon">
                                 <svg class="octicon" viewBox="0 0 16 16" width="16" height="16"
                                     :style="{ color: issue.state === 'open' ? '#238636' : '#8957e5' }">
@@ -65,19 +65,22 @@
                             </span>
                             {{ issue.title }}
                         </h3>
-                        <div class="issue-labels" v-if="issue.labels.length">
-                            <span v-for="label in issue.labels" :key="label.id" class="issue-label"
-                                :style="{ backgroundColor: `#${label.color}` }">
-                                {{ label.name }}
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="text-gray-400">
+                                #{{ issue.number }} {{ issue.state === 'open' ? 'opened' : 'closed' }}
+                                {{ formatDate(issue.created_at) }} by {{ issue.user.login }}
                             </span>
+                            <div v-if="issue.labels.length" class="flex gap-1">
+                                <span v-for="label in issue.labels" :key="label.id"
+                                    class="px-2 py-0.5 rounded-full text-xs"
+                                    :style="{ backgroundColor: `#${label.color}` }">
+                                    {{ label.name }}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                    <div class="issue-meta">
-                        #{{ issue.number }} {{ issue.state === 'open' ? 'opened' : 'closed' }} {{
-                            formatDate(issue.created_at) }} by {{ issue.user.login }}
-                    </div>
-                    <div v-if="issue.body" class="issue-body">
-                        <div v-html="renderMarkdown(issue.body)"></div>
+                    <div v-if="issue.body" class="mt-2 text-gray-400 whitespace-pre-wrap">
+                        {{ issue.body }}
                     </div>
                 </div>
             </div>
