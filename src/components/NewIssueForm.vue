@@ -5,10 +5,15 @@
             <select id="template" v-model="selectedTemplate" @change="applyTemplate"
                 class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500">
                 <option value="">Choose a type...</option>
-                <option value="bug">Bug Report</option>
-                <option value="feature">Feature Request</option>
-                <option value="question">Question</option>
+                <option value="new-quiz">NEW QUIZ ITEM</option>
+                <option value="improve">Improve existing quiz item</option>
+                <option value="feedback">In-app feedback</option>
+                <option value="bug">Bug report</option>
+                <option value="feature">Feature request</option>
+                <option value="blank">Blank issue</option>
             </select>
+            <p class="mt-1 text-sm text-gray-400">{{ templateDescriptions[selectedTemplate] || 'Select an issue type' }}
+            </p>
         </div>
         <div class="mb-4">
             <label for="title" class="block text-sm font-medium mb-2">Title</label>
@@ -36,8 +41,60 @@
 <script>
 import { ref } from 'vue'
 
+const templateDescriptions = {
+    'new-quiz': 'Start a new quiz item from scratch.',
+    'improve': 'How can we make a quiz item better?',
+    'feedback': 'Brought over from the app user records',
+    'bug': 'Something broken? Create a report to help us improve',
+    'feature': 'Suggest an idea for this project',
+    'blank': 'Create a new issue from scratch'
+}
+
 const templates = {
-    bug: `### Description
+    'new-quiz': `### Quiz Item Details
+* Topic/Subject:
+* Difficulty Level:
+* Target Age Group:
+
+### Question
+[Enter the quiz question here]
+
+### Answer Options
+1. 
+2. 
+3. 
+4. 
+
+### Correct Answer
+[Specify the correct answer and explain why]
+
+### Additional Notes
+[Any additional context or educational value]`,
+
+    'improve': `### Current Quiz Item
+[Link or reference to the existing quiz item]
+
+### Suggested Improvements
+[Describe what could be improved]
+
+### Why This Improvement?
+[Explain the educational or engagement benefit]
+
+### Additional Context
+[Any other relevant information]`,
+
+    'feedback': `### User Feedback
+[Enter the feedback received from the app]
+
+### Context
+* App Version:
+* User Type:
+* Feature/Section:
+
+### Action Items
+[Any specific actions needed based on this feedback]`,
+
+    'bug': `### Description
 A clear and concise description of the bug.
 
 ### Steps to Reproduce
@@ -55,7 +112,7 @@ A clear description of what actually happened.
 ### Additional Context
 Add any other context about the problem here.`,
 
-    feature: `### Problem
+    'feature': `### Problem
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
 ### Proposed Solution
@@ -65,16 +122,9 @@ A clear and concise description of what you want to happen.
 A clear and concise description of any alternative solutions or features you've considered.
 
 ### Additional Context
-Add any other context or screenshots about the feature request here.`,
+Add any other context about the feature request here.`,
 
-    question: `### Question
-What would you like to know?
-
-### Context
-Add any context that might help us answer your question.
-
-### What I've Tried
-Describe what you've already tried or researched.`
+    'blank': ''
 }
 
 export default {
@@ -107,6 +157,7 @@ export default {
         return {
             issueData,
             selectedTemplate,
+            templateDescriptions,
             applyTemplate,
             submitIssue
         }
