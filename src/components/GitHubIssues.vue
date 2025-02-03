@@ -33,12 +33,12 @@
 
 <script>
 import { onMounted } from 'vue';
-import { useQuizStore } from '@/stores/quizStore';
+import { quizStore } from '../stores/quizStore';
 
 export default {
     name: 'GitHubIssues',
     setup() {
-        const store = useQuizStore();
+        const store = quizStore();
 
         onMounted(async () => {
             await store.fetchGitHubIssues();
