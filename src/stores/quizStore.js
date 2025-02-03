@@ -75,6 +75,7 @@ export const quizStore = defineStore('quiz', {
         },
         incorrectQuestions: [],
         githubIssues: [],
+        allGithubIssues: [],
         githubIssuesLoading: false,
         githubIssuesError: null
     }),
@@ -645,7 +646,7 @@ export const quizStore = defineStore('quiz', {
             };
         },
 
-        async fetchGitHubIssues() {
+        async fetchGitHubIssues(state = 'open') {
             this.githubIssuesLoading = true;
             this.githubIssuesError = null;
 
@@ -653,20 +654,33 @@ export const quizStore = defineStore('quiz', {
                 const token = import.meta.env.VITE_GITHUB_TOKEN;
                 const repo = import.meta.env.VITE_GITHUB_REPO;
 
-                const response = await fetch(`https://api.github.com/repos/${repo}/issues`, {
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
+                // First time or when requesting 'all', fetch all issues
+                if (!this.allGithubIssues.length || state === 'all') {
+                    const allResponse = await fetch(
+                        `https://api.github.com/repos/${repo}/issues?state=all`,
+                        {
+                            headers: {
+                                'Authorization': `token ${token}`,
+                                'Accept': 'application/vnd.github.v3+json'
+                            }
+                        }
+                    );
 
-                if (!response.ok) {
-                    throw new Error(`GitHub API error: ${response.status}`);
+                    if (!allResponse.ok) {
+                        throw new Error(`GitHub API error: ${allResponse.status}`);
+                    }
+
+                    this.allGithubIssues = await allResponse.json();
                 }
 
-                const issues = await response.json();
-                this.githubIssues = issues;
-                return issues;
+                // Filter issues based on state
+                if (state === 'all') {
+                    this.githubIssues = this.allGithubIssues;
+                } else {
+                    this.githubIssues = this.allGithubIssues.filter(issue => issue.state === state);
+                }
+
+                return this.githubIssues;
             } catch (error) {
                 console.error('Error fetching GitHub issues:', error);
                 this.githubIssuesError = error.message;

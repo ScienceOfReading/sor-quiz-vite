@@ -71,26 +71,23 @@ export default {
                 state: 'open',
                 label: 'Open',
                 icon: ['fas', 'exclamation-circle'],
-                count: store.githubIssues.filter(i => i.state === 'open').length
+                count: store.allGithubIssues.filter(i => i.state === 'open').length
             },
             {
                 state: 'closed',
                 label: 'Closed',
                 icon: ['fas', 'check-circle'],
-                count: store.githubIssues.filter(i => i.state === 'closed').length
+                count: store.allGithubIssues.filter(i => i.state === 'closed').length
             },
             {
                 state: 'all',
                 label: 'All',
                 icon: ['fas', 'list'],
-                count: store.githubIssues.length
+                count: store.allGithubIssues.length
             }
         ]);
 
-        const filteredIssues = computed(() => {
-            if (currentFilter.value === 'all') return store.githubIssues;
-            return store.githubIssues.filter(issue => issue.state === currentFilter.value);
-        });
+        const filteredIssues = computed(() => store.githubIssues);
 
         const changeFilter = async (filter) => {
             currentFilter.value = filter;
