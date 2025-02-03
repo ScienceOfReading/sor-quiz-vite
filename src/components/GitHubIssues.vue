@@ -63,9 +63,9 @@
                                     </path>
                                 </svg>
                             </span>
-                            {{ issue.title }}
+                            <span>{{ issue.title }}</span>
                         </h3>
-                        <div class="flex items-center gap-2 text-sm">
+                        <div class="flex items-center gap-2 text-sm pl-7">
                             <span class="text-gray-400">
                                 #{{ issue.number }} {{ issue.state === 'open' ? 'opened' : 'closed' }}
                                 {{ formatDate(issue.created_at) }} by {{ issue.user.login }}
@@ -79,7 +79,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="issue.body" class="mt-2 text-gray-400 whitespace-pre-wrap">
+                    <div v-if="issue.body" class="mt-4 text-gray-400 text-sm leading-6 whitespace-pre-wrap pl-7">
                         {{ issue.body }}
                     </div>
                 </div>
@@ -94,7 +94,6 @@ import { quizStore } from '../stores/quizStore';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { faList } from '@fortawesome/free-solid-svg-icons';
-import { marked } from 'marked';
 
 // Add icons to library
 library.add(faList);
@@ -109,6 +108,7 @@ export default {
             {
                 state: 'open',
                 label: 'Open',
+                icon: ['far', 'dot-circle'],
                 count: store.allGithubIssues.filter(i => i.state === 'open').length
             },
             {
@@ -136,17 +136,12 @@ export default {
             return new Date(dateString).toLocaleDateString();
         };
 
-        const renderMarkdown = (text) => {
-            return marked(text);
-        };
-
         return {
             store,
             formatDate,
             filters,
             currentFilter,
-            changeFilter,
-            renderMarkdown
+            changeFilter
         };
     }
 }
@@ -157,6 +152,7 @@ export default {
     padding: 0;
     max-width: 1200px;
     margin: 0 auto;
+    text-align: left;
 }
 
 .loading,
@@ -173,6 +169,7 @@ export default {
 .issues-list {
     border: none;
     border-radius: 0;
+    text-align: left;
 }
 
 .issue-item {
