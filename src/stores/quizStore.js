@@ -73,7 +73,10 @@ export const quizStore = defineStore('quiz', {
             type: '',
             show: false
         },
-        incorrectQuestions: []
+        incorrectQuestions: [],
+        githubIssues: [],
+        githubIssuesLoading: false,
+        githubIssuesError: null
     }),
     actions: {
         // =============================================
@@ -641,5 +644,36 @@ export const quizStore = defineStore('quiz', {
                 show: false
             };
         },
+
+        async fetchGitHubIssues() {
+            this.githubIssuesLoading = true;
+            this.githubIssuesError = null;
+
+            try {
+                const token = import.meta.env.VITE_GITHUB_TOKEN;
+                const repo = import.meta.env.VITE_GITHUB_REPO;
+
+                const response = await fetch(`https://api.github.com/repos/${repo}/issues`, {
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`GitHub API error: ${response.status}`);
+                }
+
+                const issues = await response.json();
+                this.githubIssues = issues;
+                return issues;
+            } catch (error) {
+                console.error('Error fetching GitHub issues:', error);
+                this.githubIssuesError = error.message;
+                throw error;
+            } finally {
+                this.githubIssuesLoading = false;
+            }
+        }
     },
 });
