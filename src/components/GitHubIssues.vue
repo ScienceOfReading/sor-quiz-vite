@@ -1,6 +1,6 @@
 <template>
-    <div class="github-issues">
-        <div class="header-section">
+    <div class="github-issues bg-gray-900 text-white">
+        <div class="p-4 header-section">
             <h2 class="text-2xl mb-6 flex items-center gap-3">
                 <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
                     <path
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div v-if="store.githubIssuesLoading" class="loading">
+        <div v-if="store.githubIssuesLoading" class="loading text-gray-400">
             Loading issues...
         </div>
 
@@ -44,7 +44,7 @@
 
         <div v-else class="issues-list">
             <a v-for="issue in store.githubIssues" :key="issue.number" :href="issue.html_url" target="_blank"
-                rel="noopener noreferrer" class="issue-item block hover:bg-gray-800">
+                rel="noopener noreferrer" class="issue-item block hover:bg-gray-800 border-b border-gray-700">
                 <div class="issue-content">
                     <div class="issue-header">
                         <h3 class="issue-title flex items-center gap-2">
@@ -173,7 +173,6 @@ export default {
 .error {
     text-align: center;
     padding: 2rem;
-    color: #666;
 }
 
 .error {
@@ -189,7 +188,6 @@ export default {
 .issue-item {
     display: block;
     padding: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: background-color 0.2s;
 }
 
@@ -232,38 +230,6 @@ export default {
     border-radius: 1rem;
     font-size: 0.75rem;
     font-weight: normal;
-}
-
-/* Dark mode */
-:root[class~="dark"] .issues-list {
-    border-color: #30363d;
-}
-
-:root[class~="dark"] .issue-item {
-    border-bottom-color: #30363d;
-}
-
-:root[class~="dark"] .issue-title {
-    color: #c9d1d9;
-}
-
-:root[class~="dark"] .issue-meta {
-    color: #8b949e;
-}
-
-@media (max-width: 640px) {
-    .github-issues {
-        padding: 0.5rem;
-    }
-
-    .issue-item {
-        padding: 0.75rem;
-    }
-
-    .issue-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
 }
 
 .header-section {
