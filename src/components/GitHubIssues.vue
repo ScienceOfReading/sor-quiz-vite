@@ -36,10 +36,22 @@
                 <div class="issue-content">
                     <div class="issue-header">
                         <h3 class="issue-title">
-                            <font-awesome-icon
-                                :icon="['fas', issue.state === 'open' ? 'exclamation-circle' : 'check-circle']" :style="{
-                                    color: issue.state === 'open' ? '#238636' : '#8957e5'
-                                }" class="mr-2" />
+                            <span class="issue-icon">
+                                <svg class="octicon" viewBox="0 0 16 16" width="16" height="16"
+                                    :style="{ color: issue.state === 'open' ? '#238636' : '#8957e5' }">
+                                    <path v-if="issue.state === 'open'" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z">
+                                    </path>
+                                    <path v-if="issue.state === 'open'"
+                                        d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z">
+                                    </path>
+                                    <path v-if="issue.state === 'closed'"
+                                        d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z">
+                                    </path>
+                                    <path v-if="issue.state === 'closed'"
+                                        d="M11.78 4.22a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L3.72 6.78a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6.5 7.44l3.72-3.72a.75.75 0 0 1 1.06 0Z">
+                                    </path>
+                                </svg>
+                            </span>
                             {{ issue.title }}
                         </h3>
                         <div class="issue-labels" v-if="issue.labels.length">
@@ -65,17 +77,15 @@ import { quizStore } from '../stores/quizStore';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import {
-    faCircle,
-    faDotCircle
+    faDotCircle,
+    faCheckCircle as farCheckCircle
 } from '@fortawesome/free-regular-svg-icons';
 import {
-    faCheckCircle,
-    faList,
-    faExclamationCircle
+    faList
 } from '@fortawesome/free-solid-svg-icons';
 
 // Add icons to library
-library.add(faCircle, faDotCircle, faCheckCircle, faList, faExclamationCircle);
+library.add(faDotCircle, farCheckCircle, faList);
 
 export default {
     name: 'GitHubIssues',
@@ -87,13 +97,13 @@ export default {
             {
                 state: 'open',
                 label: 'Open',
-                icon: ['fas', 'exclamation-circle'],
+                icon: ['far', 'dot-circle'],
                 count: store.allGithubIssues.filter(i => i.state === 'open').length
             },
             {
                 state: 'closed',
                 label: 'Closed',
-                icon: ['fas', 'check-circle'],
+                icon: ['far', 'check-circle'],
                 count: store.allGithubIssues.filter(i => i.state === 'closed').length
             },
             {
@@ -270,5 +280,24 @@ export default {
 
 svg {
     color: rgba(255, 255, 255, 0.9);
+}
+
+.issue-icon {
+    display: inline-flex;
+    margin-right: 0.5rem;
+}
+
+.issue-icon svg {
+    fill: currentColor;
+}
+
+.issue-icon.open {
+    color: #238636;
+    /* green for open */
+}
+
+.issue-icon.closed {
+    color: #8957e5;
+    /* purple for closed */
 }
 </style>
