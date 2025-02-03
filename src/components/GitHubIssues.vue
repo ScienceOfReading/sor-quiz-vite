@@ -79,8 +79,14 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="issue.body" class="mt-4 text-gray-400 text-sm leading-6 whitespace-pre-wrap pl-7">
-                        {{ issue.body }}
+                    <div v-if="issue.body" class="mt-4 text-gray-400 text-sm leading-6 pl-7">
+                        <div :class="{ 'line-clamp-3': !expandedIssues[issue.number] }">
+                            <div class="whitespace-pre-wrap">{{ issue.body }}</div>
+                        </div>
+                        <button v-if="issue.body.split('\n').length > 3" @click="toggleIssue(issue.number)"
+                            class="text-blue-400 hover:text-blue-300 mt-1">
+                            {{ expandedIssues[issue.number] ? 'Show less' : 'Show more' }}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -103,6 +109,7 @@ export default {
     setup() {
         const store = quizStore();
         const currentFilter = ref('all');
+        const expandedIssues = ref({});
 
         const filters = computed(() => [
             {
@@ -136,12 +143,18 @@ export default {
             return new Date(dateString).toLocaleDateString();
         };
 
+        const toggleIssue = (issueNumber) => {
+            expandedIssues.value[issueNumber] = !expandedIssues.value[issueNumber];
+        };
+
         return {
             store,
             formatDate,
             filters,
             currentFilter,
-            changeFilter
+            changeFilter,
+            expandedIssues,
+            toggleIssue
         };
     }
 }
@@ -365,5 +378,12 @@ svg {
     padding-left: 1rem;
     margin: 1rem 0;
     color: rgba(255, 255, 255, 0.6);
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 </style>
