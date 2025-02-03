@@ -84,7 +84,7 @@
                             <div class="whitespace-pre-wrap">{{ issue.body }}</div>
                         </div>
                         <button v-if="issue.body.split('\n').length > 3" @click="toggleIssue(issue.number)"
-                            class="text-blue-400 hover:text-blue-300 mt-1">
+                            class="text-gray-500 hover:text-gray-400 text-xs mt-1">
                             {{ expandedIssues[issue.number] ? 'Show less' : 'Show more' }}
                         </button>
                     </div>
