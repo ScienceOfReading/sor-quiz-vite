@@ -1,47 +1,68 @@
 <template>
-    <form @submit.prevent="submitIssue" class="mb-8 bg-gray-800 p-4 rounded-md">
-        <div class="mb-4">
-            <label for="template" class="block text-sm font-medium mb-2">Issue Type</label>
-            <select id="template" v-model="selectedTemplate" @change="applyTemplate"
-                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500">
-                <option value="">Choose a type...</option>
-                <optgroup label="Add/Edit Content">
-                    <option value="new-quiz">NEW QUIZ ITEM</option>
-                    <option value="improve">Improve existing quiz item</option>
-                </optgroup>
-                <optgroup label="User Feedback">
-                    <option value="feedback">In-app feedback</option>
-                </optgroup>
-                <optgroup label="Application Software Issues">
-                    <option value="bug">Bug report</option>
-                    <option value="feature">Feature request</option>
-                    <option value="blank">Blank issue</option>
-                </optgroup>
-            </select>
-            <p class="mt-1 text-sm text-gray-400">{{ templateDescriptions[selectedTemplate] || 'Select an issue type' }}
-            </p>
-        </div>
-        <div class="mb-4">
-            <label for="title" class="block text-sm font-medium mb-2">Title</label>
-            <input type="text" id="title" v-model="issueData.title" required
-                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500"
-                placeholder="Issue title">
-        </div>
-        <div class="mb-4">
-            <label for="body" class="block text-sm font-medium mb-2">Description</label>
-            <textarea id="body" v-model="issueData.body" rows="8"
-                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500 font-mono text-sm"
-                placeholder="Describe the issue"></textarea>
-        </div>
-        <div class="flex justify-end gap-3">
-            <button type="button" @click="$emit('cancel')" class="px-4 py-2 text-gray-400 hover:text-white">
-                Cancel
+    <div>
+        <div class="flex gap-3 mb-4">
+            <button @click="showContentTypes = true" :class="['px-4 py-2 rounded-md',
+                showContentTypes
+                    ? 'bg-green-600 hover:bg-green-700 text-white'
+                    : 'bg-gray-700 hover:bg-gray-600 text-gray-200']">
+                Add/Edit Content
             </button>
-            <button type="submit" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md">
-                Create Issue
+            <button @click="showContentTypes = false" :class="['px-4 py-2 rounded-md',
+                !showContentTypes
+                    ? 'bg-green-600 hover:bg-green-700 text-white'
+                    : 'bg-gray-700 hover:bg-gray-600 text-gray-200']">
+                Report Issue
             </button>
         </div>
-    </form>
+
+        <form @submit.prevent="submitIssue" class="mb-8 bg-gray-800 p-4 rounded-md">
+            <div class="mb-4">
+                <label for="template" class="block text-sm font-medium mb-2">Issue Type</label>
+                <select id="template" v-model="selectedTemplate" @change="applyTemplate"
+                    class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500">
+                    <option value="">Choose a type...</option>
+                    <template v-if="showContentTypes">
+                        <optgroup label="Add/Edit Content">
+                            <option value="new-quiz">NEW QUIZ ITEM</option>
+                            <option value="improve">Improve existing quiz item</option>
+                        </optgroup>
+                    </template>
+                    <template v-else>
+                        <optgroup label="User Feedback">
+                            <option value="feedback">In-app feedback</option>
+                        </optgroup>
+                        <optgroup label="Application Software Issues">
+                            <option value="bug">Bug report</option>
+                            <option value="feature">Feature request</option>
+                            <option value="blank">Blank issue</option>
+                        </optgroup>
+                    </template>
+                </select>
+                <p class="mt-1 text-sm text-gray-400">
+                    {{ templateDescriptions[selectedTemplate] || 'Select an issue type' }}</p>
+            </div>
+            <div class="mb-4">
+                <label for="title" class="block text-sm font-medium mb-2">Title</label>
+                <input type="text" id="title" v-model="issueData.title" required
+                    class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500"
+                    placeholder="Issue title">
+            </div>
+            <div class="mb-4">
+                <label for="body" class="block text-sm font-medium mb-2">Description</label>
+                <textarea id="body" v-model="issueData.body" rows="8"
+                    class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500 font-mono text-sm"
+                    placeholder="Describe the issue"></textarea>
+            </div>
+            <div class="flex justify-end gap-3">
+                <button type="button" @click="$emit('cancel')" class="px-4 py-2 text-gray-400 hover:text-white">
+                    Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md">
+                    Create Issue
+                </button>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>
@@ -142,6 +163,7 @@ export default {
             body: ''
         })
         const selectedTemplate = ref('')
+        const showContentTypes = ref(true)
 
         const applyTemplate = () => {
             if (selectedTemplate.value) {
@@ -165,7 +187,8 @@ export default {
             selectedTemplate,
             templateDescriptions,
             applyTemplate,
-            submitIssue
+            submitIssue,
+            showContentTypes
         }
     }
 }
@@ -174,8 +197,8 @@ export default {
 <style scoped>
 /* Add styling for the option groups */
 optgroup {
-    color: #9CA3AF;
-    /* text-gray-400 */
+    color: #E5E7EB;
+    /* text-gray-200 */
     font-weight: 600;
 }
 
