@@ -11,20 +11,27 @@
         </div>
 
         <div v-else class="issues-list">
-            <div v-for="issue in store.githubIssues" :key="issue.number" class="issue-card">
-                <h3 class="issue-title">
-                    <a :href="issue.html_url" target="_blank">
-                        {{ issue.title }}
-                    </a>
-                </h3>
-                <div class="issue-meta">
-                    #{{ issue.number }} opened {{ formatDate(issue.created_at) }}
+            <div v-for="issue in store.githubIssues" :key="issue.number" class="issue-item">
+                <div class="issue-status">
+                    <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="issue-icon" />
                 </div>
-                <div class="issue-labels" v-if="issue.labels.length">
-                    <span v-for="label in issue.labels" :key="label.id" class="issue-label"
-                        :style="{ backgroundColor: `#${label.color}` }">
-                        {{ label.name }}
-                    </span>
+                <div class="issue-content">
+                    <div class="issue-header">
+                        <h3 class="issue-title">
+                            <a :href="issue.html_url" target="_blank">
+                                {{ issue.title }}
+                            </a>
+                        </h3>
+                        <div class="issue-labels" v-if="issue.labels.length">
+                            <span v-for="label in issue.labels" :key="label.id" class="issue-label"
+                                :style="{ backgroundColor: `#${label.color}` }">
+                                {{ label.name }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="issue-meta">
+                        #{{ issue.number }} opened {{ formatDate(issue.created_at) }} by {{ issue.user.login }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,7 +65,7 @@ export default {
 
 <style scoped>
 .github-issues {
-    padding: 2rem;
+    padding: 1rem;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -75,66 +82,114 @@ export default {
 }
 
 .issues-list {
-    display: grid;
-    gap: 1.5rem;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
 }
 
-.issue-card {
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 1.5rem;
-    background: white;
-    transition: all 0.2s;
+.issue-item {
+    display: flex;
+    padding: 1rem;
+    border-bottom: 1px solid #d0d7de;
+    gap: 1rem;
 }
 
-.issue-card:hover {
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+.issue-item:last-child {
+    border-bottom: none;
+}
+
+.issue-status {
+    color: #1a7f37;
+    padding-top: 3px;
+}
+
+.issue-icon {
+    font-size: 1rem;
+}
+
+.issue-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.issue-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.25rem;
 }
 
 .issue-title {
-    font-size: 1.25rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #24292f;
 }
 
 .issue-title a {
-    color: #2563eb;
+    color: inherit;
     text-decoration: none;
 }
 
 .issue-title a:hover {
-    text-decoration: underline;
+    color: #0969da;
 }
 
 .issue-meta {
-    color: #6b7280;
-    font-size: 0.875rem;
-    margin-bottom: 0.75rem;
+    font-size: 0.75rem;
+    color: #57606a;
 }
 
 .issue-labels {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.25rem;
     flex-wrap: wrap;
 }
 
 .issue-label {
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
+    padding: 0.125rem 0.625rem;
+    border-radius: 2rem;
     font-size: 0.75rem;
-    color: #1f2937;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
-:root[class~="dark"] .issue-card {
-    background: #1f2937;
-    border-color: #374151;
+/* Dark mode */
+:root[class~="dark"] .issues-list {
+    border-color: #30363d;
 }
 
-:root[class~="dark"] .issue-title a {
-    color: #60a5fa;
+:root[class~="dark"] .issue-item {
+    border-bottom-color: #30363d;
+}
+
+:root[class~="dark"] .issue-title {
+    color: #c9d1d9;
+}
+
+:root[class~="dark"] .issue-title a:hover {
+    color: #58a6ff;
 }
 
 :root[class~="dark"] .issue-meta {
-    color: #9ca3af;
+    color: #8b949e;
+}
+
+:root[class~="dark"] .issue-status {
+    color: #3fb950;
+}
+
+@media (max-width: 640px) {
+    .github-issues {
+        padding: 0.5rem;
+    }
+
+    .issue-item {
+        padding: 0.75rem;
+    }
+
+    .issue-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 </style>
