@@ -1,6 +1,6 @@
 <template>
     <div class="github-issues">
-        <h2 class="text-2xl font-bold mb-6">Quiz Issues</h2>
+        <h2 class="text-2xl mb-6">Quiz Issues</h2>
 
         <div v-if="store.githubIssuesLoading" class="loading">
             Loading issues...
@@ -12,15 +12,10 @@
 
         <div v-else class="issues-list">
             <div v-for="issue in store.githubIssues" :key="issue.number" class="issue-item">
-                <div class="issue-status">
-                    <font-awesome-icon :icon="['fas', 'exclamation-circle']" class="issue-icon" />
-                </div>
                 <div class="issue-content">
                     <div class="issue-header">
                         <h3 class="issue-title">
-                            <a :href="issue.html_url" target="_blank">
-                                {{ issue.title }}
-                            </a>
+                            {{ issue.title }}
                         </h3>
                         <div class="issue-labels" v-if="issue.labels.length">
                             <span v-for="label in issue.labels" :key="label.id" class="issue-label"
@@ -65,7 +60,7 @@ export default {
 
 <style scoped>
 .github-issues {
-    padding: 1rem;
+    padding: 0;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -82,28 +77,24 @@ export default {
 }
 
 .issues-list {
-    border: 1px solid #d0d7de;
-    border-radius: 6px;
+    border: none;
+    border-radius: 0;
 }
 
 .issue-item {
     display: flex;
     padding: 1rem;
-    border-bottom: 1px solid #d0d7de;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     gap: 1rem;
+    transition: background-color 0.2s;
+}
+
+.issue-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .issue-item:last-child {
     border-bottom: none;
-}
-
-.issue-status {
-    color: #1a7f37;
-    padding-top: 3px;
-}
-
-.issue-icon {
-    font-size: 1rem;
 }
 
 .issue-content {
@@ -120,23 +111,14 @@ export default {
 }
 
 .issue-title {
-    font-weight: 600;
+    font-weight: normal;
     font-size: 1rem;
-    color: #24292f;
-}
-
-.issue-title a {
-    color: inherit;
-    text-decoration: none;
-}
-
-.issue-title a:hover {
-    color: #0969da;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .issue-meta {
-    font-size: 0.75rem;
-    color: #57606a;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .issue-labels {
@@ -146,11 +128,10 @@ export default {
 }
 
 .issue-label {
-    padding: 0.125rem 0.625rem;
-    border-radius: 2rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
     font-size: 0.75rem;
-    font-weight: 500;
-    white-space: nowrap;
+    font-weight: normal;
 }
 
 /* Dark mode */
@@ -166,16 +147,8 @@ export default {
     color: #c9d1d9;
 }
 
-:root[class~="dark"] .issue-title a:hover {
-    color: #58a6ff;
-}
-
 :root[class~="dark"] .issue-meta {
     color: #8b949e;
-}
-
-:root[class~="dark"] .issue-status {
-    color: #3fb950;
 }
 
 @media (max-width: 640px) {
