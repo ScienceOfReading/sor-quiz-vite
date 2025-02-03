@@ -646,7 +646,7 @@ export const quizStore = defineStore('quiz', {
             };
         },
 
-        async fetchGitHubIssues(state = 'open') {
+        async fetchGitHubIssues(state = 'all') {
             this.githubIssuesLoading = true;
             this.githubIssuesError = null;
 

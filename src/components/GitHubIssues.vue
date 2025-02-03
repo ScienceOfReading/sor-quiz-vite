@@ -70,7 +70,7 @@ export default {
     name: 'GitHubIssues',
     setup() {
         const store = quizStore();
-        const currentFilter = ref('open');
+        const currentFilter = ref('all');
 
         const filters = computed(() => [
             {
@@ -101,7 +101,7 @@ export default {
         };
 
         onMounted(async () => {
-            await store.fetchGitHubIssues('open');
+            await store.fetchGitHubIssues('all');
         });
 
         const formatDate = (dateString) => {
