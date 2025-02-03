@@ -5,12 +5,18 @@
             <select id="template" v-model="selectedTemplate" @change="applyTemplate"
                 class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500">
                 <option value="">Choose a type...</option>
-                <option value="new-quiz">NEW QUIZ ITEM</option>
-                <option value="improve">Improve existing quiz item</option>
-                <option value="feedback">In-app feedback</option>
-                <option value="bug">Bug report</option>
-                <option value="feature">Feature request</option>
-                <option value="blank">Blank issue</option>
+                <optgroup label="Add/Edit Content">
+                    <option value="new-quiz">NEW QUIZ ITEM</option>
+                    <option value="improve">Improve existing quiz item</option>
+                </optgroup>
+                <optgroup label="User Feedback">
+                    <option value="feedback">In-app feedback</option>
+                </optgroup>
+                <optgroup label="Application Software Issues">
+                    <option value="bug">Bug report</option>
+                    <option value="feature">Feature request</option>
+                    <option value="blank">Blank issue</option>
+                </optgroup>
             </select>
             <p class="mt-1 text-sm text-gray-400">{{ templateDescriptions[selectedTemplate] || 'Select an issue type' }}
             </p>
@@ -164,3 +170,18 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+/* Add styling for the option groups */
+optgroup {
+    color: #9CA3AF;
+    /* text-gray-400 */
+    font-weight: 600;
+}
+
+option {
+    color: white;
+    font-weight: normal;
+    padding: 8px;
+}
+</style>
