@@ -32,6 +32,16 @@
                     <span class="count" v-if="filter.count !== undefined">({{ filter.count }})</span>
                 </button>
             </div>
+
+            <button @click="showNewIssueForm = !showNewIssueForm"
+                class="mb-6 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                New Issue
+            </button>
+
+            <NewIssueForm v-if="showNewIssueForm" @submit="createIssue" @cancel="showNewIssueForm = false" />
         </div>
 
         <div v-if="store.githubIssuesLoading" class="loading text-gray-400">
@@ -101,16 +111,21 @@ import { quizStore } from '../stores/quizStore';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { faList } from '@fortawesome/free-solid-svg-icons';
+import NewIssueForm from './NewIssueForm.vue';
 
 // Add icons to library
 library.add(faList);
 
 export default {
     name: 'GitHubIssues',
+    components: {
+        NewIssueForm
+    },
     setup() {
         const store = quizStore();
         const currentFilter = ref('all');
         const expandedIssues = ref({});
+        const showNewIssueForm = ref(false);
 
         const filters = computed(() => [
             {
@@ -148,6 +163,16 @@ export default {
             expandedIssues.value[issueNumber] = !expandedIssues.value[issueNumber];
         };
 
+        const createIssue = async (issueData) => {
+            try {
+                await store.createGitHubIssue(issueData);
+                showNewIssueForm.value = false;
+                await store.fetchGitHubIssues(currentFilter.value);
+            } catch (error) {
+                console.error('Failed to create issue:', error);
+            }
+        };
+
         return {
             store,
             formatDate,
@@ -155,7 +180,9 @@ export default {
             currentFilter,
             changeFilter,
             expandedIssues,
-            toggleIssue
+            toggleIssue,
+            showNewIssueForm,
+            createIssue
         };
     }
 }
