@@ -166,27 +166,31 @@ export default {
         const createIssue = async (issueData) => {
             try {
                 console.log('Creating issue:', issueData);
-                await store.createGitHubIssue(issueData);
-                console.log('Issue created successfully');
+                const createdIssue = await store.createGitHubIssue(issueData);
+                console.log('Issue created successfully:', createdIssue.number);
                 showNewIssueForm.value = false;
 
-                // Force a complete refresh
-                store.githubIssues = [];  // Clear current issues
-                store.allGithubIssues = [];  // Clear all issues
-                console.log('Waiting before refresh...');
-                await new Promise(resolve => setTimeout(resolve, 2000));  // 2 second delay
-                console.log('Fetching fresh issues list...');
-                await store.fetchGitHubIssues('all');  // Fetch everything fresh
-                console.log('Issues list completely refreshed');
+                // Force UI update
+                currentFilter.value = 'all';
+                console.log('Refreshing display...');
 
+                // Add a small delay to ensure GitHub API has propagated the change
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                await store.fetchGitHubIssues('all');
+
+                console.log('Display refreshed');
             } catch (error) {
                 console.error('Failed to create issue:', error);
             }
         };
 
-        // Add a watch to monitor store.githubIssues changes
-        watch(() => store.githubIssues, (newIssues) => {
-            console.log('GitHub issues updated:', newIssues.length, newIssues.map(i => i.number));
+        // Watch for changes in the issues list
+        watch(() => store.githubIssues, (newIssues, oldIssues) => {
+            console.log('Issues updated:', {
+                oldCount: oldIssues?.length,
+                newCount: newIssues?.length,
+                newIssueNumbers: newIssues.map(i => i.number)
+            });
         }, { deep: true });
 
         return {

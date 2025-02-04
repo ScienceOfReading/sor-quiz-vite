@@ -670,12 +670,13 @@ export const quizStore = defineStore('quiz', {
                 }
 
                 const issues = await response.json();
-                this.githubIssues = issues;
+                console.log('Fetched issues:', issues.length, 'Latest:', issues[0]?.number);
 
-                // Update allGithubIssues if we're fetching all issues
+                // Update state in a single operation
                 if (state === 'all') {
-                    this.allGithubIssues = issues;
+                    this.allGithubIssues = [...issues];
                 }
+                this.githubIssues = [...issues];
 
                 return issues;
             } catch (error) {
@@ -695,6 +696,7 @@ export const quizStore = defineStore('quiz', {
                 const token = import.meta.env.VITE_GITHUB_TOKEN;
                 const repo = import.meta.env.VITE_GITHUB_REPO;
 
+                console.log('Creating issue with data:', issueData);
                 const response = await fetch(
                     `https://api.github.com/repos/${repo}/issues`,
                     {
@@ -713,12 +715,15 @@ export const quizStore = defineStore('quiz', {
                 }
 
                 const issue = await response.json();
+                console.log('Issue created:', issue.number);
 
-                // Update both the filtered and all issues lists
-                await this.fetchGitHubIssues('all');
-                if (this.currentFilter !== 'all') {
-                    await this.fetchGitHubIssues(this.currentFilter);
-                }
+                // Clear existing issues to force a fresh state
+                this.githubIssues = [];
+                this.allGithubIssues = [];
+
+                // Fetch fresh data
+                const freshIssues = await this.fetchGitHubIssues('all');
+                console.log('Fresh issues fetched:', freshIssues.length);
 
                 return issue;
             } catch (error) {
