@@ -34,6 +34,9 @@
             :class="['preview-toggle', { active: jsonPreviewMode }]">
             {{ jsonPreviewMode ? 'Hide JSON' : 'Show JSON' }}
           </button>
+          <button @click="$router.push('/issues')" class="github-button">
+            View/Add Issues
+          </button>
         </div>
       </div>
     </div>
@@ -1765,5 +1768,14 @@ option {
 #template-select option {
   color: white !important;
   background-color: #3f3f88 !important;
+}
+
+.github-button {
+  background-color: #2ea043;
+  color: white;
+}
+
+.github-button:hover {
+  background-color: #2c974b;
 }
 </style>
