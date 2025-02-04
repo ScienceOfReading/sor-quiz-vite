@@ -1225,12 +1225,34 @@ details[open] .form-section {
 
 .preview-controls {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  gap: 1rem;
   margin-bottom: 1rem;
-  padding: 0.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+}
+
+.preview-button,
+.json-button,
+.github-button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  background: linear-gradient(135deg, #4a90e2, #357abd);
+  color: white;
+}
+
+.preview-button:hover,
+.json-button:hover {
+  background: linear-gradient(135deg, #357abd, #2868a9);
+  transform: translateY(-1px);
+}
+
+.github-button {
+  background: linear-gradient(135deg, #2ea043, #2c974b);
+}
+
+.github-button:hover {
+  background: linear-gradient(135deg, #2c974b, #246c3a);
+  transform: translateY(-1px);
 }
 
 .preview-controls-text {
@@ -1273,7 +1295,7 @@ details[open] .form-section {
 }
 
 .smaller-button {
-  max-height: 25px;
+  max-height: 35px;
   font-size: 12px;
   line-height: 1;
 }

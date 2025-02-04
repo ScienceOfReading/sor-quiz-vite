@@ -60,7 +60,7 @@ import { ref, watch } from 'vue'
 const templateDescriptions = {
     'new-quiz': 'Start a new quiz item from scratch.',
     'improve': 'How can we make a quiz item better?',
-    'feedback': 'Brought over from the app user records',
+    'feedback': 'Any sort of improvements to the content.',
     'bug': 'Something broken? Create a report to help us improve',
     'feature': 'Suggest an idea for this project',
     'blank': 'Create a new issue from scratch'
