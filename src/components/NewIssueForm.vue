@@ -11,28 +11,21 @@
                 !selectedTemplate
                     ? 'bg-green-600 hover:bg-green-700 text-white'
                     : 'bg-gray-700 hover:bg-gray-600 text-gray-200']">
-                Report Issue
+                App Software
             </button>
         </div>
 
         <form @submit.prevent="submitIssue" class="mb-8 bg-gray-800 p-4 rounded-md">
             <div class="mb-4">
                 <label for="template" class="block text-sm font-medium mb-2">Issue Type</label>
-                <select id="template" v-model="selectedTemplate" @change="applyTemplate"
+                <select v-if="!selectedTemplate" id="template" v-model="selectedTemplate" @change="applyTemplate"
                     class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500">
                     <option value="">Choose a type...</option>
-                    <template v-if="selectedTemplate === 'feedback'">
-                        <optgroup label="User Feedback">
-                            <option value="feedback">In-app feedback</option>
-                        </optgroup>
-                    </template>
-                    <template v-else-if="selectedTemplate === 'bug' || selectedTemplate === 'feature'">
-                        <optgroup label="Application Software Issues">
-                            <option value="bug">Bug report</option>
-                            <option value="feature">Feature request</option>
-                            <option value="blank">Blank issue</option>
-                        </optgroup>
-                    </template>
+                    <optgroup label="Application Software Issues">
+                        <option value="bug">Bug report</option>
+                        <option value="feature">Feature request</option>
+                        <option value="blank">Blank issue</option>
+                    </optgroup>
                 </select>
                 <p class="mt-1 text-sm text-gray-400">
                     {{ templateDescriptions[selectedTemplate] || 'Select an issue type' }}</p>
@@ -62,7 +55,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const templateDescriptions = {
     'new-quiz': 'Start a new quiz item from scratch.',
@@ -158,15 +151,21 @@ export default {
             title: '',
             body: ''
         })
-        const selectedTemplate = ref('')
+        const selectedTemplate = ref('feedback')
 
         const applyTemplate = () => {
             if (selectedTemplate.value) {
-                issueData.value.body = templates[selectedTemplate.value]
+                issueData.value.body = templates[selectedTemplate.value] || ''
             } else {
                 issueData.value.body = ''
             }
         }
+
+        applyTemplate()
+
+        watch(selectedTemplate, (newValue) => {
+            applyTemplate()
+        })
 
         const submitIssue = () => {
             emit('submit', {
@@ -174,7 +173,7 @@ export default {
                 labels: selectedTemplate.value ? [`type:${selectedTemplate.value}`] : []
             })
             issueData.value = { title: '', body: '' }
-            selectedTemplate.value = ''
+            selectedTemplate.value = 'feedback'
         }
 
         return {
