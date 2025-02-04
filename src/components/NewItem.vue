@@ -706,6 +706,25 @@ export default {
         isValid: false,
         errors: [],
         invalidFields: new Set()
+      },
+      defaultValues: {
+        title: 'Enter title here',
+        subtitle: 'Enter subtitle here',
+        Question: 'Enter your question here',
+        questionP2: 'Enter additional question text here (optional)',
+        option1: 'Enter option 1',
+        option2: 'Enter option 2',
+        option3: 'Enter option 3',
+        option4: 'Enter option 4',
+        option5: 'Enter option 5',
+        explanation: 'Enter explanation here',
+        explanation2: 'Enter additional explanation here',
+        closingText: 'Enter closing text here',
+        closingText2: 'Enter additional closing text here',
+        modal: 'Enter modal content here',
+        'podcastEpisode.title': 'Enter podcast title',
+        'podcastEpisode2.title': 'Enter second podcast title',
+        caution: 'Enter caution text here'
       }
     }
   },
@@ -806,13 +825,43 @@ export default {
       }
     },
     handleFocus(event, field) {
-      event.target._originalValue = event.target.value;
-      this.newEntry[field] = '';
+      // Get the field value through the nested path if it exists
+      const fieldValue = field.split('.').reduce((obj, key) => obj?.[key], this.newEntry);
+      const defaultValue = this.getDefaultValue(field);
+
+      // Only clear if the current value matches the default value
+      if (defaultValue && fieldValue === defaultValue) {
+        // For nested fields (e.g., 'podcastEpisode.title')
+        if (field.includes('.')) {
+          const [parent, child] = field.split('.');
+          if (this.newEntry[parent]) {
+            this.newEntry[parent][child] = '';
+          }
+        } else {
+          this.newEntry[field] = '';
+        }
+      }
     },
     handleBlur(event, field) {
-      if (!this.newEntry[field] && event.target._originalValue) {
-        this.newEntry[field] = event.target._originalValue;
+      // Get the field value through the nested path if it exists
+      const fieldValue = field.split('.').reduce((obj, key) => obj?.[key], this.newEntry);
+      const defaultValue = this.getDefaultValue(field);
+
+      // Only restore default if field is empty and there was a default value
+      if ((!fieldValue || fieldValue.trim() === '') && defaultValue) {
+        // For nested fields
+        if (field.includes('.')) {
+          const [parent, child] = field.split('.');
+          if (this.newEntry[parent]) {
+            this.newEntry[parent][child] = defaultValue;
+          }
+        } else {
+          this.newEntry[field] = defaultValue;
+        }
       }
+    },
+    getDefaultValue(field) {
+      return this.defaultValues[field] || '';
     },
     async copyToClipboard() {
       try {
@@ -831,6 +880,7 @@ export default {
     useTemplate() {
       if (!this.selectedTemplate) {
         this.store.resetDraftQuizEntry();
+        this.initializeNewEntry();
         return;
       }
 
@@ -840,18 +890,6 @@ export default {
 
       if (draftItem) {
         const copyItem = { ...draftItem };
-        copyItem.originalId = copyItem.id;  // Save the original ID
-        copyItem.id = null;  // Reset ID for new draft
-        this.store.updateDraftQuizEntry(copyItem);
-        return;
-      }
-
-      // If not a draft, check permanent items
-      const permanentItem = this.permanentQuizItems
-        .find(item => item.id.toString() === this.selectedTemplate.toString());
-
-      if (permanentItem) {
-        const copyItem = { ...permanentItem };
         copyItem.originalId = copyItem.id;  // Save the original ID
         copyItem.id = null;  // Reset ID for new draft
         this.store.updateDraftQuizEntry(copyItem);
@@ -926,10 +964,33 @@ export default {
       }
       return '';
     },
+    initializeNewEntry() {
+      // Get a clean entry from the store
+      const entry = this.store.draftQuizEntry;
+
+      // Populate with default values
+      Object.entries(this.defaultValues).forEach(([field, value]) => {
+        if (field.includes('.')) {
+          const [parent, child] = field.split('.');
+          if (!entry[parent]) entry[parent] = {};
+          entry[parent][child] = value;
+        } else {
+          entry[field] = value;
+        }
+      });
+
+      // Update the store with the initialized entry
+      this.store.updateDraftQuizEntry(entry);
+    }
   },
   beforeUnmount() {
     if (this.autoSaveTimeout) {
       clearTimeout(this.autoSaveTimeout);
+    }
+  },
+  created() {
+    if (!this.store.draftQuizEntry.title) {
+      this.initializeNewEntry();
     }
   }
 };
