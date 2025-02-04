@@ -77,7 +77,8 @@ export const quizStore = defineStore('quiz', {
         githubIssues: [],
         allGithubIssues: [],
         githubIssuesLoading: false,
-        githubIssuesError: null
+        githubIssuesError: null,
+        currentFilter: 'all'
     }),
     actions: {
         // =============================================
@@ -712,7 +713,13 @@ export const quizStore = defineStore('quiz', {
                 }
 
                 const issue = await response.json();
-                this.githubIssues.unshift(issue);
+
+                // Update both the filtered and all issues lists
+                await this.fetchGitHubIssues('all');
+                if (this.currentFilter !== 'all') {
+                    await this.fetchGitHubIssues(this.currentFilter);
+                }
+
                 return issue;
             } catch (error) {
                 console.error('Error creating GitHub issue:', error);

@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, watch } from 'vue';
 import { quizStore } from '../stores/quizStore';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -165,13 +165,29 @@ export default {
 
         const createIssue = async (issueData) => {
             try {
+                console.log('Creating issue:', issueData);
                 await store.createGitHubIssue(issueData);
+                console.log('Issue created successfully');
                 showNewIssueForm.value = false;
-                await store.fetchGitHubIssues(currentFilter.value);
+
+                // Force a complete refresh
+                store.githubIssues = [];  // Clear current issues
+                store.allGithubIssues = [];  // Clear all issues
+                console.log('Waiting before refresh...');
+                await new Promise(resolve => setTimeout(resolve, 2000));  // 2 second delay
+                console.log('Fetching fresh issues list...');
+                await store.fetchGitHubIssues('all');  // Fetch everything fresh
+                console.log('Issues list completely refreshed');
+
             } catch (error) {
                 console.error('Failed to create issue:', error);
             }
         };
+
+        // Add a watch to monitor store.githubIssues changes
+        watch(() => store.githubIssues, (newIssues) => {
+            console.log('GitHub issues updated:', newIssues.length, newIssues.map(i => i.number));
+        }, { deep: true });
 
         return {
             store,
