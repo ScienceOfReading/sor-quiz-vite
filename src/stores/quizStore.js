@@ -684,6 +684,43 @@ export const quizStore = defineStore('quiz', {
             } finally {
                 this.githubIssuesLoading = false;
             }
+        },
+
+        async createGitHubIssue(issueData) {
+            this.githubIssuesLoading = true;
+            this.githubIssuesError = null;
+
+            try {
+                const token = import.meta.env.VITE_GITHUB_TOKEN;
+                const repo = import.meta.env.VITE_GITHUB_REPO;
+
+                const response = await fetch(
+                    `https://api.github.com/repos/${repo}/issues`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(issueData)
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(`GitHub API error: ${response.status}`);
+                }
+
+                const issue = await response.json();
+                this.githubIssues.unshift(issue);
+                return issue;
+            } catch (error) {
+                console.error('Error creating GitHub issue:', error);
+                this.githubIssuesError = error.message;
+                throw error;
+            } finally {
+                this.githubIssuesLoading = false;
+            }
         }
     },
 });
