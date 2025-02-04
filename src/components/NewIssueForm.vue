@@ -19,7 +19,7 @@
             <div class="mb-4">
                 <label for="template" class="block text-sm font-medium mb-2">Issue Type</label>
                 <select v-if="!selectedTemplate" id="template" v-model="selectedTemplate" @change="applyTemplate"
-                    class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500">
+                    class="w-48 px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500">
                     <option value="">Choose a type...</option>
                     <optgroup label="Application Software Issues">
                         <option value="bug">Bug report</option>
@@ -99,13 +99,13 @@ const templates = {
 ### Additional Context
 [Any other relevant information]`,
 
-    'feedback': `### User Feedback
-[Enter the feedback received from the app]
+    'feedback': `### How can the content be improved?
+
 
 ### Context
-* App Version:
-* User Type:
-* Feature/Section:
+* Quiz set:
+* Quiz Item:
+* Feature/Section
 
 ### Action Items
 [Any specific actions needed based on this feedback]`,
@@ -129,7 +129,7 @@ A clear description of what actually happened.
 Add any other context about the problem here.`,
 
     'feature': `### Problem
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+What feature would you like to see added?
 
 ### Proposed Solution
 A clear and concise description of what you want to happen.
