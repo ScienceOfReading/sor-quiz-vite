@@ -1,14 +1,14 @@
 <template>
     <div>
         <div class="flex gap-3 mb-4">
-            <button @click="showContentTypes = true" :class="['px-4 py-2 rounded-md',
-                showContentTypes
+            <button @click="selectedTemplate = 'feedback'" :class="['px-4 py-2 rounded-md',
+                selectedTemplate === 'feedback'
                     ? 'bg-green-600 hover:bg-green-700 text-white'
                     : 'bg-gray-700 hover:bg-gray-600 text-gray-200']">
-                Add/Edit Content
+                Content
             </button>
-            <button @click="showContentTypes = false" :class="['px-4 py-2 rounded-md',
-                !showContentTypes
+            <button @click="selectedTemplate = ''" :class="['px-4 py-2 rounded-md',
+                !selectedTemplate
                     ? 'bg-green-600 hover:bg-green-700 text-white'
                     : 'bg-gray-700 hover:bg-gray-600 text-gray-200']">
                 Report Issue
@@ -21,16 +21,12 @@
                 <select id="template" v-model="selectedTemplate" @change="applyTemplate"
                     class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500">
                     <option value="">Choose a type...</option>
-                    <template v-if="showContentTypes">
-                        <optgroup label="Add/Edit Content">
-                            <option value="new-quiz">NEW QUIZ ITEM</option>
-                            <option value="improve">Improve existing quiz item</option>
-                        </optgroup>
-                    </template>
-                    <template v-else>
+                    <template v-if="selectedTemplate === 'feedback'">
                         <optgroup label="User Feedback">
                             <option value="feedback">In-app feedback</option>
                         </optgroup>
+                    </template>
+                    <template v-else-if="selectedTemplate === 'bug' || selectedTemplate === 'feature'">
                         <optgroup label="Application Software Issues">
                             <option value="bug">Bug report</option>
                             <option value="feature">Feature request</option>
@@ -163,7 +159,6 @@ export default {
             body: ''
         })
         const selectedTemplate = ref('')
-        const showContentTypes = ref(true)
 
         const applyTemplate = () => {
             if (selectedTemplate.value) {
@@ -187,8 +182,7 @@ export default {
             selectedTemplate,
             templateDescriptions,
             applyTemplate,
-            submitIssue,
-            showContentTypes
+            submitIssue
         }
     }
 }
