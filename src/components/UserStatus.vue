@@ -1,7 +1,7 @@
 <template>
     <div class="user-status flex items-center gap-2 p-1 text-sm">
         <template v-if="authStore.user">
-            <div class="flex flex-col gap-0.5 bg-gray-100 rounded-lg px-3 py-1.5">
+            <div class="flex flex-col gap-0.5 bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-1.5">
                 <!-- User Status with Provider Icon -->
                 <div class="flex items-center gap-2">
                     <!-- Google Icon -->
@@ -29,6 +29,22 @@
                     <span class="text-gray-600">
                         {{ displayName }}
                     </span>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
+                    <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                    </svg>
+                    <div class="flex items-center gap-2">
+                        <span>{{ progressText }}</span>
+                        <div class="w-24 h-1.5 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                            <div class="h-full bg-green-500 rounded-full"
+                                :style="{ width: `${progressStore.progressPercentage}%` }">
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Login/Sign Out Buttons -->
@@ -78,8 +94,8 @@ const provider = computed(() => {
 });
 
 const progressText = computed(() => {
-    if (authStore.user.isAnonymous) return 'Progress not saved';
-    return `${progressStore.completedCount}/${progressStore.totalQuizzes} quizzes completed`;
+    if (authStore.user?.isAnonymous) return 'Progress not saved';
+    return `${progressStore.completedCount}/${progressStore.totalQuizzes} quizzes`;
 });
 
 const handleSignOut = async () => {
