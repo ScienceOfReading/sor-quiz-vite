@@ -74,12 +74,18 @@ export const useProgressStore = defineStore('progress', {
         },
 
         async markQuizComplete(quizId) {
-            if (!auth.currentUser || auth.currentUser.isAnonymous) return;
+            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+                console.log('No authenticated user, skipping markQuizComplete');
+                return;
+            }
 
             try {
+                console.log('Marking quiz complete:', quizId);
+
                 // Add to completed quizzes if not already included
                 if (!this.completedQuizzes.includes(quizId)) {
                     this.completedQuizzes.push(quizId);
+                    console.log('Updated completedQuizzes:', this.completedQuizzes);
                 }
 
                 // Update progress in Firestore
@@ -88,6 +94,8 @@ export const useProgressStore = defineStore('progress', {
                     completedQuizzes: this.completedQuizzes,
                     lastUpdated: serverTimestamp()
                 }, { merge: true });
+
+                console.log('Progress saved to Firestore');
 
             } catch (error) {
                 console.error('Error marking quiz complete:', error);

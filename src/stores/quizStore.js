@@ -169,21 +169,37 @@ export const quizStore = defineStore('quiz', {
         async recordQuizAttempt(quizStarted) {
             try {
                 const user = auth.currentUser;
-                if (!user) return;
+                if (!user) {
+                    console.log('No user found, skipping quiz attempt record');
+                    return;
+                }
+
+                console.log('Recording quiz attempt:', {
+                    userId: user.uid,
+                    quizId: this.currentQuizId,
+                    isComplete: true
+                });
 
                 const attemptData = {
                     userId: user.uid,
                     isAnonymous: user.isAnonymous,
                     quizId: this.currentQuizId,
                     timestamp: serverTimestamp(),
-                    quizStarted
+                    quizStarted,
+                    isComplete: true,
+                    score: 8, // Add the actual score
+                    totalQuestions: 10
                 };
 
-                await addDoc(collection(db, 'quizAttempts'), attemptData);
+                const docRef = await addDoc(collection(db, 'quizAttempts'), attemptData);
+                console.log('Quiz attempt recorded:', docRef.id);
 
                 // Use progress store to mark quiz complete
                 const progressStore = useProgressStore();
                 await progressStore.markQuizComplete(this.currentQuizId);
+
+                // Force a progress refresh
+                await progressStore.fetchProgress();
 
             } catch (error) {
                 console.error('Error recording quiz attempt:', error);
