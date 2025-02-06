@@ -34,22 +34,37 @@ export const useProgressStore = defineStore('progress', {
 
     actions: {
         async initialize() {
-            // Load quiz sets first
-            const { quizSets } = await import('../data/quizSets.js');
-            const publishedQuizSets = quizSets.filter(set => !set.inProgress);
-            this.totalQuizzes = publishedQuizSets.length;
+            try {
+                // Load quiz sets first
+                const { quizSets } = await import('../data/quizSets.js');
+                console.log('Loaded quizSets:', quizSets);
 
-            // Count total quiz items
-            this.totalQuizItems = publishedQuizSets.reduce((total, set) => {
-                return total + (set.quizItems?.length || 0);
-            }, 0);
+                const publishedQuizSets = quizSets.filter(set => !set.inProgress);
+                console.log('Published quizSets:', publishedQuizSets);
 
-            console.log('Initialized with:', {
-                totalQuizzes: this.totalQuizzes,
-                totalQuizItems: this.totalQuizItems
-            });
+                this.totalQuizzes = publishedQuizSets.length;
 
-            this.initialized = true;
+                // Count total quiz items using the correct property name 'items'
+                this.totalQuizItems = publishedQuizSets.reduce((total, set) => {
+                    const itemCount = set.items?.length || 0;
+                    console.log(`Quiz set ${set.setName}: ${itemCount} items`);
+                    return total + itemCount;
+                }, 0);
+
+                console.log('Initialization complete:', {
+                    totalQuizzes: this.totalQuizzes,
+                    totalQuizItems: this.totalQuizItems,
+                    publishedSets: publishedQuizSets.map(set => ({
+                        name: set.setName,
+                        itemCount: set.items?.length || 0
+                    }))
+                });
+
+                this.initialized = true;
+            } catch (error) {
+                console.error('Error in initialize:', error);
+                throw error;
+            }
         },
 
         async fetchProgress() {
