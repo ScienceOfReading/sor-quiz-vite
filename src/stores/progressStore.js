@@ -132,17 +132,50 @@ export const useProgressStore = defineStore('progress', {
             }
         },
 
+        async markQuizComplete(quizId) {
+            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+                console.log('No authenticated user, skipping markQuizComplete');
+                return;
+            }
+
+            try {
+                console.log('Marking quiz complete:', quizId);
+
+                // Add to completed quizzes if not already included
+                if (!this.completedQuizzes.includes(quizId)) {
+                    this.completedQuizzes.push(quizId);
+                    console.log('Updated completedQuizzes:', this.completedQuizzes);
+                }
+
+                // Update progress in Firestore
+                const progressRef = doc(db, 'userProgress', auth.currentUser.uid);
+                await setDoc(progressRef, {
+                    completedQuizzes: this.completedQuizzes,
+                    correctQuizItems: this.correctQuizItems,
+                    lastUpdated: serverTimestamp()
+                }, { merge: true });
+
+                console.log('Progress saved to Firestore');
+
+            } catch (error) {
+                console.error('Error marking quiz complete:', error);
+                throw error;
+            }
+        },
+
         async markQuizItemCorrect(questionId) {
             if (!auth.currentUser || auth.currentUser.isAnonymous) return;
 
             try {
                 if (!this.correctQuizItems.includes(questionId)) {
                     this.correctQuizItems.push(questionId);
+                    console.log('Added correct quiz item:', questionId);
                 }
 
                 // Update progress in Firestore
                 const progressRef = doc(db, 'userProgress', auth.currentUser.uid);
                 await setDoc(progressRef, {
+                    completedQuizzes: this.completedQuizzes,
                     correctQuizItems: this.correctQuizItems,
                     lastUpdated: serverTimestamp()
                 }, { merge: true });
