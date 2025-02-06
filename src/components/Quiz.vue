@@ -164,7 +164,8 @@ export default {
       reviewMode: reviewMode,
       showEnd: false,
       selectError: false,
-      userFeedback: ''
+      userFeedback: '',
+      quizStarted: new Date().getTime() // Use milliseconds timestamp
     }
   },
   computed: {
@@ -215,10 +216,22 @@ export default {
     numCorrect() {
       let correct = 0;
       console.log("Length ", this.quizItems.length);
+
+      if (!Array.isArray(this.quizItems) || !Array.isArray(this.userAnswers)) {
+        console.error('Invalid quizItems or userAnswers');
+        return 0;
+      }
+
       for (let i = 0; i < this.quizItems.length; i++) {
+        if (!this.quizItems[i] || !this.quizItems[i].correctAnswer) {
+          console.warn(`Missing quiz item or correct answer at index ${i}`);
+          continue;
+        }
+
         console.log("Question", i + 1, ":");
         console.log("User answer:", this.userAnswers[i]);
         console.log("Correct answer:", this.quizItems[i].correctAnswer);
+
         if (this.userAnswers[i] === this.quizItems[i].correctAnswer) {
           correct++;
           console.log("✓ Correct!");
@@ -440,25 +453,47 @@ export default {
       this.selectError = true;
     },
     async quizDone() {
-      console.log('Before quizDone:', this.quizState);
-
       try {
-        const totalCorrect = this.numCorrect();
-        const totalQuestions = this.quizItems.length;
+        const score = this.numCorrect();
+        const total = this.quizItems.length;
 
-        // Record the quiz attempt with score
-        await this.store.recordQuizAttempt(true, totalCorrect, totalQuestions);
+        // Validate the values before sending
+        if (typeof score !== 'number' || typeof total !== 'number') {
+          console.error('Invalid score or total:', { score, total });
+          throw new Error('Invalid score or total questions');
+        }
+
+        // Record the quiz attempt with validated data
+        await this.store.recordQuizAttempt({
+          quizStarted: new Date(this.quizStarted),
+          score: score,
+          totalQuestions: total
+        });
         console.log('Quiz attempt recorded successfully');
 
-        // Update quiz state
-        this.quizState = {
-          ...this.quizState,
-          complete: true,
-          currentState: 'end',
-          reviewMode: false
-        };
+        // Update the quiz state
+        this.quizState = 'end';
+        this.complete = true;
+        this.reviewMode = false;
 
-        console.log('After quizDone:', this.quizState);
+        console.log('After quizDone:', {
+          currentState: this.quizState,
+          complete: this.complete,
+          reviewMode: this.reviewMode,
+          score: score,
+          total: total
+        });
+
+        // Force a re-render of the component
+        this.$nextTick(() => {
+          if (this.quizState === 'end') {
+            this.$emit('change-view', {
+              showQuizzes: false,
+              showEnd: true
+            });
+          }
+        });
+
       } catch (error) {
         console.error('Error in quizDone:', error);
       }

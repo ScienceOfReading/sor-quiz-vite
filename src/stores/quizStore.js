@@ -166,37 +166,36 @@ export const quizStore = defineStore('quiz', {
             }
         },
 
-        async recordQuizAttempt(quizStarted, score = 0, totalQuestions = 0) {
+        async recordQuizAttempt({ quizStarted, score, totalQuestions }) {
+            if (!auth.currentUser) {
+                console.log('No authenticated user, skipping quiz attempt recording');
+                return;
+            }
+
             try {
-                const user = auth.currentUser;
-                if (!user) {
-                    console.log('No user found, skipping quiz attempt record');
-                    return;
-                }
+                // Ensure we have valid values for all fields
+                const validatedScore = Number(score) || 0;  // Convert to number or default to 0
+                const validatedTotal = Number(totalQuestions) || 0;  // Convert to number or default to 0
 
                 console.log('Recording quiz attempt:', {
-                    userId: user.uid,
-                    quizId: this.currentQuizId,
-                    score,
-                    totalQuestions,
-                    isComplete: true
+                    score: validatedScore,
+                    totalQuestions: validatedTotal
                 });
 
-                const attemptData = {
-                    userId: user.uid,
-                    isAnonymous: user.isAnonymous,
+                // Add quiz attempt to Firestore with validated data
+                const quizAttemptRef = await addDoc(collection(db, 'quizAttempts'), {
+                    userId: auth.currentUser.uid,
                     quizId: this.currentQuizId,
-                    timestamp: serverTimestamp(),
-                    quizStarted,
-                    isComplete: true,
-                    score,
-                    totalQuestions
-                };
+                    quizStarted: serverTimestamp(),
+                    completedAt: serverTimestamp(),
+                    score: validatedScore,
+                    totalQuestions: validatedTotal,
+                    isAnonymous: auth.currentUser.isAnonymous
+                });
 
-                const docRef = await addDoc(collection(db, 'quizAttempts'), attemptData);
-                console.log('Quiz attempt recorded:', docRef.id);
+                console.log('Quiz attempt recorded:', quizAttemptRef.id);
 
-                // Use progress store to mark quiz complete
+                // Mark quiz as complete in progress store
                 const progressStore = useProgressStore();
                 await progressStore.markQuizComplete(this.currentQuizId);
 
@@ -205,7 +204,7 @@ export const quizStore = defineStore('quiz', {
 
             } catch (error) {
                 console.error('Error recording quiz attempt:', error);
-                throw error; // Propagate error to caller
+                throw error;
             }
         },
 
