@@ -7,7 +7,8 @@ import {
     getDocs,
     doc,
     setDoc,
-    serverTimestamp
+    serverTimestamp,
+    getDoc
 } from 'firebase/firestore';
 
 export const useProgressStore = defineStore('progress', {
@@ -41,28 +42,24 @@ export const useProgressStore = defineStore('progress', {
             this.error = null;
 
             try {
-                // Fetch completed quizzes
-                const attemptsRef = collection(db, 'quizAttempts');
-                const q = query(attemptsRef, where('userId', '==', auth.currentUser.uid));
-                const querySnapshot = await getDocs(q);
+                // First get the total number of available quizzes from quizSets
+                const { quizSets } = await import('../data/quizSets.js');
+                this.totalQuizzes = quizSets.length;
+                console.log('Total available quizzes:', this.totalQuizzes);
 
-                const completedQuizIds = new Set();
-                querySnapshot.docs.forEach(doc => {
-                    const data = doc.data();
-                    if (data.quizId) {
-                        completedQuizIds.add(data.quizId);
-                    }
-                });
+                // Fetch completed quizzes from user progress
+                const progressRef = doc(db, 'userProgress', auth.currentUser.uid);
+                const progressDoc = await getDoc(progressRef);
 
-                this.completedQuizzes = Array.from(completedQuizIds);
+                if (progressDoc.exists()) {
+                    const data = progressDoc.data();
+                    this.completedQuizzes = data.completedQuizzes || [];
+                } else {
+                    this.completedQuizzes = [];
+                }
+
                 console.log('Completed quizzes:', this.completedQuizzes);
-
-                // Fetch total published quizzes
-                const quizzesRef = collection(db, 'quizEntries');
-                const publishedQuery = query(quizzesRef, where('status', '==', 'published'));
-                const publishedSnapshot = await getDocs(publishedQuery);
-                this.totalQuizzes = publishedSnapshot.size;
-                console.log('Total quizzes:', this.totalQuizzes);
+                console.log('Progress percentage:', this.progressPercentage);
 
                 this.lastUpdated = new Date();
             } catch (error) {
