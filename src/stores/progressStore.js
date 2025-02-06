@@ -32,7 +32,10 @@ export const useProgressStore = defineStore('progress', {
 
     actions: {
         async fetchProgress() {
-            if (!auth.currentUser || auth.currentUser.isAnonymous) return;
+            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+                console.log('No authenticated user, skipping progress fetch');
+                return;
+            }
 
             this.isLoading = true;
             this.error = null;
@@ -52,12 +55,14 @@ export const useProgressStore = defineStore('progress', {
                 });
 
                 this.completedQuizzes = Array.from(completedQuizIds);
+                console.log('Completed quizzes:', this.completedQuizzes);
 
                 // Fetch total published quizzes
                 const quizzesRef = collection(db, 'quizEntries');
                 const publishedQuery = query(quizzesRef, where('status', '==', 'published'));
                 const publishedSnapshot = await getDocs(publishedQuery);
                 this.totalQuizzes = publishedSnapshot.size;
+                console.log('Total quizzes:', this.totalQuizzes);
 
                 this.lastUpdated = new Date();
             } catch (error) {

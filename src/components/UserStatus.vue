@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useAuthStore } from '../stores/authStore';
 import { useRouter } from 'vue-router';
 import { useProgressStore } from '../stores/progressStore';
@@ -82,6 +82,17 @@ import { useProgressStore } from '../stores/progressStore';
 const authStore = useAuthStore();
 const router = useRouter();
 const progressStore = useProgressStore();
+
+// Add debugging
+onMounted(() => {
+    console.log('UserStatus mounted');
+    console.log('Auth user:', authStore.user);
+    console.log('Progress store state:', {
+        completedCount: progressStore.completedCount,
+        totalQuizzes: progressStore.totalQuizzes,
+        percentage: progressStore.progressPercentage
+    });
+});
 
 const displayName = computed(() => {
     if (authStore.user.isAnonymous) return 'Anonymous User';
@@ -94,6 +105,12 @@ const provider = computed(() => {
 });
 
 const progressText = computed(() => {
+    console.log('Computing progress text:', {
+        isAnonymous: authStore.user?.isAnonymous,
+        completed: progressStore.completedCount,
+        total: progressStore.totalQuizzes
+    });
+
     if (authStore.user?.isAnonymous) return 'Progress not saved';
     return `${progressStore.completedCount}/${progressStore.totalQuizzes} quizzes`;
 });
