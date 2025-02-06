@@ -13,15 +13,18 @@ import {
 
 export const useProgressStore = defineStore('progress', {
     state: () => ({
-        correctQuizItems: [], // Store IDs of correctly answered quiz items
-        totalQuizItems: 0,    // Total number of quiz items in active quizzes
+        completedQuizzes: [],  // Keep track of completed quizzes
+        correctQuizItems: [],  // Store IDs of correctly answered quiz items
+        totalQuizzes: 0,       // Total number of available quizzes
+        totalQuizItems: 0,     // Total number of quiz items
         lastUpdated: null,
         isLoading: false,
         error: null
     }),
 
     getters: {
-        completedCount: (state) => state.correctQuizItems.length,
+        quizCompletionCount: (state) => state.completedQuizzes.length,
+        correctItemsCount: (state) => state.correctQuizItems.length,
         progressPercentage: (state) => {
             if (state.totalQuizItems === 0) return 0;
             return Math.round((state.correctQuizItems.length / state.totalQuizItems) * 100);
@@ -42,22 +45,37 @@ export const useProgressStore = defineStore('progress', {
                 // Get quizzes from quizSets, excluding in-progress ones
                 const { quizSets } = await import('../data/quizSets.js');
                 const publishedQuizSets = quizSets.filter(set => !set.inProgress);
+                this.totalQuizzes = publishedQuizSets.length;
 
-                // Count total quiz items in active sets
+                // Count total quiz items
                 this.totalQuizItems = publishedQuizSets.reduce((total, set) => {
                     return total + (set.quizItems?.length || 0);
                 }, 0);
                 console.log('Total quiz items:', this.totalQuizItems);
 
-                // Fetch user's correct answers from quizAttempts
+                // Fetch user's progress from Firestore
+                const progressRef = doc(db, 'userProgress', auth.currentUser.uid);
+                const progressDoc = await getDoc(progressRef);
+
+                if (progressDoc.exists()) {
+                    const data = progressDoc.data();
+                    this.completedQuizzes = data.completedQuizzes || [];
+                    this.correctQuizItems = data.correctQuizItems || [];
+                }
+
+                // Also check quizAttempts for historical data
                 const attemptsRef = collection(db, 'quizAttempts');
                 const q = query(attemptsRef, where('userId', '==', auth.currentUser.uid));
                 const querySnapshot = await getDocs(q);
 
-                // Get unique correctly answered quiz items
-                const correctItems = new Set();
+                const completedQuizIds = new Set(this.completedQuizzes);
+                const correctItems = new Set(this.correctQuizItems);
+
                 querySnapshot.docs.forEach(doc => {
                     const data = doc.data();
+                    if (data.quizId) {
+                        completedQuizIds.add(data.quizId);
+                    }
                     if (data.userAnswers) {
                         data.userAnswers.forEach(answer => {
                             if (answer.correct && answer.questionId) {
@@ -67,7 +85,10 @@ export const useProgressStore = defineStore('progress', {
                     }
                 });
 
+                this.completedQuizzes = Array.from(completedQuizIds);
                 this.correctQuizItems = Array.from(correctItems);
+
+                console.log('Completed quizzes:', this.completedQuizzes.length);
                 console.log('Correctly answered items:', this.correctQuizItems.length);
 
                 this.lastUpdated = new Date();

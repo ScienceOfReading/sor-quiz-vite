@@ -18,7 +18,7 @@
                 <!-- Overall progress -->
                 <div class="mb-6">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm text-gray-600 dark:text-gray-300">Overall Progress</span>
+                        <span class="text-sm text-gray-600 dark:text-gray-300">Quiz Items Correct</span>
                         <span class="text-sm font-medium text-gray-900 dark:text-white">
                             {{ progressStore.progressPercentage }}%
                         </span>
@@ -33,15 +33,15 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {{ progressStore.completedCount }}
+                            {{ progressStore.quizCompletionCount }}/{{ progressStore.totalQuizzes }}
                         </div>
-                        <div class="text-sm text-gray-600 dark:text-gray-300">Items Correct</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-300">Quizzes Completed</div>
                     </div>
                     <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {{ progressStore.totalQuizItems }}
+                            {{ progressStore.correctItemsCount }}/{{ progressStore.totalQuizItems }}
                         </div>
-                        <div class="text-sm text-gray-600 dark:text-gray-300">Total Items</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-300">Items Correct</div>
                     </div>
                 </div>
 

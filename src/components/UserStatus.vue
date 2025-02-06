@@ -118,7 +118,7 @@ const provider = computed(() => {
 
 const progressText = computed(() => {
     if (authStore.user?.isAnonymous) return 'Progress not saved';
-    return `${progressStore.completedCount}/${progressStore.totalQuizItems} items correct`;
+    return `${progressStore.quizCompletionCount}/${progressStore.totalQuizzes} quizzes`;
 });
 
 const handleSignOut = async () => {
