@@ -439,26 +439,29 @@ export default {
       console.log("In selectionError");
       this.selectError = true;
     },
-    quizDone() {
-      console.log("Before quizDone:", {
-        currentState: this.quizState,
-        complete: this.complete,
-        reviewMode: this.reviewMode
-      });
+    async quizDone() {
+      console.log('Before quizDone:', this.quizState);
 
-      // Force exit from review mode
-      this.reviewMode = false;
-      // Clear any intermediate states
-      this.chosen = false;
-      // Set final states
-      this.complete = true;
-      this.quizState = 'end';
+      try {
+        const totalCorrect = this.numCorrect();
+        const totalQuestions = this.quizItems.length;
 
-      console.log("After quizDone:", {
-        currentState: this.quizState,
-        complete: this.complete,
-        reviewMode: this.reviewMode
-      });
+        // Record the quiz attempt with score
+        await this.store.recordQuizAttempt(true, totalCorrect, totalQuestions);
+        console.log('Quiz attempt recorded successfully');
+
+        // Update quiz state
+        this.quizState = {
+          ...this.quizState,
+          complete: true,
+          currentState: 'end',
+          reviewMode: false
+        };
+
+        console.log('After quizDone:', this.quizState);
+      } catch (error) {
+        console.error('Error in quizDone:', error);
+      }
     },
     async showOriginalView() {
       console.log("showOriginalView clicked");

@@ -166,7 +166,7 @@ export const quizStore = defineStore('quiz', {
             }
         },
 
-        async recordQuizAttempt(quizStarted) {
+        async recordQuizAttempt(quizStarted, score = 0, totalQuestions = 0) {
             try {
                 const user = auth.currentUser;
                 if (!user) {
@@ -177,6 +177,8 @@ export const quizStore = defineStore('quiz', {
                 console.log('Recording quiz attempt:', {
                     userId: user.uid,
                     quizId: this.currentQuizId,
+                    score,
+                    totalQuestions,
                     isComplete: true
                 });
 
@@ -187,8 +189,8 @@ export const quizStore = defineStore('quiz', {
                     timestamp: serverTimestamp(),
                     quizStarted,
                     isComplete: true,
-                    score: 8, // Add the actual score
-                    totalQuestions: 10
+                    score,
+                    totalQuestions
                 };
 
                 const docRef = await addDoc(collection(db, 'quizAttempts'), attemptData);
@@ -203,6 +205,7 @@ export const quizStore = defineStore('quiz', {
 
             } catch (error) {
                 console.error('Error recording quiz attempt:', error);
+                throw error; // Propagate error to caller
             }
         },
 
