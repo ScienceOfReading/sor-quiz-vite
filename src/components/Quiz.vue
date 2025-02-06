@@ -164,7 +164,6 @@ export default {
       reviewMode: reviewMode,
       showEnd: false,
       selectError: false,
-      debug: this.debug,
       userFeedback: ''
     }
   },
