@@ -12,6 +12,7 @@ import {
     getDocs
 } from 'firebase/firestore';
 import { useAuthStore } from './authStore';
+import { useProgressStore } from './progressStore';
 
 export const quizStore = defineStore('quiz', {
     state: () => ({
@@ -179,6 +180,11 @@ export const quizStore = defineStore('quiz', {
                 };
 
                 await addDoc(collection(db, 'quizAttempts'), attemptData);
+
+                // Use progress store to mark quiz complete
+                const progressStore = useProgressStore();
+                await progressStore.markQuizComplete(this.currentQuizId);
+
             } catch (error) {
                 console.error('Error recording quiz attempt:', error);
             }

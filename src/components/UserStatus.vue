@@ -61,9 +61,11 @@
 import { computed } from 'vue';
 import { useAuthStore } from '../stores/authStore';
 import { useRouter } from 'vue-router';
+import { useProgressStore } from '../stores/progressStore';
 
 const authStore = useAuthStore();
 const router = useRouter();
+const progressStore = useProgressStore();
 
 const displayName = computed(() => {
     if (authStore.user.isAnonymous) return 'Anonymous User';
@@ -73,6 +75,11 @@ const displayName = computed(() => {
 
 const provider = computed(() => {
     return authStore.user?.providerData?.[0]?.providerId || 'anonymous';
+});
+
+const progressText = computed(() => {
+    if (authStore.user.isAnonymous) return 'Progress not saved';
+    return `${progressStore.completedCount}/${progressStore.totalQuizzes} quizzes completed`;
 });
 
 const handleSignOut = async () => {
