@@ -42,10 +42,11 @@ export const useProgressStore = defineStore('progress', {
             this.error = null;
 
             try {
-                // First get the total number of available quizzes from quizSets
+                // Get quizzes from quizSets, excluding in-progress ones
                 const { quizSets } = await import('../data/quizSets.js');
-                this.totalQuizzes = quizSets.length;
-                console.log('Total available quizzes:', this.totalQuizzes);
+                const publishedQuizSets = quizSets.filter(set => !set.inProgress);
+                this.totalQuizzes = publishedQuizSets.length;
+                console.log('Total published quizzes:', this.totalQuizzes);
 
                 // Fetch completed quizzes from user progress
                 const progressRef = doc(db, 'userProgress', auth.currentUser.uid);
