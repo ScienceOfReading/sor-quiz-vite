@@ -19,19 +19,39 @@ export const useProgressStore = defineStore('progress', {
         totalQuizItems: 0,     // Total number of quiz items
         lastUpdated: null,
         isLoading: false,
-        error: null
+        error: null,
+        initialized: false
     }),
 
     getters: {
         quizCompletionCount: (state) => state.completedQuizzes.length,
         correctItemsCount: (state) => state.correctQuizItems.length,
         progressPercentage: (state) => {
-            if (state.totalQuizItems === 0) return 0;
+            if (!state.initialized || state.totalQuizItems === 0) return 0;
             return Math.round((state.correctQuizItems.length / state.totalQuizItems) * 100);
         }
     },
 
     actions: {
+        async initialize() {
+            // Load quiz sets first
+            const { quizSets } = await import('../data/quizSets.js');
+            const publishedQuizSets = quizSets.filter(set => !set.inProgress);
+            this.totalQuizzes = publishedQuizSets.length;
+
+            // Count total quiz items
+            this.totalQuizItems = publishedQuizSets.reduce((total, set) => {
+                return total + (set.quizItems?.length || 0);
+            }, 0);
+
+            console.log('Initialized with:', {
+                totalQuizzes: this.totalQuizzes,
+                totalQuizItems: this.totalQuizItems
+            });
+
+            this.initialized = true;
+        },
+
         async fetchProgress() {
             if (!auth.currentUser || auth.currentUser.isAnonymous) {
                 console.log('No authenticated user, skipping progress fetch');
@@ -42,16 +62,10 @@ export const useProgressStore = defineStore('progress', {
             this.error = null;
 
             try {
-                // Get quizzes from quizSets, excluding in-progress ones
-                const { quizSets } = await import('../data/quizSets.js');
-                const publishedQuizSets = quizSets.filter(set => !set.inProgress);
-                this.totalQuizzes = publishedQuizSets.length;
-
-                // Count total quiz items
-                this.totalQuizItems = publishedQuizSets.reduce((total, set) => {
-                    return total + (set.quizItems?.length || 0);
-                }, 0);
-                console.log('Total quiz items:', this.totalQuizItems);
+                // Ensure we're initialized
+                if (!this.initialized) {
+                    await this.initialize();
+                }
 
                 // Fetch user's progress from Firestore
                 const progressRef = doc(db, 'userProgress', auth.currentUser.uid);
@@ -63,7 +77,7 @@ export const useProgressStore = defineStore('progress', {
                     this.correctQuizItems = data.correctQuizItems || [];
                 }
 
-                // Also check quizAttempts for historical data
+                // Check quizAttempts for historical data
                 const attemptsRef = collection(db, 'quizAttempts');
                 const q = query(attemptsRef, where('userId', '==', auth.currentUser.uid));
                 const querySnapshot = await getDocs(q);
@@ -88,8 +102,11 @@ export const useProgressStore = defineStore('progress', {
                 this.completedQuizzes = Array.from(completedQuizIds);
                 this.correctQuizItems = Array.from(correctItems);
 
-                console.log('Completed quizzes:', this.completedQuizzes.length);
-                console.log('Correctly answered items:', this.correctQuizItems.length);
+                console.log('Progress loaded:', {
+                    completedQuizzes: this.completedQuizzes.length,
+                    correctItems: this.correctQuizItems.length,
+                    totalQuizItems: this.totalQuizItems
+                });
 
                 this.lastUpdated = new Date();
             } catch (error) {

@@ -15,35 +15,44 @@
             <h2 class="text-xl font-semibold mb-4 dark:text-white">Your Progress</h2>
 
             <div class="space-y-4">
-                <!-- Overall progress -->
-                <div class="mb-6">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm text-gray-600 dark:text-gray-300">Quiz Items Correct</span>
-                        <span class="text-sm font-medium text-gray-900 dark:text-white">
-                            {{ progressStore.progressPercentage }}%
-                        </span>
+                <div v-if="!progressStore.initialized || progressStore.isLoading" class="text-center py-4">
+                    <div
+                        class="animate-spin h-6 w-6 border-2 border-gray-500 border-t-transparent rounded-full mx-auto mb-2">
                     </div>
-                    <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                        <div class="h-full bg-green-500 rounded-full transition-all duration-500"
-                            :style="{ width: `${progressStore.progressPercentage}%` }"></div>
-                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">Loading progress...</p>
                 </div>
 
-                <!-- Stats -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {{ progressStore.quizCompletionCount }}/{{ progressStore.totalQuizzes }}
+                <template v-else>
+                    <!-- Overall progress -->
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600 dark:text-gray-300">Quiz Items Correct</span>
+                            <span class="text-sm font-medium text-gray-900 dark:text-white">
+                                {{ progressStore.progressPercentage }}%
+                            </span>
                         </div>
-                        <div class="text-sm text-gray-600 dark:text-gray-300">Quizzes Completed</div>
-                    </div>
-                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {{ progressStore.correctItemsCount }}/{{ progressStore.totalQuizItems }}
+                        <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-green-500 rounded-full transition-all duration-500"
+                                :style="{ width: `${progressStore.progressPercentage}%` }"></div>
                         </div>
-                        <div class="text-sm text-gray-600 dark:text-gray-300">Items Correct</div>
                     </div>
-                </div>
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="text-2xl font-bold text-gray-900 dark:text-white">
+                                {{ progressStore.quizCompletionCount }}/{{ progressStore.totalQuizzes }}
+                            </div>
+                            <div class="text-sm text-gray-600 dark:text-gray-300">Quizzes Completed</div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="text-2xl font-bold text-gray-900 dark:text-white">
+                                {{ progressStore.correctItemsCount }}/{{ progressStore.totalQuizItems }}
+                            </div>
+                            <div class="text-sm text-gray-600 dark:text-gray-300">Items Correct</div>
+                        </div>
+                    </div>
+                </template>
 
                 <!-- Last updated -->
                 <div class="text-sm text-gray-500 dark:text-gray-400">
