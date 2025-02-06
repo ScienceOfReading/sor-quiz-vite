@@ -35,13 +35,13 @@
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
                             {{ progressStore.completedCount }}
                         </div>
-                        <div class="text-sm text-gray-600 dark:text-gray-300">Completed Quizzes</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-300">Items Correct</div>
                     </div>
                     <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {{ progressStore.totalQuizzes }}
+                            {{ progressStore.totalQuizItems }}
                         </div>
-                        <div class="text-sm text-gray-600 dark:text-gray-300">Total Quizzes</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-300">Total Items</div>
                     </div>
                 </div>
 

@@ -6,28 +6,25 @@ import {
     where,
     getDocs,
     doc,
+    getDoc,
     setDoc,
-    serverTimestamp,
-    getDoc
+    serverTimestamp
 } from 'firebase/firestore';
 
 export const useProgressStore = defineStore('progress', {
     state: () => ({
-        completedQuizzes: [],
-        totalQuizzes: 0,
+        correctQuizItems: [], // Store IDs of correctly answered quiz items
+        totalQuizItems: 0,    // Total number of quiz items in active quizzes
         lastUpdated: null,
         isLoading: false,
         error: null
     }),
 
     getters: {
-        completedCount: (state) => state.completedQuizzes.length,
+        completedCount: (state) => state.correctQuizItems.length,
         progressPercentage: (state) => {
-            if (state.totalQuizzes === 0) return 0;
-            return Math.round((state.completedQuizzes.length / state.totalQuizzes) * 100);
-        },
-        isQuizCompleted: (state) => (quizId) => {
-            return state.completedQuizzes.includes(quizId);
+            if (state.totalQuizItems === 0) return 0;
+            return Math.round((state.correctQuizItems.length / state.totalQuizItems) * 100);
         }
     },
 
@@ -45,22 +42,33 @@ export const useProgressStore = defineStore('progress', {
                 // Get quizzes from quizSets, excluding in-progress ones
                 const { quizSets } = await import('../data/quizSets.js');
                 const publishedQuizSets = quizSets.filter(set => !set.inProgress);
-                this.totalQuizzes = publishedQuizSets.length;
-                console.log('Total published quizzes:', this.totalQuizzes);
 
-                // Fetch completed quizzes from user progress
-                const progressRef = doc(db, 'userProgress', auth.currentUser.uid);
-                const progressDoc = await getDoc(progressRef);
+                // Count total quiz items in active sets
+                this.totalQuizItems = publishedQuizSets.reduce((total, set) => {
+                    return total + (set.quizItems?.length || 0);
+                }, 0);
+                console.log('Total quiz items:', this.totalQuizItems);
 
-                if (progressDoc.exists()) {
-                    const data = progressDoc.data();
-                    this.completedQuizzes = data.completedQuizzes || [];
-                } else {
-                    this.completedQuizzes = [];
-                }
+                // Fetch user's correct answers from quizAttempts
+                const attemptsRef = collection(db, 'quizAttempts');
+                const q = query(attemptsRef, where('userId', '==', auth.currentUser.uid));
+                const querySnapshot = await getDocs(q);
 
-                console.log('Completed quizzes:', this.completedQuizzes);
-                console.log('Progress percentage:', this.progressPercentage);
+                // Get unique correctly answered quiz items
+                const correctItems = new Set();
+                querySnapshot.docs.forEach(doc => {
+                    const data = doc.data();
+                    if (data.userAnswers) {
+                        data.userAnswers.forEach(answer => {
+                            if (answer.correct && answer.questionId) {
+                                correctItems.add(answer.questionId);
+                            }
+                        });
+                    }
+                });
+
+                this.correctQuizItems = Array.from(correctItems);
+                console.log('Correctly answered items:', this.correctQuizItems.length);
 
                 this.lastUpdated = new Date();
             } catch (error) {
@@ -71,42 +79,27 @@ export const useProgressStore = defineStore('progress', {
             }
         },
 
-        async markQuizComplete(quizId) {
-            if (!auth.currentUser || auth.currentUser.isAnonymous) {
-                console.log('No authenticated user, skipping markQuizComplete');
-                return;
-            }
+        async markQuizItemCorrect(questionId) {
+            if (!auth.currentUser || auth.currentUser.isAnonymous) return;
 
             try {
-                console.log('Marking quiz complete:', quizId);
-
-                // Add to completed quizzes if not already included
-                if (!this.completedQuizzes.includes(quizId)) {
-                    this.completedQuizzes.push(quizId);
-                    console.log('Updated completedQuizzes:', this.completedQuizzes);
+                if (!this.correctQuizItems.includes(questionId)) {
+                    this.correctQuizItems.push(questionId);
                 }
 
                 // Update progress in Firestore
                 const progressRef = doc(db, 'userProgress', auth.currentUser.uid);
                 await setDoc(progressRef, {
-                    completedQuizzes: this.completedQuizzes,
+                    correctQuizItems: this.correctQuizItems,
                     lastUpdated: serverTimestamp()
                 }, { merge: true });
 
-                console.log('Progress saved to Firestore');
+                console.log('Quiz item progress saved');
 
             } catch (error) {
-                console.error('Error marking quiz complete:', error);
+                console.error('Error marking quiz item correct:', error);
                 throw error;
             }
-        },
-
-        reset() {
-            this.completedQuizzes = [];
-            this.totalQuizzes = 0;
-            this.lastUpdated = null;
-            this.isLoading = false;
-            this.error = null;
         }
     }
 }); 
