@@ -106,18 +106,27 @@ export const quizStore = defineStore('quiz', {
 
             if (Array.isArray(selectedAnswer)) {
                 console.log('Sortable list answer - skipping correctness check');
-
                 this.userAnswers[index] = {
                     selected: selectedAnswer,
                     questionId: questionId || '',
                     questionTitle: questionTitle || '',
                     timestamp: new Date().toISOString()
                 };
-
                 return;
             }
 
-            const isCorrect = selectedAnswer === correctAnswer;
+            // For multiple choice, ensure consistent string comparison
+            const isCorrect = String(selectedAnswer) === String(correctAnswer);
+
+            console.log('Answer comparison:', {
+                selectedAnswer: String(selectedAnswer),
+                correctAnswer: String(correctAnswer),
+                isCorrect,
+                types: {
+                    selected: typeof selectedAnswer,
+                    correct: typeof correctAnswer
+                }
+            });
 
             this.userAnswers[index] = {
                 selected: selectedAnswer,
@@ -191,27 +200,21 @@ export const quizStore = defineStore('quiz', {
                     completedAt: serverTimestamp(),
                     score: validatedScore,
                     totalQuestions: validatedTotal,
-                    userAnswers: this.userAnswers, // Include the detailed answers
+                    userAnswers: this.userAnswers,
                     isAnonymous: auth.currentUser.isAnonymous
                 });
 
                 console.log('Quiz attempt recorded:', quizAttemptRef.id);
 
-                // Get the progress store
-                const progressStore = useProgressStore();
-
-                // Update correctQuizItems with the latest correct answers
-                this.userAnswers.forEach(answer => {
-                    if (answer && answer.correct && answer.questionId) {
-                        progressStore.markQuizItemCorrect(answer.questionId);
-                    }
+                // Save final progress using the original system
+                const { saveUserProgress } = await import('../firebase');
+                await saveUserProgress(this.currentQuizId, {
+                    complete: true,
+                    userAnswers: this.userAnswers,
+                    totalCorrect: validatedScore,
+                    totalQuestions: validatedTotal,
+                    timestamp: new Date()
                 });
-
-                // Mark quiz as complete
-                await progressStore.markQuizComplete(this.currentQuizId);
-
-                // Force a progress refresh
-                await progressStore.fetchProgress();
 
             } catch (error) {
                 console.error('Error recording quiz attempt:', error);
