@@ -1,82 +1,125 @@
 <template>
-    <div v-if="show" class="fixed inset-0 z-50 flex items-center justify-center">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black bg-opacity-50" @click="$emit('close')"></div>
-
-        <!-- Popup content -->
-        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
-            <button @click="$emit('close')"
-                class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-
-            <h2 class="text-xl font-semibold mb-4 dark:text-white">Your Progress</h2>
-
-            <div class="space-y-4">
-                <div v-if="!progressStore.initialized || progressStore.isLoading" class="text-center py-4">
-                    <div
-                        class="animate-spin h-6 w-6 border-2 border-gray-500 border-t-transparent rounded-full mx-auto mb-2">
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400">Loading progress...</p>
-                </div>
-
-                <template v-else>
-                    <!-- Overall progress -->
-                    <div class="mb-6">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-sm text-gray-600 dark:text-gray-300">Quiz Items Correct</span>
-                            <span class="text-sm font-medium text-gray-900 dark:text-white">
-                                {{ progressStore.progressPercentage }}%
-                            </span>
+    <div v-if="show" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
+            <div class="mt-3">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">Your Progress</h3>
+                <div class="mt-2">
+                    <!-- Loading State -->
+                    <div v-if="!progressStore.initialized || progressStore.isLoading" class="text-center py-4">
+                        <div
+                            class="animate-spin h-6 w-6 border-2 border-gray-500 border-t-transparent rounded-full mx-auto mb-2">
                         </div>
-                        <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                            <div class="h-full bg-green-500 rounded-full transition-all duration-500"
-                                :style="{ width: `${progressStore.progressPercentage}%` }"></div>
-                        </div>
+                        <p class="text-gray-600 dark:text-gray-400">Loading progress...</p>
                     </div>
 
-                    <!-- Stats -->
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                            <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                                {{ progressStore.quizCompletionCount }}/{{ progressStore.totalQuizzes }}
+                    <template v-else>
+                        <!-- Overall Stats -->
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-gray-900 dark:text-white">
+                                    {{ progressStore.quizCompletionCount }}/{{ progressStore.totalQuizzes }}
+                                </div>
+                                <div class="text-sm text-gray-600 dark:text-gray-300">Quizzes Completed</div>
                             </div>
-                            <div class="text-sm text-gray-600 dark:text-gray-300">Quizzes Completed</div>
-                        </div>
-                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                            <div class="text-2xl font-bold text-gray-900 dark:text-white">
-                                {{ progressStore.correctItemsCount }}/{{ progressStore.totalQuizItems }}
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <div class="text-2xl font-bold text-gray-900 dark:text-white">
+                                    {{ progressStore.correctItemsCount }}/{{ progressStore.totalQuizItems }}
+                                </div>
+                                <div class="text-sm text-gray-600 dark:text-gray-300">Items Correct</div>
                             </div>
-                            <div class="text-sm text-gray-600 dark:text-gray-300">Items Correct</div>
                         </div>
-                    </div>
-                </template>
 
-                <!-- Last updated -->
-                <div class="text-sm text-gray-500 dark:text-gray-400">
-                    Last updated: {{ lastUpdatedText }}
+                        <!-- Per Quiz Set Progress -->
+                        <div class="space-y-4">
+                            <div v-for="quizSet in publishedQuizSets" :key="quizSet.setName"
+                                class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium text-gray-900 dark:text-white">
+                                        {{ quizSet.setName }}
+                                    </span>
+                                    <span class="text-sm font-medium text-gray-900 dark:text-white">
+                                        {{ getQuizSetProgress(quizSet).correct }}/{{ quizSet.items.length }}
+                                    </span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-600">
+                                    <div class="bg-blue-600 h-2.5 rounded-full"
+                                        :style="{ width: `${getQuizSetProgress(quizSet).percentage}%` }">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Last Updated -->
+                        <div class="text-sm text-gray-500 dark:text-gray-400 mt-4">
+                            Last updated: {{ lastUpdatedText }}
+                        </div>
+
+                        <!-- Close Button -->
+                        <div class="mt-4">
+                            <button @click="$emit('close')"
+                                class="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
+                                Close
+                            </button>
+                        </div>
+                    </template>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
-<script setup>
+<script>
 import { useProgressStore } from '../stores/progressStore';
+import { quizSets } from '../data/quizSets';
 import { computed } from 'vue';
 
-const props = defineProps({
-    show: Boolean
-});
+export default {
+    name: 'ProgressDetailsPopup',
+    props: {
+        show: Boolean
+    },
+    emits: ['close'],
+    setup() {
+        const progressStore = useProgressStore();
 
-defineEmits(['close']);
+        const lastUpdatedText = computed(() => {
+            if (!progressStore.lastUpdated) return 'Never';
+            return new Date(progressStore.lastUpdated).toLocaleString();
+        });
 
-const progressStore = useProgressStore();
+        return {
+            progressStore,
+            lastUpdatedText
+        };
+    },
+    computed: {
+        publishedQuizSets() {
+            return quizSets.filter(set => !set.inProgress);
+        }
+    },
+    methods: {
+        getQuizSetProgress(quizSet) {
+            const correctAnswers = quizSet.items.filter(itemId =>
+                this.progressStore.correctQuizItems.includes(itemId)
+            ).length;
 
-const lastUpdatedText = computed(() => {
-    if (!progressStore.lastUpdated) return 'Never';
-    return new Date(progressStore.lastUpdated).toLocaleString();
-});
+            const totalQuestions = quizSet.items.length;
+            const percentage = totalQuestions > 0
+                ? (correctAnswers / totalQuestions) * 100
+                : 0;
+
+            return {
+                correct: correctAnswers,
+                total: totalQuestions,
+                percentage: Math.round(percentage)
+            };
+        }
+    }
+};
 </script>
+
+<style scoped>
+.bg-opacity-50 {
+    backdrop-filter: blur(4px);
+}
+</style>
