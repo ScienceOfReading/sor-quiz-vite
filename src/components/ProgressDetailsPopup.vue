@@ -31,11 +31,18 @@
 
                         <!-- Per Quiz Set Progress -->
                         <div class="space-y-2">
-                            <div v-for="quizSet in publishedQuizSets" :key="quizSet.setName"
-                                class="bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
+                            <div v-for="(quizSet, index) in publishedQuizSets" :key="quizSet.setName"
+                                class="bg-gray-50 dark:bg-gray-700 p-2 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                                @click="showMissedItems(quizSet, index)">
                                 <div class="flex justify-between mb-1">
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">
+                                    <span
+                                        class="text-sm font-medium text-gray-900 dark:text-white flex items-center gap-1">
                                         {{ quizSet.setName }}
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
                                     </span>
                                     <span class="text-sm font-medium text-gray-900 dark:text-white">
                                         {{ getQuizSetProgress(quizSet).correct }}/{{ quizSet.items.length }}
@@ -45,6 +52,17 @@
                                     <div class="bg-blue-600 h-1.5 rounded-full"
                                         :style="{ width: `${getQuizSetProgress(quizSet).percentage}%` }">
                                     </div>
+                                </div>
+
+                                <!-- Missed Items Section -->
+                                <div v-if="selectedQuizSet === index"
+                                    class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <div class="font-medium mb-1">Missed Items:</div>
+                                    <ul class="list-disc pl-4">
+                                        <li v-for="item in missedItems" :key="item.id">
+                                            {{ item.title || 'Untitled Question' }}
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +89,9 @@
 <script>
 import { useProgressStore } from '../stores/progressStore';
 import { quizSets } from '../data/quizSets';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { db, auth } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default {
     name: 'ProgressDetailsPopup',
@@ -81,11 +101,52 @@ export default {
     emits: ['close'],
     setup() {
         const progressStore = useProgressStore();
-        console.log('Progress store state:', {
-            correctItems: progressStore.correctQuizItems,
-            completedQuizzes: progressStore.completedQuizzes,
-            initialized: progressStore.initialized
-        });
+        const selectedQuizSet = ref(null);
+        const missedItems = ref([]);
+
+        const showMissedItems = async (quizSet, index) => {
+            console.log('Showing missed items for quiz:', {
+                quizSet,
+                index,
+                setName: quizSet.setName,
+                items: quizSet.items
+            });
+
+            if (selectedQuizSet.value === index) {
+                // If clicking the same quiz set, collapse it
+                selectedQuizSet.value = null;
+                missedItems.value = [];
+                return;
+            }
+
+            selectedQuizSet.value = index;
+            missedItems.value = [];
+
+            try {
+                // Get the user's progress for this quiz using the quiz ID from quizSets
+                const progressRef = doc(db, 'userProgress', `${auth.currentUser.uid}_${quizSet.id}`);
+                const progressDoc = await getDoc(progressRef);
+
+                console.log('Progress doc:', progressDoc.data());
+
+                if (progressDoc.exists()) {
+                    const data = progressDoc.data();
+                    if (data.userAnswers) {
+                        // Filter for incorrect answers and get their titles
+                        missedItems.value = data.userAnswers
+                            .filter(answer => !answer.correct)
+                            .map(answer => ({
+                                id: answer.questionId,
+                                title: answer.questionTitle || 'Untitled Question'
+                            }));
+
+                        console.log('Found missed items:', missedItems.value);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching missed items:', error);
+            }
+        };
 
         const lastUpdatedText = computed(() => {
             if (!progressStore.lastUpdated) return 'Never';
@@ -94,6 +155,9 @@ export default {
 
         return {
             progressStore,
+            selectedQuizSet,
+            missedItems,
+            showMissedItems,
             lastUpdatedText
         };
     },
