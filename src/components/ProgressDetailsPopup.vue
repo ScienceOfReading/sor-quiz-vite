@@ -30,9 +30,9 @@
                         </div>
 
                         <!-- Per Quiz Set Progress -->
-                        <div class="space-y-4">
+                        <div class="space-y-2">
                             <div v-for="quizSet in publishedQuizSets" :key="quizSet.setName"
-                                class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                class="bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
                                 <div class="flex justify-between mb-1">
                                     <span class="text-sm font-medium text-gray-900 dark:text-white">
                                         {{ quizSet.setName }}
@@ -41,8 +41,8 @@
                                         {{ getQuizSetProgress(quizSet).correct }}/{{ quizSet.items.length }}
                                     </span>
                                 </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-600">
-                                    <div class="bg-blue-600 h-2.5 rounded-full"
+                                <div class="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-600">
+                                    <div class="bg-blue-600 h-1.5 rounded-full"
                                         :style="{ width: `${getQuizSetProgress(quizSet).percentage}%` }">
                                     </div>
                                 </div>
