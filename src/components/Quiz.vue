@@ -228,15 +228,21 @@ export default {
           continue;
         }
 
-        console.log("Question", i + 1, ":");
-        console.log("User answer:", this.userAnswers[i]);
-        console.log("Correct answer:", this.quizItems[i].correctAnswer);
+        const userAnswer = this.userAnswers[i];
+        // Convert both to numbers for comparison
+        const correctAnswer = Number(this.quizItems[i].correctAnswer);
 
-        if (this.userAnswers[i] === this.quizItems[i].correctAnswer) {
+        console.log("Question", i + 1, ":");
+        console.log("User answer:", userAnswer);
+        console.log("Correct answer:", correctAnswer);
+
+        // Compare the numeric values
+        if (!isNaN(correctAnswer) && userAnswer === correctAnswer) {
           correct++;
           console.log("✓ Correct!");
         } else {
           console.log("✗ Incorrect");
+          console.log("Types - User answer:", typeof userAnswer, "Correct answer:", typeof correctAnswer);
         }
       }
       console.log("Total correct:", correct);
