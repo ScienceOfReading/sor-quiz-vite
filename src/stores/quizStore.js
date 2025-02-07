@@ -174,15 +174,16 @@ export const quizStore = defineStore('quiz', {
 
             try {
                 // Ensure we have valid values for all fields
-                const validatedScore = Number(score) || 0;  // Convert to number or default to 0
-                const validatedTotal = Number(totalQuestions) || 0;  // Convert to number or default to 0
+                const validatedScore = Number(score) || 0;
+                const validatedTotal = Number(totalQuestions) || 0;
 
                 console.log('Recording quiz attempt:', {
                     score: validatedScore,
-                    totalQuestions: validatedTotal
+                    totalQuestions: validatedTotal,
+                    userAnswers: this.userAnswers
                 });
 
-                // Add quiz attempt to Firestore with validated data
+                // Add quiz attempt to Firestore
                 const quizAttemptRef = await addDoc(collection(db, 'quizAttempts'), {
                     userId: auth.currentUser.uid,
                     quizId: this.currentQuizId,
@@ -190,13 +191,23 @@ export const quizStore = defineStore('quiz', {
                     completedAt: serverTimestamp(),
                     score: validatedScore,
                     totalQuestions: validatedTotal,
+                    userAnswers: this.userAnswers, // Include the detailed answers
                     isAnonymous: auth.currentUser.isAnonymous
                 });
 
                 console.log('Quiz attempt recorded:', quizAttemptRef.id);
 
-                // Mark quiz as complete in progress store
+                // Get the progress store
                 const progressStore = useProgressStore();
+
+                // Update correctQuizItems with the latest correct answers
+                this.userAnswers.forEach(answer => {
+                    if (answer && answer.correct && answer.questionId) {
+                        progressStore.markQuizItemCorrect(answer.questionId);
+                    }
+                });
+
+                // Mark quiz as complete
                 await progressStore.markQuizComplete(this.currentQuizId);
 
                 // Force a progress refresh

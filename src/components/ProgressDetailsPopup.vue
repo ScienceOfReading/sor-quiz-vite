@@ -81,6 +81,11 @@ export default {
     emits: ['close'],
     setup() {
         const progressStore = useProgressStore();
+        console.log('Progress store state:', {
+            correctItems: progressStore.correctQuizItems,
+            completedQuizzes: progressStore.completedQuizzes,
+            initialized: progressStore.initialized
+        });
 
         const lastUpdatedText = computed(() => {
             if (!progressStore.lastUpdated) return 'Never';
@@ -107,6 +112,14 @@ export default {
             const percentage = totalQuestions > 0
                 ? (correctAnswers / totalQuestions) * 100
                 : 0;
+
+            console.log('Quiz set progress:', {
+                setName: quizSet.setName,
+                items: quizSet.items,
+                correctItems: this.progressStore.correctQuizItems,
+                correctCount: correctAnswers,
+                total: totalQuestions
+            });
 
             return {
                 correct: correctAnswers,

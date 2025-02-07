@@ -118,6 +118,7 @@ import { quizSets } from '../data/quizSets.js'
 import { quizStore } from '../stores/quizStore'; // Import the store
 import { ref, onMounted, watch } from 'vue'
 import { saveUserProgress } from '../firebase';
+import { useProgressStore } from '../stores/progressStore';
 
 export default {
   name: 'Quiz',
@@ -137,13 +138,15 @@ export default {
   },
   setup(props) {
     const store = quizStore();
+    const progressStore = useProgressStore();
 
     onMounted(() => {
       store.setCurrentQuiz(props.selectedQuiz);
     });
 
     return {
-      store
+      store,
+      progressStore
     }
   },
   data() {
@@ -407,11 +410,19 @@ export default {
         console.error("Error in checkIt method:", error);
       }
     },
-    answerSelected(option) {
+    async answerSelected(option) {
       console.log("In answerSelected with answer:", option);
       this.selectError = false;
       this.chosen = true;
       this.userAnswers[this.itemNum] = option;
+
+      // Check if answer is correct
+      const isCorrect = option === this.currentQuizItem.correctAnswer;
+      if (isCorrect) {
+        // Mark the item as correct in progress store
+        await this.progressStore.markQuizItemCorrect(this.currentQuizItem.id);
+      }
+
       // Update store immediately when answer is selected
       this.store.setUserAnswer(
         this.itemNum,
