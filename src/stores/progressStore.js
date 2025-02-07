@@ -68,7 +68,7 @@ export const useProgressStore = defineStore('progress', {
         },
 
         async fetchProgress() {
-            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+            if (!auth.currentUser) {
                 console.log('No authenticated user, skipping progress fetch');
                 return;
             }
@@ -133,7 +133,7 @@ export const useProgressStore = defineStore('progress', {
         },
 
         async markQuizComplete(quizId) {
-            if (!auth.currentUser || auth.currentUser.isAnonymous) {
+            if (!auth.currentUser) {
                 console.log('No authenticated user, skipping markQuizComplete');
                 return;
             }
@@ -164,7 +164,7 @@ export const useProgressStore = defineStore('progress', {
         },
 
         async markQuizItemCorrect(questionId) {
-            if (!auth.currentUser || auth.currentUser.isAnonymous) return;
+            if (!auth.currentUser) return;
 
             try {
                 if (!this.correctQuizItems.includes(questionId)) {

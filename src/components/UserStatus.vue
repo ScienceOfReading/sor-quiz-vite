@@ -83,50 +83,68 @@
     </div>
 </template>
 
-<script setup>
-import { computed, onMounted, ref } from 'vue';
+<script>
 import { useAuthStore } from '../stores/authStore';
-import { useRouter } from 'vue-router';
 import { useProgressStore } from '../stores/progressStore';
+import { onMounted, computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import ProgressDetailsPopup from './ProgressDetailsPopup.vue';
 
-const authStore = useAuthStore();
-const router = useRouter();
-const progressStore = useProgressStore();
-const showProgressDetails = ref(false);
+export default {
+    name: 'UserStatus',
+    components: {
+        ProgressDetailsPopup
+    },
+    setup() {
+        const authStore = useAuthStore();
+        const progressStore = useProgressStore();
+        const showProgressDetails = ref(false);
+        const router = useRouter();
 
-// Add debugging
-onMounted(() => {
-    console.log('UserStatus mounted');
-    console.log('Auth user:', authStore.user);
-    console.log('Progress store state:', {
-        completedCount: progressStore.completedCount,
-        totalQuizzes: progressStore.totalQuizzes,
-        percentage: progressStore.progressPercentage
-    });
-});
+        onMounted(async () => {
+            console.log('UserStatus mounted');
+            console.log('Auth user:', authStore.user);
+            console.log('Progress store state:', progressStore);
 
-const displayName = computed(() => {
-    if (authStore.user.isAnonymous) return 'Anonymous User';
-    if (!authStore.user.email) return 'Signed In';
-    return authStore.user.email.split('@')[0];
-});
+            // Initialize and fetch progress for all users
+            if (!progressStore.initialized) {
+                await progressStore.initialize();
+            }
+            await progressStore.fetchProgress();
+        });
 
-const provider = computed(() => {
-    return authStore.user?.providerData?.[0]?.providerId || 'anonymous';
-});
+        const displayName = computed(() => {
+            if (authStore.user.isAnonymous) return 'Anonymous User';
+            if (!authStore.user.email) return 'Signed In';
+            return authStore.user.email.split('@')[0];
+        });
 
-const progressText = computed(() => {
-    if (authStore.user?.isAnonymous) return 'Progress not saved';
-    return `${progressStore.quizCompletionCount}/${progressStore.totalQuizzes} quizzes`;
-});
+        const provider = computed(() => {
+            return authStore.user?.providerData?.[0]?.providerId || 'anonymous';
+        });
 
-const handleSignOut = async () => {
-    try {
-        await authStore.signOut();
-        router.push('/login');
-    } catch (error) {
-        console.error('Sign out error:', error);
+        const progressText = computed(() => {
+            return `${progressStore.quizCompletionCount}/${progressStore.totalQuizzes} quizzes`;
+        });
+
+        const handleSignOut = async () => {
+            try {
+                await authStore.signOut();
+                router.push('/login');
+            } catch (error) {
+                console.error('Sign out error:', error);
+            }
+        };
+
+        return {
+            authStore,
+            progressStore,
+            showProgressDetails,
+            displayName,
+            provider,
+            progressText,
+            handleSignOut
+        };
     }
 };
 </script>

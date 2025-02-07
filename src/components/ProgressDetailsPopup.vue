@@ -1,5 +1,5 @@
 <template>
-    <div v-if="show" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+    <div v-if="show" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
         <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
             <div class="mt-3">
                 <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">Your Progress</h3>
@@ -199,5 +199,10 @@ export default {
 <style scoped>
 .bg-opacity-50 {
     backdrop-filter: blur(4px);
+}
+
+/* Add these styles to ensure popup is above other content */
+.fixed {
+    isolation: isolate;
 }
 </style>
