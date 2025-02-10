@@ -28,7 +28,8 @@
                             </div>
                             <div class="mt-2 text-xs text-yellow-700 dark:text-yellow-300">
                                 <router-link to="/login"
-                                    class="underline hover:text-yellow-900 dark:hover:text-yellow-100">
+                                    class="underline hover:text-yellow-900 dark:hover:text-yellow-100"
+                                    @click="$emit('close')">
                                     Sign in
                                 </router-link>
                                 to save your progress permanently
