@@ -99,7 +99,7 @@
                         <!-- Close Button -->
                         <div class="mt-4">
                             <button @click="handleClose"
-                                class="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
+                                class="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
                                 Close
                             </button>
                         </div>
@@ -205,8 +205,21 @@ export default {
             missedItems.value = [];
 
             try {
-                // Get the user's progress for this quiz using the quiz ID from quizSets
-                const progressRef = doc(db, 'userProgress', `${auth.currentUser.uid}_${quizSet.id}`);
+                // Get the quiz ID based on the quiz set name
+                let quizId;
+                switch (quizSet.setName.toLowerCase()) {
+                    case 'expert': quizId = 1; break;
+                    case 'general': quizId = 2; break;
+                    case 'kinder-first': quizId = 3; break;
+                    case 'admin': quizId = 4; break;
+                    case 'why care?': quizId = 5; break;
+                    default:
+                        console.log('Unknown quiz set:', quizSet.setName);
+                        return;
+                }
+
+                // Get the user's progress for this quiz
+                const progressRef = doc(db, 'userProgress', `${auth.currentUser.uid}_${quizId}`);
                 const progressDoc = await getDoc(progressRef);
 
                 console.log('Progress doc:', progressDoc.data());
