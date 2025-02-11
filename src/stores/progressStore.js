@@ -20,7 +20,9 @@ export const useProgressStore = defineStore('progress', {
         lastUpdated: null,
         isLoading: false,
         error: null,
-        initialized: false
+        initialized: false,
+        saveTimeout: null,
+        currentQuizId: null  // Add this to track current quiz
     }),
 
     getters: {
@@ -140,22 +142,17 @@ export const useProgressStore = defineStore('progress', {
 
             try {
                 console.log('Marking quiz complete:', quizId);
+                this.currentQuizId = quizId;  // Set the current quiz ID
 
-                // Add to completed quizzes if not already included
                 if (!this.completedQuizzes.includes(quizId)) {
                     this.completedQuizzes.push(quizId);
                     console.log('Updated completedQuizzes:', this.completedQuizzes);
                 }
 
-                // Update progress in Firestore
-                const progressRef = doc(db, 'userProgress', auth.currentUser.uid);
-                await setDoc(progressRef, {
+                await this.saveQuizProgress(quizId, {
                     completedQuizzes: this.completedQuizzes,
-                    correctQuizItems: this.correctQuizItems,
-                    lastUpdated: serverTimestamp()
-                }, { merge: true });
-
-                console.log('Progress saved to Firestore');
+                    correctQuizItems: this.correctQuizItems
+                });
 
             } catch (error) {
                 console.error('Error marking quiz complete:', error);
@@ -163,28 +160,69 @@ export const useProgressStore = defineStore('progress', {
             }
         },
 
-        async markQuizItemCorrect(questionId) {
+        async markQuizItemCorrect(quizId, questionId) {
             if (!auth.currentUser) return;
 
             try {
+                this.currentQuizId = quizId;
+
                 if (!this.correctQuizItems.includes(questionId)) {
                     this.correctQuizItems.push(questionId);
                     console.log('Added correct quiz item:', questionId);
                 }
 
-                // Update progress in Firestore
-                const progressRef = doc(db, 'userProgress', auth.currentUser.uid);
-                await setDoc(progressRef, {
-                    completedQuizzes: this.completedQuizzes,
-                    correctQuizItems: this.correctQuizItems,
-                    lastUpdated: serverTimestamp()
-                }, { merge: true });
+                // Only send defined values
+                const progressData = {
+                    correctQuizItems: this.correctQuizItems
+                };
+                if (this.completedQuizzes.length > 0) {
+                    progressData.completedQuizzes = this.completedQuizzes;
+                }
 
-                console.log('Quiz item progress saved');
+                await this.saveQuizProgress(quizId, progressData);
 
             } catch (error) {
                 console.error('Error marking quiz item correct:', error);
                 throw error;
+            }
+        },
+
+        async saveQuizProgress(quizId, progress) {
+            if (!auth.currentUser) {
+                console.log('No user found, progress will not be saved');
+                return;
+            }
+
+            try {
+                // Clean the progress object to remove any undefined values
+                const cleanProgress = Object.entries(progress).reduce((acc, [key, value]) => {
+                    if (value !== undefined) {
+                        acc[key] = value;
+                    }
+                    return acc;
+                }, {});
+
+                // Create the base document data
+                const docData = {
+                    userId: auth.currentUser.uid,
+                    quizId,
+                    isAnonymous: auth.currentUser.isAnonymous,
+                    lastUpdated: serverTimestamp()
+                };
+
+                // Merge the cleaned progress data
+                const progressRef = doc(db, 'userProgress', `${auth.currentUser.uid}_${quizId}`);
+                await setDoc(progressRef, {
+                    ...docData,
+                    ...cleanProgress
+                }, { merge: true });
+
+                console.log('Progress saved:', progressRef.id);
+            } catch (error) {
+                console.error('Error saving progress:', error);
+                if (!auth.currentUser.isAnonymous) {
+                    throw error;
+                }
             }
         },
 
@@ -205,7 +243,7 @@ export const useProgressStore = defineStore('progress', {
                 });
 
                 // Save to Firestore
-                const progressRef = doc(db, 'userProgress', auth.currentUser.uid);
+                const progressRef = doc(db, 'userProgress', `${auth.currentUser.uid}_${quizId}`);
                 await setDoc(progressRef, {
                     completedQuizzes: this.completedQuizzes,
                     correctQuizItems: this.correctQuizItems,
@@ -219,29 +257,27 @@ export const useProgressStore = defineStore('progress', {
             }
         },
 
-        async saveQuizProgress(quizId, progress) {
-            if (!auth.currentUser) {
-                console.log('No user found, progress will not be saved');
-                return;
-            }
+        async saveProgressToFirestore() {
+            if (!auth.currentUser || !this.currentQuizId) return;
 
             try {
-                const progressRef = doc(db, 'userProgress', `${auth.currentUser.uid}_${quizId}`);
+                const progressRef = doc(db, 'userProgress', `${auth.currentUser.uid}_${this.currentQuizId}`);
                 await setDoc(progressRef, {
-                    userId: auth.currentUser.uid,
-                    quizId,
-                    isAnonymous: auth.currentUser.isAnonymous,
-                    ...progress,
+                    completedQuizzes: this.completedQuizzes,
+                    correctQuizItems: this.correctQuizItems,
                     lastUpdated: serverTimestamp()
                 }, { merge: true });
 
-                console.log('Progress saved:', progressRef.id);
+                console.log('Progress saved to Firestore');
             } catch (error) {
                 console.error('Error saving progress:', error);
-                if (!auth.currentUser.isAnonymous) {
-                    throw error;
-                }
+                throw error;
             }
+        },
+
+        // Add this method to set the current quiz
+        setCurrentQuiz(quizId) {
+            this.currentQuizId = quizId;
         }
     }
 }); 

@@ -179,13 +179,19 @@ export default {
             return new Date(progressStore.lastUpdated).toLocaleString();
         });
 
+        const quizScore = computed(() => {
+            const score = progressStore.getQuizScore(currentQuizId.value);
+            return `${score.score}/${score.total} questions`;
+        });
+
         return {
             authStore,
             progressStore,
             selectedQuizSet,
             missedItems,
             showMissedItems,
-            lastUpdatedText
+            lastUpdatedText,
+            quizScore
         };
     },
     computed: {
