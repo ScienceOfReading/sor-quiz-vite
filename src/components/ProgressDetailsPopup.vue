@@ -99,7 +99,7 @@
 
                         <!-- Close Button -->
                         <div class="mt-4">
-                            <button @click="$emit('close')"
+                            <button @click="handleClose"
                                 class="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
                                 Close
                             </button>
@@ -149,7 +149,7 @@ export default {
     components: {
         AsyncProgress
     },
-    setup(props) {
+    setup(props, { emit }) {
         const authStore = useAuthStore();
         const progressStore = useProgressStore();
         const selectedQuizSet = ref(null);
@@ -229,6 +229,10 @@ export default {
             return `${score.score}/${score.total} questions`;
         });
 
+        const handleClose = () => {
+            emit('close');
+        };
+
         return {
             authStore,
             progressStore,
@@ -236,7 +240,8 @@ export default {
             missedItems,
             showMissedItems,
             lastUpdatedText,
-            quizScore
+            quizScore,
+            handleClose
         };
     },
     computed: {
