@@ -37,13 +37,13 @@
 
                         <!-- Overall Stats -->
                         <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
                                 <div class="text-2xl font-bold text-gray-900 dark:text-white">
                                     {{ progressStore.quizCompletionCount }}/{{ progressStore.totalQuizzes }}
                                 </div>
                                 <div class="text-sm text-gray-600 dark:text-gray-300">Quizzes Completed</div>
                             </div>
-                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
                                 <div class="text-2xl font-bold text-gray-900 dark:text-white">
                                     {{ progressStore.correctItemsCount }}/{{ progressStore.totalQuizItems }}
                                 </div>
@@ -65,10 +65,17 @@
                                         <span class="text-sm font-medium text-gray-900 dark:text-white">
                                             {{ getProgress(quizSet).correct }}/{{ getProgress(quizSet).total }}
                                         </span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 text-gray-500" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
+                                        <!-- Toggle between info and close icons -->
+                                        <svg v-if="selectedQuizSet !== index" xmlns="http://www.w3.org/2000/svg"
+                                            class="h-4 text-gray-500" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 text-gray-500"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 15l7-7 7 7" />
                                         </svg>
                                     </div>
                                 </div>
