@@ -2,7 +2,6 @@
     <div v-if="show" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
         <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
             <div class="mt-3">
-                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">Your Progress</h3>
                 <div class="mt-2">
                     <!-- Loading State -->
                     <div v-if="!progressStore.initialized" class="text-center py-4">
@@ -100,7 +99,7 @@
                         <!-- Close Button -->
                         <div class="mt-4">
                             <button @click="handleClose"
-                                class="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
+                                class="bg-gray-500 text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
                                 Close
                             </button>
                         </div>
