@@ -228,7 +228,18 @@ export default {
     computed: {
         publishedQuizSets() {
             return quizSets.filter(set => !set.inProgress);
+        },
+        totalQuizSets() {
+            return this.publishedQuizSets.length;
         }
+    },
+    data() {
+        return {
+            completedCount: 0
+        }
+    },
+    async created() {
+        this.completedCount = await this.getTotalCompletedQuizzes();
     },
     methods: {
         async getQuizSetProgress(quizSet) {
@@ -293,6 +304,44 @@ export default {
                     total: quizSet.items.length,
                     percentage: 0
                 };
+            }
+        },
+        async getTotalCompletedQuizzes() {
+            if (!auth.currentUser) return 0;
+
+            try {
+                // Get the user's overall progress document
+                const progressRef = doc(db, 'userProgress', `${auth.currentUser.uid}_overall`);
+                const progressDoc = await getDoc(progressRef);
+
+                console.log('Overall progress data:', progressDoc.data());
+
+                if (progressDoc.exists()) {
+                    const data = progressDoc.data();
+                    // Get the completed quizzes array
+                    const completedQuizzes = data.completedQuizzes || [];
+                    console.log('Completed quizzes:', completedQuizzes);
+                    return completedQuizzes.length;
+                }
+
+                // If no progress document exists yet
+                console.log('No overall progress document found');
+                return 0;
+            } catch (error) {
+                console.error('Error checking completed quizzes:', error);
+                return 0;
+            }
+        },
+        getQuizId(setName) {
+            switch (setName.toLowerCase()) {
+                case 'expert': return 1;
+                case 'general': return 2;
+                case 'kinder-first': return 3;
+                case 'admin': return 4;
+                case 'why care?': return 5;
+                default:
+                    console.log('Unknown quiz set:', setName);
+                    return null;
             }
         }
     }
