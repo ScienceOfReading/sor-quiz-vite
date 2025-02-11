@@ -86,7 +86,7 @@
 <script>
 import { useAuthStore } from '../stores/authStore';
 import { useProgressStore } from '../stores/progressStore';
-import { onMounted, computed, ref } from 'vue';
+import { onMounted, computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import ProgressDetailsPopup from './ProgressDetailsPopup.vue';
 
@@ -106,10 +106,15 @@ export default {
             console.log('Auth user:', authStore.user);
             console.log('Progress store state:', progressStore);
 
-            // Initialize and fetch progress for all users
             if (!progressStore.initialized) {
                 await progressStore.initialize();
             }
+            await progressStore.fetchProgress();
+        });
+
+        // Watch for changes in progress
+        watch(() => progressStore.lastUpdated, async () => {
+            console.log('Progress updated, fetching latest data');
             await progressStore.fetchProgress();
         });
 
