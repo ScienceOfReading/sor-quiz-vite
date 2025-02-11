@@ -5,7 +5,7 @@
                 <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">Your Progress</h3>
                 <div class="mt-2">
                     <!-- Loading State -->
-                    <div v-if="!progressStore.initialized || progressStore.isLoading" class="text-center py-4">
+                    <div v-if="!progressStore.initialized" class="text-center py-4">
                         <div
                             class="animate-spin h-6 w-6 border-2 border-gray-500 border-t-transparent rounded-full mx-auto mb-2">
                         </div>
@@ -114,7 +114,7 @@
 <script>
 import { useProgressStore } from '../stores/progressStore';
 import { quizSets } from '../data/quizSets';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { db, auth } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { useAuthStore } from '../stores/authStore';
@@ -149,11 +149,25 @@ export default {
     components: {
         AsyncProgress
     },
-    setup() {
+    setup(props) {
         const authStore = useAuthStore();
         const progressStore = useProgressStore();
         const selectedQuizSet = ref(null);
         const missedItems = ref([]);
+
+        // Watch for show prop changes to refresh data
+        watch(() => props.show, async (newVal) => {
+            if (newVal) {
+                console.log('Popup shown, fetching latest progress');
+                await progressStore.fetchProgress();
+            }
+        });
+
+        // Watch for progress updates
+        watch(() => progressStore.lastUpdated, async () => {
+            console.log('Progress updated, fetching latest data');
+            await progressStore.fetchProgress();
+        });
 
         const showMissedItems = async (quizSet, index) => {
             console.log('Showing missed items for quiz:', {
