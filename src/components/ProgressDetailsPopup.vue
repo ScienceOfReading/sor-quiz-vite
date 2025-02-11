@@ -80,10 +80,10 @@
 
                                 <!-- Missed Items Section -->
                                 <div v-if="selectedQuizSet === index"
-                                    class="mt-2 text-sm text-gray-600 dark:text-gray-300">
-                                    <div class="font-medium mb-1">Missed Items:</div>
-                                    <ul class="list-disc pl-4">
-                                        <li v-for="item in missedItems" :key="item.id">
+                                    class="mt-2 text-sm text-gray-600 dark:text-gray-300 text-left">
+                                    <div class="font-medium mb-1 pl-2">Questions Missed:</div>
+                                    <ul class="list-disc pl-6 ml-2">
+                                        <li v-for="item in missedItems" :key="item.id" class="pl-1">
                                             {{ item.title || 'Untitled Question' }}
                                         </li>
                                     </ul>
