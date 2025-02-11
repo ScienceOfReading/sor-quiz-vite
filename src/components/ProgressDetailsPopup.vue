@@ -64,7 +64,7 @@
                                     </span>
                                     <div class="flex items-center gap-2">
                                         <span class="text-sm font-medium text-gray-900 dark:text-white">
-                                            <AsyncProgress :quiz-set="quizSet" />
+                                            {{ getProgress(quizSet).correct }}/{{ getProgress(quizSet).total }}
                                         </span>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 text-gray-500" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-600">
                                     <div class="bg-blue-600 h-1.5 rounded-full"
-                                        :style="{ width: `${getQuizSetProgress(quizSet).percentage}%` }">
+                                        :style="{ width: `${getProgress(quizSet).percentage}%` }">
                                     </div>
                                 </div>
 
@@ -119,55 +119,73 @@ import { db, auth } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { useAuthStore } from '../stores/authStore';
 
-// Add this component to handle async progress display
-const AsyncProgress = {
-    props: ['quizSet'],
-    data() {
-        return {
-            progress: null
-        };
-    },
-    async created() {
-        console.log('AsyncProgress created for quiz set:', this.quizSet);
-        this.progress = await this.$parent.getQuizSetProgress(this.quizSet);
-        console.log('Progress loaded:', this.progress);
-    },
-    template: `
-        <span v-if="progress">
-            {{ progress.correct }}/{{ progress.total }}
-        </span>
-        <span v-else>Loading...</span>
-    `
-};
-
 export default {
     name: 'ProgressDetailsPopup',
     props: {
         show: Boolean
     },
     emits: ['close'],
-    components: {
-        AsyncProgress
-    },
     setup(props, { emit }) {
         const authStore = useAuthStore();
         const progressStore = useProgressStore();
         const selectedQuizSet = ref(null);
         const missedItems = ref([]);
+        const quizSetProgress = ref(new Map());
 
-        // Watch for show prop changes to refresh data
+        // Single watcher for show prop
         watch(() => props.show, async (newVal) => {
             if (newVal) {
-                console.log('Popup shown, fetching latest progress');
-                await progressStore.fetchProgress();
+                console.log('Popup shown, fetching progress');
+                // Pre-fetch all quiz set progress at once
+                for (const set of quizSets.filter(s => !s.inProgress)) {
+                    try {
+                        let quizId;
+                        switch (set.setName.toLowerCase()) {
+                            case 'expert': quizId = 1; break;
+                            case 'general': quizId = 2; break;
+                            case 'kinder-first': quizId = 3; break;
+                            case 'admin': quizId = 4; break;
+                            case 'why care?': quizId = 5; break;
+                            default: continue;
+                        }
+
+                        const progressRef = doc(db, 'userProgress', `${auth.currentUser.uid}_${quizId}`);
+                        const progressDoc = await getDoc(progressRef);
+
+                        if (progressDoc.exists()) {
+                            const data = progressDoc.data();
+                            const correctAnswers = data.totalCorrect || 0;
+                            const totalQuestions = set.items.length;
+                            const percentage = totalQuestions > 0
+                                ? (correctAnswers / totalQuestions) * 100
+                                : 0;
+
+                            quizSetProgress.value.set(set.setName, {
+                                correct: correctAnswers,
+                                total: totalQuestions,
+                                percentage: Math.round(percentage)
+                            });
+                        } else {
+                            quizSetProgress.value.set(set.setName, {
+                                correct: 0,
+                                total: set.items.length,
+                                percentage: 0
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error fetching progress for quiz:', set.setName, error);
+                    }
+                }
             }
         });
 
-        // Watch for progress updates
-        watch(() => progressStore.lastUpdated, async () => {
-            console.log('Progress updated, fetching latest data');
-            await progressStore.fetchProgress();
-        });
+        const getProgress = (quizSet) => {
+            return quizSetProgress.value.get(quizSet.setName) || {
+                correct: 0,
+                total: quizSet.items.length,
+                percentage: 0
+            };
+        };
 
         const showMissedItems = async (quizSet, index) => {
             console.log('Showing missed items for quiz:', {
@@ -238,6 +256,7 @@ export default {
             progressStore,
             selectedQuizSet,
             missedItems,
+            getProgress,
             showMissedItems,
             lastUpdatedText,
             quizScore,
@@ -261,70 +280,6 @@ export default {
         this.completedCount = await this.getTotalCompletedQuizzes();
     },
     methods: {
-        async getQuizSetProgress(quizSet) {
-            if (!auth.currentUser) {
-                console.log('No authenticated user');
-                return null;
-            }
-
-            try {
-                // Get the quiz ID based on the quiz set name
-                let quizId;
-                switch (quizSet.setName.toLowerCase()) {
-                    case 'expert': quizId = 1; break;
-                    case 'general': quizId = 2; break;
-                    case 'kinder-first': quizId = 3; break;
-                    case 'admin': quizId = 4; break;
-                    case 'why care?': quizId = 5; break;
-                    default:
-                        console.log('Unknown quiz set:', quizSet.setName);
-                        return null;
-                }
-
-                console.log('Fetching progress for quiz set:', quizSet.setName, 'with ID:', quizId);
-                const progressRef = doc(db, 'userProgress', `${auth.currentUser.uid}_${quizId}`);
-                const progressDoc = await getDoc(progressRef);
-
-                console.log('Progress doc data:', progressDoc.data());
-
-                if (progressDoc.exists()) {
-                    const data = progressDoc.data();
-                    // Get the total correct answers for this quiz
-                    const correctAnswers = data.totalCorrect || 0;
-                    const totalQuestions = quizSet.items.length;
-                    const percentage = totalQuestions > 0
-                        ? (correctAnswers / totalQuestions) * 100
-                        : 0;
-
-                    console.log('Quiz progress calculated:', {
-                        correct: correctAnswers,
-                        total: totalQuestions,
-                        percentage,
-                        quizSet: quizSet.setName
-                    });
-
-                    return {
-                        correct: correctAnswers,
-                        total: totalQuestions,
-                        percentage: Math.round(percentage)
-                    };
-                }
-
-                console.log('No progress document found for quiz:', quizId);
-                return {
-                    correct: 0,
-                    total: quizSet.items.length,
-                    percentage: 0
-                };
-            } catch (error) {
-                console.error('Error getting quiz set progress:', error);
-                return {
-                    correct: 0,
-                    total: quizSet.items.length,
-                    percentage: 0
-                };
-            }
-        },
         async getTotalCompletedQuizzes() {
             if (!auth.currentUser) return 0;
 

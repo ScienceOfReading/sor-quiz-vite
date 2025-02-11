@@ -103,20 +103,16 @@ export default {
 
         onMounted(async () => {
             console.log('UserStatus mounted');
-            console.log('Auth user:', authStore.user);
-            console.log('Progress store state:', progressStore);
-
             if (!progressStore.initialized) {
                 await progressStore.initialize();
+                await progressStore.fetchProgress();
             }
-            await progressStore.fetchProgress();
         });
 
-        // Watch for changes in progress
-        watch(() => progressStore.lastUpdated, async () => {
-            console.log('Progress updated, fetching latest data');
-            await progressStore.fetchProgress();
-        });
+        // Watch for changes in progress, but don't re-fetch if already initialized
+        watch(() => progressStore.lastUpdated, () => {
+            console.log('Progress updated in store');
+        }, { deep: true });
 
         const displayName = computed(() => {
             if (authStore.user.isAnonymous) return 'Anonymous User';
