@@ -64,7 +64,8 @@
                                     </span>
                                     <div class="flex items-center gap-2">
                                         <span class="text-sm font-medium text-gray-900 dark:text-white">
-                                            {{ getQuizSetProgress(quizSet).correct }}/{{ quizSet.items.length }}</span>
+                                            <AsyncProgress :quiz-set="quizSet" />
+                                        </span>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 text-gray-500" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -118,12 +119,36 @@ import { db, auth } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { useAuthStore } from '../stores/authStore';
 
+// Add this component to handle async progress display
+const AsyncProgress = {
+    props: ['quizSet'],
+    data() {
+        return {
+            progress: null
+        };
+    },
+    async created() {
+        console.log('AsyncProgress created for quiz set:', this.quizSet);
+        this.progress = await this.$parent.getQuizSetProgress(this.quizSet);
+        console.log('Progress loaded:', this.progress);
+    },
+    template: `
+        <span v-if="progress">
+            {{ progress.correct }}/{{ progress.total }}
+        </span>
+        <span v-else>Loading...</span>
+    `
+};
+
 export default {
     name: 'ProgressDetailsPopup',
     props: {
         show: Boolean
     },
     emits: ['close'],
+    components: {
+        AsyncProgress
+    },
     setup() {
         const authStore = useAuthStore();
         const progressStore = useProgressStore();
@@ -157,17 +182,23 @@ export default {
 
                 if (progressDoc.exists()) {
                     const data = progressDoc.data();
+
+                    // Update to handle both userAnswers and incorrectQuestions
                     if (data.userAnswers) {
-                        // Filter for incorrect answers and get their titles
                         missedItems.value = data.userAnswers
                             .filter(answer => !answer.correct)
                             .map(answer => ({
                                 id: answer.questionId,
                                 title: answer.questionTitle || 'Untitled Question'
                             }));
-
-                        console.log('Found missed items:', missedItems.value);
+                    } else if (data.incorrectQuestions) {
+                        missedItems.value = data.incorrectQuestions.map(q => ({
+                            id: q.id,
+                            title: q.title || 'Untitled Question'
+                        }));
                     }
+
+                    console.log('Found missed items:', missedItems.value);
                 }
             } catch (error) {
                 console.error('Error fetching missed items:', error);
@@ -200,29 +231,69 @@ export default {
         }
     },
     methods: {
-        getQuizSetProgress(quizSet) {
-            const correctAnswers = quizSet.items.filter(itemId =>
-                this.progressStore.correctQuizItems.includes(itemId)
-            ).length;
+        async getQuizSetProgress(quizSet) {
+            if (!auth.currentUser) {
+                console.log('No authenticated user');
+                return null;
+            }
 
-            const totalQuestions = quizSet.items.length;
-            const percentage = totalQuestions > 0
-                ? (correctAnswers / totalQuestions) * 100
-                : 0;
+            try {
+                // Get the quiz ID based on the quiz set name
+                let quizId;
+                switch (quizSet.setName.toLowerCase()) {
+                    case 'expert': quizId = 1; break;
+                    case 'general': quizId = 2; break;
+                    case 'kinder-first': quizId = 3; break;
+                    case 'admin': quizId = 4; break;
+                    case 'why care?': quizId = 5; break;
+                    default:
+                        console.log('Unknown quiz set:', quizSet.setName);
+                        return null;
+                }
 
-            console.log('Quiz set progress:', {
-                setName: quizSet.setName,
-                items: quizSet.items,
-                correctItems: this.progressStore.correctQuizItems,
-                correctCount: correctAnswers,
-                total: totalQuestions
-            });
+                console.log('Fetching progress for quiz set:', quizSet.setName, 'with ID:', quizId);
+                const progressRef = doc(db, 'userProgress', `${auth.currentUser.uid}_${quizId}`);
+                const progressDoc = await getDoc(progressRef);
 
-            return {
-                correct: correctAnswers,
-                total: totalQuestions,
-                percentage: Math.round(percentage)
-            };
+                console.log('Progress doc data:', progressDoc.data());
+
+                if (progressDoc.exists()) {
+                    const data = progressDoc.data();
+                    // Get the total correct answers for this quiz
+                    const correctAnswers = data.totalCorrect || 0;
+                    const totalQuestions = quizSet.items.length;
+                    const percentage = totalQuestions > 0
+                        ? (correctAnswers / totalQuestions) * 100
+                        : 0;
+
+                    console.log('Quiz progress calculated:', {
+                        correct: correctAnswers,
+                        total: totalQuestions,
+                        percentage,
+                        quizSet: quizSet.setName
+                    });
+
+                    return {
+                        correct: correctAnswers,
+                        total: totalQuestions,
+                        percentage: Math.round(percentage)
+                    };
+                }
+
+                console.log('No progress document found for quiz:', quizId);
+                return {
+                    correct: 0,
+                    total: quizSet.items.length,
+                    percentage: 0
+                };
+            } catch (error) {
+                console.error('Error getting quiz set progress:', error);
+                return {
+                    correct: 0,
+                    total: quizSet.items.length,
+                    percentage: 0
+                };
+            }
         }
     }
 };

@@ -110,6 +110,9 @@
     <a href="https://www.flaticon.com/free-icons/collaboration" title="collaboration icons"
       class="text-gray-500">Collaboration icons created by small.smiles - Flaticon</a>
   </div>
+
+  <!-- Add the progress popup component -->
+  <ProgressDetailsPopup ref="progressPopup" />
 </template>
 <script>
 import QuizItem from './QuizItem.vue';
@@ -118,12 +121,14 @@ import { quizSets } from '../data/quizSets.js'
 import { quizStore } from '../stores/quizStore'; // Import the store
 import { ref, onMounted, watch } from 'vue'
 import { useProgressStore } from '../stores/progressStore';
+import ProgressDetailsPopup from './ProgressDetailsPopup.vue';
 
 export default {
   name: 'Quiz',
   emits: ['change-view'],
   components: {
-    QuizItem
+    QuizItem,
+    ProgressDetailsPopup
   },
   props: {
     selectedQuiz: {
@@ -138,14 +143,23 @@ export default {
   setup(props) {
     const store = quizStore();
     const progressStore = useProgressStore();
+    const progressPopup = ref(null);
 
     onMounted(() => {
       store.setCurrentQuiz(props.selectedQuiz);
     });
 
+    // Add method to show progress
+    const showProgress = () => {
+      console.log('Showing progress popup for quiz:', props.selectedQuiz);
+      progressPopup.value?.togglePopup(props.selectedQuiz);
+    };
+
     return {
       store,
-      progressStore
+      progressStore,
+      progressPopup,
+      showProgress
     }
   },
   data() {
@@ -418,8 +432,12 @@ export default {
       // Check if answer is correct
       const isCorrect = option === this.currentQuizItem.correctAnswer;
       if (isCorrect) {
-        // Mark the item as correct in progress store
-        await this.progressStore.markQuizItemCorrect(this.currentQuizItem.id);
+        // Pass both quizId and questionId
+        await this.progressStore.markQuizItemCorrect(
+          this.selectedQuiz,
+          this.currentQuizItem.id,
+          isCorrect
+        );
       }
 
       // Update store immediately when answer is selected
@@ -510,6 +528,9 @@ export default {
           }
         });
 
+        // Show the progress popup
+        this.showProgress();
+
       } catch (error) {
         console.error('Error in quizDone:', error);
       }
@@ -535,6 +556,10 @@ export default {
       console.log("Emitting change-view event");
       this.$emit('change-view', { showQuizzes: true }); // Emit an event with the new state
       console.log("Event emitted");
+    },
+    showProgress() {
+      console.log('Showing progress popup for quiz:', this.selectedQuiz);
+      this.progressPopup.value?.togglePopup(this.selectedQuiz);
     }
   },
   created() {
