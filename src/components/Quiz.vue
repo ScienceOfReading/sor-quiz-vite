@@ -117,7 +117,6 @@ import { quizEntries } from '../data/quiz-items.js'
 import { quizSets } from '../data/quizSets.js'
 import { quizStore } from '../stores/quizStore'; // Import the store
 import { ref, onMounted, watch } from 'vue'
-import { saveUserProgress } from '../firebase';
 import { useProgressStore } from '../stores/progressStore';
 
 export default {
@@ -305,7 +304,7 @@ export default {
         );
 
         // Save progress
-        await saveUserProgress(this.selectedQuiz, {
+        await this.progressStore.saveQuizProgress(this.selectedQuiz, {
           lastQuestionAnswered: this.itemNum,
           userAnswers: this.store.userAnswers,
           incorrectQuestions: this.store.incorrectQuestions,
@@ -383,7 +382,7 @@ export default {
           questionData.quizEntry
         );
 
-        await saveUserProgress(this.selectedQuiz, {
+        await this.progressStore.saveQuizProgress(this.selectedQuiz, {
           lastQuestionAnswered: this.itemNum,
           userAnswers: this.store.userAnswers,
           incorrectQuestions: this.store.incorrectQuestions,
@@ -523,7 +522,7 @@ export default {
       if (this.userFeedback.trim()) {
         try {
           console.log("Attempting to save feedback");
-          await saveUserProgress(this.selectedQuiz, {
+          await this.progressStore.saveQuizProgress(this.selectedQuiz, {
             feedback: this.userFeedback,
             timestamp: new Date()
           });

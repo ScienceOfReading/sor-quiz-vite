@@ -207,8 +207,8 @@ export const quizStore = defineStore('quiz', {
                 console.log('Quiz attempt recorded:', quizAttemptRef.id);
 
                 // Save final progress using the original system
-                const { saveUserProgress } = await import('../firebase');
-                await saveUserProgress(this.currentQuizId, {
+                const progressStore = useProgressStore();
+                await progressStore.saveQuizProgress(this.currentQuizId, {
                     complete: true,
                     userAnswers: this.userAnswers,
                     totalCorrect: validatedScore,

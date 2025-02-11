@@ -186,6 +186,62 @@ export const useProgressStore = defineStore('progress', {
                 console.error('Error marking quiz item correct:', error);
                 throw error;
             }
+        },
+
+        async saveQuizAttemptProgress(quizId, userAnswers) {
+            if (!auth.currentUser) return;
+
+            try {
+                // Update completed quizzes
+                if (!this.completedQuizzes.includes(quizId)) {
+                    this.completedQuizzes.push(quizId);
+                }
+
+                // Update correct items from user answers
+                userAnswers.forEach(answer => {
+                    if (answer.correct && answer.questionId && !this.correctQuizItems.includes(answer.questionId)) {
+                        this.correctQuizItems.push(answer.questionId);
+                    }
+                });
+
+                // Save to Firestore
+                const progressRef = doc(db, 'userProgress', auth.currentUser.uid);
+                await setDoc(progressRef, {
+                    completedQuizzes: this.completedQuizzes,
+                    correctQuizItems: this.correctQuizItems,
+                    lastUpdated: serverTimestamp()
+                }, { merge: true });
+
+                console.log('Quiz attempt progress saved');
+            } catch (error) {
+                console.error('Error saving quiz attempt progress:', error);
+                throw error;
+            }
+        },
+
+        async saveQuizProgress(quizId, progress) {
+            if (!auth.currentUser) {
+                console.log('No user found, progress will not be saved');
+                return;
+            }
+
+            try {
+                const progressRef = doc(db, 'userProgress', `${auth.currentUser.uid}_${quizId}`);
+                await setDoc(progressRef, {
+                    userId: auth.currentUser.uid,
+                    quizId,
+                    isAnonymous: auth.currentUser.isAnonymous,
+                    ...progress,
+                    lastUpdated: serverTimestamp()
+                }, { merge: true });
+
+                console.log('Progress saved:', progressRef.id);
+            } catch (error) {
+                console.error('Error saving progress:', error);
+                if (!auth.currentUser.isAnonymous) {
+                    throw error;
+                }
+            }
         }
     }
 }); 
