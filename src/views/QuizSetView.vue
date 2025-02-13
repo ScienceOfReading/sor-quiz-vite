@@ -54,6 +54,16 @@
                             </span>
                         </div>
 
+                        <!-- Quiz Items List -->
+                        <div class="mt-3 space-y-1">
+                            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Quiz Items:</h4>
+                            <ul class="text-sm text-gray-600 dark:text-gray-400 list-disc list-inside">
+                                <li v-for="itemId in quizSet.items" :key="itemId" class="truncate">
+                                    {{ getQuizItemTitle(itemId) || 'Untitled Question' }}
+                                </li>
+                            </ul>
+                        </div>
+
                         <!-- Additional Resources -->
                         <div v-if="quizSet.podcastEpisodes || quizSet.resource"
                             class="text-sm text-gray-600 dark:text-gray-300">
@@ -95,6 +105,7 @@
 <script setup>
 import { ref } from 'vue';
 import { quizSets } from '../data/quizSets';
+import { quizEntries } from '../data/quiz-items';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -102,6 +113,12 @@ const currentTab = ref('current');
 
 // Filter out quiz sets that are in progress
 const publishedQuizSets = quizSets.filter(set => !set.inProgress);
+
+// Function to get quiz item title by ID
+const getQuizItemTitle = (id) => {
+    const quizItem = quizEntries.find(item => item.id === id);
+    return quizItem?.title || `Question ${id}`;
+};
 
 // Function to start a quiz
 const startQuiz = (quizSet) => {
