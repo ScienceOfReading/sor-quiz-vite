@@ -56,9 +56,9 @@
 
                         <!-- Quiz Items List -->
                         <div class="mt-3 space-y-1">
-                            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">Quiz Items:</h4>
-                            <ul class="text-sm text-gray-600 dark:text-gray-400 list-disc list-inside">
-                                <li v-for="itemId in quizSet.items" :key="itemId" class="truncate">
+                            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 text-left">Quiz Items:</h4>
+                            <ul class="text-sm text-gray-600 dark:text-gray-400 list-disc pl-5 text-left">
+                                <li v-for="itemId in quizSet.items" :key="itemId" class="truncate text-left">
                                     {{ getQuizItemTitle(itemId) || 'Untitled Question' }}
                                 </li>
                             </ul>
