@@ -56,10 +56,28 @@
 
                         <!-- Quiz Items List -->
                         <div class="mt-3 space-y-1">
-                            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 text-left">Quiz Items:</h4>
+                            <div class="flex justify-between items-center">
+                                <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 text-left">Quiz Items:
+                                </h4>
+                                <button @click="toggleQuestions(quizSet.setName)"
+                                    class="text-sm text-blue-500 hover:text-blue-600 flex items-center">
+                                    <span class="mr-1">{{ expandedSets.has(quizSet.setName) ? 'Hide' : 'Show' }}
+                                        Questions</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                        :class="{ 'transform rotate-180': expandedSets.has(quizSet.setName) }"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
                             <ul class="text-sm text-gray-600 dark:text-gray-400 list-disc pl-5 text-left">
-                                <li v-for="itemId in quizSet.items" :key="itemId" class="truncate text-left">
-                                    {{ getQuizItemTitle(itemId) || 'Untitled Question' }}
+                                <li v-for="itemId in quizSet.items" :key="itemId" class="mb-2">
+                                    <div class="truncate">{{ getQuizItemTitle(itemId) || 'Untitled Question' }}</div>
+                                    <div v-if="expandedSets.has(quizSet.setName)"
+                                        class="mt-1 pl-4 text-sm text-gray-500 dark:text-gray-400 italic">
+                                        {{ getQuizItemQuestion(itemId) }}
+                                    </div>
                                 </li>
                             </ul>
                         </div>
@@ -86,10 +104,17 @@
                         </div>
 
                         <!-- Start Quiz Button -->
-                        <button @click="startQuiz(quizSet)"
-                            class="mt-3 w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-200">
-                            Start Quiz
-                        </button>
+                        <div class="flex justify-end mt-4">
+                            <button @click="startQuiz(quizSet)"
+                                class="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200 flex items-center">
+                                <span>Start Quiz</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -110,6 +135,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const currentTab = ref('current');
+const expandedSets = ref(new Set());
 
 // Filter out quiz sets that are in progress
 const publishedQuizSets = quizSets.filter(set => !set.inProgress);
@@ -118,6 +144,23 @@ const publishedQuizSets = quizSets.filter(set => !set.inProgress);
 const getQuizItemTitle = (id) => {
     const quizItem = quizEntries.find(item => item.id === id);
     return quizItem?.title || `Question ${id}`;
+};
+
+// Function to get quiz item question by ID
+const getQuizItemQuestion = (id) => {
+    const quizItem = quizEntries.find(item => item.id === id);
+    return quizItem?.Question || 'No question available';
+};
+
+// Function to toggle questions visibility for a quiz set
+const toggleQuestions = (setName) => {
+    const newExpandedSets = new Set(expandedSets.value);
+    if (newExpandedSets.has(setName)) {
+        newExpandedSets.delete(setName);
+    } else {
+        newExpandedSets.add(setName);
+    }
+    expandedSets.value = newExpandedSets;
 };
 
 // Function to start a quiz
