@@ -1,6 +1,16 @@
 <template>
     <div class="p-4">
-        <h1 class="text-2xl mb-6">Quiz Set View</h1>
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl">Quiz Set View</h1>
+            <button @click="showCreateModal = true"
+                class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors duration-200 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Create New Quiz Set
+            </button>
+        </div>
 
         <!-- Tab Navigation -->
         <div class="border-b border-gray-200">
@@ -218,22 +228,144 @@
                 </div>
             </div>
         </div>
+
+        <!-- Create Quiz Set Modal -->
+        <div v-if="showCreateModal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Create New Quiz Set</h2>
+                    <button @click="showCreateModal = false" class="text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <form @submit.prevent="createQuizSet" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Quiz Set Name
+                        </label>
+                        <input v-model="newQuizSet.setName" type="text" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Mode
+                        </label>
+                        <select v-model="newQuizSet.basicMode"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <option :value="true">Basic</option>
+                            <option :value="false">Expert</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Status
+                        </label>
+                        <select v-model="newQuizSet.inProgress"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <option :value="false">Published</option>
+                            <option :value="true">In Progress</option>
+                        </select>
+                    </div>
+
+                    <div v-if="newQuizSet.inProgress">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            In Progress Text
+                        </label>
+                        <textarea v-model="newQuizSet.inProgressText" rows="2"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Explain why this quiz set is in progress..."></textarea>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button type="button" @click="showCreateModal = false"
+                            class="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200">
+                            Create Quiz Set
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { quizSets } from '../data/quizSets';
 import { quizEntries } from '../data/quiz-items';
 import { useRouter } from 'vue-router';
+import { db } from '../firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 const router = useRouter();
 const currentTab = ref('current');
 const expandedSets = ref(new Set());
+const showCreateModal = ref(false);
 
-// Filter out quiz sets that are in progress
+// New quiz set form data
+const newQuizSet = reactive({
+    setName: '',
+    basicMode: true,
+    inProgress: false,
+    inProgressText: '',
+    items: []
+});
+
+// Filter quiz sets based on inProgress flag
 const publishedQuizSets = quizSets.filter(set => !set.inProgress);
 const proposedQuizSets = quizSets.filter(set => set.inProgress);
+
+// Create new quiz set
+const createQuizSet = async () => {
+    try {
+        // Create a new quiz set document in Firestore
+        const quizSetRef = doc(db, 'quizSets', newQuizSet.setName.toLowerCase().replace(/\s+/g, '-'));
+        await setDoc(quizSetRef, {
+            setName: newQuizSet.setName,
+            basicMode: newQuizSet.basicMode,
+            inProgress: newQuizSet.inProgress,
+            inProgressText: newQuizSet.inProgressText,
+            items: [],
+            createdAt: new Date().toISOString()
+        });
+
+        // Add the new quiz set to the local array
+        quizSets.push({
+            setName: newQuizSet.setName,
+            basicMode: newQuizSet.basicMode,
+            inProgress: newQuizSet.inProgress,
+            inProgressText: newQuizSet.inProgressText,
+            items: []
+        });
+
+        // Reset form and close modal
+        Object.assign(newQuizSet, {
+            setName: '',
+            basicMode: true,
+            inProgress: false,
+            inProgressText: '',
+            items: []
+        });
+        showCreateModal.value = false;
+
+        // Switch to appropriate tab
+        currentTab.value = newQuizSet.inProgress ? 'proposed' : 'current';
+    } catch (error) {
+        console.error('Error creating quiz set:', error);
+        alert('Failed to create quiz set. Please try again.');
+    }
+};
 
 // Function to get quiz item title by ID
 const getQuizItemTitle = (id) => {
