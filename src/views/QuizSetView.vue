@@ -340,22 +340,11 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Status
-                        </label>
-                        <select v-model="newQuizSet.inProgress"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option :value="false">Published</option>
-                            <option :value="true">In Progress</option>
-                        </select>
-                    </div>
-
-                    <div v-if="newQuizSet.inProgress">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            In Progress Text
+                            Scope
                         </label>
                         <textarea v-model="newQuizSet.inProgressText" rows="2"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            placeholder="Explain why this quiz set is in progress..."></textarea>
+                            placeholder="Describe the scope of this quiz set..."></textarea>
                     </div>
 
                     <div class="flex justify-end space-x-3 mt-6">
@@ -392,7 +381,7 @@ const hoveredQuizId = ref(null);
 const newQuizSet = reactive({
     setName: '',
     basicMode: true,
-    inProgress: false,
+    inProgress: true,
     inProgressText: '',
     items: []
 });
@@ -428,7 +417,7 @@ const createQuizSet = async () => {
         Object.assign(newQuizSet, {
             setName: '',
             basicMode: true,
-            inProgress: false,
+            inProgress: true,
             inProgressText: '',
             items: []
         });
@@ -523,7 +512,7 @@ const isCorrectAnswer = (id, optionNumber) => {
     position: fixed !important;
 }
 
-.z-[9999] {
+[class*="z-9999"] {
     z-index: 9999 !important;
 }
 </style>
