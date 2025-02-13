@@ -83,7 +83,44 @@
                             </div>
                             <ul class="text-sm text-gray-600 dark:text-gray-400 list-disc pl-5 text-left">
                                 <li v-for="itemId in quizSet.items" :key="itemId" class="mb-2">
-                                    <div class="truncate">{{ getQuizItemTitle(itemId) || 'Untitled Question' }}</div>
+                                    <div class="truncate relative">
+                                        <span class="cursor-help hover:text-blue-500"
+                                            @mouseenter="showQuizDetails(itemId)" @mouseleave="hideQuizDetails">
+                                            {{ getQuizItemTitle(itemId) || 'Untitled Question' }}
+                                        </span>
+                                        <!-- Quiz Details Hover Modal -->
+                                        <div v-show="hoveredQuizId === itemId"
+                                            class="fixed z-[9999] ml-4 w-[600px] max-w-[90vw] bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-6"
+                                            style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                            <div class="space-y-4">
+                                                <h4
+                                                    class="font-medium text-gray-900 dark:text-white text-lg break-words">
+                                                    {{ getQuizItemTitle(itemId) }}
+                                                </h4>
+                                                <div class="text-gray-700 dark:text-gray-300">
+                                                    <p class="font-medium mb-2">Question:</p>
+                                                    <p class="mb-4 whitespace-normal break-words">{{
+                                                        getQuizItemQuestion(itemId) }}</p>
+                                                    <p class="font-medium mb-2">Options:</p>
+                                                    <ul class="space-y-2 ml-4">
+                                                        <li v-for="(option, index) in getQuizItemOptions(itemId)"
+                                                            :key="index"
+                                                            class="whitespace-normal break-words flex items-center gap-1"
+                                                            :class="{ 'text-green-600 dark:text-green-400 font-medium': isCorrectAnswer(itemId, index + 1) }">
+                                                            <svg v-if="isCorrectAnswer(itemId, index + 1)"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                class="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                                            </svg>
+                                                            {{ index + 1 }}. {{ option }}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div v-if="expandedSets.has(quizSet.setName)"
                                         class="mt-1 pl-4 text-sm text-gray-500 dark:text-gray-400 italic">
                                         {{ getQuizItemQuestion(itemId) }}
@@ -182,7 +219,44 @@
                             </div>
                             <ul class="text-sm text-gray-600 dark:text-gray-400 list-disc pl-5 text-left">
                                 <li v-for="itemId in quizSet.items" :key="itemId" class="mb-2">
-                                    <div class="truncate">{{ getQuizItemTitle(itemId) || 'Untitled Question' }}</div>
+                                    <div class="truncate relative">
+                                        <span class="cursor-help hover:text-blue-500"
+                                            @mouseenter="showQuizDetails(itemId)" @mouseleave="hideQuizDetails">
+                                            {{ getQuizItemTitle(itemId) || 'Untitled Question' }}
+                                        </span>
+                                        <!-- Quiz Details Hover Modal -->
+                                        <div v-show="hoveredQuizId === itemId"
+                                            class="fixed z-[9999] ml-4 w-[600px] max-w-[90vw] bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-6"
+                                            style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                            <div class="space-y-4">
+                                                <h4
+                                                    class="font-medium text-gray-900 dark:text-white text-lg break-words">
+                                                    {{ getQuizItemTitle(itemId) }}
+                                                </h4>
+                                                <div class="text-gray-700 dark:text-gray-300">
+                                                    <p class="font-medium mb-2">Question:</p>
+                                                    <p class="mb-4 whitespace-normal break-words">{{
+                                                        getQuizItemQuestion(itemId) }}</p>
+                                                    <p class="font-medium mb-2">Options:</p>
+                                                    <ul class="space-y-2 ml-4">
+                                                        <li v-for="(option, index) in getQuizItemOptions(itemId)"
+                                                            :key="index"
+                                                            class="whitespace-normal break-words flex items-center gap-1"
+                                                            :class="{ 'text-green-600 dark:text-green-400 font-medium': isCorrectAnswer(itemId, index + 1) }">
+                                                            <svg v-if="isCorrectAnswer(itemId, index + 1)"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                class="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                                            </svg>
+                                                            {{ index + 1 }}. {{ option }}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div v-if="expandedSets.has(quizSet.setName)"
                                         class="mt-1 pl-4 text-sm text-gray-500 dark:text-gray-400 italic">
                                         {{ getQuizItemQuestion(itemId) }}
@@ -312,6 +386,7 @@ const router = useRouter();
 const currentTab = ref('current');
 const expandedSets = ref(new Set());
 const showCreateModal = ref(false);
+const hoveredQuizId = ref(null);
 
 // New quiz set form data
 const newQuizSet = reactive({
@@ -398,4 +473,57 @@ const startQuiz = (quizSet) => {
         router.push(`/quiz/${quizIndex}`);
     }
 };
+
+// Function to show quiz details
+const showQuizDetails = (id) => {
+    console.log('Showing quiz details for id:', id); // Debug log
+    hoveredQuizId.value = id;
+};
+
+// Function to hide quiz details
+const hideQuizDetails = () => {
+    console.log('Hiding quiz details, current id:', hoveredQuizId.value); // Debug log
+    hoveredQuizId.value = null;
+};
+
+// Function to get quiz item options
+const getQuizItemOptions = (id) => {
+    const quizItem = quizEntries.find(item => item.id === id);
+    if (!quizItem) return [];
+
+    return [
+        quizItem.option1,
+        quizItem.option2,
+        quizItem.option3,
+        quizItem.option4,
+        quizItem.option5,
+        quizItem.option6
+    ].filter(option => option); // Filter out empty options
+};
+
+// Function to check if an option is the correct answer
+const isCorrectAnswer = (id, optionNumber) => {
+    const quizItem = quizEntries.find(item => item.id === id);
+    return quizItem?.correctAnswer === optionNumber;
+};
 </script>
+
+<style scoped>
+/* Add these styles at the bottom of the file */
+.group:hover {
+    z-index: 50;
+}
+
+/* Ensure modal content is above other elements */
+.absolute {
+    isolation: isolate;
+}
+
+.fixed {
+    position: fixed !important;
+}
+
+.z-[9999] {
+    z-index: 9999 !important;
+}
+</style>
