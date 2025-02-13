@@ -120,8 +120,102 @@
             </div>
 
             <!-- Proposed Quiz Sets -->
-            <div v-else>
-                Proposed Quiz Sets Content
+            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div v-for="quizSet in proposedQuizSets" :key="quizSet.setName"
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-200">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                            {{ quizSet.setName }}
+                        </h3>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ quizSet.items.length }} items
+                        </span>
+                    </div>
+
+                    <!-- Quiz Set Details -->
+                    <div class="space-y-2">
+                        <!-- Basic/Expert Mode -->
+                        <div class="flex items-center text-sm">
+                            <span class="text-gray-600 dark:text-gray-300">Mode:</span>
+                            <span :class="[
+                                'ml-2 px-2 py-1 rounded text-xs font-medium',
+                                quizSet.basicMode
+                                    ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                                    : 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
+                            ]">
+                                {{ quizSet.basicMode ? 'Basic' : 'Expert' }}
+                            </span>
+                        </div>
+
+                        <!-- In Progress Text -->
+                        <div v-if="quizSet.inProgressText"
+                            class="text-sm text-amber-600 dark:text-amber-400 italic mt-2">
+                            {{ quizSet.inProgressText }}
+                        </div>
+
+                        <!-- Quiz Items List -->
+                        <div class="mt-3 space-y-1">
+                            <div class="flex justify-between items-center">
+                                <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 text-left">Quiz Items:
+                                </h4>
+                                <button @click="toggleQuestions(quizSet.setName)"
+                                    class="text-sm text-blue-500 hover:text-blue-600 flex items-center">
+                                    <span class="mr-1">{{ expandedSets.has(quizSet.setName) ? 'Hide' : 'Show' }}
+                                        Questions</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                        :class="{ 'transform rotate-180': expandedSets.has(quizSet.setName) }"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <ul class="text-sm text-gray-600 dark:text-gray-400 list-disc pl-5 text-left">
+                                <li v-for="itemId in quizSet.items" :key="itemId" class="mb-2">
+                                    <div class="truncate">{{ getQuizItemTitle(itemId) || 'Untitled Question' }}</div>
+                                    <div v-if="expandedSets.has(quizSet.setName)"
+                                        class="mt-1 pl-4 text-sm text-gray-500 dark:text-gray-400 italic">
+                                        {{ getQuizItemQuestion(itemId) }}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Additional Resources -->
+                        <div v-if="quizSet.podcastEpisodes || quizSet.resource"
+                            class="text-sm text-gray-600 dark:text-gray-300">
+                            <div v-if="quizSet.podcastEpisodes" class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                </svg>
+                                Includes podcast episodes
+                            </div>
+                            <div v-if="quizSet.resource" class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                Additional resources
+                            </div>
+                        </div>
+
+                        <!-- Start Quiz Button -->
+                        <div class="flex justify-end mt-4">
+                            <button @click="startQuiz(quizSet)"
+                                class="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200 flex items-center">
+                                <span>Start Quiz</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -139,6 +233,7 @@ const expandedSets = ref(new Set());
 
 // Filter out quiz sets that are in progress
 const publishedQuizSets = quizSets.filter(set => !set.inProgress);
+const proposedQuizSets = quizSets.filter(set => set.inProgress);
 
 // Function to get quiz item title by ID
 const getQuizItemTitle = (id) => {
