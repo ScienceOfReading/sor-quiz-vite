@@ -1382,15 +1382,22 @@ details[open] .form-section {
 
 .preview-section {
   background: linear-gradient(145deg, #ffffff, #f0f4ff);
-
   border-radius: 12px;
   padding: 24px;
   margin: 20px 0;
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  @apply bg-white dark:bg-gray-800;
+}
+
+.preview-section :deep(.quiz-item) {
+  background: transparent;
+  @apply text-gray-900 dark:text-white;
 }
 
 @media (prefers-color-scheme: dark) {
-  .preview-section {}
+  .preview-section {
+    background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
+  }
 }
 
 .form-group-section {
