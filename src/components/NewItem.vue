@@ -887,8 +887,19 @@ export default {
         return;
       }
 
-      // Check if it's a draft item
-      const draftItem = [...this.userDraftQuizItems, ...this.otherDraftQuizItems]
+      // First check if it's a permanent quiz item
+      const permanentItem = this.permanentQuizItems.find(item => item.id === this.selectedTemplate);
+      if (permanentItem) {
+        // Create a copy of the permanent item
+        const copyItem = { ...permanentItem };
+        copyItem.originalId = copyItem.id;  // Save the original ID
+        copyItem.id = null;  // Reset ID for new draft
+        this.store.updateDraftQuizEntry(copyItem);
+        return;
+      }
+
+      // If not permanent, check drafts
+      const draftItem = [...this.userDraftQuizItems, ...this.otherDraftQuizItems, ...this.pendingQuizItems]
         .find(item => item.id === this.selectedTemplate);
 
       if (draftItem) {
